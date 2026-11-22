@@ -1,6 +1,7 @@
 .godot/
 *.uid
 *.import
+!client/assets/street/*.png.import
 bin/
 *.nile
 *.nile-journal

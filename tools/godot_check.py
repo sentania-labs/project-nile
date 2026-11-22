@@ -30,7 +30,8 @@ def main():
         env["NILE_SAVE"] = str(Path(scratch) / "probe.nile")
         env.pop("NILE_CAPTURE_DIR", None)
         run([args.godot, "--headless", "--path", "client", "--editor", "--import", "--quit"], env)
-        command = [args.godot, "--audio-driver", "Dummy", "--path", "client", "--", "--smoke"]
+        command = [args.godot, "--audio-driver", "Dummy", "--path", "client",
+                   "--", "--diagnostic", "--smoke"]
         if args.capture:
             args.capture.mkdir(parents=True, exist_ok=True)
             env["NILE_CAPTURE_DIR"] = str(args.capture.resolve())

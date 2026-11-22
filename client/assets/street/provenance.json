@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "initiating_agent": "Codex",
+  "generator": "built-in image_gen",
+  "model": "not exposed by tool",
+  "created_local_date": "2026-11-22",
+  "purpose": "original illustrated Godot street visual candidates",
+  "approval": "pending Scott review; not accepted production art",
+  "rights": "Original generated artwork; no extracted Pharaoh assets included. Generator output terms apply; final production rights review pending.",
+  "cost": "Built-in generation only; no Meshy credits or paid API fallback. Per-image credits/cost not exposed.",
+  "references": [
+    "https://en.wikipedia.org/wiki/Pharaoh_(video_game)",
+    "https://wolfsgamingblog.com/wp-content/uploads/2023/03/pharaoh_a_new_era-4.jpg",
+    "/mnt/holding/frontier-research/visual-references",
+    "/mnt/holding/frontier-research/reference-engines/akhenaten/docs/wiki/player/buildings"
+  ],
+  "assets": [
+    {
+      "id": "bazaar",
+      "runtime_path": "client/assets/street/bazaar.png",
+      "source_path": "/mnt/holding/project-nile/street-v2/raw/bazaar.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "9cf337632b989adb51d9b5bba4fa3259898f4b9d28f3bd1503868c22c5f13638",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/bazaar.txt",
+      "prompt_sha256": "20595ba96329e1120c82955b6e097fabb894b54226ed8390fbce8d99b289eb04",
+      "transparent_background": true,
+      "validation": "PNG structure, SHA256, actual Godot import and six rendered captures passed; artistic approval pending"
+    },
+    {
+      "id": "granary",
+      "runtime_path": "client/assets/street/granary.png",
+      "source_path": "/mnt/holding/project-nile/street-v2/raw/granary.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "9a9d51ea74bc24f809d4bab5f50b85160f935c90080ceaf42fb22de063bcbd34",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/granary.txt",
+      "prompt_sha256": "ea82df912b53fc84bad4ea20a0d05570cfd5ba407c633b3c4029c320c1370be5",
+      "transparent_background": true,
+      "validation": "PNG structure, SHA256, actual Godot import and six rendered captures passed; artistic approval pending"
+    },
+    {
+      "id": "house",
+      "runtime_path": "client/assets/street/house.png",
+      "source_path": "/mnt/holding/project-nile/street-v2/raw/house.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "198a9e67d2bea3d0581ee29e66a9a33649018b8bc59b34219a907db5f0c58457",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/house.txt",
+      "prompt_sha256": "520e8032a2df10a1e8160b4b08e0338680d52e3f46a7a091bffb0ec4f334ca94",
+      "transparent_background": true,
+      "validation": "PNG structure, SHA256, actual Godot import and six rendered captures passed; artistic approval pending"
+    },
+    {
+      "id": "hut",
+      "runtime_path": "client/assets/street/hut.png",
+      "source_path": "/mnt/holding/project-nile/street-v2/raw/hut.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "b2ea9741003b8bd451297523af2c01d3327e98da8e78e2aca08b24aabf0305f4",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/hut.txt",
+      "prompt_sha256": "8c545bc55ca5f07e8ffa77dd3e7acf75f88f75300d7a6bdf29ebb79eda147db3",
+      "transparent_background": true,
+      "validation": "PNG structure, SHA256, actual Godot import and six rendered captures passed; artistic approval pending"
+    },
+    {
+      "id": "palm",
+      "runtime_path": "client/assets/street/palm.png",
+      "source_path": "/mnt/holding/project-nile/street-v2/raw/palm.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "1ba5a2888eee98056d35b43fa58fd1d4c004f252308fd3a24b426882767f8323",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/palm.txt",
+      "prompt_sha256": "44b63e2a31b44b39b630cc206502e92684d597c0bef30f9d83d043a9bdaadf3e",
+      "transparent_background": true,
+      "validation": "PNG structure, SHA256, actual Godot import and six rendered captures passed; artistic approval pending"
+    },
+    {
+      "id": "sidebar",
+      "runtime_path": "client/assets/street/sidebar.png",
+      "source_path": "/mnt/holding/project-nile/street-v2/raw/sidebar.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "4105219bafcf587aba8a2649478558ec3e5c675080b30d597b608d379a7b8eb4",
+      "dimensions": [
+        724,
+        2172
+      ],
+      "mode": "RGB",
+      "prompt": "client/assets/street/prompts/sidebar.txt",
+      "prompt_sha256": "5680962b1928a214a07869e48886246728247b6c7ae094cc5b7c3845fb8bc2c0",
+      "transparent_background": false,
+      "validation": "PNG structure, SHA256, actual Godot import and six rendered captures passed; artistic approval pending"
+    },
+    {
+      "id": "terrain",
+      "runtime_path": "client/assets/street/terrain.png",
+      "source_path": "/mnt/holding/project-nile/street-v2/raw/terrain.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "93909ba159194201fcf4d558562cc5fbfaf2d9cd05fe7592aebb9e444239a35f",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "prompt": "client/assets/street/prompts/terrain.txt",
+      "prompt_sha256": "ad02d0618f021997b07ca198f0bcfd944180ccaf00a37034359fd2f08fcc7a33",
+      "transparent_background": false,
+      "validation": "PNG structure, SHA256, actual Godot import and six rendered captures passed; artistic approval pending"
+    },
+    {
+      "id": "walker",
+      "runtime_path": "client/assets/street/walker.png",
+      "source_path": "/mnt/holding/project-nile/street-v2/raw/walker.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "baddc26c64e263c98bbc523390b5b0a88f51a691b5e086897d8426c9a44c2928",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/walker.txt",
+      "prompt_sha256": "ab0158b35c573ac2429fe2fda7267e44b95dc08940738d4ae913ebf3052d37c9",
+      "transparent_background": true,
+      "validation": "PNG structure, SHA256, actual Godot import and six rendered captures passed; artistic approval pending"
+    }
+  ],
+  "validation_environment": {
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "renderer": "OpenGL Compatibility / Mesa llvmpipe under Xvfb",
+    "capture_sizes": [
+      [
+        1920,
+        1080
+      ],
+      [
+        1280,
+        720
+      ],
+      [
+        2560,
+        1440
+      ],
+      [
+        3456,
+        2160
+      ],
+      [
+        3440,
+        1440
+      ]
+    ],
+    "performance_claim": "None; software rendering validates appearance and interaction only."
+  }
+}

@@ -26,7 +26,40 @@ All requested graphics files were located in the pinned current snapshot:
 | `client/tests/capture_art.py`, `asset_capture.gd`, `test_work_assets.py` | Rendered capture, clip/loop/rig checks |
 | `assets/production-023.json` | Provenance structure; not a Nile credit allowance |
 
+## Illustrated street candidate
+
+`client/scenes/street_study.tscn` is the current visual proposal. It uses original
+built-in image generation for separate 2D buildings, palms, people, material atlas
+and Egyptian sidebar. The model identifier and per-image cost are not exposed by
+the tool; no Meshy credits or paid API fallback were used. No copied reference
+sprites are included. This candidate does not settle 2D versus 3D for the game.
+
+Shared contract: `client/assets/street/manifest.json` defines each asset's tile
+footprint, whole-image display width, normalized front-corner anchor, optional
+atlas region, label and description. `layout.json` places independent objects and
+roads on a 96×48 isometric grid. Decorations are nonselectable. Source PNGs remain
+unmodified; Godot uses atlas regions, mipmaps and terrain masks at runtime.
+
+`prompts/` retains the exact generation briefs; `provenance.json` records sources,
+hashes, dimensions, tool disclosure, references and approval status. Large raw
+copies and rendered captures live in `/mnt/holding/project-nile/street-v2/`.
+`make capture` imports into real Godot and exercises selection, zoom, pan and HUD
+controls before five resolution captures and a separate detail capture. This
+follows Frontier's engine-review and provenance contract without importing its
+3D-only rig processor into a 2D sprite pass.
+
+Acceptance is pending Scott's review. Current limits: two repeated housing
+silhouettes, static people, provisional footprints and some generated perspective
+variation. These are visual candidates, not verified original housing tiers or
+mechanical building dimensions. There are no construction or walker animations.
+
 ## Current original reference
+
+**Rejected as art direction by Scott on November 22, 2026.** This scene and granary
+remain engineering test fixtures only. The implementation was not grounded in
+the available gameplay images before it was proposed, and does not meet the
+recognizable-Pharaoh requirement. See `decisions.md` for the inspected references
+and the user's correction. Structural validity does not imply artistic fitness.
 
 `client/assets/granary-reference.glb` is the earlier Nile procedural candidate,
 not a Pharaoh asset or a finished production asset. SHA256:

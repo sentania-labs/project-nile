@@ -1,0 +1,167 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "id": "granary",
+      "path": "granary.png",
+      "footprint": [
+        4,
+        4
+      ],
+      "draw_width": 400,
+      "anchor": [
+        0.6,
+        0.91
+      ],
+      "label": "Granary",
+      "kind": "Food storage \u00b7 4 \u00d7 4",
+      "description": "Enclosed plastered storehouse, grain apertures and a loading canopy. Storage behavior comes after this visual review."
+    },
+    {
+      "id": "bazaar",
+      "path": "bazaar.png",
+      "footprint": [
+        3,
+        3
+      ],
+      "draw_width": 305,
+      "anchor": [
+        0.52,
+        0.94
+      ],
+      "label": "Bazaar",
+      "kind": "Food distribution \u00b7 3 \u00d7 3",
+      "description": "A courtyard of cloth awnings, produce, pottery and grain. Stall silhouettes should remain readable at neighborhood scale."
+    },
+    {
+      "id": "hut",
+      "path": "hut.png",
+      "footprint": [
+        1,
+        1
+      ],
+      "draw_width": 110,
+      "anchor": [
+        0.5,
+        0.84
+      ],
+      "label": "Reed shelter",
+      "kind": "Early housing \u00b7 1 \u00d7 1",
+      "description": "Reed, thatch and rough mud plaster. A visual housing candidate; no evolution level has been assigned yet."
+    },
+    {
+      "id": "house",
+      "path": "house.png",
+      "footprint": [
+        2,
+        2
+      ],
+      "draw_width": 310,
+      "anchor": [
+        0.55,
+        0.965
+      ],
+      "label": "Courtyard house",
+      "kind": "Housing \u00b7 2 \u00d7 2",
+      "description": "Worn plaster, exposed mudbrick, a shaded roof terrace and a small enclosed courtyard. Evolution rules are not active."
+    },
+    {
+      "id": "palm",
+      "path": "palm.png",
+      "footprint": [
+        0.3,
+        0.3
+      ],
+      "draw_width": 100,
+      "anchor": [
+        0.47,
+        0.95
+      ],
+      "label": "Date palm",
+      "kind": "Landscape"
+    },
+    {
+      "id": "resident",
+      "path": "walker.png",
+      "region": [
+        0,
+        0,
+        543,
+        724
+      ],
+      "footprint": [
+        0.12,
+        0.12
+      ],
+      "draw_width": 25,
+      "anchor": [
+        0.5,
+        0.93
+      ],
+      "label": "Resident",
+      "kind": "Character scale reference"
+    }
+  ],
+  "terrain": {
+    "sand": {
+      "path": "terrain.png",
+      "region": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "repeat_size": 160
+    },
+    "road": {
+      "path": "terrain.png",
+      "region": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "repeat_size": 160
+    },
+    "water": {
+      "path": "terrain.png",
+      "region": [
+        1024,
+        0,
+        512,
+        512
+      ],
+      "repeat_size": 512
+    },
+    "silt": {
+      "path": "terrain.png",
+      "region": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "repeat_size": 192
+    },
+    "grass": {
+      "path": "terrain.png",
+      "region": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "repeat_size": 110
+    },
+    "paving": {
+      "path": "terrain.png",
+      "region": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "repeat_size": 192
+    }
+  }
+}

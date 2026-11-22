@@ -67,11 +67,12 @@ def main():
                 destination.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(name, destination / name.name)
     (output / "README.txt").write_text(
-        "Project Nile kickoff study, not a game release.\n"
+        "Project Nile illustrated street study, not a game release.\n"
         "Run ./nile on Linux x64. No Godot, Go, SQLite server or network installation needed.\n"
-        "Uses your local Godot user-data directory for the diagnostic save.\n"
-        "Advance, Save, advance again, Restore. Restart recovers only the last explicit save.\n"
-        "Original procedural reference art; housing, services, farming and trade not implemented.\n"
+        "Wheel to zoom, right-drag to pan, click a building to inspect, F for footprints.\n"
+        "Original generated visual candidates. People are static; gameplay systems are not implemented.\n"
+        "For the Go/SQLite diagnostic: ./nile -- --diagnostic\n"
+        "Diagnostic saves use your local Godot user-data directory. Restart restores the last explicit save.\n"
         "Godot and dependency notices are in licenses/. No new Project Nile license declared.\n")
     manifest = {name: digest(output / name) for name in ["nile", "nile.pck", "nile-sim"]}
     (output / "sha256.json").write_text(json.dumps(manifest, indent=2) + "\n")
