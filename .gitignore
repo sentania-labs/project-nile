@@ -1,0 +1,10 @@
+.godot/
+*.uid
+*.import
+bin/
+*.nile
+*.nile-journal
+*.nile-wal
+*.nile-shm
+__pycache__/
+.lavish/
