@@ -35,6 +35,8 @@ the last explicit save. Unsaved work is not silently reconstructed. Graceful
 shutdown has a bounded grace period and kills a stuck owned child. The automated
 Godot test moves the rendered walker, saves, moves again, restores, kills the
 actual child and recovers the same hash and position after restart.
+It also restarts before the first save and verifies that the failed load displays
+the new process's actual initial state, rather than stale unsaved UI state.
 
 ## SQLite proof
 

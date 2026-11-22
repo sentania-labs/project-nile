@@ -240,12 +240,14 @@ func on_reply(reply: Dictionary) -> void:
 	last_reply = reply
 	response_count += 1
 	for button in controls: button.disabled = false
-	if not reply.get("ok", false):
-		notice.text = str(reply.get("error", "Command failed"))
-		return
+	# Every response includes the current authoritative state, even failed loads.
+	# A newly restarted process may have reset while the old view still shows work.
 	state = reply.state
 	readout.text = "Tick %d   ·   Grain %d\nWalker position %d / 32" % [state.tick, state.grain, state.walker]
-	notice.text = "Local state ready." if not restarting else "Recovered the last committed save."
+	if not reply.get("ok", false):
+		notice.text = str(reply.get("error", "Command failed"))
+	else:
+		notice.text = "Local state ready." if not restarting else "Recovered the last committed save."
 	restarting = false
 	var index := int(state.walker)
 	var position_2d: Vector2
@@ -293,6 +295,15 @@ func checked_request(op: String, ticks: int = 0) -> bool:
 
 func run_smoke() -> void:
 	if not await wait_response(0): return smoke_fail("startup")
+	# Restart before any save: failed load must display the new process's tick zero.
+	if not await checked_request("step", 5): return smoke_fail("unsaved step")
+	var before_unsaved_restart := response_count
+	restart_sim()
+	if await wait_response(before_unsaved_restart): return smoke_fail("unexpected initial save")
+	if response_count == before_unsaved_restart or state.tick != 0 or state.walker != 0:
+		return smoke_fail("failed recovery did not resynchronize state")
+	if restarting or walker.position != Vector3(-12, .08, -8):
+		return smoke_fail("failed recovery left stale presentation")
 	if not await checked_request("step", 11): return smoke_fail("step")
 	if not await checked_request("save"): return smoke_fail("save")
 	var saved_hash: String = last_reply.hash
