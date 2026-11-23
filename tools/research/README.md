@@ -121,3 +121,25 @@ consequence links before implementing their behavior. Monument numeric IDs and
 burial resource IDs also need a verified edition-specific mapping. Original
 terrain and authored placement remain outside this dataset. Cleopatra requires
 its own source installation, fingerprints, formats and mission verification.
+
+## Early playable campaign evidence
+
+`nubt-tutorial-evidence.json` and `early-tutorial-evidence.json` record original
+executable references for the first three tutorials, four-person immigration
+parties, per-house immigrant assignments and one-time rescue loans. Private
+decompilation remains outside the repository. Nile's action-driven Go tests win
+Nubt, Thinis and Perwadjyt through physical supply chains, service walkers and
+the extracted housing/population goals, with SQLite restoration. Timings, crop
+yields, roaming and economic cadence remain provisional. Perwadjyt's pottery
+request announcement is verified, but creation, amount and timing remain open;
+the reconstruction's 100-pottery stock shortcut is not substituted for it.
+
+For reproducible live saves for Godot review, run:
+
+```sh
+NILE_CAMPAIGN_CAPTURE_DIR=/mnt/holding/project-nile/campaign-review \
+  go test ./internal/sandbox -run 'TestNubt|TestThinisCompletes|TestPerwadjytCompletes' -count=1 -v
+```
+
+This writes `mission-0.nile` through `mission-2.nile` only after the corresponding
+construction-and-simulation test actually wins. Later missions remain staged.

@@ -21,7 +21,7 @@ var buildingCatalog = []CatalogEntry{
 	{"road", "Road", 1, 1, 4, "Infrastructure", 0},
 	{"hut", "Housing plot", 1, 1, 10, "Housing", 0},
 	{"well", "Well", 1, 1, 5, "Services", 0},
-	{"farm", "Floodplain farm", 3, 3, 40, "Food", 2},
+	{"farm", "Grain Farm", 3, 3, 40, "Food", 2},
 	{"granary", "Granary", 4, 4, 250, "Food", 1},
 	{"bazaar", "Bazaar", 2, 2, 40, "Food", 2},
 	{"claypit", "Clay pit", 2, 2, 40, "Industry", 2},
@@ -89,6 +89,12 @@ func materialStock(b *Building, resource string) *int {
 	return nil
 }
 func materialCapacity(b Building, resource string) int {
+	if isPyramid(b.Kind) {
+		return monumentResourceCapacity(b, resource)
+	}
+	if b.Kind == "dock" {
+		return 1200
+	}
 	switch b.Kind {
 	case "farm":
 		if resource == "straw" {
@@ -109,7 +115,14 @@ func materialCapacity(b Building, resource string) int {
 		if resource == "bricks" {
 			return 32
 		}
+	case "cattleranch":
+		if resource == "straw" {
+			return 32
+		}
 	case "storageyard":
+		if resource == "bricks" {
+			return 800
+		}
 		return 64
 	case "mastaba":
 		if resource == "bricks" {
@@ -148,7 +161,7 @@ func materialReceiver(source, target Building, resource string) bool {
 		return false
 	}
 	if resource == "clay" || resource == "straw" {
-		return target.Kind == "brickworks" || (resource == "clay" && target.Kind == "potter") || (source.Kind != "storageyard" && target.Kind == "storageyard")
+		return target.Kind == "brickworks" || (resource == "straw" && target.Kind == "cattleranch") || (resource == "clay" && target.Kind == "potter") || (source.Kind != "storageyard" && target.Kind == "storageyard")
 	}
 	return target.Kind == "mastaba" && target.ConstructionDone < 64 || (source.Kind != "storageyard" && target.Kind == "storageyard")
 }
@@ -239,11 +252,15 @@ func (w *World) dispatchServices() {
 		entryPath := w.path([]Point{w.entry()}, b)
 		if len(entryPath) > 0 {
 			supply := supplyForService(b.Kind)
-			if supply != "" && inventory(b, supply) == 0 {
+			needed := 1
+			if b.Kind == "senethouse" {
+				needed = 20
+			}
+			if supply != "" && inventory(b, supply)-w.reservedResource(b.ID, supply) < needed {
 				continue
 			}
 			if w.spawn(role, "patrol", b.ID, b.ID, 0, w.patrolFor(entryPath[len(entryPath)-1], role), 0, 0) && supply != "" {
-				w.ConsumeResource(b.ID, supply, 1)
+				w.ConsumeResource(b.ID, supply, needed)
 			}
 		}
 	}
@@ -315,14 +332,9 @@ func (w *World) cityTick() {
 			}
 
 		}
-		crew := min(b.CrewOnSite, b.Workers)
-		if b.Kind == "mastaba" && crew > 0 && b.Connected && w.Tick%int64(24/crew) == 0 && b.Bricks > 0 && b.ConstructionDone < 64 {
-			b.Bricks--
-			b.ConstructionDone++
-			w.BricksConsumed++
-		}
-		if w.HazardsEnabled && b.Kind != "well" && !(b.Kind == "hut" && b.Pop == 0) {
-			if b.Kind != "mastaba" && b.Kind != "goldmine" && w.Tick%16 == b.ID%16 && b.FireUntil <= w.Tick {
+		w.constructMonument(b)
+		if w.HazardsEnabled && !isPyramid(b.Kind) && b.Kind != "well" && b.Kind != "fort" && !(b.Kind == "hut" && b.Pop == 0) {
+			if b.Kind != "mastaba" && b.Kind != "goldmine" && b.Kind != "coppermine" && w.Tick%16 == b.ID%16 && b.FireUntil <= w.Tick {
 				b.FireRisk = min(100, b.FireRisk+1)
 			}
 			if w.Tick%24 == b.ID%24 && b.CollapseUntil <= w.Tick {
@@ -336,6 +348,12 @@ func (w *World) cityTick() {
 				w.CollapseCount++
 			}
 		}
+	}
+	if w.MonthlyFinance {
+		if w.BudgetEnabled && w.Tick%(YearTicks/12) == 0 {
+			w.settleMonthlyAccounts()
+		}
+		return
 	}
 	if w.BudgetEnabled && w.Tick%48 == 0 {
 		w.LastIncome, w.LastWages = 0, 0
@@ -377,6 +395,7 @@ func (w *World) Repair(x, y int) error {
 }
 func (w World) cityView(v *View) {
 	v.Treasury, v.Income, v.Expenses = w.Treasury, w.Income, w.Expenses
+	v.MonthlyFinance = w.MonthlyFinance
 	v.LastIncome, v.LastWages = w.LastIncome, w.LastWages
 	v.FireCount, v.CollapseCount = w.FireCount, w.CollapseCount
 	v.Clay, v.Straw, v.Bricks = w.materialTotal("clay"), w.materialTotal("straw"), w.materialTotal("bricks")
@@ -384,9 +403,9 @@ func (w World) cityView(v *View) {
 	v.StrawProduced, v.StrawConsumed = w.StrawProduced, w.StrawConsumed
 	v.BricksProduced, v.BricksConsumed = w.BricksProduced, w.BricksConsumed
 	for _, b := range w.Buildings {
-		if b.Kind == "mastaba" {
+		if isMonument(b.Kind) {
 			v.MonumentProgress += b.ConstructionDone
-			v.MonumentGoal += 64
+			v.MonumentGoal += monumentRequirement(b.Kind)
 		}
 	}
 	v.BuildingCatalog = buildingCatalog
@@ -402,7 +421,7 @@ func (w *World) enableCity() {
 	w.refresh()
 }
 func (w World) validateCity() error {
-	if !validPolicy(w.TaxRate, w.WageRate, w.LaborPriority) {
+	if !w.validPolicy(w.TaxRate, w.WageRate, w.LaborPriority) {
 		return errors.New("invalid fiscal or labor policy")
 	}
 	if w.Income < 0 || w.Expenses < 0 || w.LastIncome < 0 || w.LastWages < 0 || w.FireCount < 0 || w.CollapseCount < 0 {
@@ -418,7 +437,7 @@ func (w World) validateCity() error {
 		} else if resource == "bricks" {
 			produced, consumed = w.BricksProduced, w.BricksConsumed
 		}
-		if produced < 0 || consumed < 0 || int64(w.materialTotal(resource))+consumed+w.ResourceExported[resource] != produced+w.ResourceImported[resource] {
+		if produced < 0 || consumed < 0 || int64(w.materialTotal(resource))+consumed+w.ResourceExported[resource]+w.RequestSent[resource] != produced+w.ResourceImported[resource] {
 			return errors.New("material conservation failed: " + resource)
 		}
 		for _, b := range w.Buildings {
@@ -430,7 +449,10 @@ func (w World) validateCity() error {
 		}
 	}
 	for _, b := range w.Buildings {
-		if b.LastTax < 0 || b.FireRisk < 0 || b.FireRisk > 100 || b.CollapseRisk < 0 || b.CollapseRisk > 100 || b.FireUntil < 0 || b.CollapseUntil < 0 || b.TaxUntil < 0 || b.ConstructionDone < 0 || b.ConstructionDone > 64 || (b.Kind != "mastaba" && b.ConstructionDone != 0) {
+		if err := validateMonument(b); err != nil {
+			return err
+		}
+		if b.LastTax < 0 || b.FireRisk < 0 || b.FireRisk > 100 || b.CollapseRisk < 0 || b.CollapseRisk > 100 || b.FireUntil < 0 || b.CollapseUntil < 0 || b.TaxUntil < 0 || b.ConstructionDone < 0 || b.ConstructionDone > monumentRequirement(b.Kind) {
 			return errors.New("invalid civic building state")
 		}
 		if b.Damaged != "" && b.Damaged != "fire" && b.Damaged != "collapse" {

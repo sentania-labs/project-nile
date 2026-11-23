@@ -272,6 +272,51 @@
         "name": "city_id_raw",
         "offset": 101,
         "struct_type": "b"
+      },
+      {
+        "name": "time_fixed_raw",
+        "offset": 26,
+        "struct_type": "h"
+      },
+      {
+        "name": "location_value_raw",
+        "offset": 32,
+        "struct_type": "h"
+      },
+      {
+        "name": "location_fixed_raw",
+        "offset": 34,
+        "struct_type": "h"
+      },
+      {
+        "name": "location_min_raw",
+        "offset": 36,
+        "struct_type": "h"
+      },
+      {
+        "name": "location_max_raw",
+        "offset": 38,
+        "struct_type": "h"
+      },
+      {
+        "name": "months_remaining_raw",
+        "offset": 50,
+        "struct_type": "h"
+      },
+      {
+        "name": "state_raw",
+        "offset": 52,
+        "struct_type": "h"
+      },
+      {
+        "name": "active_raw",
+        "offset": 54,
+        "struct_type": "B"
+      },
+      {
+        "name": "can_comply_raw",
+        "offset": 55,
+        "struct_type": "B"
       }
     ]
   },

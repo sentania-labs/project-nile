@@ -3,6 +3,7 @@ extends Control
 const SANDBOX := "res://scenes/sandbox.tscn"
 const GOLD := Color("#ebca85")
 const INK := Color("#301e13")
+const Saves = preload("res://scripts/save_browser.gd")
 var opening := false
 
 
@@ -42,12 +43,11 @@ func _ready() -> void:
 	var spacer := Control.new()
 	spacer.custom_minimum_size.y = 18
 	menu.add_child(spacer)
-	var start := _add_choice(menu, "Found a new town", "empty")
+	var start := _add_choice(menu, "Found a Nile Valley city", "valley")
 	var campaign := _add_choice(menu, "Begin the Pharaoh campaign", "campaign")
 	_add_choice(menu, "Enter the riverbank village", "village")
 	var restore := _add_choice(menu, "Load saved town", "load")
-	var save_path := OS.get_environment("NILE_SANDBOX_SAVE")
-	restore.disabled = not FileAccess.file_exists("user://riverbank.nile" if save_path.is_empty() else save_path)
+	restore.disabled = not FileAccess.file_exists(Saves.last_path())
 	_add_choice(menu, "Sound and controls", "settings")
 	_add_choice(menu, "Quit", "quit")
 	start.grab_focus()
@@ -97,5 +97,6 @@ func _choose(choice: String) -> void:
 	if choice == "quit":
 		get_tree().quit()
 		return
+	get_tree().root.set_meta("nile_save_path", Saves.last_path() if choice=="load" else Saves.new_path("Pharaoh campaign" if choice=="campaign" else "Nile city"))
 	get_tree().root.set_meta("nile_start_choice", choice)
 	get_tree().change_scene_to_file.call_deferred(SANDBOX)

@@ -1,0 +1,510 @@
+{
+  "smallstepped_foundation": {
+    "id": "smallstepped_foundation",
+    "path": "../monuments/smallstepped-foundation.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "vertical_scale": 1.08,
+    "label": "Small stepped pyramid"
+  },
+  "smallstepped_base": {
+    "id": "smallstepped_base",
+    "path": "../monuments/smallstepped-base.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "vertical_scale": 1.08,
+    "label": "Small stepped pyramid"
+  },
+  "smallstepped_building": {
+    "id": "smallstepped_building",
+    "path": "../monuments/smallstepped-building.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "vertical_scale": 1.08,
+    "label": "Small stepped pyramid"
+  },
+  "smallstepped": {
+    "id": "smallstepped",
+    "path": "../monuments/smallstepped-complete.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "vertical_scale": 1.08,
+    "label": "Small stepped pyramid"
+  },
+  "true-pyramid": {
+    "id": "true-pyramid",
+    "path": "../monuments/true-pyramid.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "True pyramid"
+  },
+  "bent-pyramid": {
+    "id": "bent-pyramid",
+    "path": "../monuments/bent-pyramid.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Bent pyramid"
+  },
+  "brick-pyramid": {
+    "id": "brick-pyramid",
+    "path": "../monuments/brick-pyramid.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Brick pyramid"
+  },
+  "stepped-three": {
+    "id": "stepped-three",
+    "path": "../monuments/stepped-three.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Stepped three"
+  },
+  "stepped-four": {
+    "id": "stepped-four",
+    "path": "../monuments/stepped-four.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Stepped four"
+  },
+  "stepped-six": {
+    "id": "stepped-six",
+    "path": "../monuments/stepped-six.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Stepped six"
+  },
+  "mortuary_temple": {
+    "id": "mortuary_temple",
+    "path": "../monuments/mortuary_temple.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 213.5,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Mortuary temple"
+  },
+  "valley_temple": {
+    "id": "valley_temple",
+    "path": "../monuments/valley_temple.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 213.5,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Valley temple"
+  },
+  "causeway": {
+    "id": "causeway",
+    "path": "../monuments/causeway.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 213.5,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Causeway"
+  },
+  "bricklayers": {
+    "id": "bricklayers",
+    "path": "../monuments/bricklayers.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 213.5,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Bricklayers"
+  },
+  "sphinx": {
+    "id": "sphinx",
+    "path": "../monuments/sphinx.png",
+    "footprint": [
+      18,
+      6
+    ],
+    "draw_width": 1280,
+    "anchor": [
+      0.68,
+      0.95
+    ],
+    "label": "Sphinx"
+  },
+  "sphinx_work": {
+    "id": "sphinx_work",
+    "path": "../monuments/sphinx_work.png",
+    "footprint": [
+      18,
+      6
+    ],
+    "draw_width": 1280,
+    "anchor": [
+      0.68,
+      0.95
+    ],
+    "label": "Sphinx work"
+  },
+  "stepped-five": {
+    "id": "stepped-five",
+    "path": "../monuments/stepped-five.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Stepped five"
+  },
+  "stone-core": {
+    "id": "stone-core",
+    "path": "../monuments/stone-core.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Stone core"
+  },
+  "brick-core": {
+    "id": "brick-core",
+    "path": "../monuments/brick-core.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Brick core"
+  },
+  "pyramid_foundation": {
+    "id": "pyramid_foundation",
+    "path": "../monuments/pyramid_foundation.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Pyramid foundation"
+  },
+  "mediumstepped": {
+    "id": "mediumstepped",
+    "path": "../monuments/stepped-three.png",
+    "footprint": [
+      12,
+      12
+    ],
+    "draw_width": 1281.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Medium stepped pyramid"
+  },
+  "largestepped": {
+    "id": "largestepped",
+    "path": "../monuments/stepped-four.png",
+    "footprint": [
+      16,
+      16
+    ],
+    "draw_width": 1708.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Large stepped pyramid"
+  },
+  "complexstepped": {
+    "id": "complexstepped",
+    "path": "../monuments/stepped-five.png",
+    "footprint": [
+      20,
+      20
+    ],
+    "draw_width": 2135.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Complex stepped pyramid"
+  },
+  "grandstepped": {
+    "id": "grandstepped",
+    "path": "../monuments/stepped-six.png",
+    "footprint": [
+      24,
+      24
+    ],
+    "draw_width": 2562.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Grand stepped pyramid"
+  },
+  "smallpyramid": {
+    "id": "smallpyramid",
+    "path": "../monuments/true-pyramid.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Small pyramid pyramid"
+  },
+  "mediumpyramid": {
+    "id": "mediumpyramid",
+    "path": "../monuments/true-pyramid.png",
+    "footprint": [
+      12,
+      12
+    ],
+    "draw_width": 1281.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Medium pyramid pyramid"
+  },
+  "largepyramid": {
+    "id": "largepyramid",
+    "path": "../monuments/true-pyramid.png",
+    "footprint": [
+      16,
+      16
+    ],
+    "draw_width": 1708.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Large pyramid pyramid"
+  },
+  "complexpyramid": {
+    "id": "complexpyramid",
+    "path": "../monuments/true-pyramid.png",
+    "footprint": [
+      20,
+      20
+    ],
+    "draw_width": 2135.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Complex pyramid pyramid"
+  },
+  "grandpyramid": {
+    "id": "grandpyramid",
+    "path": "../monuments/true-pyramid.png",
+    "footprint": [
+      24,
+      24
+    ],
+    "draw_width": 2562.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Grand pyramid pyramid"
+  },
+  "smallbrick": {
+    "id": "smallbrick",
+    "path": "../monuments/brick-pyramid.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Small brick pyramid"
+  },
+  "mediumbrick": {
+    "id": "mediumbrick",
+    "path": "../monuments/brick-pyramid.png",
+    "footprint": [
+      12,
+      12
+    ],
+    "draw_width": 1281.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Medium brick pyramid"
+  },
+  "largebrick": {
+    "id": "largebrick",
+    "path": "../monuments/brick-pyramid.png",
+    "footprint": [
+      16,
+      16
+    ],
+    "draw_width": 1708.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Large brick pyramid"
+  },
+  "complexbrick": {
+    "id": "complexbrick",
+    "path": "../monuments/brick-pyramid.png",
+    "footprint": [
+      20,
+      20
+    ],
+    "draw_width": 2135.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Complex brick pyramid"
+  },
+  "grandbrick": {
+    "id": "grandbrick",
+    "path": "../monuments/brick-pyramid.png",
+    "footprint": [
+      24,
+      24
+    ],
+    "draw_width": 2562.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Grand brick pyramid"
+  },
+  "smallbent": {
+    "id": "smallbent",
+    "path": "../monuments/bent-pyramid.png",
+    "footprint": [
+      8,
+      8
+    ],
+    "draw_width": 854.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Small bent pyramid"
+  },
+  "mediumbent": {
+    "id": "mediumbent",
+    "path": "../monuments/bent-pyramid.png",
+    "footprint": [
+      12,
+      12
+    ],
+    "draw_width": 1281.0,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "label": "Medium bent pyramid"
+  }
+}

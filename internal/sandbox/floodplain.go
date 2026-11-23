@@ -7,9 +7,12 @@ import "errors"
 const FarmCrew = 10
 const FigSeasonWork = 144 * FarmCrew
 
+var campCrops = map[string]string{"figfarm": "figs", "pomegranatefarm": "pomegranates", "lettucefarm": "lettuce", "chickpeafarm": "chickpeas"}
+
 func init() {
 	buildingCatalog = append(buildingCatalog,
 		CatalogEntry{"figfarm", "Fig Farm", 3, 3, 40, "Food", 0},
+		CatalogEntry{"pomegranatefarm", "Pomegranate farm", 3, 3, 40, "Food", 0}, CatalogEntry{"lettucefarm", "Lettuce farm", 3, 3, 40, "Food", 0}, CatalogEntry{"chickpeafarm", "Chickpea farm", 3, 3, 40, "Food", 0}, CatalogEntry{"cattleranch", "Cattle ranch", 3, 3, 75, "Food", 12},
 		CatalogEntry{"workcamp", "Work Camp", 3, 3, 60, "Labor", 20})
 }
 
@@ -32,7 +35,7 @@ func (w *World) dispatchFarmWorkers() {
 		return
 	}
 	for _, farm := range w.Buildings {
-		if farm.Kind != "figfarm" || farm.Damaged != "" {
+		if !w.managedFloodFarm(farm) || farm.Damaged != "" || !farm.Connected {
 			continue
 		}
 		assigned := 0
@@ -80,15 +83,19 @@ func (w *World) advanceFarmWorker(a *Walker) bool {
 	return true
 }
 
-func (w *World) harvestFigs() {
+func (w *World) harvestCampCrops() {
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
-		if b.Kind != "figfarm" {
+		if !w.managedFloodFarm(*b) {
 			continue
 		}
 		if w.phase() == 192 {
 			if b.Damaged == "" {
-				w.ProduceResource(b.ID, "figs", b.Work*400/FigSeasonWork)
+				if b.AgricultureVersion > 0 {
+					w.harvestCrop(b, 400)
+				} else {
+					w.ProduceResource(b.ID, campCrops[b.Kind], b.Work*400/FigSeasonWork)
+				}
 			}
 			b.Work = 0
 		}
@@ -100,7 +107,7 @@ func (w *World) harvestFigs() {
 
 func (w World) validateFarmWorker(a Walker, target Building) error {
 	camp, farm := w.building(a.Origin), w.building(a.Source)
-	if camp == nil || camp.Kind != "workcamp" || farm == nil || farm.Kind != "figfarm" || a.Cargo != 0 || a.Reserved != 0 || a.Resource != "" {
+	if camp == nil || camp.Kind != "workcamp" || farm == nil || !w.managedFloodFarm(*farm) || a.Cargo != 0 || a.Reserved != 0 || a.Resource != "" {
 		return errors.New("invalid farm crew assignment")
 	}
 	first, last := a.Route[0], a.Route[len(a.Route)-1]

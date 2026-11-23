@@ -1,0 +1,59 @@
+{
+  "name": "estate-nine",
+  "assets": [
+    [
+      "home_12b",
+      "Spacious Residence",
+      2,
+      172
+    ],
+    [
+      "home_13",
+      "Elegant Residence",
+      2,
+      172
+    ],
+    [
+      "home_14",
+      "Fancy Residence",
+      2,
+      172
+    ],
+    [
+      "home_15",
+      "Common Manor",
+      3,
+      258
+    ],
+    [
+      "home_16",
+      "Spacious Manor",
+      3,
+      258
+    ],
+    [
+      "home_17",
+      "Elegant Manor",
+      3,
+      258
+    ],
+    [
+      "home_18",
+      "Stately Manor",
+      3,
+      258
+    ],
+    [
+      "home_19",
+      "Modest Estate",
+      4,
+      344
+    ],
+    [
+      "home_20",
+      "Palatial Estate",
+      4,
+      344
+    ]
+  ]
+}

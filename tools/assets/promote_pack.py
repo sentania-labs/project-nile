@@ -25,8 +25,10 @@ def promote(pack, archive):
     provenance = json.loads(registry.read_text())
     assets = {item["id"]: item for item in provenance["assets"]}
     qc = json.loads((processed / "pipeline-meta.json").read_text())
-    if qc.get("qc_errors"):
-        raise ValueError(qc["qc_errors"])
+    summary = qc["qc_summary"]
+    if (summary["valid_frame_count"] != len(plan["assets"]) or qc["empty_frames"]
+            or qc["paste_clamped_frames"] or qc["output_edge_touch_frames"]):
+        raise ValueError(f"Incomplete or clipped output in {processed}")
     for i, (kind, label, size, width) in enumerate(plan["assets"], 1):
         image = Image.open(processed / f"prop-{i}.png").convert("RGBA")
         if not image.getbbox():

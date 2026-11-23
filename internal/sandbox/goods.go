@@ -13,7 +13,9 @@ type goodsRecipe struct {
 // Dependencies and producer-to-manufacturer preference follow the manual.
 // Batch sizes, employee-tick durations and finite buffers are provisional.
 var goodsRecipes = map[string]goodsRecipe{
-	"brewery": {"barley", "beer", 100, 100}, "papyrusmaker": {"reeds", "papyrus", 100, 100},
+	"jeweler":     {"gems", "jewelry", 100, 100},
+	"cattleranch": {"straw", "beef", 8, 100},
+	"brewery":     {"barley", "beer", 100, 100}, "papyrusmaker": {"reeds", "papyrus", 100, 100},
 	"potter": {"clay", "pottery", 8, 100}, "weaver": {"flax", "linen", 100, 100},
 }
 
@@ -33,9 +35,12 @@ func (w *World) addGoodsTerrain() {
 	}
 }
 func (w World) goodsPlacement(b Building) error {
-	if b.Kind == "barleyfarm" || b.Kind == "flaxfarm" {
+	if err := w.extractionPlacement(b); err != nil {
+		return err
+	}
+	if (b.Kind == "barleyfarm" || b.Kind == "flaxfarm") && w.AgricultureVersion == 0 {
 		for _, p := range b.tiles() {
-			if p.X > 9 {
+			if !w.floodplain(p) {
 				return errors.New("this farm must fit on the floodplain")
 			}
 		}
@@ -52,15 +57,19 @@ func (w *World) produceGoods() {
 			// Grain remains the preferred food for legacy households. Meat supplies
 			// remaining demand, without relabelling hunted food as grain.
 			need := max(0, (b.Pop+4)/5-b.Stock)
-			need -= w.ConsumeResource(b.ID, "meat", need)
-			w.ConsumeResource(b.ID, "figs", need)
+			for _, r := range foodKinds[1:] {
+				if need == 0 {
+					break
+				}
+				need -= w.ConsumeResource(b.ID, r, need)
+			}
 			for _, r := range []string{"pottery", "beer", "linen", "jewelry"} {
 				if houseWantsResource(*b, r) {
 					w.ConsumeResource(b.ID, r, max(1, b.Pop/10))
 				}
 			}
 		}
-		if b.Kind == "barleyfarm" || b.Kind == "flaxfarm" {
+		if (b.Kind == "barleyfarm" || b.Kind == "flaxfarm") && w.AgricultureVersion == 0 {
 			if w.phase() == 0 {
 				b.Work = 0
 			}
@@ -80,6 +89,16 @@ func (w *World) produceGoods() {
 			continue
 		}
 		if b.Damaged != "" || !b.Connected || b.Workers == 0 {
+			continue
+		}
+		if output := extracted[b.Kind]; output != "" {
+			if w.ResourceFreeSpace(b.ID, output) >= 100 {
+				b.Work += b.Workers
+				if b.Work >= 576 {
+					w.ProduceResource(b.ID, output, 100)
+					b.Work -= 576
+				}
+			}
 			continue
 		}
 		if recipe, ok := goodsRecipes[b.Kind]; ok {
@@ -104,7 +123,22 @@ func (w World) activeResource(origin int64, role, r string) bool {
 	return false
 }
 func outputResource(kind string) string {
+	if r := extracted[kind]; r != "" {
+		return r
+	}
+	if kind == "woodcutter" {
+		return "timber"
+	}
+	if r := campCrops[kind]; r != "" {
+		return r
+	}
 	switch kind {
+	case "farm":
+		return "grain"
+	case "fishingwharf":
+		return "fish"
+	case "coppermine":
+		return "copper"
 	case "barleyfarm":
 		return "barley"
 	case "flaxfarm":
@@ -122,11 +156,20 @@ func outputResource(kind string) string {
 	return ""
 }
 func goodsOperating(b Building) bool {
-	return b.Connected && b.Damaged == "" && (b.Workers > 0 || b.Kind == "figfarm")
+	return b.Connected && b.Damaged == "" && (b.Workers > 0 || campCrops[b.Kind] != "" || b.AgricultureVersion > 0 && b.FarmType == "floodplain")
 }
 func (w World) freightReceiver(source, target Building, r string) (bool, int) {
 	if source.ID == target.ID || !goodsOperating(target) {
 		return false, 0
+	}
+	if source.Kind == "dock" {
+		return target.Kind == "storageyard" && storageAccepts(target, r), 1
+	}
+	if (target.Kind == "shipwright" || target.Kind == "carpenters") && r == "timber" {
+		return true, 0
+	}
+	if target.Kind == "recruiter" && (r == "weapons" || r == "chariots") {
+		return true, 0
 	}
 	if supplyForService(target.Kind) == r {
 		return true, 0
@@ -151,9 +194,15 @@ func (w *World) dispatchGoods() {
 			continue
 		}
 		output := outputResource(source.Kind)
-		if (output != "" || source.Kind == "storageyard") && !w.active(source.ID, "freight") {
+		if source.Kind == "farm" && w.AgricultureVersion == 0 {
+			output = ""
+		}
+		if (output != "" || source.Kind == "storageyard" || source.Kind == "dock") && !w.active(source.ID, "freight") {
 			for offset := 0; offset < len(resourceCatalog); offset++ {
 				r := resourceCatalog[(int(w.Tick/8)+i+offset)%len(resourceCatalog)].ID
+				if source.Kind == "dock" && w.TradePolicies[r].Mode == "export" {
+					continue
+				}
 				if output != "" && r != output {
 					continue
 				}
@@ -193,11 +242,14 @@ func (w *World) dispatchGoods() {
 				}
 			}
 		}
-		if source.Kind == "storageyard" || source.Kind == "bazaar" {
+		if source.Kind == "storageyard" || source.Kind == "bazaar" || source.Kind == "dock" {
 			w.dispatchGoodsBuyers(*source)
 		}
 		if source.Kind == "bazaar" {
-			for _, r := range []string{"meat", "figs", "pottery", "beer", "linen", "jewelry"} {
+			for _, r := range bazaarGoods {
+				if r == "grain" && w.AgricultureVersion == 0 {
+					continue
+				}
 				if inventory(*source, r) == 0 || w.activeResource(source.ID, "goodsseller", r) {
 					continue
 				}
@@ -212,10 +264,11 @@ func (w *World) dispatchGoods() {
 				}
 			}
 		}
-		if source.Kind == "reedgatherer" && !w.active(source.ID, "reedharvester") && w.ResourceFreeSpace(source.ID, "reeds") >= 100 {
-			route := w.landPath(w.perimeter(*source), w.ReedBeds)
-			if w.spawn("reedharvester", "gather", source.ID, source.ID, source.ID, route, 0, 100) {
-				w.Walkers[len(w.Walkers)-1].Resource = "reeds"
+		role, r, sites := w.gatheringSite(source.Kind)
+		if role != "" && !w.active(source.ID, role) && w.ResourceFreeSpace(source.ID, r) >= 100 {
+			route := w.landPath(w.perimeter(*source), sites)
+			if w.spawn(role, "gather", source.ID, source.ID, source.ID, route, 0, 100) {
+				w.Walkers[len(w.Walkers)-1].Resource = r
 			}
 		}
 	}
@@ -233,6 +286,9 @@ func (w *World) dispatchGoodsBuyers(receiver Building) {
 			continue
 		}
 		free := w.ResourceFreeSpace(receiver.ID, r)
+		if receiver.Kind == "dock" {
+			free = min(free, w.dockNeeds(receiver, r))
+		}
 		if free <= 0 {
 			continue
 		}
@@ -243,12 +299,12 @@ func (w *World) dispatchGoodsBuyers(receiver Building) {
 			if source.ID == receiver.ID || !goodsOperating(source) {
 				continue
 			}
-			if receiver.Kind == "storageyard" {
+			if receiver.Kind == "storageyard" || receiver.Kind == "dock" {
 				if source.Kind != "storageyard" || storageOrder(source, r) == "get" {
 					continue
 				}
 			} else {
-				if r != "grain" && foodResource(r) {
+				if foodResource(r) && (r != "grain" || w.AgricultureVersion > 0) {
 					if source.Kind != "granary" && source.Kind != "storageyard" {
 						continue
 					}
@@ -273,7 +329,7 @@ func (w *World) dispatchGoodsBuyers(receiver Building) {
 	}
 }
 func isGoodsRole(role string) bool {
-	return role == "freight" || role == "goodsbuyer" || role == "goodsseller" || role == "reedharvester"
+	return role == "freight" || role == "goodsbuyer" || role == "goodsseller" || role == "reedharvester" || role == "lumberjack"
 }
 func (w *World) advanceGoods(a *Walker) bool {
 	if a.Next < len(a.Route) {
@@ -325,9 +381,9 @@ func (w *World) advanceGoods(a *Walker) bool {
 		n := w.DepositResource(target.ID, a.Resource, a.Cargo)
 		a.Cargo -= n
 		return a.Cargo > 0
-	case "reedharvester":
+	case "reedharvester", "lumberjack":
 		if a.Stage == "gather" {
-			a.Cargo = w.RecordResourceProduction("reeds", a.Reserved)
+			a.Cargo = w.RecordResourceProduction(a.Resource, a.Reserved)
 			a.Reserved = 0
 			reverseJourney(a, a.Origin, "return")
 			return true
@@ -346,7 +402,7 @@ func (w World) validateGoodsWalker(a Walker, target Building) error {
 	}
 	switch a.Role {
 	case "freight":
-		if source == nil || a.Reserved != 0 || (origin.Kind != "storageyard" && outputResource(origin.Kind) != a.Resource) {
+		if source == nil || a.Reserved != 0 || (origin.Kind != "storageyard" && origin.Kind != "dock" && outputResource(origin.Kind) != a.Resource) {
 			return errors.New("invalid freight source")
 		}
 		if a.Stage == "deliver" {
@@ -361,10 +417,10 @@ func (w World) validateGoodsWalker(a Walker, target Building) error {
 			return errors.New("invalid freight stage")
 		}
 	case "goodsbuyer":
-		if source == nil || (origin.Kind != "bazaar" && origin.Kind != "storageyard") {
+		if source == nil || (origin.Kind != "bazaar" && origin.Kind != "storageyard" && origin.Kind != "dock") {
 			return errors.New("invalid resource buyer")
 		}
-		if origin.Kind == "storageyard" && source.Kind != "storageyard" {
+		if (origin.Kind == "storageyard" || origin.Kind == "dock") && source.Kind != "storageyard" {
 			return errors.New("storage buyer must fetch from another storage yard")
 		}
 		if origin.Kind == "bazaar" && (source.Kind != "storageyard" && !(foodResource(a.Resource) && source.Kind == "granary")) {
@@ -385,16 +441,17 @@ func (w World) validateGoodsWalker(a Walker, target Building) error {
 		if origin.Kind != "bazaar" || target.ID != origin.ID || a.Reserved != 0 || a.Source != 0 || (a.Stage != "patrol" && a.Stage != "return") {
 			return errors.New("invalid goods seller")
 		}
-	case "reedharvester":
-		if origin.Kind != "reedgatherer" || target.ID != origin.ID || a.Source != origin.ID || a.Resource != "reeds" {
+	case "reedharvester", "lumberjack":
+		role, r, sites := w.gatheringSite(origin.Kind)
+		if role != a.Role || target.ID != origin.ID || a.Source != origin.ID || a.Resource != r {
 			return errors.New("invalid reed gatherer")
 		}
 		if a.Stage == "gather" {
-			if a.Cargo != 0 || a.Reserved != 100 || !origin.roadAccess(a.Route[0]) || !slices.Contains(w.ReedBeds, a.Route[len(a.Route)-1]) {
+			if a.Cargo != 0 || a.Reserved != 100 || !origin.roadAccess(a.Route[0]) || !slices.Contains(sites, a.Route[len(a.Route)-1]) {
 				return errors.New("invalid reed harvest trip")
 			}
 		} else if a.Stage == "return" {
-			if a.Cargo != 100 || a.Reserved != 0 || !slices.Contains(w.ReedBeds, a.Route[0]) {
+			if a.Cargo != 100 || a.Reserved != 0 || !slices.Contains(sites, a.Route[0]) {
 				return errors.New("invalid reed harvest return")
 			}
 		} else {

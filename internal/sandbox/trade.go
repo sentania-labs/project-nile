@@ -21,6 +21,10 @@ type TradePrice struct {
 	Quantity int    `json:"quantity"`
 }
 type TradeRouteView struct {
+	Limits      map[string]int `json:"limits,omitempty"`
+	Imports     []string       `json:"imports,omitempty"`
+	Exports     []string       `json:"exports,omitempty"`
+	Sea         bool           `json:"sea,omitempty"`
 	ID          string         `json:"id"`
 	Name        string         `json:"name"`
 	Open        bool           `json:"open"`
@@ -37,6 +41,9 @@ type TradeRouteView struct {
 // Route identity, opening charge, visit cadence and partial-load rounding below
 // are original-authored prototype rules, not verified original behavior.
 var tradePrices = []TradePrice{
+	{"chariots", 375, 315, 100},
+	{"gems", 120, 92, 100}, {"beef", 47, 35, 100}, {"lettuce", 33, 25, 100}, {"chickpeas", 33, 25, 100}, {"pomegranates", 33, 25, 100}, {"fish", 42, 33, 100},
+	{"copper", 240, 185, 100}, {"weapons", 325, 275, 100},
 	{"grain", 28, 21, 100}, {"meat", 44, 34, 100}, {"figs", 33, 25, 100},
 	{"straw", 21, 16, 100}, {"clay", 38, 29, 100}, {"bricks", 150, 120, 100},
 	{"pottery", 140, 105, 100}, {"barley", 48, 37, 100}, {"beer", 185, 140, 100},
@@ -53,8 +60,14 @@ func priceFor(r string) (TradePrice, bool) {
 	}
 	return TradePrice{}, false
 }
-func (w World) tradeAvailable() bool { return w.Campaign == nil }
+func (w World) tradeAvailable() bool { return w.Campaign == nil || len(w.partners()) > 0 }
 func (w *World) OpenTrade(route string) error {
+	if w.Campaign != nil {
+		return w.openPartner(route)
+	}
+	if route == seaRouteID {
+		return w.openSeaTrade()
+	}
 	if route != tradeRouteID {
 		return errors.New("unknown trade route")
 	}
@@ -83,6 +96,9 @@ func (w *World) SetTradePolicy(r, mode string, limit int) error {
 	if !w.tradeAvailable() {
 		return errors.New("this mission has no available foreign trade route")
 	}
+	if w.Campaign != nil && mode != "off" && !slices.ContainsFunc(w.partners(), func(p partner) bool { return w.partnerAccepts(p, mode, r) }) {
+		return errors.New("no available partner trades this resource in that direction")
+	}
 	if w.TradePolicies == nil {
 		w.TradePolicies = map[string]TradePolicy{}
 	}
@@ -90,10 +106,21 @@ func (w *World) SetTradePolicy(r, mode string, limit int) error {
 	return nil
 }
 func (w *World) resetTradeYear() {
+	if !w.TradeOpened && !w.SeaTradeOpened {
+		return
+	}
 	year := (w.Tick+SeasonOffset)/YearTicks + 1
-	if w.TradeOpened && (w.TradeYear != year || w.TradeUsed == nil) {
+	if w.TradeYear != year {
 		w.TradeYear = year
+		w.PartnerUsed = nil
+		w.TradeUsed = nil
+		w.SeaTradeUsed = nil
+	}
+	if w.TradeOpened && w.TradeUsed == nil {
 		w.TradeUsed = map[string]int{}
+	}
+	if w.SeaTradeOpened && w.SeaTradeUsed == nil {
+		w.SeaTradeUsed = map[string]int{}
 	}
 }
 
@@ -113,7 +140,7 @@ func (w World) cityResource(r string) int {
 			n += a.Cargo
 		}
 	}
-	return n
+	return n + w.boatInventory(r)
 }
 func (w *World) dispatchTrader() {
 	if !w.TradeOpened || !w.tradeAvailable() || w.Tick < w.NextTraderTick {
@@ -129,7 +156,7 @@ func (w *World) dispatchTrader() {
 		price := tradePrices[index]
 		r := price.Resource
 		policy := w.TradePolicies[r]
-		quota := tradeAnnualLimit - w.TradeUsed[r]
+		partner, quota := w.routeAllowance(false, r, policy.Mode, "")
 		if quota <= 0 || policy.Mode == "off" || policy.Mode == "" {
 			continue
 		}
@@ -158,6 +185,7 @@ func (w *World) dispatchTrader() {
 				cargo, reserved = 0, amount
 			}
 			if w.spawn("trader", policy.Mode, 0, b.ID, b.ID, route, cargo, reserved) {
+				w.Walkers[len(w.Walkers)-1].Partner = partner
 				w.Walkers[len(w.Walkers)-1].Resource = r
 				w.TradeCursor = (index + 1) % len(tradePrices)
 				w.NextTraderTick = min(MaxTick, w.Tick+32)
@@ -182,7 +210,7 @@ func (w *World) advanceTrader(a *Walker) bool {
 	r := a.Resource
 	p, _ := priceFor(r)
 	policy := w.TradePolicies[r]
-	quota := max(0, tradeAnnualLimit-w.TradeUsed[r])
+	_, quota := w.routeAllowance(false, r, a.Stage, a.Partner)
 	if goodsOperating(*b) && a.Stage == policy.Mode {
 		if a.Stage == "import" && storageAccepts(*b, r) {
 			amount := min(a.Cargo, quota, max(0, policy.Limit-w.cityResource(r)), max(0, resourceLimit(*b, r)-inventory(*b, r)), int(max(int64(0), min(w.Treasury, 1000000))*100/int64(p.Buy)))
@@ -198,6 +226,7 @@ func (w *World) advanceTrader(a *Walker) bool {
 				}
 				w.ResourceImported[r] += int64(amount)
 				w.TradeUsed[r] += amount
+				w.usePartner(a.Partner, r, amount)
 			}
 		} else if a.Stage == "export" {
 			amount := min(a.Reserved, quota, max(0, w.cityResource(r)-policy.Limit), inventory(*b, r))
@@ -213,6 +242,7 @@ func (w *World) advanceTrader(a *Walker) bool {
 				}
 				w.ResourceExported[r] += int64(amount)
 				w.TradeUsed[r] += amount
+				w.usePartner(a.Partner, r, amount)
 			}
 		}
 	}
@@ -226,14 +256,25 @@ func (w *World) advanceTrader(a *Walker) bool {
 	return true
 }
 func (w World) tradeView(v *View) {
-	v.TradeRoutes = []TradeRouteView{{tradeRouteID, "Kingdom Road caravan", w.TradeOpened, w.tradeAvailable(), tradeOpeningCost, tradeAnnualLimit, w.TradeUsed}}
+	v.TradeRoutes = []TradeRouteView{{ID: tradeRouteID, Name: "Kingdom Road caravan", Open: w.TradeOpened, Available: w.tradeAvailable(), OpenCost: tradeOpeningCost, AnnualLimit: tradeAnnualLimit, Used: w.TradeUsed}}
+	used := w.SeaTradeUsed
+	if used == nil {
+		used = map[string]int{}
+	}
+	v.TradeRoutes = append(v.TradeRoutes, TradeRouteView{ID: seaRouteID, Name: "Nile merchant route", Sea: true, Open: w.SeaTradeOpened, Available: w.tradeAvailable(), OpenCost: seaOpeningCost, AnnualLimit: tradeAnnualLimit, Used: used})
 	v.TradePolicies = w.TradePolicies
 	v.TradePrices = tradePrices
 	v.ResourceImported = w.ResourceImported
 	v.ResourceExported = w.ResourceExported
 	v.ImportSpent = w.ImportSpent
 	v.ExportEarned = w.ExportEarned
-	if v.TradeRoutes[0].Used == nil {
+	if w.Campaign != nil {
+		v.TradeRoutes = []TradeRouteView{}
+		for _, p := range w.partners() {
+			v.TradeRoutes = append(v.TradeRoutes, TradeRouteView{ID: p.ID, Name: p.Name, Sea: p.Sea, Open: w.OpenPartners[p.ID], Available: true, OpenCost: p.Cost, Limits: p.Limits, Used: w.PartnerUsed[p.ID], Imports: p.Imports, Exports: p.Exports})
+		}
+	}
+	if len(v.TradeRoutes) > 0 && v.TradeRoutes[0].Used == nil {
 		v.TradeRoutes[0].Used = map[string]int{}
 	}
 	if v.TradePolicies == nil {
@@ -247,10 +288,13 @@ func (w World) tradeView(v *View) {
 	}
 }
 func (w World) validateTrade() error {
+	if err := w.validatePartners(); err != nil {
+		return err
+	}
 	if w.ImportSpent < 0 || w.ExportEarned < 0 || w.ImportSpent > w.Expenses || w.ExportEarned > w.Income || w.NextTraderTick < 0 || w.NextTraderTick > MaxTick || w.TradeCursor < 0 || w.TradeCursor >= len(tradePrices) || w.TradeYear < 0 || w.TradeYear > (w.Tick+SeasonOffset)/YearTicks+1 {
 		return errors.New("invalid trade ledger")
 	}
-	if !w.TradeOpened && (w.ImportSpent != 0 || w.ExportEarned != 0 || len(w.ResourceImported) > 0 || len(w.ResourceExported) > 0 || len(w.TradeUsed) > 0) {
+	if !w.TradeOpened && !w.SeaTradeOpened && (w.ImportSpent != 0 || w.ExportEarned != 0 || len(w.ResourceImported) > 0 || len(w.ResourceExported) > 0 || len(w.TradeUsed) > 0) {
 		return errors.New("trade ledger without an open route")
 	}
 	for _, ledger := range []map[string]int64{w.ResourceImported, w.ResourceExported} {
@@ -261,7 +305,7 @@ func (w World) validateTrade() error {
 		}
 	}
 	for r, n := range w.TradeUsed {
-		if _, ok := priceFor(r); !ok || n < 0 || n > tradeAnnualLimit || int64(n) > w.ResourceImported[r]+w.ResourceExported[r] {
+		if _, ok := priceFor(r); !ok || n < 0 || n > w.aggregateTradeLimit(false, r) || int64(n) > w.ResourceImported[r]+w.ResourceExported[r] {
 			return errors.New("invalid annual trade use")
 		}
 	}

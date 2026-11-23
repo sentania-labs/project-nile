@@ -12,22 +12,35 @@ func (w World) availableWorkforce() int {
 	if w.BudgetEnabled && w.WageRate == 0 {
 		return 0
 	}
-	return w.population() / 2
+	workers := 0
+	for _, b := range w.Buildings {
+		if b.Kind == "hut" && b.Tier < 14 {
+			workers += b.Pop
+		}
+	}
+	return workers / 2
 }
 func (w World) migrationInterval() int64 {
+	if w.MonthlyFinance {
+		return MigrationInterval * int64(1+max(0, w.TaxRate-8)/3)
+	}
 	if w.BudgetEnabled && w.TaxRate > 5 {
 		return MigrationInterval * int64(w.TaxRate-4)
 	}
 	return MigrationInterval
 }
 
-func validPolicy(tax, wage int, priority string) bool {
-	return tax >= 0 && tax <= 10 && wage >= 0 && wage <= 5 && (priority == "balanced" || priority == "food" || priority == "construction" || priority == "services")
+func (w World) validPolicy(tax, wage int, priority string) bool {
+	maxTax, maxWage := 10, 5
+	if w.MonthlyFinance {
+		maxTax, maxWage = 25, 100
+	}
+	return tax >= 0 && tax <= maxTax && wage >= 0 && wage <= maxWage && (priority == "balanced" || priority == "food" || priority == "construction" || priority == "services")
 }
 func (w *World) policyDefaults() { w.TaxRate = 2; w.WageRate = 1; w.LaborPriority = "balanced" }
 func (w *World) SetPolicy(tax, wage int, priority string) error {
-	if !validPolicy(tax, wage, priority) {
-		return errors.New("tax must be 0..10, wages 0..5, and priority balanced, food, construction, or services")
+	if !w.validPolicy(tax, wage, priority) {
+		return errors.New("tax rate, wage rate or labor priority is outside the available range")
 	}
 	w.TaxRate, w.WageRate, w.LaborPriority = tax, wage, priority
 	w.refresh()
@@ -82,6 +95,8 @@ func (w World) builderCount(site, home int64) int {
 	return n
 }
 func (w *World) dispatchBuilders() {
+	w.dispatchPyramidBuilders()
+	w.dispatchStoneHaulers()
 	for _, site := range w.Buildings {
 		if site.Kind != "mastaba" || !site.Connected || site.Damaged != "" || site.ConstructionDone >= 64 || site.Workers == 0 {
 			continue
@@ -109,6 +124,9 @@ func (w *World) dispatchBuilders() {
 	}
 }
 func (w World) builderAllowed(walker Walker, site, home Building) bool {
+	if isPyramid(site.Kind) {
+		return w.pyramidBuilderAllowed(walker, site, home)
+	}
 	if site.Damaged != "" || site.ConstructionDone >= 64 || site.Workers == 0 || home.Damaged != "" || home.Pop < 2 {
 		return false
 	}
@@ -155,7 +173,17 @@ func (w *World) advanceBuilder(walker *Walker) bool {
 		return true
 	}
 	if walker.Stage == "return" {
+		if walker.Cargo > 0 {
+			walker.Cargo -= w.DepositResource(home.ID, walker.Resource, walker.Cargo)
+			return walker.Cargo > 0
+		}
 		return false
+	}
+	if isPyramid(site.Kind) {
+		walker.Cargo -= w.DepositResource(site.ID, walker.Resource, walker.Cargo)
+		walker.Stage = "work"
+		walker.ShiftUntil = MaxTick
+		return true
 	}
 	walker.Stage = "work"
 	walker.ShiftUntil = min(MaxTick, w.Tick+BuilderShiftTicks)
@@ -163,6 +191,9 @@ func (w *World) advanceBuilder(walker *Walker) bool {
 }
 func (w World) validateBuilder(walker Walker, target, home Building) error {
 	site := w.building(walker.Source)
+	if site != nil && isPyramid(site.Kind) {
+		return w.validatePyramidBuilder(walker, target, home, *site)
+	}
 	if home.Kind != "hut" || site == nil || site.Kind != "mastaba" || walker.Cargo != 0 || walker.Resource != "" || walker.ShiftUntil < 0 || walker.ShiftUntil > MaxTick {
 		return errors.New("invalid construction worker")
 	}
@@ -181,6 +212,106 @@ func (w World) validateBuilder(walker Walker, target, home Building) error {
 		}
 	default:
 		return errors.New("unknown builder stage")
+	}
+	return nil
+}
+
+func (w World) guildAssignments(id int64) int {
+	n := 0
+	for _, a := range w.Walkers {
+		if a.Origin == id {
+			n++
+		}
+	}
+	return n
+}
+func pyramidGuildLimit(kind string) int {
+	switch kind {
+	case "workcamp":
+		return 4
+	case "stonemasons", "bricklayers":
+		return 2
+	case "carpenters":
+		return 1
+	}
+	return 0
+}
+func (w *World) dispatchPyramidBuilders() {
+	for _, site := range w.Buildings {
+		phase, ok := currentMonumentPhase(site)
+		if !ok || site.Damaged != "" || !site.StagingAccess {
+			continue
+		}
+		guild := phase.Guild
+		count := 0
+		for _, a := range w.Walkers {
+			if a.Role == "builder" && a.Source == site.ID {
+				if b := w.building(a.Origin); b != nil && b.Kind == guild {
+					count++
+				}
+			}
+		}
+		for _, origin := range w.Buildings {
+			if origin.Kind != guild || origin.Damaged != "" || !origin.Connected {
+				continue
+			}
+			for count < pyramidGuildLimit(guild) && w.guildAssignments(origin.ID) < origin.Workers {
+				cargo := 0
+				if guild == "carpenters" && phase.Timber > 0 && inventory(site, "timber")+w.incomingResource(site.ID, "timber") == 0 {
+					if inventory(*w.building(origin.ID), "timber") < CarpenterSupply {
+						break
+					}
+					cargo = CarpenterSupply
+				}
+				route := w.path(w.perimeter(origin), site)
+				if !w.spawn("builder", "commute", origin.ID, site.ID, site.ID, route, cargo, 0) {
+					break
+				}
+				if cargo > 0 {
+					a := &w.Walkers[len(w.Walkers)-1]
+					a.Resource = "timber"
+					b := w.building(origin.ID)
+					setInventory(b, "timber", inventory(*b, "timber")-cargo)
+				}
+				count++
+			}
+		}
+	}
+}
+func (w World) pyramidBuilderAllowed(a Walker, site, origin Building) bool {
+	if site.Stage == "complete" || site.Damaged != "" || origin.Damaged != "" || origin.Workers == 0 {
+		return false
+	}
+	phase, ok := currentMonumentPhase(site)
+	if !ok {
+		return false
+	}
+	if (origin.Kind == "workcamp" && phase.Guild != "workcamp") || (site.Kind == "sphinx" && (phase.Guild != origin.Kind || (origin.Kind == "carpenters" && a.Stage == "work" && inventory(site, "timber") == 0))) {
+		return false
+	}
+	earlier := 0
+	for _, other := range w.Walkers {
+		if other.Origin == origin.ID && other.ID < a.ID {
+			earlier++
+		}
+	}
+	return earlier < origin.Workers
+}
+func (w World) validatePyramidBuilder(a Walker, target, origin, site Building) error {
+	if pyramidGuildLimit(origin.Kind) == 0 || a.Reserved != 0 || (a.Cargo != 0 && a.Cargo != CarpenterSupply) || a.Cargo > 0 && origin.Kind != "carpenters" || (a.Resource != "" && a.Resource != "timber") || a.Cargo > 0 && a.Resource != "timber" {
+		return errors.New("invalid pyramid guild worker")
+	}
+	switch a.Stage {
+	case "commute", "work":
+		if target.ID != site.ID || !origin.roadAccess(a.Route[0]) || a.Stage == "work" && (a.Cargo != 0 || a.Next != len(a.Route) || a.ShiftUntil != MaxTick) || a.Stage == "commute" && a.ShiftUntil != 0 {
+			return errors.New("invalid pyramid worker journey")
+		}
+	case "return":
+		if target.ID != origin.ID || a.ShiftUntil != 0 {
+			return errors.New("invalid pyramid worker return")
+		}
+	default:
+		return errors.New("unknown pyramid worker stage")
 	}
 	return nil
 }

@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "source_executable_sha256": "b6169404b9e22f228d07d5cabf889d25b8cd46d53023af9c9d0d2d6034cb741a",
+  "private_evidence_directory": "/mnt/holding/project-nile/campaign-research-20261123",
+  "evidence_level": "original executable static control flow plus original mission/model data; runtime timing parity remains incomplete",
+  "thinis": {
+    "mission_id": 1,
+    "initial_funds": 3000,
+    "religion_unlock": {
+      "threshold": 500,
+      "measurement": "lifetime gold delivered to Palace, not annual gold production",
+      "reference": "0x004528a0 increments 0x00e01640 and invokes unlock4; separate annual counter0x00e01b10 resets in0x0044d310"
+    },
+    "entertainment_unlock": {
+      "god": "Bast",
+      "favor_at_least": 40,
+      "prerequisite": "religion tutorial already opened",
+      "reference": "0x004ce350 invokes unlock5"
+    },
+    "victory": {
+      "occupied_homes_at_least": 10,
+      "minimum_housing_tier_index": 5
+    }
+  },
+  "perwadjyt": {
+    "mission_id": 2,
+    "initial_funds": 6000,
+    "known_god": "Osiris",
+    "industry_unlock": {
+      "eligible_figs": 800,
+      "measurement": "aggregate figs in active road-accessible granaries with at least half staffing",
+      "reference": "0x004502f0 invokes unlock7"
+    },
+    "health_unlock": {
+      "measurement": "original house plague/death routine executes",
+      "buildings": [
+        "Apothecary",
+        "Physician"
+      ],
+      "reference": "0x00424c60 invokes unlock6;0x004ccc90 skips diseases in base missions0/1, otherwise calls0x004cc9c0 and triggers house fatalities at risk1000"
+    },
+    "beautification_unlock": {
+      "stored_pottery": 200,
+      "measurement": "pottery stored in road-accessible Storage Yards",
+      "reference": "0x0044d850 invokes unlock9"
+    },
+    "request_tutorial": {
+      "status": "unimplemented pending original request creation/timing/quantity verification",
+      "verified_fact": "unlock8 occurs on announcement of a type1 pottery request, not merely100 pottery in storage",
+      "reference": "0x00440970; mission has zero declared PAK events, which does not rule out dynamically created events"
+    },
+    "victory": {
+      "occupied_homes_at_least": 10,
+      "minimum_housing_tier_index": 6,
+      "population_at_least": 600
+    }
+  },
+  "rescue_loan": {
+    "trigger": "treasury below zero, once per city",
+    "amounts_at_normal_difficulty": {
+      "nubt": 2500,
+      "thinis": 750,
+      "perwadjyt": 4000
+    },
+    "reference": "0x00439cd0 reads scenario0x006f69dc, applies difficulty table0x005659f8, adds treasury/income and latches0x00e017f8"
+  },
+  "immigration": {
+    "party_creation_reference": "0x0044ba70 stores people count at walker offset0x64 and assigns per-house immigrant slot",
+    "assignment_reference": "0x0044b6c0 prioritizes vacant homes, then homes with at least8 vacancies, then remaining vacancies; first two passes use at most4 people per party",
+    "nile_implementation": "four-person batches, per-home in-flight assignment, physical arrival, legacy one-person jobs preserved; one batch per prototype interval is provisional"
+  },
+  "nile_limits": [
+    "Authored32x32 tutorial terrain, not original112x112 mission maps.",
+    "Compressed seasonal calendar, ten-worker crop production cadence and400-fig maximum seasonal output are prototype tuning.",
+    "Incomplete health, wages, service roaming, desirability, message timing and request behavior remain explicitly provisional.",
+    "Perwadjyt can complete its verified housing/population predicates without inventing a pottery-request stock gate.",
+    "Save/reload and deterministic simulation tests do not replace original-game and Godot visual acceptance."
+  ]
+}

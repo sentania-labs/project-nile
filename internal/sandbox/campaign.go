@@ -7,8 +7,7 @@ import (
 	"github.com/sentania-labs/project-nile/internal/campaign"
 )
 
-// NewCampaign places the original-supported Nubt tutorial on Nile's own compact
-// terrain. No original authored map or scene assets are included.
+// NewCampaign uses the original scenario extent and an independently authored Nile.
 func NewCampaign(id int) (World, error) {
 	state, err := campaign.New(id)
 	if err != nil {
@@ -16,11 +15,19 @@ func NewCampaign(id int) (World, error) {
 	}
 	w := NewTown()
 	w.Campaign = state
+	w.Campaign.InitEvents()
+	for _, p := range w.partners() {
+		if p.InitiallyOpen {
+			w.enablePartner(p)
+		}
+	}
 	if id == campaign.Thinis {
 		w.Favor = [5]int{30, 30, 30, 30, 30}
 	}
 	w.addHuntingGrounds()
 	mission, _ := campaign.Definition(id)
+	w.extendCampaignSite(id, mission.Map.Width)
+	w.seedCampaignMaterials(id)
 	w.Treasury = mission.InitialFunds
 	w.refresh()
 	return w, nil
@@ -37,8 +44,10 @@ func (w World) startingTreasury() int64 {
 
 func (w World) campaignObservation() campaign.Observation {
 	o := campaign.Observation{Tick: w.Tick, Population: w.population(), FireCount: w.FireCount, CollapseCount: w.CollapseCount, GoldDelivered: w.GoldDelivered, BastFavor: w.Favor[4], DiseaseDeaths: w.DiseaseDeaths}
+	o.Monuments, o.BurialComplete = w.monumentObservation()
 	level := 2
 	if w.Campaign != nil {
+		o.Kingdom = w.Campaign.Kingdom
 		mission, _ := campaign.Definition(w.Campaign.MissionID)
 		level = mission.Goals["housing_level_index"].Value
 	}
@@ -55,6 +64,7 @@ func (w World) campaignObservation() campaign.Observation {
 		}
 		if b.Kind == "storageyard" {
 			o.StoredPottery += w.ResourceAmount(b.ID, "pottery")
+			o.StoredBeer += w.ResourceAmount(b.ID, "beer")
 		}
 		if b.Workers > 0 {
 			if b.Kind == "firehouse" {
@@ -70,6 +80,15 @@ func (w World) campaignObservation() campaign.Observation {
 
 func (w *World) campaignTick() {
 	if w.Campaign != nil {
+		w.Campaign.AdvanceEvents(w.Tick / (YearTicks / 12))
+		if w.Treasury < 0 && w.Campaign.RescueReceived == 0 {
+			mission, _ := campaign.Definition(w.Campaign.MissionID)
+			if mission.RescueFunds > 0 {
+				w.Campaign.RescueReceived = mission.RescueFunds
+				w.Treasury += mission.RescueFunds
+				w.Income += mission.RescueFunds
+			}
+		}
 		w.Campaign.Observe(w.campaignObservation())
 	}
 }
@@ -80,6 +99,7 @@ func (w World) campaignView(v *View) {
 		return
 	}
 	v.Campaign = w.Campaign.View(w.campaignObservation())
+	w.campaignRequestView(v.Campaign)
 	v.BuildingCatalog = nil
 	for _, entry := range buildingCatalog {
 		if w.Campaign.Allows(entry.Kind) {
@@ -89,13 +109,16 @@ func (w World) campaignView(v *View) {
 }
 
 func (w World) validateCampaign() error {
+	if err := w.validateCampaignRequests(); err != nil {
+		return err
+	}
 	if err := w.Campaign.Validate(w.Tick); err != nil {
 		return err
 	}
 	seen := map[Point]bool{}
 	occupied := w.occupied()
 	for _, p := range w.HuntingGrounds {
-		if !valid(p) || occupied[p] || seen[p] {
+		if !w.buildable(p) || occupied[p] || seen[p] {
 			return errors.New("invalid hunting grounds")
 		}
 		seen[p] = true
@@ -106,6 +129,11 @@ func (w World) validateCampaign() error {
 		}
 		if w.Campaign != nil && !w.Campaign.Allows(b.Kind) {
 			return errors.New("building is not unlocked in this campaign")
+		}
+	}
+	for _, f := range w.RoadFeatures {
+		if !w.Campaign.Allows(f.Kind) {
+			return errors.New("street feature is not unlocked in this campaign")
 		}
 	}
 	return nil

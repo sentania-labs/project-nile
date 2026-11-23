@@ -64,7 +64,7 @@ func _direction(heading: Vector2) -> int:
 
 func _walking_clip(walker: Dictionary) -> String:
 	match str(walker.role):
-		"cart", "goldcart", "porter": return "haul-walk" if int(walker.get("cargo", 0)) > 0 else "haul-empty"
+		"cart", "goldcart", "porter", "stonehauler": return "haul-walk" if int(walker.get("cargo", 0)) > 0 else "haul-empty"
 		"seller", "buyer": return "vendor-walk"
 		"architect", "taxcollector", "firefighter": return "official-walk"
 	return "worker-walk"
@@ -150,6 +150,9 @@ func _sync_sites() -> void:
 		var id := str(data.id)
 		seen[id] = true
 		var spec: Dictionary = WORKSITES[kind]
+		if sites.has(id) and sites[id].kind!=kind:
+			sites[id].group.queue_free()
+			sites.erase(id)
 		if not sites.has(id):
 			var group := Node2D.new()
 			group.name = "Worksite_" + id
@@ -159,7 +162,7 @@ func _sync_sites() -> void:
 				var actor := Sprite2D.new()
 				group.add_child(actor)
 				actors.append(actor)
-			sites[id] = {"group": group, "actors": actors, "clip": str(spec.clip), "active": false}
+			sites[id] = {"kind":kind,"group": group, "actors": actors, "clip": str(spec.clip), "active": false}
 		var site: Dictionary = sites[id]
 		var building: Sprite2D = game.building_nodes[id]
 		site.group.position = building.position + Vector2(0, 0.2)

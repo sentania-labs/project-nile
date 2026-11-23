@@ -9,6 +9,9 @@ var visible_catalog: Array = []
 var build_scroll: ScrollContainer
 const OVERLAYS := {"None": "", "Water": "water", "Food": "food", "Fire risk": "fire", "Collapse risk": "collapse", "Tax coverage": "tax", "Employment": "labor"}
 
+var burial_controls := preload("res://scripts/burial_controls.gd").new()
+var naval_controls := preload("res://scripts/naval_controls.gd").new()
+var military_controls := preload("res://scripts/military_controls.gd").new()
 var overseer_controls := preload("res://scripts/overseer_controls.gd").new()
 var storage_controls := preload("res://scripts/storage_controls.gd").new()
 var roadblock := preload("res://scripts/roadblock_controls.gd").new()
@@ -34,6 +37,9 @@ var completion_continue: Button
 var construction_menu: PanelContainer
 var price_labels: Dictionary = {}
 var policy_panel: VBoxContainer
+var governor := HBoxContainer.new()
+var salary := OptionButton.new()
+var donation := SpinBox.new()
 var tax_rate: SpinBox
 var wage_rate: SpinBox
 var labor_priority: OptionButton
@@ -58,7 +64,7 @@ func setup(owner: Node) -> void:
 	var ribbon := PanelContainer.new()
 	ribbon.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
 	ribbon.offset_bottom = 44
-	ribbon.add_theme_stylebox_override("panel", game._style(Color("c48d55"), Color("80502e"), 2))
+	ribbon.add_theme_stylebox_override("panel", _painted_stone(Color("d19870")))
 	game.hud.add_child(ribbon)
 	var typeface := SystemFont.new()
 	typeface.font_names = PackedStringArray(["Palatino Linotype", "Palatino", "Georgia", "DejaVu Serif"])
@@ -76,6 +82,10 @@ func setup(owner: Node) -> void:
 	menu.add_separator()
 	menu.add_item("Save town", 1)
 	menu.add_item("Load town", 2)
+	menu.add_item("Save civilization as…", 4)
+	menu.add_item("Open civilization…", 5)
+	menu.add_item("Restore last manual save", 6)
+	menu.add_item("Restore previous manual save", 7)
 	menu.add_separator()
 	menu.add_item("Quit", 3)
 	menu.id_pressed.connect(_game_action)
@@ -112,6 +122,7 @@ func setup(owner: Node) -> void:
 	trim.offset_bottom = 44
 	var paper := TextureRect.new()
 	paper.texture = load("res://assets/street/sidebar.png")
+	paper.self_modulate = Color("dbab80")
 	paper.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	paper.stretch_mode = TextureRect.STRETCH_SCALE
 	paper.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -144,15 +155,26 @@ func setup(owner: Node) -> void:
 	overlay_picker.item_selected.connect(func(index: int) -> void:
 		game._set_overlay(OVERLAYS.values()[index])
 		overlay_picker.release_focus())
+	column.move_child(minimap,-1)
 	column.add_child(overlay_picker)
+	column.move_child(overlay_picker,0)
+	var mural := TextureButton.new()
+	mural.texture_normal = load("res://assets/street/overseers-mural.png")
+	mural.stretch_mode=TextureButton.STRETCH_KEEP_ASPECT_COVERED
+	mural.ignore_texture_size=true
+	mural.custom_minimum_size=Vector2(150,58)
+	mural.tooltip_text="City overseers"
+	mural.accessibility_name="City overseers"
+	mural.pressed.connect(show_overseers)
+	column.add_child(mural)
 	var category_grid := GridContainer.new()
-	category_grid.columns = 3
+	category_grid.columns = 4
 	column.add_child(category_grid)
 	for name: String in GROUPS:
 		groups[name] = []
 		var button: Button = game._button(name, set_category.bind(name))
 		button.toggle_mode = true
-		button.custom_minimum_size = Vector2(56, 25)
+		button.custom_minimum_size = Vector2(40, 25)
 		button.add_theme_font_size_override("font_size", 11)
 		var icon_id := "category_" + name.to_lower()
 		if not game.assets.has(icon_id):
@@ -162,7 +184,7 @@ func setup(owner: Node) -> void:
 			button.icon = game._texture_for(icon_id)
 			button.expand_icon = true
 			button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			button.custom_minimum_size.y = 42
+			button.custom_minimum_size.y = 40
 		button.tooltip_text = name
 		button.accessibility_name = name
 		for state_name in ["normal", "hover", "pressed"]:
@@ -257,6 +279,7 @@ func _add_choice(kind: String, caption: String) -> void:
 	entry.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	margin.add_child(entry)
 	var art := "shrine" if kind.begins_with("shrine_") else kind
+	art = {"policestation":"police","residence":"personalresidence","shipbridge":"bridge"}.get(art,art)
 	if game.assets.has(art) and ResourceLoader.exists(game._asset_path(game.assets[art].path)):
 		var icon := TextureRect.new()
 		icon.texture = game._texture_for(art)
@@ -288,7 +311,7 @@ func sync_catalog() -> void:
 		var group := str(entry.category)
 		match kind:
 			"hut", "well", "watersupply": group = "Homes"
-			"roadblock", "plaza", "garden": group = "Streets"
+			"roadblock", "plaza", "garden", "bridge","shipbridge","ferry","irrigationditch": group = "Streets"
 			_:
 				group = {"Services":"Safety", "Government":"Civic", "Labor":"Civic", "Monuments":"Monument", "Housing":"Homes", "Beautification":"Streets"}.get(group,group)
 		if not groups.has(group): continue
@@ -297,7 +320,10 @@ func sync_catalog() -> void:
 		if not game.tool_buttons.has(kind): _add_choice(kind, str(entry.label))
 		price_labels[kind].text = "%d Db" % int(entry.cost)
 		game.tool_buttons[kind].tooltip_text = "%s · %d Db · %d × %d" % [entry.label, int(entry.cost), int(entry.width), int(entry.height)]
-	for group: String in groups: categories[group].visible = not groups[group].is_empty()
+	for group: String in groups:
+		var unlocked: bool = not groups[group].is_empty()
+		categories[group].disabled = not unlocked
+		categories[group].modulate = Color.WHITE if unlocked else Color(0.51,0.39,0.28,0.56)
 	set_category(active_category, construction_menu.visible and not groups[active_category].is_empty())
 
 
@@ -328,9 +354,27 @@ func _game_action(id: int) -> void:
 		0: new_town_modal.show()
 		1: game._queue_command("save")
 		2: game._load_save()
+		4: game.saves.show_dialog(true)
+		5: game.saves.show_dialog(false)
+		6: game._queue_command("pause"); game._queue_command("load_manual")
+		7: game._queue_command("pause"); game._queue_command("load_previous")
 		3:
 			game.sim.stop()
 			game.get_tree().quit()
+
+
+func _painted_stone(tint: Color) -> StyleBoxTexture:
+	var texture: Texture2D = load("res://assets/street/sidebar.png")
+	var stone := StyleBoxTexture.new()
+	stone.texture = texture
+	var pixels := texture.get_size()
+	stone.region_rect = Rect2(pixels*Vector2(0.15,0.3),pixels*Vector2(0.7,0.23))
+	stone.modulate_color=tint
+	stone.axis_stretch_horizontal=StyleBoxTexture.AXIS_STRETCH_MODE_TILE
+	stone.axis_stretch_vertical=StyleBoxTexture.AXIS_STRETCH_MODE_TILE
+	for side in [SIDE_LEFT,SIDE_RIGHT]: stone.set_content_margin(side,12)
+	for side in [SIDE_TOP,SIDE_BOTTOM]: stone.set_content_margin(side,7)
+	return stone
 
 
 func _modal(title: String, dimensions: Vector2, on_close: Callable = Callable()) -> Array:
@@ -344,7 +388,7 @@ func _modal(title: String, dimensions: Vector2, on_close: Callable = Callable())
 	panel.offset_right = dimensions.x * 0.5
 	panel.offset_top = -dimensions.y * 0.5
 	panel.offset_bottom = dimensions.y * 0.5
-	panel.add_theme_stylebox_override("panel", game._style(Color("dfcb9f"), Color("896b3e"), 3))
+	panel.add_theme_stylebox_override("panel", _painted_stone(Color("efc69d")))
 	background.add_child(panel)
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 12)
@@ -398,19 +442,26 @@ func _build_modals() -> void:
 	town[1].add_child(text)
 	new_town_empty = game._button("Empty riverbank", func() -> void: new_town_modal.hide(); game._new_town("empty"))
 	new_town_starter = game._button("Growing neighborhood", func() -> void: new_town_modal.hide(); game._new_town("starter"))
+	town[1].add_child(game._button("Nile Valley · 96 × 96", func() -> void: new_town_modal.hide(); game._new_town("valley")))
 	town[1].add_child(new_town_empty)
 	town[1].add_child(new_town_starter)
 	var overseer := _modal("City overseers", Vector2(680, 500))
 	overseer_modal = overseer[0]
 	var tabs := HFlowContainer.new()
 	overseer[1].add_child(tabs)
-	for topic in ["City", "Food", "Labor", "Treasury", "Safety", "Monument", "Trade", "Religion"]:
+	for topic in ["City", "Food", "Labor", "Treasury", "Safety", "Monument", "Trade", "Religion", "Military", "River"]:
 		var button: Button = game._button(topic, _choose_overseer.bind(topic))
 		button.add_theme_font_size_override("font_size", 12)
 		overseer_tabs[topic] = button
 		tabs.add_child(button)
+	overseer[1].add_child(burial_controls)
+	burial_controls.setup(game)
 	overseer[1].add_child(overseer_controls)
 	overseer_controls.setup(game)
+	overseer[1].add_child(military_controls)
+	military_controls.setup(game)
+	overseer[1].add_child(naval_controls)
+	naval_controls.setup(game)
 	policy_panel = VBoxContainer.new()
 	policy_panel.add_theme_constant_override("separation", 6)
 	overseer[1].add_child(policy_panel)
@@ -442,6 +493,15 @@ func _build_modals() -> void:
 	labor_priority.item_selected.connect(func(_index: int) -> void: policy_dirty = true)
 	labor_priority.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	allocation.add_child(labor_priority)
+	policy_panel.add_child(governor)
+	governor.add_child(game._label("Monthly salary",14,Color("35281d")))
+	for amount in [0,2,5,8,12,20,30,40,60,80,100]: salary.add_item("%d Db" % amount)
+	salary.item_selected.connect(func(rank: int) -> void: game._queue_command("set_salary",{"rank":rank}))
+	governor.add_child(salary)
+	donation.step = 1
+	donation.suffix = "Db"
+	governor.add_child(donation)
+	governor.add_child(game._button("Donate to city",func() -> void: game._queue_command("donate",{"amount":int(donation.value)})))
 	policy_apply = game._button("Apply policy", _apply_policy)
 	allocation.add_child(policy_apply)
 	policy_notice = game._label("Rates apply at each tax and wage payment. Zero wages stop work and immigration.", 12, Color("72552f"))
@@ -477,6 +537,11 @@ func _choose_overseer(topic: String) -> void:
 
 
 func _sync_policy() -> void:
+	var monthly := bool(game.state.get("monthly_finance", false))
+	tax_rate.max_value = 25 if monthly else 10
+	wage_rate.max_value = 100 if monthly else 5
+	tax_rate.suffix = "%" if monthly else "Db / resident"
+	wage_rate.suffix = "Db / 10 workers / year" if monthly else "Db / worker"
 	tax_rate.set_value_no_signal(int(game.state.get("tax_rate", 2)))
 	wage_rate.set_value_no_signal(int(game.state.get("wage_rate", 1)))
 	var index: int = ["balanced", "food", "construction", "services"].find(str(game.state.get("labor_priority", "balanced")))
@@ -551,18 +616,26 @@ func update_city() -> void:
 	for point: Vector2 in [visible_area.position, Vector2(visible_area.end.x, visible_area.position.y), visible_area.end, Vector2(visible_area.position.x, visible_area.end.y)]:
 		corners.append(game._tile_at(inverse * point))
 	minimap.update_city(game.state, corners)
+	military_controls.sync(overseer_topic if overseer_modal.visible else "")
+	naval_controls.sync(overseer_topic if overseer_modal.visible else "")
 	if overseer_modal.visible: _update_overseer()
 
 
 func show_completion() -> void:
-	completion_text.text = "Your mastaba is complete. Farmers, traders, craftspeople and builders have supplied a lasting monument. Continue growing your city or found a new town."
+	completion_text.text = "Your monument is complete. Farmers, traders, craftspeople and builders have supplied a lasting monument. Continue growing your city or found a new town."
 	completion_modal.show()
 
 
 func _update_overseer() -> void:
 	var s: Dictionary = game.state
+	burial_controls.sync(overseer_topic)
 	overseer_controls.sync(overseer_topic)
+	military_controls.sync(overseer_topic)
+	naval_controls.sync(overseer_topic)
 	policy_panel.visible = overseer_topic == "Treasury"
+	governor.visible = game._has_building_kind("residence")
+	salary.select(int(s.get("salary_rank",0)))
+	donation.max_value = float(s.get("savings",0))
 	var lines: Array[String] = ["[b]" + overseer_topic + "[/b]", ""]
 	match overseer_topic:
 		"Trade":
@@ -594,21 +667,24 @@ func _update_overseer() -> void:
 			lines.append("Treasury: %d debens\nIncome: %d\nExpenses: %d" % [int(s.get("treasury", 0)), int(s.get("income", 0)), int(s.get("expenses", 0))])
 			lines.append("Gold received: %d Db\nGold in transit: %d Db" % [int(s.get("gold_delivered", 0)), int(s.get("gold_in_transit", 0))])
 			if not s.get("taxes_enabled", false): lines.append("A staffed palace is needed to collect taxes.")
+			if governor.visible: lines.append("Personal savings: %d Db" % int(s.get("savings",0)))
 			lines.append("Last collection: %d Db\nLast wages: %d Db" % [int(s.get("last_income", 0)), int(s.get("last_wages", 0))])
 			lines.append("\nTax collectors must reach households. Taxes above 5 Db slow new arrivals. Zero wages halt staffing and immigration. Labor priority directs scarce workers first.")
 		"Safety":
+			lines.append("City sentiment %d / 100 · Arrests %d · Losses to theft %d Db" % [int(s.get("sentiment",60)),int(s.get("arrests",0)),int(s.get("stolen",0))])
 			lines.append("Fires: %d\nCollapses: %d" % [int(s.get("fire_count", 0)), int(s.get("collapse_count", 0))])
 			for b: Dictionary in s.get("buildings", []):
 				if str(b.get("damaged", "")) != "" or int(b.get("fire_risk", 0)) >= 50 or int(b.get("collapse_risk", 0)) >= 50:
 					lines.append("%s (%d, %d): fire %d · collapse %d%s" % [labels.get(str(b.kind), str(b.kind).capitalize()), int(b.x), int(b.y), int(b.get("fire_risk", 0)), int(b.get("collapse_risk", 0)), " · needs repair" if str(b.get("damaged", "")) != "" else ""])
 			lines.append("\nFirehouse and architect patrols protect the roads they can reach. Inspect damaged buildings to repair them.")
 		"Monument":
-			lines.append("Mastaba progress: %d / %d" % [int(s.get("monument_progress", 0)), int(s.get("monument_goal", 64))])
+			lines.append("Monument rating: %d / 100" % int(s.get("monument_rating",0)))
 			for b: Dictionary in s.get("buildings", []):
 				if b.kind in ["claypit", "brickworks", "storageyard", "mastaba"]:
 					lines.append("%s: clay %d · straw %d · bricks %d" % [labels.get(str(b.kind), str(b.kind).capitalize()), int(b.get("clay", 0)), int(b.get("straw", 0)), int(b.get("bricks", 0))])
-				if b.kind == "mastaba":
+				if int(b.get("construction_required",0))>0:
+					lines.append("%s · %s"%[labels.get(str(b.kind),str(b.kind).capitalize()),str(b.get("stage","")).capitalize()])
 					lines.append("Crew: %d on site · %d en route · %d returning" % [int(b.get("crew_on_site", 0)), int(b.get("crew_en_route", 0)), int(b.get("crew_returning", 0))])
 					if not b.get("staging_access", false): lines.append("Workers cannot reach the staging area. Check the road access at the monument.")
-			lines.append("\nFarm straw and clay-pit output feed brickworks. Porters carry bricks to the building site; employed builders complete each stage.")
+			lines.append("\nMastabas need bricks. Pyramids need core blocks, ramps and guild workers. Cased pyramids also need limestone and polishing. Sphinxes are carved from bedrock. Inspect a site for its current need.")
 	overseer_text.text = "\n".join(lines)

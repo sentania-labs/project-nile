@@ -22,6 +22,7 @@ type influence struct{ base, step, change, radius int }
 // Initial desirability and falloff from original Normal building model.
 // Distance is measured from the closest footprint edge in square rings.
 var influences = map[string]influence{
+	"residence": {12, 2, -2, 4}, "courthouse": {8, 2, -2, 3}, "stonequarry": {-6, 1, 1, 6}, "limestonequarry": {-6, 1, 1, 6}, "granitequarry": {-6, 1, 1, 6}, "sandstonequarry": {-6, 1, 1, 6}, "woodcutter": {-4, 1, 1, 3}, "gemstonemine": {-12, 2, 2, 6}, "jeweler": {-2, 1, 1, 2},
 	"booth": {2, 1, -1, 2}, "bandstand": {4, 1, -1, 4}, "pavilion": {6, 1, -1, 6}, "jugglerschool": {2, 1, -1, 2},
 	"well": {1, 1, -1, 1}, "watersupply": {4, 1, -1, 4}, "garden": {3, 1, -1, 3},
 	"palace": {8, 2, -2, 6}, "taxoffice": {3, 1, -1, 3}, "firehouse": {-2, 1, 1, 2},
@@ -31,18 +32,18 @@ var influences = map[string]influence{
 	"huntinglodge": {-4, 1, 2, 4}, "plaza": {4, 1, -2, 2},
 }
 
-func (w World) desirabilityMap() [Size][Size]int {
-	var scores [Size][Size]int
+func (w World) desirabilityMap() map[Point]int {
+	scores := map[Point]int{}
 	apply := func(x, y, width, height int, f influence) {
-		for cy := max(0, y-f.radius); cy < min(Size, y+height+f.radius); cy++ {
-			for cx := max(0, x-f.radius); cx < min(Size, x+width+f.radius); cx++ {
+		for cy := max(0, y-f.radius); cy < min(w.mapSize(), y+height+f.radius); cy++ {
+			for cx := max(0, x-f.radius); cx < min(w.mapSize(), x+width+f.radius); cx++ {
 				d := max(x-cx, y-cy, cx-(x+width-1), cy-(y+height-1))
 				if d <= 0 {
 					continue
 				}
 				value := f.base + (d-1)/f.step*f.change
 				if value*f.base > 0 {
-					scores[cy][cx] += value
+					scores[Point{cx, cy}] += value
 				}
 			}
 		}
@@ -71,6 +72,7 @@ func (w World) desirabilityMap() [Size][Size]int {
 // housing level and delivered clean water a fifth. Negative and positive
 // thresholds are distinct to avoid oscillation at the desirability boundary.
 func (w World) refreshHome(b *Building, previous int) {
+	b.WantedSide = 0
 	b.Tier, b.Capacity, b.TierName = 0, 5, "Crude Hut"
 	if b.Pop == 0 || b.Damaged != "" {
 		return
@@ -89,7 +91,7 @@ func (w World) refreshHome(b *Building, previous int) {
 		return
 	}
 	b.Tier, b.Capacity, b.TierName = 2, 9, "Meager Shanty"
-	hasTemple := false
+	hasTemple := b.ShrineAccess
 	for _, until := range b.GodUntil {
 		if until > w.Tick {
 			hasTemple = true
@@ -130,6 +132,7 @@ func (w World) refreshHome(b *Building, previous int) {
 		return
 	}
 	b.Tier, b.Capacity, b.TierName = 9, 19, "Spacious Apartment"
+	w.refreshEstate(b, previous, score, health)
 }
 
 // The next tier must already be able to receive the good it needs to evolve.
@@ -137,9 +140,10 @@ func houseWantsResource(b Building, resource string) bool {
 	if b.Kind != "hut" || b.Pop == 0 {
 		return false
 	}
-	switch resource {
-	case "grain", "meat", "figs":
+	if foodResource(resource) {
 		return true
+	}
+	switch resource {
 	case "pottery":
 		return b.Tier >= 5
 	case "beer":

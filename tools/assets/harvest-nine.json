@@ -1,0 +1,59 @@
+{
+  "name": "harvest-nine",
+  "assets": [
+    [
+      "figfarm",
+      "Fig farm",
+      3,
+      258
+    ],
+    [
+      "pomegranatefarm",
+      "Pomegranate farm",
+      3,
+      258
+    ],
+    [
+      "chickpeafarm",
+      "Chickpea farm",
+      3,
+      258
+    ],
+    [
+      "lettucefarm",
+      "Lettuce farm",
+      3,
+      258
+    ],
+    [
+      "datefarm",
+      "Date orchard",
+      3,
+      258
+    ],
+    [
+      "cattleranch",
+      "Cattle ranch",
+      3,
+      258
+    ],
+    [
+      "fishingwharf",
+      "Fishing wharf",
+      2,
+      172
+    ],
+    [
+      "fowler",
+      "Fowler",
+      2,
+      172
+    ],
+    [
+      "ostrichranch",
+      "Ostrich ranch",
+      3,
+      258
+    ]
+  ]
+}

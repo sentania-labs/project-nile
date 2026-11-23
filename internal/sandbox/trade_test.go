@@ -123,12 +123,12 @@ func TestTradeLegacyResourceConservationAndCapacity(t *testing.T) {
 			w, yard := tradeFixture(t)
 			cap := resourceLimit(*w.building(yard), r)
 			w.SetTradePolicy(r, "import", 3200)
-			runValid(t, &w, 220)
+			runValid(t, &w, 32*((cap+99)/100)+120)
 			if got := w.ResourceAmount(yard, r); got != cap || w.ResourceImported[r] != int64(cap) {
 				t.Fatalf("finite capacity wrong %s: stock%d cap%d imports%d", r, got, cap, w.ResourceImported[r])
 			}
 			w.SetTradePolicy(r, "export", 0)
-			runValid(t, &w, 220)
+			runValid(t, &w, 32*((cap+99)/100)+120)
 			if w.ResourceAmount(yard, r) != 0 || w.ResourceExported[r] != int64(cap) {
 				t.Fatal("legacy export lost or duplicated inventory")
 			}

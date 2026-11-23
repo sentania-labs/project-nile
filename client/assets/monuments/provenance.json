@@ -1,0 +1,46 @@
+{
+  "origin": "Original built-in imagegen artwork; two-tier correction based on original foreman and binary constants",
+  "source": "/mnt/holding/project-nile/monument-art/two-tier-stages.png",
+  "processor": "generate2dsprite process --target asset --mode props --rows 2 --cols 2 --cell-size 1024 --fit-scale .9 --shared-scale --align bottom --component-mode all --threshold 80 --edge-threshold 160 --strict-qc --allow-source-edge-touch",
+  "license": "Original project artwork",
+  "asset_sha256": {
+    "smallstepped-base.png": "2570e1496a5a6c58116be8eb1391473db597d4f25a3914a25dc21b4db7f400e2",
+    "smallstepped-foundation.png": "af50aa86cd8a04f02c7245ac62e080b6f8df820fe98d4d49dbc7cdb372d60487",
+    "smallstepped-building.png": "0e959c8fb8c3aaeaaa41a939956967a43013feb36468cc3faedab96707eb6a6d",
+    "smallstepped-complete.png": "6b82d37d712ef77316d853d76b85a958282a87d77eb99c88f8e1cd10197b59a5"
+  },
+  "family_pack": {
+    "agent": "Codex street_runtime",
+    "generator": "built-in image_gen",
+    "rights": "Original generated artwork; no extracted Pharaoh art",
+    "raw_sources": [
+      "/mnt/holding/project-nile/monument-art/pyramid-families.png",
+      "/mnt/holding/project-nile/monument-art/complex-parts.png",
+      "/mnt/holding/project-nile/monument-art/sphinx.png",
+      "/mnt/holding/project-nile/monument-art/sphinx-work.png",
+      "/mnt/holding/project-nile/monument-art/core-stages.png"
+    ],
+    "processor": "generate2dsprite process; magenta cleanup, shared scale, bottom alignment",
+    "assets": {
+      "true-pyramid": "69288c6e3fe13426fb1cebc0b7af9afbd0342df8a830cbc0d0ddb71871a33253",
+      "bent-pyramid": "89bc980c52a72483e7b35d240ceaa92da6e83661c3be0f28ce2a3cfe22917283",
+      "brick-pyramid": "94afe756dd2d2418cd146d8c3aaabfbae00f7a8b570af7e210d3630f7b7b9e8e",
+      "stepped-three": "d1abeffb74fbac2bf4be50e373565357333fc88a0d21d028079421986984e7a7",
+      "stepped-four": "1c73f06442d173990147dbef2d990b8dda2b5d1bb386cce5f559e7fd169e32b1",
+      "stepped-six": "2d2fd15c2b777713e6ceefbaee57e63d8963d45caeec51d8c5e7bd6160978155",
+      "mortuary_temple": "d29eff3d4fb10cbf38d095ac80054cd653d4ae564f06f26a961a8aa7c94f0539",
+      "valley_temple": "f83d6edb16f9c616deb5f6cee2d1535aee7fcbfda903cf2ee15e56d813c39a73",
+      "causeway": "4a96486f66e0c412fec4db6446939855726c9f62313fa1adc5ed5c3b8ba96a22",
+      "bricklayers": "243b739396dcba850cf42528c0f85f2f2e3c1ff1ecadb93f013960a04ba94522",
+      "sphinx": "0c1cfb8c5202e87bff8c4e92cbbb6c4e66be491550607ae566c1c8a9459425d7",
+      "sphinx_work": "08df48381f895da84f96f2a7fa0021c9255e2f0d72121a5be1b9a8f7e54ef39c",
+      "stepped-five": "a6c898c38be75f92fc170b5b437006ce98b48efe980955fe8ca03032e590a774",
+      "stone-core": "e68d43e2f9f82d22af0f5fb370dd7addc99f9f06098b4e932a7120b36bd8a8bd",
+      "brick-core": "0b038abc3e93160efefb84943466db1b0702c3721d03c8f908a3b50f716a507d",
+      "pyramid_foundation": "51b55d3dd0714567e4398e44d0f2a09e993d906ea3a7181f935cb0ca18e1669c"
+    },
+    "artistic_approval": "pending in-engine review",
+    "processing_note": "Chroma-key cleanup also removes enclosed scaffold openings; alpha/mipmaps checked in Godot.",
+    "validation": "Godot import and physical Sphinx construction / grand-complex placement passed; human artistic acceptance pending."
+  }
+}
