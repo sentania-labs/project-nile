@@ -729,12 +729,12 @@ func (w *World) Step(ticks int) error {
 		w.refresh()
 		w.produceAndConsume()
 		w.cityTick()
+		w.healthTick()
 		w.refresh()
 		if w.Tick%MigrationInterval == 0 {
 			w.dispatch()
 			w.refresh()
 		}
-		w.healthTick()
 		w.religionTick()
 		w.festivalTick()
 		w.campaignTick()

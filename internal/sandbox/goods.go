@@ -121,7 +121,9 @@ func outputResource(kind string) string {
 	}
 	return ""
 }
-func goodsOperating(b Building) bool { return b.Connected && b.Damaged == "" && b.Workers > 0 }
+func goodsOperating(b Building) bool {
+	return b.Connected && b.Damaged == "" && (b.Workers > 0 || b.Kind == "figfarm")
+}
 func (w World) freightReceiver(source, target Building, r string) (bool, int) {
 	if source.ID == target.ID || !goodsOperating(target) {
 		return false, 0
