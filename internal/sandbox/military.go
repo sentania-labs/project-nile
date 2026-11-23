@@ -433,7 +433,7 @@ func (w World) validateMilitary() error {
 				}
 				continue
 			}
-			if !w.buildable(p) || blocked[p] && !roads[p] || i > 0 && !adjacent(p, a.Route[i-1]) {
+			if !w.walkable(p) || blocked[p] && !roads[p] || i > 0 && !adjacent(p, a.Route[i-1]) {
 				return errors.New("invalid military land route")
 			}
 		}
