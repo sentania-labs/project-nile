@@ -173,6 +173,9 @@ func (w *World) advanceBuilder(walker *Walker) bool {
 		return true
 	}
 	if walker.Stage == "return" {
+		if !w.depositBuilderSupplies(walker, home.ID) {
+			return true
+		}
 		if walker.Cargo > 0 {
 			walker.Cargo -= w.DepositResource(home.ID, walker.Resource, walker.Cargo)
 			return walker.Cargo > 0
@@ -180,6 +183,9 @@ func (w *World) advanceBuilder(walker *Walker) bool {
 		return false
 	}
 	if isPyramid(site.Kind) {
+		if !w.depositBuilderSupplies(walker, site.ID) {
+			return true
+		}
 		walker.Cargo -= w.DepositResource(site.ID, walker.Resource, walker.Cargo)
 		walker.Stage = "work"
 		walker.ShiftUntil = MaxTick
@@ -231,7 +237,7 @@ func pyramidGuildLimit(kind string) int {
 		return 4
 	case "stonemasons", "bricklayers":
 		return 2
-	case "carpenters":
+	case "carpenters", "artisans":
 		return 1
 	}
 	return 0
@@ -255,8 +261,15 @@ func (w *World) dispatchPyramidBuilders() {
 			if origin.Kind != guild || origin.Damaged != "" || !origin.Connected {
 				continue
 			}
-			for count < pyramidGuildLimit(guild) && w.guildAssignments(origin.ID) < origin.Workers {
+			limit := monumentGuildLimit(site, guild)
+			for count < limit && w.guildAssignments(origin.ID) < origin.Workers {
 				cargo := 0
+				if !suppliesReady(*w.building(origin.ID), phase.Supplies) {
+					break
+				}
+				if len(phase.Supplies) > 0 && (inventory(site, "paint")+w.incomingResource(site.ID, "paint") > 0 || inventory(site, "clay")+w.incomingResource(site.ID, "clay") > 0) {
+					break
+				}
 				if guild == "carpenters" && phase.Timber > 0 && inventory(site, "timber")+w.incomingResource(site.ID, "timber") == 0 {
 					if inventory(*w.building(origin.ID), "timber") < CarpenterSupply {
 						break
@@ -266,6 +279,15 @@ func (w *World) dispatchPyramidBuilders() {
 				route := w.path(w.perimeter(origin), site)
 				if !w.spawn("builder", "commute", origin.ID, site.ID, site.ID, route, cargo, 0) {
 					break
+				}
+				if len(phase.Supplies) > 0 {
+					a := &w.Walkers[len(w.Walkers)-1]
+					a.Supplies = map[string]int{}
+					b := w.building(origin.ID)
+					for r, n := range phase.Supplies {
+						a.Supplies[r] = n
+						setInventory(b, r, inventory(*b, r)-n)
+					}
 				}
 				if cargo > 0 {
 					a := &w.Walkers[len(w.Walkers)-1]
@@ -286,7 +308,10 @@ func (w World) pyramidBuilderAllowed(a Walker, site, origin Building) bool {
 	if !ok {
 		return false
 	}
-	if (origin.Kind == "workcamp" && phase.Guild != "workcamp") || (site.Kind == "sphinx" && (phase.Guild != origin.Kind || (origin.Kind == "carpenters" && a.Stage == "work" && inventory(site, "timber") == 0))) {
+	if origin.Kind == "artisans" && a.Stage == "work" && !suppliesReady(site, phase.Supplies) {
+		return false
+	}
+	if (origin.Kind == "workcamp" && phase.Guild != "workcamp") || (discreteMonumentJobs(site.Kind) && (phase.Guild != origin.Kind || (origin.Kind == "carpenters" && a.Stage == "work" && phase.Timber > 0 && inventory(site, "timber") == 0))) {
 		return false
 	}
 	earlier := 0
@@ -298,6 +323,9 @@ func (w World) pyramidBuilderAllowed(a Walker, site, origin Building) bool {
 	return earlier < origin.Workers
 }
 func (w World) validatePyramidBuilder(a Walker, target, origin, site Building) error {
+	if !validBuilderSupplies(a, origin) {
+		return errors.New("invalid artisan supplies")
+	}
 	if pyramidGuildLimit(origin.Kind) == 0 || a.Reserved != 0 || (a.Cargo != 0 && a.Cargo != CarpenterSupply) || a.Cargo > 0 && origin.Kind != "carpenters" || (a.Resource != "" && a.Resource != "timber") || a.Cargo > 0 && a.Resource != "timber" {
 		return errors.New("invalid pyramid guild worker")
 	}

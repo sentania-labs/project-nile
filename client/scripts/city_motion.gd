@@ -12,6 +12,9 @@ const WORKSITES := {
 	"granary": {"clip": "vendor-work", "points": [Vector2(0.34, 0.80)]},
 	"storageyard": {"clip": "worker-brick", "points": [Vector2(0.54, 0.64)]},
 }
+const FIELD_KINDS := ["farm", "barleyfarm", "flaxfarm", "figfarm", "pomegranatefarm", "lettucefarm", "chickpeafarm", "hennafarm"]
+const PIT_KINDS := ["coppermine", "gemstonemine", "stonequarry", "limestonequarry", "sandstonequarry", "granitequarry"]
+const BENCH_KINDS := ["jeweler", "lampmaker", "paintmaker", "artisans", "potter", "papyrusmaker", "weaver", "weaponsmith", "chariotmaker"]
 var game: Node
 var clips: Dictionary = {}
 var frames: Dictionary = {}
@@ -50,7 +53,7 @@ func _pose(sprite: Sprite2D, clip: String, frame: int, mirrored: bool = false) -
 	sprite.scale = Vector2.ONE * float(spec.pixel_scale)
 	sprite.skew = 0.0
 	sprite.rotation = 0.0
-	sprite.flip_h = mirrored
+	sprite.flip_h = mirrored or int(actual / int(spec.columns)) in spec.get("mirror_rows",[])
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	sprite.set_meta("motion_clip", clip)
 	sprite.set_meta("motion_frame", actual)
@@ -64,9 +67,12 @@ func _direction(heading: Vector2) -> int:
 
 func _walking_clip(walker: Dictionary) -> String:
 	match str(walker.role):
-		"cart", "goldcart", "porter", "stonehauler": return "haul-walk" if int(walker.get("cargo", 0)) > 0 else "haul-empty"
-		"seller", "buyer": return "vendor-walk"
-		"architect", "taxcollector", "firefighter": return "official-walk"
+		"infantry", "invader": return "infantry-walk"
+		"archer", "sentry": return "archer-walk"
+		"charioteer": return "chariot-walk"
+		"cart", "goldcart", "porter", "stonehauler", "freight", "goodsbuyer", "reedharvester", "lumberjack": return "haul-walk" if int(walker.get("cargo", 0)) > 0 else "haul-empty"
+		"seller", "buyer", "goodsseller": return "vendor-walk"
+		"architect", "taxcollector", "firefighter", "magistrate", "constable": return "official-walk"
 	return "worker-walk"
 
 
@@ -117,7 +123,7 @@ func update(delta: float) -> void:
 		var before := sprite.position
 		if not game.paused:
 			var tile_distance: float = Vector2(game.tile_width * 0.5, game.tile_height * 0.5).length()
-			sprite.position = sprite.position.move_toward(target, tile_distance * delta * game.simulation_speed / 0.2)
+			sprite.position = sprite.position.move_toward(target, tile_distance * delta * game.simulation_speed / game.tick_seconds)
 			walkers[id].phase += before.distance_to(sprite.position) / tile_distance * 4.0
 		_apply_walker(id, before.distance_to(sprite.position) > 0.01)
 	for id: String in sites:
@@ -129,13 +135,26 @@ func update(delta: float) -> void:
 			_pose(sprite, site.clip, phase, index % 2 == 1)
 
 
+func _workers_present(data: Dictionary) -> int:
+	if data.get("farm_type", "") == "floodplain": return int(data.get("crew_on_site", 0))
+	return int(data.get("workers", 0))
+
+
+func _worksite_spec(kind: String) -> Dictionary:
+	if kind in FIELD_KINDS: return WORKSITES.farm
+	if kind in PIT_KINDS: return WORKSITES.claypit
+	if kind in BENCH_KINDS: return {"clip": "worker-brick", "points": [Vector2(0.48, 0.82)]}
+	return WORKSITES.get(kind, {})
+
+
 func _site_active(data: Dictionary) -> bool:
-	if int(data.get("workers", 0)) == 0 or str(data.get("damaged", "")) != "": return false
+	if _workers_present(data) == 0 or str(data.get("damaged", "")) != "": return false
+	if str(data.kind) in FIELD_KINDS:
+		return data.get("farm_type", "") == "meadow" or float(game.state.get("flood_level", 0)) < 0.35
 	match str(data.kind):
-		"farm": return float(game.state.get("flood_level", 0)) < 0.35 and str(game.state.get("season", "")).to_lower() not in ["flood", "inundation"]
 		"brickworks": return int(data.get("clay", 0)) > 0 and int(data.get("straw", 0)) > 0
-		"bazaar", "granary": return int(data.get("stock", 0)) > 0
-		"storageyard": return int(data.get("clay", 0)) + int(data.get("straw", 0)) + int(data.get("bricks", 0)) > 0
+		"bazaar", "granary": return int(data.get("stock", 0)) > 0 or not data.get("goods", {}).is_empty()
+		"storageyard": return int(data.get("clay", 0)) + int(data.get("straw", 0)) + int(data.get("bricks", 0)) > 0 or not data.get("goods", {}).is_empty()
 		# Grain capacity is zero at the pit; clay has its own 32-unit stock.
 		"claypit": return int(data.get("clay", 0)) < 32
 		"goldmine": return int(data.get("gold", 0)) < int(data.get("gold_capacity", 200))
@@ -146,10 +165,10 @@ func _sync_sites() -> void:
 	var seen := {}
 	for data: Dictionary in game.state.get("buildings", []):
 		var kind := str(data.kind)
-		if not WORKSITES.has(kind): continue
+		var spec := _worksite_spec(kind)
+		if spec.is_empty(): continue
 		var id := str(data.id)
 		seen[id] = true
-		var spec: Dictionary = WORKSITES[kind]
 		if sites.has(id) and sites[id].kind!=kind:
 			sites[id].group.queue_free()
 			sites.erase(id)
@@ -166,14 +185,14 @@ func _sync_sites() -> void:
 		var site: Dictionary = sites[id]
 		var building: Sprite2D = game.building_nodes[id]
 		site.group.position = building.position + Vector2(0, 0.2)
-		site.group.visible = int(data.get("workers", 0)) > 0 and str(data.get("damaged", "")) == ""
+		site.group.visible = _workers_present(data) > 0 and str(data.get("damaged", "")) == ""
 		site.active = _site_active(data)
 		for index in range(site.actors.size()):
 			var point: Vector2 = spec.points[index]
 			var at: Vector2 = building.to_global(building.offset + building.texture.get_size() * point)
 			var sprite: Sprite2D = site.actors[index]
 			sprite.position = at - site.group.global_position
-			sprite.visible = index == 0 or int(data.workers) >= maxi(2, int(data.get("workers_needed", 2)) / 2)
+			sprite.visible = index == 0 or _workers_present(data) >= maxi(2, int(data.get("workers_needed", 2)) / 2)
 			_pose(sprite, site.clip, int(clock * 4.5 + int(id) + index * 1.7) % 4 if site.active else 0, index % 2 == 1)
 	for id: String in sites.keys():
 		if not seen.has(id):

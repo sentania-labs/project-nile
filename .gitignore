@@ -2,6 +2,7 @@
 *.uid
 *.import
 !client/assets/street/*.png.import
+!client/assets/monuments/*.png.import
 bin/
 *.nile
 *.nile-journal

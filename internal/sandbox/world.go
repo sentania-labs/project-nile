@@ -36,6 +36,11 @@ var Entry = Point{6, 15}
 var directions = []Point{{0, -1}, {1, 0}, {0, 1}, {-1, 0}}
 
 type Building struct {
+	ServiceSupplyCredit       bool              `json:"service_supply_credit,omitempty"`
+	TempleUpgrades            uint8             `json:"temple_upgrades,omitempty"`
+	Facing                    int               `json:"facing,omitempty"`
+	HousesCovered             int               `json:"houses_covered,omitempty"`
+	DefenseHP                 int               `json:"defense_hp,omitempty"`
 	SoilFertility             int               `json:"soil_fertility,omitempty"`
 	MonumentParts             []MonumentPart    `json:"monument_parts,omitempty"`
 	AgricultureVersion        int               `json:"agriculture_version,omitempty"`
@@ -50,6 +55,7 @@ type Building struct {
 	MoodSet                   bool              `json:"mood_set,omitempty"`
 	CrimeRisk                 int               `json:"crime_risk,omitempty"`
 	ServiceUntil              [9]int64          `json:"service_until"`
+	MalariaRisk               int               `json:"malaria_risk,omitempty"`
 	DiseaseRisk               int               `json:"disease_risk"`
 	ShowUntil                 [3]int64          `json:"show_until"`
 	EntertainmentUntil        [3]int64          `json:"entertainment_until"`
@@ -115,27 +121,38 @@ type Building struct {
 	LastTax                   int64             `json:"last_tax"`
 }
 type Walker struct {
-	Partner    string  `json:"partner,omitempty"`
-	Site       int64   `json:"site,omitempty"`
-	LoadAt     int     `json:"load_at,omitempty"`
-	DeliverAt  int     `json:"deliver_at,omitempty"`
-	People     int     `json:"people,omitempty"`
-	ID         int64   `json:"id"`
-	X          int     `json:"x"`
-	Y          int     `json:"y"`
-	Cargo      int     `json:"cargo"`
-	Role       string  `json:"role"`
-	Target     int64   `json:"target"`
-	Route      []Point `json:"route"`
-	Next       int     `json:"next"`
-	Origin     int64   `json:"origin"`
-	Source     int64   `json:"source"`
-	Stage      string  `json:"stage"`
-	Reserved   int     `json:"reserved"`
-	Resource   string  `json:"resource"`
-	ShiftUntil int64   `json:"shift_until"`
+	Supplies   map[string]int `json:"supplies,omitempty"`
+	Partner    string         `json:"partner,omitempty"`
+	Site       int64          `json:"site,omitempty"`
+	LoadAt     int            `json:"load_at,omitempty"`
+	DeliverAt  int            `json:"deliver_at,omitempty"`
+	People     int            `json:"people,omitempty"`
+	ID         int64          `json:"id"`
+	X          int            `json:"x"`
+	Y          int            `json:"y"`
+	Cargo      int            `json:"cargo"`
+	Role       string         `json:"role"`
+	Target     int64          `json:"target"`
+	Route      []Point        `json:"route"`
+	Next       int            `json:"next"`
+	Origin     int64          `json:"origin"`
+	Source     int64          `json:"source"`
+	Stage      string         `json:"stage"`
+	Reserved   int            `json:"reserved"`
+	Resource   string         `json:"resource"`
+	ShiftUntil int64          `json:"shift_until"`
 }
 type World struct {
+	SandboxRatings     *campaign.RatingState     `json:"sandbox_ratings,omitempty"`
+	Cliffs             []Point                   `json:"cliffs,omitempty"`
+	Ferries            []FerryLine               `json:"ferries,omitempty"`
+	RoyalCredit        bool                      `json:"royal_credit,omitempty"`
+	Household          RoyalHousehold            `json:"royal_household,omitempty"`
+	LaborSeekers       bool                      `json:"labor_seekers,omitempty"`
+	Naval              NavalStats                `json:"naval,omitempty"`
+	KingdomWage        int                       `json:"kingdom_wage,omitempty"`
+	CityEvents         CityEvents                `json:"city_events"`
+	Invasions          []Invasion                `json:"invasions,omitempty"`
 	OpenPartners       map[string]bool           `json:"open_partners,omitempty"`
 	PartnerUsed        map[string]map[string]int `json:"partner_used,omitempty"`
 	BurialDelivered    map[string]int            `json:"burial_delivered,omitempty"`
@@ -147,6 +164,7 @@ type World struct {
 	Canals             []Point                   `json:"canals,omitempty"`
 	Bridges            []Bridge                  `json:"bridges,omitempty"`
 	Deployments        []KingdomDeployment       `json:"deployments,omitempty"`
+	ArmyDispatches     []ArmyDispatch            `json:"army_dispatches,omitempty"`
 	RequestSent        map[string]int64          `json:"request_sent,omitempty"`
 	RequestSpent       int64                     `json:"request_spent,omitempty"`
 	Boats              []Boat                    `json:"boats,omitempty"`
@@ -159,6 +177,7 @@ type World struct {
 	Companies          []Company                 `json:"companies,omitempty"`
 	Troops             []Troop                   `json:"troops,omitempty"`
 	Military           MilitaryStats             `json:"military"`
+	MilitaryVersion    int                       `json:"military_version,omitempty"`
 	MapExtent          int                       `json:"map_extent,omitempty"`
 	Banks              []int                     `json:"banks,omitempty"`
 	Festival           *Festival                 `json:"festival,omitempty"`
@@ -227,20 +246,35 @@ type World struct {
 // Rendering needs positions and job status, not every persisted route vertex.
 // Keep transport snapshots bounded while saves retain complete replay state.
 type WalkerView struct {
-	People     int    `json:"people,omitempty"`
-	ID         int64  `json:"id"`
-	X          int    `json:"x"`
-	Y          int    `json:"y"`
-	Cargo      int    `json:"cargo"`
-	Role       string `json:"role"`
-	Target     int64  `json:"target"`
-	Origin     int64  `json:"origin"`
-	Source     int64  `json:"source"`
-	Stage      string `json:"stage"`
-	Resource   string `json:"resource"`
-	ShiftUntil int64  `json:"shift_until"`
+	Supplies    map[string]int `json:"supplies,omitempty"`
+	AboardFerry bool           `json:"aboard_ferry,omitempty"`
+	People      int            `json:"people,omitempty"`
+	ID          int64          `json:"id"`
+	X           int            `json:"x"`
+	Y           int            `json:"y"`
+	Cargo       int            `json:"cargo"`
+	Role        string         `json:"role"`
+	Target      int64          `json:"target"`
+	Origin      int64          `json:"origin"`
+	Source      int64          `json:"source"`
+	Stage       string         `json:"stage"`
+	Resource    string         `json:"resource"`
+	ShiftUntil  int64          `json:"shift_until"`
 }
 type View struct {
+	Culture            int                    `json:"culture"`
+	Prosperity         int                    `json:"prosperity"`
+	Cliffs             []Point                `json:"cliffs,omitempty"`
+	ConstructionCredit int64                  `json:"construction_credit"`
+	InterestPaid       int64                  `json:"interest_paid"`
+	RoyalGiftCosts     [3]int64               `json:"royal_gift_costs"`
+	KingdomStanding    int                    `json:"kingdom_standing"`
+	LaborSeekers       bool                   `json:"labor_seekers,omitempty"`
+	Naval              NavalStats             `json:"naval,omitempty"`
+	KingdomWage        int                    `json:"kingdom_wage"`
+	CityEvents         CityEvents             `json:"city_events"`
+	ZooCoverage        int                    `json:"zoo_coverage,omitempty"`
+	Invasions          []Invasion             `json:"invasions,omitempty"`
 	MonumentRating     int                    `json:"monument_rating"`
 	BurialRequirements map[string]int         `json:"burial_requirements"`
 	BurialDelivered    map[string]int         `json:"burial_delivered"`
@@ -255,6 +289,7 @@ type View struct {
 	WateredCanals      []Point                `json:"watered_canals,omitempty"`
 	Bridges            []Bridge               `json:"bridges,omitempty"`
 	Deployments        []KingdomDeployment    `json:"deployments"`
+	ArmyDispatches     []ArmyDispatch         `json:"army_dispatches"`
 	Boats              []BoatView             `json:"boats"`
 	ShipsBuilt         int64                  `json:"ships_built"`
 	FishingGrounds     []Point                `json:"fishing_grounds"`
@@ -341,7 +376,7 @@ type View struct {
 }
 
 func neighborhood() World {
-	w := World{Favor: neutralFavor(), Roads: []Point{}, Buildings: []Building{}, Walkers: []Walker{}, NextID: 1, Version: SnapshotVersion, TaxRate: 2, WageRate: 1, LaborPriority: "balanced"}
+	w := World{MilitaryVersion: 1, Favor: neutralFavor(), Roads: []Point{}, Buildings: []Building{}, Walkers: []Walker{}, NextID: 1, Version: SnapshotVersion, TaxRate: 2, WageRate: 1, LaborPriority: "balanced"}
 	for x := 10; x <= 22; x++ {
 		w.Roads = append(w.Roads, Point{x, 10}, Point{x, 20})
 	}
@@ -488,6 +523,10 @@ func (w World) perimeter(b Building) []Point {
 	return out
 }
 func (w World) path(starts []Point, destination Building) []Point {
+	return w.pathWithFerries(starts, destination, false)
+}
+func (w World) pathWithFerries(starts []Point, destination Building, unstaffed bool) []Point {
+	edges := w.ferryEdges(unstaffed)
 	roads := w.roadSet()
 	queue := []Point{}
 	previous := map[Point]Point{}
@@ -509,6 +548,12 @@ func (w World) path(starts []Point, destination Building) []Point {
 			}
 			slices.Reverse(out)
 			return out
+		}
+		if q, ok := edges[p]; ok && roads[q] {
+			if _, seen := previous[q]; !seen {
+				previous[q] = p
+				queue = append(queue, q)
+			}
 		}
 		for _, d := range directions {
 			next := Point{p.X + d.X, p.Y + d.Y}
@@ -540,6 +585,7 @@ func (w *World) refresh() {
 			wells[b.point()] = true
 		}
 	}
+	edges := w.ferryEdges(true)
 	reached := map[Point]bool{}
 	queue := []Point{}
 	if roads[w.entry()] {
@@ -548,6 +594,10 @@ func (w *World) refresh() {
 	}
 	for i := 0; i < len(queue); i++ {
 		p := queue[i]
+		if q, ok := edges[p]; ok && roads[q] && !reached[q] {
+			reached[q] = true
+			queue = append(queue, q)
+		}
 		for _, d := range directions {
 			next := Point{p.X + d.X, p.Y + d.Y}
 			if roads[next] && !reached[next] {
@@ -573,7 +623,7 @@ func (w *World) refresh() {
 			}
 		}
 		b.Workers = 0
-		b.RepairCost = max(int64(5), constructionCost(b.Kind)/2)
+		b.RepairCost = max(int64(5), w.sitePrice(b.Kind)/2)
 		b.WorkCapacity = buildingWorkCapacity(*b)
 		b.GoldCapacity = 0
 		if b.Kind == "goldmine" {
@@ -648,7 +698,7 @@ func (w *World) refresh() {
 	// jobs after other employers. This partial-staffing policy is provisional.
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
-		if b.Kind == "palace" && b.Connected && b.Damaged == "" && workforce > 0 {
+		if isPalace(b.Kind) && w.canHire(*b) && workforce > 0 {
 			b.Workers = 1
 			workforce--
 		}
@@ -662,14 +712,14 @@ func (w *World) refresh() {
 	})
 	for _, i := range order {
 		b := &w.Buildings[i]
-		if b.Kind != "palace" && b.Connected && b.Damaged == "" {
+		if !isPalace(b.Kind) && w.canHire(*b) {
 			b.Workers = min(workforce, b.WorkersNeeded)
 			workforce -= b.Workers
 		}
 	}
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
-		if b.Kind == "palace" && b.Connected && b.Damaged == "" {
+		if isPalace(b.Kind) && w.canHire(*b) {
 			more := min(workforce, b.WorkersNeeded-b.Workers)
 			b.Workers += more
 			workforce -= more
@@ -711,6 +761,12 @@ func (w *World) clear(p Point) error {
 				return errors.New("this building has an active delivery or arriving migrant")
 			}
 		}
+		if b.Kind == "ferry" {
+			if !w.removeFerryAllowed(b) {
+				return errors.New("passengers are using this ferry line")
+			}
+			w.Ferries = slices.DeleteFunc(w.Ferries, func(f FerryLine) bool { return slices.Contains(f.Landings[:], b.ID) })
+		}
 		w.Buildings = slices.Delete(w.Buildings, i, i+1)
 		w.refresh()
 		return nil
@@ -733,7 +789,7 @@ func (w *World) ZoneHousing(a, b Point) error {
 	if len(plots) == 0 {
 		return errors.New("no vacant land in selected area")
 	}
-	if w.BudgetEnabled && w.Treasury < int64(len(plots))*constructionCost("hut") {
+	if w.cannotBuildFor(int64(len(plots)) * constructionCost("hut")) {
 		return errors.New("not enough treasury to zone this housing area")
 	}
 	if w.NextID > MaxTick-int64(len(plots)) {
@@ -745,7 +801,7 @@ func (w *World) ZoneHousing(a, b Point) error {
 	if w.LaborPriority == "" {
 		w.policyDefaults()
 	}
-	w.spend(int64(len(plots)) * constructionCost("hut"))
+	w.spendConstruction(int64(len(plots)) * constructionCost("hut"))
 	for _, p := range plots {
 		w.Buildings = append(w.Buildings, Building{ID: w.NextID, Kind: "hut", X: p.X, Y: p.Y, Width: 1, Height: 1})
 		w.NextID++
@@ -753,14 +809,25 @@ func (w *World) ZoneHousing(a, b Point) error {
 	w.refresh()
 	return nil
 }
-func (w *World) Build(kind string, x, y int) error {
-	if kind == "residence" && slices.ContainsFunc(w.Buildings, func(b Building) bool { return b.Kind == "residence" }) {
+func (w *World) Build(kind string, x, y int) error { return w.BuildFacing(kind, x, y, 0) }
+func (w *World) BuildFacing(kind string, x, y, facing int) error {
+	isComplex := slices.Contains(complexKinds, kind)
+	if facing < 0 || facing > 3 || facing != 0 && !isComplex {
+		return errors.New("invalid building orientation")
+	}
+	if isComplex && w.templeComplex() != nil {
+		return errors.New("only one temple complex may stand in a city")
+	}
+	if isResidence(kind) && slices.ContainsFunc(w.Buildings, func(b Building) bool { return isResidence(b.Kind) }) {
 		return errors.New("the city already has a personal residence")
 	}
 	if !w.Campaign.Allows(kind) {
 		return errors.New("this building has not opened in the current mission")
 	}
 	p := Point{x, y}
+	if kind == "complexaltar" || kind == "complexoracle" {
+		return w.addTempleUpgrade(kind, p)
+	}
 	if kind == "bridge" || kind == "shipbridge" {
 		return w.buildBridge(kind, p)
 	}
@@ -769,7 +836,7 @@ func (w *World) Build(kind string, x, y int) error {
 			return w.clearBridge(bridge)
 		}
 	}
-	if !w.buildable(p) && !(coastal(kind) && w.water(p)) {
+	if !w.buildable(p) && !((isRoyalTomb(kind) || kind == "clear") && w.cliff(p)) && !(coastal(kind) && w.water(p)) {
 		return errors.New("choose dry land inside the city map")
 	}
 	if kind == "roadblock" || kind == "plaza" {
@@ -787,11 +854,20 @@ func (w *World) Build(kind string, x, y int) error {
 		return errors.New("available buildings: road, hut, well, farm, granary, bazaar")
 	}
 	width, height := dimensions(kind)
-	candidate := Building{ID: w.NextID, Kind: kind, X: x, Y: y, Width: width, Height: height}
+	if facing%2 != 0 {
+		width, height = height, width
+	}
+	candidate := Building{Facing: facing, ID: w.NextID, Kind: kind, X: x, Y: y, Width: width, Height: height, DefenseHP: defenseHealth(kind)}
+	if err := w.royalTombPlacement(candidate); err != nil {
+		return err
+	}
 	if err := w.prepareMonumentPlacement(&candidate); err != nil {
 		return err
 	}
 	occupied := w.occupied()
+	if err := w.defensePlacement(candidate, occupied); err != nil {
+		return err
+	}
 	if err := w.venuePlacement(candidate); err != nil {
 		return err
 	}
@@ -846,11 +922,14 @@ func (w *World) Build(kind string, x, y int) error {
 	if kind == "watersupply" && !w.palaceGroundwater(candidate) {
 		return errors.New("a Water Supply needs groundwater beneath its footprint")
 	}
-	if w.BudgetEnabled && w.Treasury < constructionCost(kind) {
+	if w.cannotBuildFor(w.sitePrice(kind)) {
 		return errors.New("not enough treasury for this construction")
 	}
 	if w.NextID >= MaxTick {
 		return errors.New("entity identifier limit reached")
+	}
+	if err := w.monumentUpfrontCheck(candidate); err != nil {
+		return err
 	}
 	if w.Version == 0 {
 		w.Version = SnapshotVersion
@@ -858,13 +937,18 @@ func (w *World) Build(kind string, x, y int) error {
 	if w.LaborPriority == "" {
 		w.policyDefaults()
 	}
-	w.spend(constructionCost(kind))
+	w.monumentUpfrontCommit(&candidate)
+	w.spendConstruction(w.sitePrice(kind))
 	if kind == "road" {
 		w.Roads = append(w.Roads, p)
 	} else {
+		w.replaceTowerWalls(candidate)
 		w.Buildings = append(w.Buildings, candidate)
+		if kind == "ferry" {
+			w.pairFerry(candidate)
+		}
 		w.NextID++
-		if kind == "palace" {
+		if isPalace(kind) {
 			w.LegacyTaxes = false
 		}
 	}
@@ -877,6 +961,12 @@ func (w *World) Step(ticks int) error {
 	}
 	for range ticks {
 		w.Tick++
+		if w.LaborSeekers && w.Tick%(YearTicks/12) == 0 {
+			for i := range w.Buildings {
+				b := &w.Buildings[i]
+				b.HousesCovered = max(0, b.HousesCovered-1)
+			}
+		}
 		w.resetTradeYear()
 		w.moveWalkers()
 		w.refresh()
@@ -907,13 +997,20 @@ func (w World) phase() int64 { return (w.Tick + SeasonOffset) % YearTicks }
 // Rise during the first quarter, hold at peak, recede over the second half.
 func (w World) floodLevel() float64 {
 	phase := w.phase()
+	if w.CityEvents.FloodYear > 0 && (w.Tick+SeasonOffset)/YearTicks == w.CityEvents.FloodYear && w.CityEvents.FloodQuality == 0 {
+		return 0
+	}
 	if phase >= 48 {
 		return 0
 	}
 	return min(float64(phase)/12, 1, float64(48-phase)/24)
 }
 func (w World) View() View {
-	v := View{SalaryRank: w.SalaryRank, Savings: w.Savings, Stolen: w.Stolen, Arrests: w.Arrests, Sentiment: w.sentiment(), Bridges: w.Bridges, MapExtent: w.mapSize(), Banks: w.Banks, Festival: w.Festival, LastFestival: w.LastFestival, FestivalsHeld: w.FestivalsHeld, DiseaseDeaths: w.DiseaseDeaths, Favor: w.Favor, Tick: w.Tick, Roads: w.Roads, Buildings: w.Buildings, Walkers: []WalkerView{}, Entry: w.entry(), Exit: w.ExitPoint, KingdomRoad: append([]Point{}, w.KingdomRoad...), HousingRoadReach: HousingRoadReach, FloodLevel: w.floodLevel(), Population: w.population(), GrainProduced: w.GrainProduced, GrainConsumed: w.GrainConsumed, Departures: w.Departures, Year: (w.Tick+SeasonOffset)/YearTicks + 1, HarvestIn: (192 - w.phase() + YearTicks) % YearTicks}
+	v := View{Cliffs: w.Cliffs, ConstructionCredit: w.constructionCredit(), InterestPaid: w.Household.Interest, RoyalGiftCosts: w.giftCosts(), KingdomStanding: w.kingdomStanding(), LaborSeekers: w.LaborSeekers, KingdomWage: w.prevailingWage(), CityEvents: w.CityEvents, ZooCoverage: w.zooCoverage(), SalaryRank: w.SalaryRank, Savings: w.Savings, Stolen: w.Stolen, Arrests: w.Arrests, Sentiment: w.sentiment(), Bridges: w.Bridges, MapExtent: w.mapSize(), Banks: w.Banks, Festival: w.Festival, LastFestival: w.LastFestival, FestivalsHeld: w.FestivalsHeld, DiseaseDeaths: w.DiseaseDeaths, Favor: w.Favor, Tick: w.Tick, Roads: w.Roads, Buildings: w.Buildings, Walkers: []WalkerView{}, Entry: w.entry(), Exit: w.ExitPoint, KingdomRoad: append([]Point{}, w.KingdomRoad...), HousingRoadReach: HousingRoadReach, FloodLevel: w.floodLevel(), Population: w.population(), GrainProduced: w.GrainProduced, GrainConsumed: w.GrainConsumed, Departures: w.Departures, Year: (w.Tick+SeasonOffset)/YearTicks + 1, HarvestIn: (192 - w.phase() + YearTicks) % YearTicks}
+	v.Culture = w.cultureRating()
+	if r := w.ratingState(); r != nil {
+		v.Prosperity = r.Prosperity
+	}
 	v.Season = "Harvest"
 	if w.phase() < 48 {
 		v.Season = "Inundation"
@@ -925,7 +1022,7 @@ func (w World) View() View {
 		v.Employed += b.Workers
 	}
 	for _, walker := range w.Walkers {
-		v.Walkers = append(v.Walkers, WalkerView{People: walker.People, ID: walker.ID, X: walker.X, Y: walker.Y, Cargo: walker.Cargo, Role: walker.Role, Target: walker.Target, Origin: walker.Origin, Source: walker.Source, Stage: walker.Stage, Resource: walker.Resource, ShiftUntil: walker.ShiftUntil})
+		v.Walkers = append(v.Walkers, WalkerView{Supplies: walker.Supplies, People: walker.People, ID: walker.ID, X: walker.X, Y: walker.Y, Cargo: walker.Cargo, Role: walker.Role, Target: walker.Target, Origin: walker.Origin, Source: walker.Source, Stage: walker.Stage, Resource: walker.Resource, ShiftUntil: walker.ShiftUntil})
 		if walker.Role != "trader" && (walker.Resource == "" || walker.Resource == "grain") {
 			v.Grain += walker.Cargo
 		}
@@ -943,6 +1040,7 @@ func (w World) View() View {
 	w.tradeView(&v)
 	w.militaryView(&v)
 	w.riverView(&v)
+	w.ferryView(&v)
 	w.agricultureView(&v)
 	return v
 }
@@ -953,9 +1051,18 @@ func (w World) Hash() string {
 }
 func (w *World) upgrade() error {
 	if w.Version == SnapshotVersion {
+		if w.MilitaryVersion == 0 {
+			w.upgradeMilitary()
+		}
 		return nil
 	}
+	if w.Version >= 0 && w.Version < SnapshotVersion && w.MilitaryVersion == 0 {
+		w.MilitaryVersion = 1
+	}
 	if w.Version == 7 || w.Version == 8 {
+		if err := w.validateCliffs(); err != nil {
+			return err
+		}
 		if err := w.validateGeography(); err != nil {
 			return err
 		}
@@ -1028,6 +1135,9 @@ func (w *World) upgrade() error {
 	return nil
 }
 func (w World) Validate() error {
+	if err := w.validateCliffs(); err != nil {
+		return err
+	}
 	if err := w.validateGeography(); err != nil {
 		return err
 	}
@@ -1060,16 +1170,25 @@ func (w World) Validate() error {
 	if err := w.validateAgriculture(); err != nil {
 		return err
 	}
+	if err := w.validateFerries(); err != nil {
+		return err
+	}
 	if err := w.validateRiver(); err != nil {
 		return err
 	}
 	if err := w.validateSeaTrade(); err != nil {
 		return err
 	}
+	if err := w.validateRoyalHousehold(); err != nil {
+		return err
+	}
 	if w.SalaryRank < 0 || w.SalaryRank >= len(salaryByRank) || w.Savings < 0 || w.Arrests < 0 || w.Stolen < 0 {
 		return errors.New("invalid personal treasury")
 	}
 	if err := w.validateBridges(); err != nil {
+		return err
+	}
+	if err := w.validateDefenses(); err != nil {
 		return err
 	}
 	if err := w.validateMilitary(); err != nil {
@@ -1105,16 +1224,32 @@ func (w World) Validate() error {
 		}
 		occupied[p] = true
 	}
+	complexFound := false
 	for _, b := range w.Buildings {
+		if slices.Contains(complexKinds, b.Kind) {
+			if complexFound {
+				return errors.New("multiple temple complexes")
+			}
+			complexFound = true
+		}
+		if err := w.royalTombPlacement(b); err != nil {
+			return err
+		}
 		if err := w.validateMonumentParts(b); err != nil {
 			return err
 		}
 		width, height := b.footprintDimensions()
-		if b.Happiness < 0 || b.Happiness > 100 || b.CrimeRisk < 0 || b.CrimeRisk > 100 || b.LotSide < 0 || b.LotSide > 4 || (b.Kind != "hut" && b.LotSide != 0) || !validKind(b.Kind) || b.Width != width || b.Height != height || b.ID < 1 || b.ID >= w.NextID || ids[b.ID] || b.Stock < 0 || b.Stock > b.StockCapacity || b.Pop < 0 || b.Pop > b.Capacity || (b.Kind != "hut" && b.Pop != 0) || b.Work < 0 || b.Work > buildingWorkCapacity(b) || b.MarketUntil < 0 {
+		if b.MalariaRisk < 0 || b.MalariaRisk > 100 || b.DiseaseRisk < 0 || b.DiseaseRisk > 100 {
+			return errors.New("invalid household health risk")
+		}
+		if b.ServiceSupplyCredit && supplyForService(b.Kind) == "" {
+			return errors.New("service credit at unsupported site")
+		}
+		if b.Facing < 0 || b.Facing > 3 || b.TempleUpgrades > 3 || ((b.TempleUpgrades != 0 || b.Facing != 0) && !slices.Contains(complexKinds, b.Kind)) || b.Kind == "complexaltar" || b.Kind == "complexoracle" || b.HousesCovered < 0 || b.HousesCovered > 300 || (!w.LaborSeekers && b.HousesCovered != 0) || b.Happiness < 0 || b.Happiness > 100 || b.CrimeRisk < 0 || b.CrimeRisk > 100 || b.LotSide < 0 || b.LotSide > 4 || (b.Kind != "hut" && b.LotSide != 0) || !validKind(b.Kind) || b.Width != width || b.Height != height || b.ID < 1 || b.ID >= w.NextID || ids[b.ID] || b.Stock < 0 || b.Stock > b.StockCapacity || b.Pop < 0 || b.Pop > b.Capacity || (b.Kind != "hut" && b.Pop != 0) || b.Work < 0 || b.Work > buildingWorkCapacity(b) || b.MarketUntil < 0 {
 			return errors.New("invalid building")
 		}
 		for _, p := range b.tiles() {
-			if !w.buildingTileValid(b, p) || buildingFootprints[p] || (occupied[p] && !(slices.Contains(venues, b.Kind) && venueRoads[p])) || ((b.Kind == "claypit" || w.AgricultureVersion == 0 && (b.Kind == "farm" || campCrops[b.Kind] != "")) && !w.floodplain(p)) {
+			if !w.buildingTileValid(b, p) || buildingFootprints[p] || (occupied[p] && !((slices.Contains(venues, b.Kind) || b.Kind == "gatehouse") && venueRoads[p])) || ((b.Kind == "claypit" || w.AgricultureVersion == 0 && (b.Kind == "farm" || campCrops[b.Kind] != "")) && !w.floodplain(p)) {
 				return errors.New("invalid building footprint")
 			}
 			occupied[p] = true
@@ -1125,7 +1260,7 @@ func (w World) Validate() error {
 	if int64(w.population()) != w.Arrivals-w.Departures {
 		return errors.New("population does not match arrivals and departures")
 	}
-	if int64(w.View().Grain)+w.GrainConsumed+w.ResourceExported["grain"]+w.RequestSent["grain"] != w.GrainProduced+w.ResourceImported["grain"] {
+	if int64(w.View().Grain)+w.GrainConsumed+w.ResourceExported["grain"]+w.RequestSent["grain"] != w.GrainProduced+w.ResourceImported["grain"]+w.CityEvents.Gifts["grain"] {
 		return errors.New("grain conservation failed")
 	}
 	derived := w
@@ -1154,6 +1289,9 @@ func (w World) Validate() error {
 		if walker.Role != "builder" && walker.Role != "stonehauler" && walker.Role != "porter" && walker.Role != "goldcart" && walker.Role != "trader" && !isGoodsRole(walker.Role) && walker.Role != "hunter" && walker.Resource != "" && walker.Resource != "grain" {
 			return errors.New("invalid walker resource")
 		}
+		if walker.Role != "builder" && len(walker.Supplies) > 0 {
+			return errors.New("supplies on unrelated walker")
+		}
 		if walker.ID < 1 || walker.ID >= w.NextID || ids[walker.ID] || walker.Cargo < 0 || walker.Cargo > walkerCapacity(walker.Role) || walker.Reserved < 0 || walker.Reserved > reservationCapacity(walker.Role) || len(walker.Route) == 0 || walker.Next < 1 || walker.Next > len(walker.Route) || walker.Route[walker.Next-1] != (Point{walker.X, walker.Y}) {
 			return errors.New("invalid walker")
 		}
@@ -1163,6 +1301,10 @@ func (w World) Validate() error {
 			return errors.New("invalid walker destination")
 		}
 		switch walker.Role {
+		case "laborseeker":
+			if !w.LaborSeekers || target.ID != walker.Origin || target.ID != walker.Source || target.WorkersNeeded == 0 || (walker.Stage != "patrol" && walker.Stage != "return") || walker.Cargo != 0 || walker.Reserved != 0 {
+				return errors.New("invalid labor representative")
+			}
 		case "robber":
 			origin := w.building(walker.Origin)
 			if origin == nil || origin.Kind != "hut" || !crimeTarget(*target) || walker.Stage != "robbery" || walker.Cargo != 0 || walker.Reserved != 0 || !origin.roadAccess(walker.Route[0]) {
@@ -1247,8 +1389,9 @@ func (w World) Validate() error {
 		default:
 			return errors.New("unknown walker role")
 		}
+		ferryRoads := w.ferryEdges(true)
 		for i, p := range walker.Route {
-			if (!offRoadRole(walker.Role) && !roads[p]) || (offRoadRole(walker.Role) && occupied[p] && !roads[p]) || !w.walkable(p) || (i > 0 && !adjacent(p, walker.Route[i-1])) {
+			if (!offRoadRole(walker.Role) && !roads[p]) || (offRoadRole(walker.Role) && occupied[p] && !roads[p]) || !w.walkable(p) || (i > 0 && !adjacent(p, walker.Route[i-1]) && !ferryRoadsConnect(ferryRoads, p, walker.Route[i-1])) {
 				return fmt.Errorf("invalid route at step %d", i)
 			}
 		}

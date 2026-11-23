@@ -31,7 +31,7 @@ func (w World) navigableWater(p Point) bool {
 
 func (w World) buildable(p Point) bool {
 	n := w.mapSize()
-	return p.Y >= 0 && p.Y < n && p.X >= 0 && p.X < n && !w.navigableWater(p)
+	return p.Y >= 0 && p.Y < n && p.X >= 0 && p.X < n && !w.navigableWater(p) && !w.cliff(p)
 }
 func (w World) floodplain(p Point) bool {
 	return w.buildable(p) && p.X < w.bank(p.Y)+4 && p.X >= w.westBank(p.Y)-4
@@ -61,9 +61,10 @@ func (w World) validateGeography() error {
 }
 
 // A hand-authored single-city sandbox. Bends in the river define fertile
-// ground and the edges of the meadow. The winding trail has two land exits.
+// ground and the edges of the meadow. The Kingdom Road has two land exits and leaves space to farm the banks.
 func NewValley() World {
 	w := NewTown()
+	w.LaborSeekers = true
 	w.startMonthlyFinance()
 	w.MapExtent = 96
 	n := w.mapSize()
@@ -120,9 +121,18 @@ func NewValley() World {
 			w.QuarryRock = append(w.QuarryRock, Point{c.X + o.X, c.Y + o.Y})
 		}
 	}
-	x := w.Banks[0] + 5
+	// Long dry reaches keep the main trail recognizable as the river bends.
+	x := 41
 	for y := 0; y < n; y++ {
-		target := w.Banks[y] + 5
+		target := x
+		switch y {
+		case 14:
+			target = 47
+		case 56:
+			target = 50
+		case 76:
+			target = 44
+		}
 		w.KingdomRoad = append(w.KingdomRoad, Point{x, y})
 		for x != target {
 			if x < target {
@@ -136,6 +146,7 @@ func NewValley() World {
 	w.Roads = append([]Point{}, w.KingdomRoad...)
 	start, end := w.Roads[0], w.Roads[len(w.Roads)-1]
 	w.EntryPoint, w.ExitPoint = &start, &end
+	w.addValleyCliffs()
 	w.refresh()
 	return w
 }

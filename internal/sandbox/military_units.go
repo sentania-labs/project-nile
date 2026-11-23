@@ -13,8 +13,34 @@ func init() {
 		CatalogEntry{"chariotmaker", "Chariot Maker", 2, 2, 250, "Military", 30},
 		CatalogEntry{"academy", "Military Academy", 4, 4, 1000, "Military", 20})
 	goodsRecipes["chariotmaker"] = goodsRecipe{"timber", "chariots", 100, 100}
+	// Original Normal building rows40/44/45/94/95/205. Military quarters
+	// depress nearby housing; placing them in the neighborhood has a real cost.
+	for _, kind := range []string{"fort", "archerfort", "chariotfort"} {
+		influences[kind] = influence{-20, 2, 2, 6}
+	}
+	influences["academy"] = influence{-3, 1, 1, 3}
+	influences["recruiter"] = influence{-6, 1, 1, 3}
+	influences["chariotmaker"] = influence{-6, 1, 1, 6}
+	influences["gatehouse"] = influence{-4, 1, 1, 4}
+	influences["tower"] = influence{-6, 1, 1, 6}
 }
 func isFort(kind string) bool { return kind == "fort" || kind == "archerfort" || kind == "chariotfort" }
+
+// Earlier snapshots predate original fort desirability and counted only landed
+// enemies as active. Refresh derived housing once when adopting these rules;
+// current snapshots still undergo the strict, non-repairing invariant check.
+func (w *World) upgradeMilitary() {
+	w.MilitaryVersion = 1
+	w.refresh()
+	w.syncInvasions()
+	alive := w.passengersAtSea(0) + w.hostileWarships(0)
+	for _, a := range w.Troops {
+		if a.Enemy {
+			alive++
+		}
+	}
+	w.Military.InvasionActive = alive > 0
+}
 func fortUnit(kind string) string {
 	if kind == "archerfort" {
 		return "archer"
@@ -41,6 +67,9 @@ func unitSupply(kind string) string {
 }
 func unitHP(a Troop) int {
 	n := 5
+	if troopUnit(a) == "sentry" {
+		n = 4
+	}
 	if troopUnit(a) == "archer" {
 		n = 3
 	}
@@ -63,6 +92,9 @@ func (w *World) recruitMilitary() {
 		}
 		b.Work = min(160, b.Work+b.Workers)
 		if b.Work < 160 {
+			continue
+		}
+		if w.recruitSentry(b) {
 			continue
 		}
 		for _, company := range w.Companies {
@@ -145,6 +177,9 @@ func (w *World) trainMilitary(a *Troop) {
 	a.Next = 1
 }
 func unitRange(a Troop) int {
+	if troopUnit(a) == "sentry" {
+		return 6
+	}
 	if troopUnit(a) == "archer" {
 		return 5
 	}
@@ -167,7 +202,7 @@ func unitMovement(a Troop, tick int64) int {
 }
 func (w World) validateUnit(a Troop) error {
 	kind := troopUnit(a)
-	if kind != "infantry" && kind != "archer" && kind != "charioteer" {
+	if kind != "infantry" && kind != "archer" && kind != "charioteer" && kind != "sentry" {
 		return errors.New("unknown troop type")
 	}
 	if a.Experience < 0 || a.Experience > 4 || a.Training < 0 || a.Training > 32 || a.HP > unitHP(a) {

@@ -13,6 +13,11 @@ func NewCampaign(id int) (World, error) {
 	if err != nil {
 		return World{}, err
 	}
+	return newCampaign(state), nil
+}
+
+func newCampaign(state *campaign.State) World {
+	id := state.MissionID
 	w := NewTown()
 	w.Campaign = state
 	w.Campaign.InitEvents()
@@ -30,7 +35,7 @@ func NewCampaign(id int) (World, error) {
 	w.seedCampaignMaterials(id)
 	w.Treasury = mission.InitialFunds
 	w.refresh()
-	return w, nil
+	return w
 }
 
 func (w World) startingTreasury() int64 {
@@ -48,10 +53,17 @@ func (w World) campaignObservation() campaign.Observation {
 	level := 2
 	if w.Campaign != nil {
 		o.Kingdom = w.Campaign.Kingdom
+		o.Culture = w.cultureRating()
+		if w.Campaign.Ratings != nil {
+			o.Prosperity = w.Campaign.Ratings.Prosperity
+		}
 		mission, _ := campaign.Definition(w.Campaign.MissionID)
 		level = mission.Goals["housing_level_index"].Value
 	}
 	for _, b := range w.Buildings {
+		if b.Kind == "hut" && b.Pop > 0 && b.Damaged == "" && b.Tier >= 9 {
+			o.ApartmentHomes++
+		}
 		if b.Kind == "hut" && b.Pop > 0 && b.Damaged == "" && b.Tier >= level {
 			o.QualifyingHomes++
 		}
@@ -65,6 +77,7 @@ func (w World) campaignObservation() campaign.Observation {
 		if b.Kind == "storageyard" {
 			o.StoredPottery += w.ResourceAmount(b.ID, "pottery")
 			o.StoredBeer += w.ResourceAmount(b.ID, "beer")
+			o.StoredBricks += w.ResourceAmount(b.ID, "bricks")
 		}
 		if b.Workers > 0 {
 			if b.Kind == "firehouse" {
@@ -75,21 +88,36 @@ func (w World) campaignObservation() campaign.Observation {
 			}
 		}
 	}
+	for _, a := range w.Walkers {
+		if a.Role == "scribalschool" {
+			o.TeacherDispatched = true
+			break
+		}
+	}
 	return o
 }
 
 func (w *World) campaignTick() {
 	if w.Campaign != nil {
-		w.Campaign.AdvanceEvents(w.Tick / (YearTicks / 12))
+		effects := w.Campaign.AdvanceEvents(w.Tick / (YearTicks / 12))
+		w.applyCivilianEvents(effects)
+		w.applyCampaignInvasions(effects)
+		w.campaignArmyTick()
+		w.campaignRatingsTick()
 		if w.Treasury < 0 && w.Campaign.RescueReceived == 0 {
 			mission, _ := campaign.Definition(w.Campaign.MissionID)
 			if mission.RescueFunds > 0 {
 				w.Campaign.RescueReceived = mission.RescueFunds
 				w.Treasury += mission.RescueFunds
 				w.Income += mission.RescueFunds
+				if w.Campaign.Ratings != nil {
+					w.Campaign.Ratings.Prosperity = max(0, w.Campaign.Ratings.Prosperity-3)
+				}
 			}
 		}
 		w.Campaign.Observe(w.campaignObservation())
+	} else if w.RoyalCredit {
+		w.campaignRatingsTick()
 	}
 }
 
@@ -101,14 +129,17 @@ func (w World) campaignView(v *View) {
 	v.Campaign = w.Campaign.View(w.campaignObservation())
 	w.campaignRequestView(v.Campaign)
 	v.BuildingCatalog = nil
-	for _, entry := range buildingCatalog {
-		if w.Campaign.Allows(entry.Kind) {
+	for _, entry := range w.pricedCatalog() {
+		if entry.Kind != "mastaba" && w.Campaign.Allows(entry.Kind) {
 			v.BuildingCatalog = append(v.BuildingCatalog, entry)
 		}
 	}
 }
 
 func (w World) validateCampaign() error {
+	if err := w.validateCampaignRatings(); err != nil {
+		return err
+	}
 	if err := w.validateCampaignRequests(); err != nil {
 		return err
 	}
@@ -148,6 +179,7 @@ func (w *World) AdvanceCampaign(id int) (World, error) {
 	if err != nil {
 		return World{}, err
 	}
+	state.InitEvents()
 	next.Campaign = state
 	return next, nil
 }

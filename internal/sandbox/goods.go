@@ -13,6 +13,7 @@ type goodsRecipe struct {
 // Dependencies and producer-to-manufacturer preference follow the manual.
 // Batch sizes, employee-tick durations and finite buffers are provisional.
 var goodsRecipes = map[string]goodsRecipe{
+	"paintmaker": {"henna", "paint", 100, 100}, "lampmaker": {"oil", "lamps", 100, 100},
 	"jeweler":     {"gems", "jewelry", 100, 100},
 	"cattleranch": {"straw", "beef", 8, 100},
 	"brewery":     {"barley", "beer", 100, 100}, "papyrusmaker": {"reeds", "papyrus", 100, 100},
@@ -51,12 +52,22 @@ func (w World) goodsPlacement(b Building) error {
 	return nil
 }
 func (w *World) produceGoods() {
+	complex := w.templeComplex()
+
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
 		if b.Kind == "hut" && b.Pop > 0 && w.Tick%ConsumptionInterval == 0 {
 			// Grain remains the preferred food for legacy households. Meat supplies
 			// remaining demand, without relabelling hunted food as grain.
-			need := max(0, (b.Pop+4)/5-b.Stock)
+			need := (b.Pop + 4) / 5
+			blessed := hasTempleBenefit(complex, "complex_bast", 0) || (b.GodUntil[0] > w.Tick && hasTempleBenefit(complex, "complex_osiris", 1))
+			if blessed {
+				need = (3*need + 3) / 4
+			}
+			grain := min(need, b.Stock)
+			b.Stock -= grain
+			w.GrainConsumed += int64(grain)
+			need -= grain
 			for _, r := range foodKinds[1:] {
 				if need == 0 {
 					break
@@ -65,7 +76,11 @@ func (w *World) produceGoods() {
 			}
 			for _, r := range []string{"pottery", "beer", "linen", "jewelry"} {
 				if houseWantsResource(*b, r) {
-					w.ConsumeResource(b.ID, r, max(1, b.Pop/10))
+					amount := max(1, b.Pop/10)
+					if blessed {
+						amount = (3*amount + 3) / 4
+					}
+					w.ConsumeResource(b.ID, r, amount)
 				}
 			}
 		}
@@ -93,7 +108,11 @@ func (w *World) produceGoods() {
 		}
 		if output := extracted[b.Kind]; output != "" {
 			if w.ResourceFreeSpace(b.ID, output) >= 100 {
-				b.Work += b.Workers
+				effort := b.Workers
+				if hasTempleBenefit(complex, "complex_ptah", 1) && (output == "stone" || output == "sandstone" || output == "limestone" || output == "granite") || hasTempleBenefit(complex, "complex_ptah", 0) && output == "gems" {
+					effort += (effort + 3) / 4
+				}
+				b.Work += effort
 				if b.Work >= 576 {
 					w.ProduceResource(b.ID, output, 100)
 					b.Work -= 576
@@ -101,12 +120,26 @@ func (w *World) produceGoods() {
 			}
 			continue
 		}
+		if b.Kind == "zoo" {
+			w.operateZoo(b)
+			continue
+		}
 		if recipe, ok := goodsRecipes[b.Kind]; ok {
+			if b.Kind == "lampmaker" && inventory(*b, "pottery") < 100 {
+				continue
+			}
 			if inventory(*b, recipe.Input) < recipe.InputAmount || w.ResourceFreeSpace(b.ID, recipe.Output) < recipe.OutputAmount {
 				continue
 			}
-			b.Work = min(576, b.Work+b.Workers)
+			effort := b.Workers
+			if hasTempleBenefit(complex, "complex_ptah", 0) && (b.Kind == "weaver" || b.Kind == "jeweler") {
+				effort += (effort + 3) / 4
+			}
+			b.Work = min(576, b.Work+effort)
 			if b.Work >= 576 {
+				if b.Kind == "lampmaker" {
+					w.ConsumeResource(b.ID, "pottery", 100)
+				}
 				w.ConsumeResource(b.ID, recipe.Input, recipe.InputAmount)
 				w.ProduceResource(b.ID, recipe.Output, recipe.OutputAmount)
 				b.Work = 0
@@ -169,6 +202,9 @@ func (w World) freightReceiver(source, target Building, r string) (bool, int) {
 		return true, 0
 	}
 	if target.Kind == "recruiter" && (r == "weapons" || r == "chariots") {
+		return true, 0
+	}
+	if expansionInput(target.Kind, r) {
 		return true, 0
 	}
 	if supplyForService(target.Kind) == r {

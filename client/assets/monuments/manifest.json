@@ -351,7 +351,7 @@
       0.5,
       0.95
     ],
-    "label": "Small pyramid pyramid"
+    "label": "Small pyramid"
   },
   "mediumpyramid": {
     "id": "mediumpyramid",
@@ -365,7 +365,7 @@
       0.5,
       0.95
     ],
-    "label": "Medium pyramid pyramid"
+    "label": "Medium pyramid"
   },
   "largepyramid": {
     "id": "largepyramid",
@@ -379,7 +379,7 @@
       0.5,
       0.95
     ],
-    "label": "Large pyramid pyramid"
+    "label": "Large pyramid"
   },
   "complexpyramid": {
     "id": "complexpyramid",
@@ -393,7 +393,7 @@
       0.5,
       0.95
     ],
-    "label": "Complex pyramid pyramid"
+    "label": "Complex pyramid"
   },
   "grandpyramid": {
     "id": "grandpyramid",
@@ -407,7 +407,7 @@
       0.5,
       0.95
     ],
-    "label": "Grand pyramid pyramid"
+    "label": "Grand pyramid"
   },
   "smallbrick": {
     "id": "smallbrick",
@@ -506,5 +506,329 @@
       0.95
     ],
     "label": "Medium bent pyramid"
+  },
+  "smallmastaba": {
+    "id": "smallmastaba",
+    "path": "../monuments/mastaba-complete.png",
+    "footprint": [
+      4,
+      10
+    ],
+    "draw_width": 746.6666666666666,
+    "anchor": [
+      0.2695,
+      0.9453
+    ],
+    "vertical_scale": 1.52,
+    "ground_shear": -0.056,
+    "label": "Small mastaba"
+  },
+  "smallmastaba_foundation": {
+    "id": "smallmastaba_foundation",
+    "path": "../monuments/mastaba-foundation.png",
+    "footprint": [
+      4,
+      10
+    ],
+    "draw_width": 746.6666666666666,
+    "anchor": [
+      0.2695,
+      0.9453
+    ],
+    "vertical_scale": 1.52,
+    "ground_shear": -0.056,
+    "label": "Small mastaba"
+  },
+  "mediummastaba": {
+    "id": "mediummastaba",
+    "path": "../monuments/mastaba-complete.png",
+    "footprint": [
+      6,
+      14
+    ],
+    "draw_width": 1066.6666666666667,
+    "anchor": [
+      0.2695,
+      0.9453
+    ],
+    "vertical_scale": 1.52,
+    "ground_shear": -0.056,
+    "label": "Medium mastaba"
+  },
+  "mediummastaba_foundation": {
+    "id": "mediummastaba_foundation",
+    "path": "../monuments/mastaba-foundation.png",
+    "footprint": [
+      6,
+      14
+    ],
+    "draw_width": 1066.6666666666667,
+    "anchor": [
+      0.2695,
+      0.9453
+    ],
+    "vertical_scale": 1.52,
+    "ground_shear": -0.056,
+    "label": "Medium mastaba"
+  },
+  "largemastaba": {
+    "id": "largemastaba",
+    "path": "../monuments/mastaba-complete.png",
+    "footprint": [
+      8,
+      18
+    ],
+    "draw_width": 1386.6666666666667,
+    "anchor": [
+      0.2695,
+      0.9453
+    ],
+    "vertical_scale": 1.52,
+    "ground_shear": -0.056,
+    "label": "Large mastaba"
+  },
+  "largemastaba_foundation": {
+    "id": "largemastaba_foundation",
+    "path": "../monuments/mastaba-foundation.png",
+    "footprint": [
+      8,
+      18
+    ],
+    "draw_width": 1386.6666666666667,
+    "anchor": [
+      0.2695,
+      0.9453
+    ],
+    "vertical_scale": 1.52,
+    "ground_shear": -0.056,
+    "label": "Large mastaba"
+  },
+  "smallobelisk": {
+    "id": "smallobelisk",
+    "path": "../monuments/smallobelisk.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 724.5995085995086,
+    "anchor": [
+      0.5,
+      0.9501953125
+    ],
+    "label": "Small obelisk"
+  },
+  "largeobelisk": {
+    "id": "largeobelisk",
+    "path": "../monuments/largeobelisk.png",
+    "footprint": [
+      5,
+      5
+    ],
+    "draw_width": 739.1278195488721,
+    "anchor": [
+      0.5,
+      0.9501953125
+    ],
+    "label": "Large obelisk"
+  },
+  "smallobelisk_work": {
+    "id": "smallobelisk_work",
+    "path": "../monuments/smallobelisk_work.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 724.5995085995086,
+    "anchor": [
+      0.5,
+      0.9501953125
+    ],
+    "label": "Small obelisk"
+  },
+  "largeobelisk_work": {
+    "id": "largeobelisk_work",
+    "path": "../monuments/largeobelisk_work.png",
+    "footprint": [
+      5,
+      5
+    ],
+    "draw_width": 739.1278195488721,
+    "anchor": [
+      0.5,
+      0.9501953125
+    ],
+    "label": "Large obelisk"
+  },
+  "smallmausoleum": {
+    "id": "smallmausoleum",
+    "path": "../monuments/mausoleum.png",
+    "footprint": [
+      22,
+      8
+    ],
+    "draw_width": 1260,
+    "anchor": [
+      0.845,
+      0.95
+    ],
+    "vertical_scale": 1.12,
+    "ground_shear": 0.225,
+    "label": "Mausoleum"
+  },
+  "smallmausoleum_foundation": {
+    "id": "smallmausoleum_foundation",
+    "path": "../monuments/mausoleum-foundation.png",
+    "footprint": [
+      22,
+      8
+    ],
+    "draw_width": 1260,
+    "anchor": [
+      0.845,
+      0.95
+    ],
+    "vertical_scale": 1.12,
+    "ground_shear": 0.225,
+    "label": "Mausoleum site"
+  },
+  "mediummausoleum": {
+    "id": "mediummausoleum",
+    "path": "../monuments/mausoleum.png",
+    "footprint": [
+      22,
+      8
+    ],
+    "draw_width": 1260,
+    "anchor": [
+      0.845,
+      0.95
+    ],
+    "vertical_scale": 1.12,
+    "ground_shear": 0.225,
+    "label": "Mausoleum"
+  },
+  "mediummausoleum_foundation": {
+    "id": "mediummausoleum_foundation",
+    "path": "../monuments/mausoleum-foundation.png",
+    "footprint": [
+      22,
+      8
+    ],
+    "draw_width": 1260,
+    "anchor": [
+      0.845,
+      0.95
+    ],
+    "vertical_scale": 1.12,
+    "ground_shear": 0.225,
+    "label": "Mausoleum site"
+  },
+  "largemausoleum": {
+    "id": "largemausoleum",
+    "path": "../monuments/mausoleum.png",
+    "footprint": [
+      22,
+      8
+    ],
+    "draw_width": 1260,
+    "anchor": [
+      0.845,
+      0.95
+    ],
+    "vertical_scale": 1.12,
+    "ground_shear": 0.225,
+    "label": "Mausoleum"
+  },
+  "largemausoleum_foundation": {
+    "id": "largemausoleum_foundation",
+    "path": "../monuments/mausoleum-foundation.png",
+    "footprint": [
+      22,
+      8
+    ],
+    "draw_width": 1260,
+    "anchor": [
+      0.845,
+      0.95
+    ],
+    "vertical_scale": 1.12,
+    "ground_shear": 0.225,
+    "label": "Mausoleum site"
+  },
+  "suntemple": {
+    "id": "suntemple",
+    "path": "../monuments/suntemple.png",
+    "footprint": [
+      11,
+      10
+    ],
+    "draw_width": 960,
+    "anchor": [
+      0.56,
+      0.95
+    ],
+    "vertical_scale": 0.79,
+    "ground_shear": 0.264,
+    "label": "Sun Temple"
+  },
+  "suntemple_work": {
+    "id": "suntemple_work",
+    "path": "../monuments/suntemple-work.png",
+    "footprint": [
+      11,
+      10
+    ],
+    "draw_width": 960,
+    "anchor": [
+      0.56,
+      0.95
+    ],
+    "vertical_scale": 0.79,
+    "ground_shear": 0.264,
+    "label": "Sun Temple site"
+  },
+  "sun_foretemple": {
+    "id": "sun_foretemple",
+    "path": "../monuments/mortuary_temple.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 320,
+    "anchor": [
+      0.5,
+      0.95
+    ],
+    "vertical_scale": 1.0,
+    "ground_shear": 0.0,
+    "label": "Sun Temple fore temple"
+  },
+  "smallroyaltomb": {
+    "id": "smallroyaltomb",
+    "path": "../monuments/royaltomb.png",
+    "footprint": [
+      4,
+      4
+    ],
+    "draw_width": 426.67,
+    "anchor": [
+      0.482,
+      0.95
+    ],
+    "label": "Small Royal Burial Tomb"
+  },
+  "smallroyaltomb_work": {
+    "id": "smallroyaltomb_work",
+    "path": "../monuments/royaltomb-work.png",
+    "footprint": [
+      4,
+      4
+    ],
+    "draw_width": 426.67,
+    "anchor": [
+      0.482,
+      0.95
+    ],
+    "label": "Small Royal Burial Tomb"
   }
 }

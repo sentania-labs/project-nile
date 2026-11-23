@@ -40,6 +40,51 @@ func TestOriginalEventCatalogAndEconomicCapabilities(t *testing.T) {
 	if !mennefer.CanImportResource(6) || mennefer.CanImportResource(29) {
 		t.Fatal("Men-nefer trading partners differ from source")
 	}
+	var dormant City
+	for _, city := range Cities(5) {
+		if city.Route == 5 {
+			dormant = city
+		}
+	}
+	if dormant.Name != "Men-nefer" || dormant.Type != 2 || len(dormant.Sells) != 0 || len(dormant.PotentialSells) != 3 || dormant.AnnualLimits[23] != 1500 {
+		t.Fatal("Timna's dormant royal partner lost its original latent commerce")
+	}
+	e, _ := (&State{MissionID: 5}).template(6)
+	if e.Location.Fixed != dormant.Route || e.Subtype != 2 || e.WarningLeadMonths != 8 {
+		t.Fatal("political event target was confused with warning timing")
+	}
+}
+
+func TestOriginalGovernmentRankAndComplexFlags(t *testing.T) {
+	for _, row := range []struct {
+		mission           int
+		palace, residence string
+	}{{4, "palace", "residence"}, {9, "townpalace", "familymansion"}, {21, "citypalace", "dynastymansion"}} {
+		m, _ := Definition(row.mission)
+		for _, kind := range []string{"palace", "townpalace", "citypalace", "residence", "familymansion", "dynastymansion"} {
+			want := kind == row.palace || kind == row.residence
+			if m.BaseAllows(kind) != want {
+				t.Fatalf("mission%d rank%d has incorrect government availability for%s", m.ID, m.Rank, kind)
+			}
+		}
+	}
+	mennefer, _ := Definition(4)
+	if mennefer.BaseAllows("complex_ptah") {
+		t.Fatal("known deity was mistaken for permission to build its complex")
+	}
+	selima, _ := Definition(8)
+	if !selima.BaseAllows("complex_seth") || selima.BaseAllows("complex_osiris") {
+		t.Fatal("Selima's separate complex flags were lost")
+	}
+	baki, _ := Definition(35)
+	for _, god := range []string{"osiris", "ra", "ptah", "seth"} {
+		if !baki.BaseAllows("complex_" + god) {
+			t.Fatal("Baki must permit the original four complex choices")
+		}
+	}
+	if baki.BaseAllows("complex_bast") {
+		t.Fatal("Baki invented a fifth complex choice")
+	}
 }
 
 func eventBySource(t *testing.T, s *State, id int) EventState {
@@ -120,5 +165,27 @@ func TestOriginalRequestCompletionSchedulesRelativeChild(t *testing.T) {
 	}
 	if err := s.RefuseRequest(e.ID); err == nil {
 		t.Fatal("completed request can be refused")
+	}
+}
+
+func TestChainedCopyDoesNotInheritRecurringTrigger(t *testing.T) {
+	// Original 0x00440080 resets a copied event's flags to 8. Its source
+	// template may recur, but the dynamically chained instance must not.
+	s := &State{MissionID: Mennefer, EventsInitialized: true, EventRNG: 1, EventMonth: 0}
+	d, _ := s.template(0)
+	if d.Trigger&2 == 0 {
+		t.Fatal("fixture is not the original recurring request")
+	}
+	s.addEvent(d, 0, true)
+	s.Events[0].Status = "completed"
+	s.AdvanceEvents(1)
+	if len(s.Events) != 1 || s.Events[0].Repeated {
+		t.Fatal("chained event multiplied its source recurrence")
+	}
+	s.addEvent(d, 0, false)
+	s.Events[1].Status = "completed"
+	s.AdvanceEvents(2)
+	if len(s.Events) != 3 || !s.Events[1].Repeated {
+		t.Fatal("independent recurring template did not renew")
 	}
 }

@@ -21,6 +21,13 @@ func (p MonumentPart) contains(at Point) bool {
 	return at.X >= p.X && at.X < p.X+p.Width && at.Y >= p.Y && at.Y < p.Y+p.Height
 }
 func (w World) complexParts(b Building) ([]MonumentPart, error) {
+	if b.Kind == "suntemple" {
+		parts := []MonumentPart{}
+		for y := 10; y < 18; y += 2 {
+			parts = append(parts, MonumentPart{"causeway", b.X + 6, b.Y + y, 2, 2})
+		}
+		return append(parts, MonumentPart{"sun_foretemple", b.X + 5, b.Y + 18, 3, 3}), nil
+	}
 	if !monumentPlans[b.Kind].Complex {
 		return nil, nil
 	}

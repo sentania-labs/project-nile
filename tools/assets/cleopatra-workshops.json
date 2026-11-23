@@ -1,0 +1,14 @@
+{
+  "name":"cleopatra-workshops",
+  "assets":[
+    ["hennafarm","Henna farm",3,258],
+    ["paintmaker","Paint maker",2,172],
+    ["lampmaker","Lamp maker",2,172],
+    ["artisans","Artisans' guild",2,172],
+    ["zoo","Zoo",6,516],
+    ["familymansion","Family mansion",4,344],
+    ["smallstatue","Small statue",1,86],
+    ["mediumstatue","Medium statue",2,172],
+    ["largestatue","Large statue",3,258]
+  ]
+}

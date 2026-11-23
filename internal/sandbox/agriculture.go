@@ -109,10 +109,10 @@ func (w *World) BuildCanals(tiles []Point) error {
 		}
 	}
 	cost := int64(len(added)) * constructionCost("irrigationditch")
-	if w.BudgetEnabled && w.Treasury < cost {
+	if w.cannotBuildFor(cost) {
 		return errors.New("not enough treasury for these irrigation ditches")
 	}
-	w.spend(cost)
+	w.spendConstruction(cost)
 	w.Canals = append(w.Canals, added...)
 	w.refresh()
 	return nil
@@ -208,10 +208,17 @@ func baseSoil(b Building) int {
 	return n
 }
 func (w *World) produceMeadowCrops() {
+	osiris := w.phase() == 24 && w.templeBenefit("complex_osiris", 0)
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
 		if b.AgricultureVersion > 0 && b.FarmType == "floodplain" && w.phase() == 24 {
 			b.SoilFertility = baseSoil(*b)
+			if osiris {
+				b.SoilFertility = min(100, b.SoilFertility+10)
+			}
+			if w.CityEvents.FloodYear > 0 && (w.Tick+SeasonOffset)/YearTicks == w.CityEvents.FloodYear {
+				b.SoilFertility = max(1, w.CityEvents.FloodQuality)
+			}
 		}
 		if b.AgricultureVersion == 0 || b.FarmType != "meadow" {
 			continue

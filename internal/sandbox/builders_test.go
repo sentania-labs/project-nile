@@ -10,7 +10,7 @@ import (
 
 func builderFixture(t *testing.T) World {
 	t.Helper()
-	w := World{Version: SnapshotVersion, Roads: []Point{}, Buildings: []Building{}, Walkers: []Walker{}, NextID: 1}
+	w := World{Version: SnapshotVersion, MilitaryVersion: 1, Roads: []Point{}, Buildings: []Building{}, Walkers: []Walker{}, NextID: 1}
 	for x := 6; x <= 15; x++ {
 		if err := w.Build("road", x, 10); err != nil {
 			t.Fatal(err)

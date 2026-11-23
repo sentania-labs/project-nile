@@ -1,0 +1,59 @@
+{
+  "name": "royal-civic",
+  "assets": [
+    [
+      "townpalace",
+      "Town palace",
+      5,
+      430
+    ],
+    [
+      "citypalace",
+      "City palace",
+      6,
+      516
+    ],
+    [
+      "dynastymansion",
+      "Dynasty mansion",
+      4,
+      344
+    ],
+    [
+      "ferry",
+      "Ferry landing",
+      2,
+      172
+    ],
+    [
+      "complexsanctuary",
+      "Temple sanctuary",
+      3,
+      258
+    ],
+    [
+      "complexaltar",
+      "Altar",
+      3,
+      258
+    ],
+    [
+      "complexoracle",
+      "Oracle",
+      3,
+      258
+    ],
+    [
+      "cliffrock",
+      "Sandstone cliff",
+      2,
+      172
+    ],
+    [
+      "reeds",
+      "Papyrus reeds",
+      1,
+      86
+    ]
+  ]
+}

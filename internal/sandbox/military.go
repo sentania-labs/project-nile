@@ -14,16 +14,22 @@ import (
 const CompanyLimit = 16
 
 type Company struct {
-	Kind       string `json:"kind,omitempty"`
-	Experience int    `json:"experience,omitempty"`
-	FortID     int64  `json:"fort_id"`
-	Order      string `json:"order"`
-	Target     Point  `json:"target"`
-	Soldiers   int    `json:"soldiers"`
-	Arriving   int    `json:"arriving"`
-	Stationed  int    `json:"stationed"`
+	Morale      int    `json:"morale,omitempty"`
+	ChargeUntil int64  `json:"charge_until,omitempty"`
+	RestUntil   int64  `json:"rest_until,omitempty"`
+	Rotated     bool   `json:"rotated,omitempty"`
+	Kind        string `json:"kind,omitempty"`
+	Experience  int    `json:"experience,omitempty"`
+	FortID      int64  `json:"fort_id"`
+	Order       string `json:"order"`
+	Target      Point  `json:"target"`
+	Soldiers    int    `json:"soldiers"`
+	Arriving    int    `json:"arriving"`
+	Stationed   int    `json:"stationed"`
 }
 type Troop struct {
+	Fought     bool    `json:"fought,omitempty"`
+	InvasionID int     `json:"invasion_id,omitempty"`
 	Kind       string  `json:"kind,omitempty"`
 	School     int64   `json:"school,omitempty"`
 	Training   int     `json:"training,omitempty"`
@@ -40,6 +46,7 @@ type Troop struct {
 	Next       int     `json:"next"`
 }
 type MilitaryStats struct {
+	SentriesRecruited int64 `json:"sentries_recruited,omitempty"`
 	ArchersRecruited  int64 `json:"archers_recruited,omitempty"`
 	ChariotsRecruited int64 `json:"chariots_recruited,omitempty"`
 	Recruited         int64 `json:"recruited"`
@@ -83,6 +90,11 @@ func (w World) militaryPlacement(b Building) error {
 	return nil
 }
 func (w World) militaryReserved(p Point) bool {
+	for _, d := range w.Deployments {
+		if !closedDeployment(d) && (d.Landing != nil && *d.Landing == p || d.Boarding != nil && *d.Boarding == p) {
+			return true
+		}
+	}
 	for _, a := range w.Troops {
 		if p == (Point{a.X, a.Y}) || slices.Contains(a.Route, p) {
 			return true
@@ -104,7 +116,7 @@ func (w *World) syncCompanies() {
 		if !isFort(b.Kind) {
 			continue
 		}
-		company := Company{Kind: fortUnit(b.Kind), FortID: b.ID, Order: "return", Target: Point{b.X, b.Y - 1}}
+		company := Company{Morale: 60, Kind: fortUnit(b.Kind), FortID: b.ID, Order: "return", Target: Point{b.X, b.Y - 1}}
 		for _, old := range w.Companies {
 			if old.FortID == b.ID {
 				company = old
@@ -151,16 +163,39 @@ func (w *World) MilitaryOrder(fortID int64, order string, p Point) error {
 	if fort == nil || !isFort(fort.Kind) || fort.Damaged != "" {
 		return errors.New("select an intact Fort")
 	}
-	if order != "muster" && order != "return" {
-		return errors.New("company order must be muster or return")
+	rotated := false
+	current := w.company(fortID)
+	if current != nil {
+		rotated = current.Rotated
 	}
-	if order == "muster" && (!w.buildable(p) || w.occupied()[p] && !w.roadSet()[p]) {
+	if order == "rotate" {
+		if current == nil {
+			return errors.New("company not found")
+		}
+		rotated = !rotated
+		order = current.Order
+		p = current.Target
+	}
+	if !validCompanyOrder(order) || order == "deployment" {
+		return errors.New("unknown company order")
+	}
+	c := w.company(fortID)
+	if order != "return" && c != nil && morale(*c) < 15 {
+		return errors.New("this company must recover its morale at the fort")
+	}
+	if order == "loose" && fort.Kind == "chariotfort" {
+		return errors.New("charioteers cannot form loose ranks")
+	}
+	if order == "charge" && (fort.Kind != "chariotfort" || c != nil && c.RestUntil > w.Tick) {
+		return errors.New("only rested charioteers can charge")
+	}
+	if order != "return" && (!w.buildable(p) || w.occupied()[p] && !w.roadSet()[p]) {
 		return errors.New("muster on open dry ground")
 	}
 	routes := map[int64][]Point{}
 	slot := 0
 	for _, a := range w.Troops {
-		if a.FortID != fortID || a.Stage == "recruit" || a.Stage == "academy" || a.Stage == "training" {
+		if a.FortID != fortID || a.Stage == "recruit" || a.Stage == "academy" || a.Stage == "training" || a.Stage == "sentry_recruit" {
 			continue
 		}
 		goals := []Point{p}
@@ -171,7 +206,15 @@ func (w *World) MilitaryOrder(fortID int64, order string, p Point) error {
 			}
 			goals = []Point{tiles[slot%len(tiles)]}
 		} else {
-			formation := Point{p.X + slot%4, p.Y + slot/4}
+			spacing := 1
+			if order == "loose" {
+				spacing = 2
+			}
+			dx, dy := slot%4*spacing, slot/4*spacing
+			if rotated {
+				dx, dy = dy, dx
+			}
+			formation := Point{p.X + dx, p.Y + dy}
 			if w.buildable(formation) && (!w.occupied()[formation] || w.roadSet()[formation]) {
 				goals = []Point{formation}
 			}
@@ -186,7 +229,12 @@ func (w *World) MilitaryOrder(fortID int64, order string, p Point) error {
 	for i := range w.Companies {
 		if w.Companies[i].FortID == fortID {
 			w.Companies[i].Order = order
-			if order == "muster" {
+			w.Companies[i].Rotated = rotated
+			if order == "charge" {
+				w.Companies[i].ChargeUntil = min(MaxTick, w.Tick+24)
+				w.Companies[i].RestUntil = min(MaxTick, w.Tick+120)
+			}
+			if order != "return" {
 				w.Companies[i].Target = p
 			}
 		}
@@ -212,43 +260,16 @@ func (w *World) TestInvasion() error {
 	if w.Military.InvasionActive {
 		return errors.New("an invasion is already active")
 	}
-	if w.NextID > MaxTick-4 {
-		return errors.New("entity identifier limit reached")
-	}
-	var target *Building
-	for i := range w.Buildings {
-		b := &w.Buildings[i]
-		if b.Kind == "hut" && b.Pop > 0 {
-			target = b
-			break
-		}
-	}
-	if target == nil {
-		return errors.New("settle a town before testing its defenses")
-	}
-	var route []Point
 	for y := 15; y < w.mapSize(); y++ {
-		route = w.landPath([]Point{{w.mapSize() - 1, y}}, w.accessTiles(*target))
-		if len(route) > 0 {
-			break
+		if err := w.SpawnInvasion(int(w.NextID), "test", 4, Point{w.mapSize() - 1, y}); err == nil {
+			return nil
 		}
 	}
-	if len(route) == 0 {
-		return errors.New("no land route into the settlement")
-	}
-	for i := range 4 {
-		separate := w.landPath([]Point{{route[0].X, route[0].Y + i}}, w.accessTiles(*target))
-		if len(separate) == 0 {
-			separate = route
-		}
-		w.Troops = append(w.Troops, Troop{ID: w.NextID, Origin: target.ID, X: separate[0].X, Y: separate[0].Y, Enemy: true, HP: 3, Stage: "raid", Route: slices.Clone(separate), Next: 1})
-		w.NextID++
-	}
-	w.Military.Invaders += 4
-	w.Military.InvasionActive = true
-	return nil
+	return errors.New("no land route into the settlement")
 }
+
 func (w *World) militaryTick() {
+	wasBattle := w.Military.InvasionActive
 	w.syncCompanies()
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
@@ -271,13 +292,19 @@ func (w *World) militaryTick() {
 	engaged := map[int64]bool{}
 	for i := range w.Troops {
 		a := &w.Troops[i]
-		if a.HP <= 0 || a.Stage == "recruit" || a.Stage == "garrison" || a.Stage == "aboard" || a.Stage == "embark" || a.Stage == "boarding" || a.Stage == "academy" || a.Stage == "training" {
+		if a.HP <= 0 || a.Stage == "kingdom_away" || a.Stage == "recruit" || a.Stage == "garrison" || a.Stage == "aboard" || a.Stage == "embark" || a.Stage == "boarding" || a.Stage == "academy" || a.Stage == "training" || a.Stage == "sentry_recruit" {
 			continue
+		}
+		if a.Stage == "guard" {
+			tower := w.building(a.FortID)
+			if tower == nil || !goodsOperating(*tower) {
+				continue
+			}
 		}
 		best := -1
 		distance := 100000
 		for j, b := range w.Troops {
-			if a.Enemy == b.Enemy || b.HP <= 0 || b.Stage == "recruit" || b.Stage == "aboard" || b.Stage == "academy" || b.Stage == "training" {
+			if a.Enemy == b.Enemy || b.HP <= 0 || b.Stage == "kingdom_away" || b.Stage == "recruit" || b.Stage == "aboard" || b.Stage == "academy" || b.Stage == "training" || b.Stage == "sentry_recruit" {
 				continue
 			}
 			d := abs(a.X-b.X) + abs(a.Y-b.Y)
@@ -293,18 +320,13 @@ func (w *World) militaryTick() {
 		if distance <= unitRange(*a) {
 			engaged[a.ID] = true
 			if w.Tick%4 == 0 {
-				damage := 1
-				if a.Experience > 0 && w.Tick%8 == 0 {
-					damage++
-				}
-				if troopUnit(*a) == "charioteer" {
-					damage++
-				}
+				damage := w.battleDamage(*a, target, distance)
+				a.Fought = true
 				hits[target.ID] += damage
 			}
 			continue
 		}
-		if !a.Enemy && distance <= 8 && a.Stage != "return" {
+		if !a.Enemy && distance <= w.pursuitRadius(*a) && a.Stage != "return" && a.Stage != "guard" {
 			route := w.landPath([]Point{{a.X, a.Y}}, []Point{{target.X, target.Y}})
 			if len(route) > 0 {
 				a.Route = route
@@ -319,20 +341,22 @@ func (w *World) militaryTick() {
 	active := make([]Troop, 0, len(w.Troops))
 	invaders := 0
 	for _, a := range w.Troops {
-		if a.Stage == "aboard" {
+		if a.Stage == "aboard" || a.Stage == "kingdom_away" {
 			active = append(active, a)
 			continue
 		}
 		if a.HP <= 0 {
 			if a.Enemy {
 				w.Military.Defeated++
+				w.recordInvader(a, false)
 			} else {
 				w.Military.Lost++
+				w.changeMorale(a.FortID, -8)
 			}
 			continue
 		}
-		if !engaged[a.ID] && a.Stage != "training" {
-			for range unitMovement(a, w.Tick) {
+		if !engaged[a.ID] && a.Stage != "training" && !w.attackDefense(&a) {
+			for range w.tacticalMovement(a) {
 				if a.Next < len(a.Route) {
 					p := a.Route[a.Next]
 					a.X, a.Y = p.X, p.Y
@@ -341,13 +365,20 @@ func (w *World) militaryTick() {
 			}
 		}
 		w.trainMilitary(&a)
+		w.arriveSentry(&a)
 
 		if a.Next >= len(a.Route) {
+			if a.Stage == "kingdom_march" {
+				a.Stage = "kingdom_away"
+				a.Route = pointSlice(a.X, a.Y)
+				a.Next = 1
+			}
 			if a.Stage == "embark" {
 				a.Stage = "boarding"
 			}
 			if a.Enemy && !engaged[a.ID] {
 				w.Military.Breaches++
+				w.recordInvader(a, true)
 				if home := w.building(a.Origin); home != nil && home.Pop > 0 {
 					home.Pop--
 					w.Departures++
@@ -360,7 +391,7 @@ func (w *World) militaryTick() {
 				a.Origin = 0
 				if wasRecruit {
 					for _, company := range w.Companies {
-						if company.FortID == a.FortID && company.Order == "muster" {
+						if company.FortID == a.FortID && company.Order != "return" && company.Order != "deployment" {
 							onward := w.landPath([]Point{{a.X, a.Y}}, []Point{company.Target})
 							if len(onward) > 0 {
 								a.Route = onward
@@ -384,16 +415,30 @@ func (w *World) militaryTick() {
 		}
 		active = append(active, a)
 	}
+	active = slices.DeleteFunc(active, func(a Troop) bool {
+		if a.Stage == "guard" {
+			tower := w.building(a.FortID)
+			if tower == nil || tower.Damaged != "" {
+				w.Military.Lost++
+				return true
+			}
+		}
+		return false
+	})
 	w.Troops = active
 	w.reconcileBoarding()
-	w.Military.InvasionActive = invaders > 0
+	w.advanceLandDeployments()
+	w.syncInvasions()
+	w.Military.InvasionActive = invaders > 0 || w.passengersAtSea(0) > 0 || w.hostileWarships(0) > 0
+	w.tacticsTick(wasBattle)
 	w.syncCompanies()
 }
 func (w World) militaryView(v *View) {
 	v.Companies = append([]Company{}, w.Companies...)
 	v.Military = w.Military
+	v.Invasions = append([]Invasion{}, w.Invasions...)
 	for _, a := range w.Troops {
-		if a.Stage == "aboard" {
+		if a.Stage == "aboard" || a.Stage == "kingdom_away" {
 			continue
 		}
 		role := troopUnit(a)
@@ -404,8 +449,17 @@ func (w World) militaryView(v *View) {
 	}
 }
 func (w World) validateMilitary() error {
+	if err := w.validateArmyDispatches(); err != nil {
+		return err
+	}
+	if w.MilitaryVersion < 0 || w.MilitaryVersion > 1 {
+		return errors.New("unsupported military rules version")
+	}
+	if err := w.validateInvasions(); err != nil {
+		return err
+	}
 	m := w.Military
-	if m.Recruited < 0 || m.Recruited > MaxTick || m.ArchersRecruited < 0 || m.ChariotsRecruited < 0 || m.ArchersRecruited+m.ChariotsRecruited > m.Recruited || w.GoodsConsumed["weapons"] < (m.Recruited-m.ArchersRecruited-m.ChariotsRecruited)*100 || w.GoodsConsumed["chariots"] < m.ChariotsRecruited*100 || m.Lost < 0 || m.Invaders < 0 || m.Defeated < 0 || m.Breaches < 0 {
+	if m.Recruited < 0 || m.Recruited > MaxTick || m.SentriesRecruited < 0 || m.ArchersRecruited < 0 || m.ChariotsRecruited < 0 || m.SentriesRecruited+m.ArchersRecruited+m.ChariotsRecruited > m.Recruited || w.GoodsConsumed["weapons"] < (m.Recruited-m.ArchersRecruited-m.ChariotsRecruited-m.SentriesRecruited)*100 || w.GoodsConsumed["chariots"] < m.ChariotsRecruited*100 || m.Lost < 0 || m.Invaders < 0 || m.Defeated < 0 || m.Breaches < 0 {
 		return errors.New("invalid military ledger")
 	}
 	ids := map[int64]bool{}
@@ -426,6 +480,9 @@ func (w World) validateMilitary() error {
 		if err := w.validateUnit(a); err != nil {
 			return err
 		}
+		if (a.Stage == "kingdom_march" || a.Stage == "kingdom_away") && !w.landDeploymentOwns(a) {
+			return errors.New("soldier left city without an army dispatch")
+		}
 		for i, p := range a.Route {
 			if a.Stage == "aboard" {
 				if !w.aboard(a.ID) || !w.water(p) {
@@ -433,7 +490,12 @@ func (w World) validateMilitary() error {
 				}
 				continue
 			}
-			if !w.walkable(p) || blocked[p] && !roads[p] || i > 0 && !adjacent(p, a.Route[i-1]) {
+			allowedDefense := a.Enemy && w.defenseAt(p) != nil
+			if a.Stage == "guard" {
+				tower := w.building(a.FortID)
+				allowedDefense = tower != nil && tower.Kind == "tower" && tower.contains(p)
+			}
+			if !w.walkable(p) || blocked[p] && !roads[p] && !allowedDefense || i > 0 && !adjacent(p, a.Route[i-1]) {
 				return errors.New("invalid military land route")
 			}
 		}
@@ -445,7 +507,7 @@ func (w World) validateMilitary() error {
 		} else {
 			friendly++
 			fort, origin := w.building(a.FortID), w.building(a.Origin)
-			if fort == nil || !isFort(fort.Kind) || (a.Stage == "recruit" && (origin == nil || origin.Kind != "recruiter")) || !slices.Contains([]string{"recruit", "garrison", "march", "field", "return", "embark", "boarding", "aboard", "academy", "training"}, a.Stage) {
+			if fort == nil || (!isFort(fort.Kind) && fort.Kind != "tower") || (a.Stage == "recruit" && (origin == nil || origin.Kind != "recruiter")) || !slices.Contains([]string{"recruit", "garrison", "march", "field", "return", "embark", "boarding", "aboard", "academy", "training", "sentry_recruit", "guard", "kingdom_march", "kingdom_away"}, a.Stage) {
 				return errors.New("invalid infantry company")
 			}
 			if (a.Stage == "recruit" || a.Stage == "return" || a.Stage == "garrison") && !fort.roadAccess(a.Route[len(a.Route)-1]) {
@@ -453,7 +515,7 @@ func (w World) validateMilitary() error {
 			}
 		}
 	}
-	if friendly+m.Lost != m.Recruited || enemies+m.Defeated+m.Breaches != m.Invaders || m.InvasionActive != (enemies > 0) {
+	if friendly+m.Lost != m.Recruited || enemies+int64(w.passengersAtSea(0))+m.Defeated+m.Breaches != m.Invaders || m.InvasionActive != (enemies > 0 || w.passengersAtSea(0) > 0 || w.hostileWarships(0) > 0) {
 		return errors.New("military conservation failed")
 	}
 	derived := w
@@ -462,7 +524,7 @@ func (w World) validateMilitary() error {
 		return errors.New("inconsistent company state")
 	}
 	for _, c := range w.Companies {
-		if c.Soldiers > CompanyLimit || (c.Order != "return" && c.Order != "muster" && c.Order != "deployment") || c.Order == "muster" && !w.buildable(c.Target) {
+		if c.Soldiers > CompanyLimit || !validCompanyOrder(c.Order) || c.Morale < 0 || c.Morale > 100 || c.ChargeUntil < 0 || c.ChargeUntil > MaxTick || c.RestUntil < c.ChargeUntil || c.RestUntil > MaxTick || c.Order != "return" && c.Order != "deployment" && !w.buildable(c.Target) {
 			return errors.New("invalid company orders")
 		}
 	}

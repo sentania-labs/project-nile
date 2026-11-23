@@ -13,7 +13,10 @@ const GoldLoad = 100
 const GoldWork = 576 // 48 ticks with all 12 employees.
 
 func workCapacity(kind string) int {
-	if extracted[kind] != "" || kind == "jeweler" {
+	if _, ok := goodsRecipes[kind]; ok {
+		return 576
+	}
+	if extracted[kind] != "" {
 		return 576
 	}
 	if campCrops[kind] != "" {
@@ -73,7 +76,7 @@ func (w *World) addResourceTerrain() {
 }
 func (w World) hasPalace() bool {
 	for _, b := range w.Buildings {
-		if b.Kind == "palace" {
+		if isPalace(b.Kind) {
 			return true
 		}
 	}
@@ -81,7 +84,7 @@ func (w World) hasPalace() bool {
 }
 func (w World) palaceActive() bool {
 	for _, b := range w.Buildings {
-		if b.Kind == "palace" && b.Connected && b.Damaged == "" && b.Workers > 0 {
+		if isPalace(b.Kind) && b.Connected && b.Damaged == "" && b.Workers > 0 {
 			return true
 		}
 	}
@@ -108,7 +111,7 @@ func (w World) resourcePlacement(b Building) error {
 	if b.Kind == "goldmine" && !w.mineTouchesOre(b) {
 		return errors.New("place a gold mine beside exposed metallic rock")
 	}
-	if b.Kind == "palace" {
+	if isPalace(b.Kind) {
 		if w.hasPalace() {
 			return errors.New("the city can have only one Palace")
 		}
@@ -139,7 +142,7 @@ func (w *World) dispatchGold() {
 			continue
 		}
 		for _, palace := range w.Buildings {
-			if palace.Kind != "palace" || palace.Workers == 0 || !palace.Connected || palace.Damaged != "" {
+			if !isPalace(palace.Kind) || palace.Workers == 0 || !palace.Connected || palace.Damaged != "" {
 				continue
 			}
 			path := w.path(w.perimeter(*mine), palace)
@@ -173,7 +176,10 @@ func (w World) miningView(v *View) {
 	v.WestBanks, v.Woodland, v.QuarryRock = w.WestBanks, w.Woodland, w.QuarryRock
 	v.OreRock = append([]Point{}, w.OreRock...)
 	v.GoldProduced, v.GoldDelivered = w.GoldProduced, w.GoldDelivered
-	v.TaxIncome = w.Income - w.GoldDelivered - w.ExportEarned
+	v.TaxIncome = w.Income - w.GoldDelivered - w.ExportEarned - w.Household.Donated - w.Household.RoyalDebens
+	if w.Campaign != nil {
+		v.TaxIncome -= w.Campaign.RescueReceived
+	}
 	v.PalaceActive = w.palaceActive()
 	v.TaxesEnabled = w.taxesEnabled()
 	for _, b := range w.Buildings {
@@ -211,7 +217,7 @@ func (w World) validateMining() error {
 		} else if b.Gold != 0 {
 			return errors.New("gold stored outside mine")
 		}
-		if b.Kind == "palace" {
+		if isPalace(b.Kind) {
 			palaces++
 			if !w.palaceGroundwater(b) {
 				return errors.New("Palace lacks groundwater")
@@ -230,7 +236,7 @@ func (w World) validateMining() error {
 }
 func (w World) validateGoldWalker(walker Walker, target Building) error {
 	mine, palace := w.building(walker.Origin), w.building(walker.Source)
-	if mine == nil || mine.Kind != "goldmine" || palace == nil || palace.Kind != "palace" || walker.Resource != "gold" || walker.Reserved != 0 {
+	if mine == nil || mine.Kind != "goldmine" || palace == nil || !isPalace(palace.Kind) || walker.Resource != "gold" || walker.Reserved != 0 {
 		return errors.New("invalid gold cart")
 	}
 	if walker.Stage == "deliver" {

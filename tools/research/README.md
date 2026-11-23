@@ -143,3 +143,29 @@ NILE_CAMPAIGN_CAPTURE_DIR=/mnt/holding/project-nile/campaign-review \
 
 This writes `mission-0.nile` through `mission-2.nile` only after the corresponding
 construction-and-simulation test actually wins. Later missions remain staged.
+
+
+## Economic directory and event runtime
+
+`extract_campaign_economy.py` reads only bounded city, resource, quota and route
+metadata using zlib's public `contrib/blast` decoder. The extractor exports
+active and dormant partners, geographic names, latent buys/sells, annual limits
+in100-unit loads, and derived army travel months. Route points, map placements,
+images, proprietary code and mission prose are excluded. Original executable
+references are stored in the JSON evidence fields. Reproduction:
+
+```sh
+python3 tools/research/extract_campaign_economy.py \
+  --source /mnt/holding/project-nile/original-wine-VwPQ/Executable/MISSION1.PAK \
+  --decoder /mnt/holding/project-nile/campaign-research-20261123/blast/blast \
+  --output internal/campaign/data/base-campaign-economy.json
+```
+
+The campaign runtime now exercises source requests, recurrence, ratings,
+political routes, invasion schedules and distant-battle outcomes. Its tests
+retain deterministic selected event values across SQLite reload. Source-backed
+formulas are distinguished from provisional movement, production and combat
+inputs in `docs/pharaoh-mechanics.md`. The Men-nefer action test wins through real
+papyrus exports and10,800 imported bricks; capture it with
+`-run TestMenneferWinsWithPapyrusExportsAndImportedMastaba` and the same capture
+directory environment variable. Later chapters are still staged.

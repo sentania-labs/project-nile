@@ -77,7 +77,7 @@ func (w *World) advanceStoneHauler(a *Walker) bool {
 }
 func (w World) validateStoneHauler(a Walker) error {
 	camp, yard, site := w.building(a.Origin), w.building(a.Source), w.building(a.Site)
-	if camp == nil || camp.Kind != "workcamp" || yard == nil || yard.Kind != "storageyard" || site == nil || !isPyramid(site.Kind) || a.Target != camp.ID || (a.Resource != "stone" && a.Resource != "limestone" && a.Resource != "bricks") || a.LoadAt < 1 || a.DeliverAt < a.LoadAt || a.DeliverAt > len(a.Route) || !camp.roadAccess(a.Route[0]) || !yard.roadAccess(a.Route[a.LoadAt-1]) || !site.roadAccess(a.Route[a.DeliverAt-1]) {
+	if camp == nil || camp.Kind != "workcamp" || yard == nil || yard.Kind != "storageyard" || site == nil || !isPyramid(site.Kind) || a.Target != camp.ID || (a.Resource != "stone" && a.Resource != "limestone" && a.Resource != "bricks" && a.Resource != "sandstone" && a.Resource != "lamps") || a.LoadAt < 1 || a.DeliverAt < a.LoadAt || a.DeliverAt > len(a.Route) || !camp.roadAccess(a.Route[0]) || !yard.roadAccess(a.Route[a.LoadAt-1]) || !site.roadAccess(a.Route[a.DeliverAt-1]) {
 		return errors.New("invalid stone-hauling round trip")
 	}
 	switch a.Stage {

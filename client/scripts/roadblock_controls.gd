@@ -1,6 +1,6 @@
 extends RefCounted
 
-const PATROLS := {"seller":"Bazaar sellers","watercarrier":"Water carriers","firefighter":"Firefighters","architect":"Architects","taxcollector":"Tax collectors","priest":"Priests","entertainer":"Entertainers","doctor":"Healthcare","teacher":"Education","policeman":"Police"}
+const PATROLS := {"laborseeker":"Labor seekers","seller":"Bazaar sellers","watercarrier":"Water carriers","firefighter":"Firefighters","architect":"Architects","taxcollector":"Tax collectors","priest":"Priests","entertainer":"Entertainers","doctor":"Healthcare","teacher":"Education","policeman":"Police"}
 var panel: Control
 var game: Node
 var at := Vector2i.ZERO

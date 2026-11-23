@@ -106,19 +106,19 @@ Sources used below:
 
 | ID | Capability named by original evidence | Evidence | Nile coverage / next verification |
 |---|---|---|---|
-| C01 | Housing, desirability, goods, migration and labor | PM pp. 40–57; R model and H01–H03 | Three-tier prototype; verify all thresholds, consumption, merge/split and recruitment. |
-| C02 | Floodplain/meadow farms, work camps, irrigation, hunting, fishing, cattle | PM pp. 59–67 | Grain prototype; trace fertility, seasons, crews, yields and other food chains. |
-| C03 | Quarries, mines, reeds, wood, crops; manufacturers and shipwrights | PM pp. 69–79, appendix pp. 222–234 | Clay/straw/bricks prototype; verify recipes, staffing, output and resource eligibility. |
-| C04 | Granaries, yards, bazaars, docks, land/river trade | PM pp. 81–95; PR storage corrections | Local cargo prototype; verify orders, capacities, buyers, sellers and trade limits. |
-| C05 | Crime, fire, collapse, palaces, taxes, wages, roadblocks, ferries, bridges | PM pp. 97–115 | Partial patrol/fiscal model; quantify original rules and routing. |
-| C06 | Gods, shrines, temples, complexes, festivals; health, education, entertainment | PM pp. 117–127, 151–166 | Unimplemented beyond well; verify each walker and dependency before housing expansion. |
-| M01 | Infantry, archers, chariots; recruiters, academies, forts; morale, formations | PM pp. 169–177 | Unimplemented; establish recruitment, equipment, combat and replenishment fixtures. |
-| M02 | Warships, troop transports, walls, towers, gatehouses; kingdom deployments | PM pp. 177–189; PR troop-access and transport corrections | Unimplemented; verify embarkation, naval orders and off-map service. |
-| N01 | Mastabas; stepped, bent, true and brick-core pyramids; sphinxes, obelisks, sun temples, mausoleums | PM pp. 129–149; PR monument corrections | One provisional mastaba. Verify each variant's footprint, resources, crews, stages and burial provisions. |
-| E01 | Ratings, requests, gifts, debt, invasions; mission-specific availability | PM pp. 17–19, 191–195; PR control-panel/messages corrections | No campaign/event engine; verify triggers and consequences per mission. |
-| X01 | Henna, oil, lamps, paint, white marble; henna farms, paint/lamp makers, artisans | CM “Commodities”, “Industries”, production diagram | Cleopatra only; unimplemented. Verify recipe quantities and delivery contracts in expansion data. |
-| X02 | Four royal-tomb sizes, Abu Simbel, Pharos, Great Library, Caesareum; cliff placement | CM “Monuments”, “Cliffs” | Cleopatra only; unimplemented. Do not reuse mastaba stages without evidence. |
-| X03 | Zoo supplied with game meat/straw; additional original-mission availability | CM “Entertainment”, “Changes to Original Missions” | Cleopatra only; verify rating/unlock changes separately from base Pharaoh. |
+| C01 | Housing, desirability, goods, migration and labor | PM pp. 40–57; R model and H01–H03 | Twenty housing tiers, multi-tile estates and three-pass immigration. Labor seekers must walk to occupied homes in the free valley. Consumption cadence and demographic age groups still need comparison. |
+| C02 | Floodplain/meadow farms, work camps, irrigation, hunting, fishing, cattle | PM pp. 59–67 | Floodplain crews arrive from work camps, meadow farms employ workers and irrigation affects crops. Hunting, fishing and cattle feed physical inventories. Some yield and regrowth rates remain provisional. |
+| C03 | Quarries, mines, reeds, wood, crops; manufacturers and shipwrights | PM pp. 69–79, appendix pp. 222–234 | Working quarry, mine, reed, timber, workshop and shipbuilding chains. Men-nefer exports papyrus to finance brick imports. Several batch sizes and worker schedules still require measurement. |
+| C04 | Granaries, yards, bazaars, docks, land/river trade | PM pp. 81–95; PR storage corrections | Physical cargo, reservations, buyers and sellers, priced routes, trade quotas and river vessels. Tested paid imports, exports and mid-journey SQLite reloads. |
+| C05 | Crime, fire, collapse, palaces, taxes, wages, roadblocks, ferries, bridges | PM pp. 97–115 | Patrols, salaries, gifts, tax collection, annual interest, roadblocks, bridges and two-bank passenger ferries. A saved freight cart delivered 100 stone to the far bank. Ferry timeout and debt interest rate remain provisional. |
+| C06 | Gods, shrines, temples, complexes, festivals; health, education, entertainment | PM pp. 117–127, 151–166 | Five temple complexes with optional altars and oracles, staffed temples, festivals, walked health and education, supplied entertainment and several distinct religious benefits. Exact bonus magnitudes and several god effects remain open. |
+| M01 | Infantry, archers, chariots; recruiters, academies, forts; morale, formations | PM pp. 169–177 | Three recruited units, physical equipment, academy training, company orders, formations and combat. Animation, troop attributes and morale need continued original-game comparison. |
+| M02 | Warships, troop transports, walls, towers, gatehouses; kingdom deployments | PM pp. 177–189; PR troop-access and transport corrections | Warships, transport ships, walls, towers, gates and distant expeditions. Loaded eight archers on a transport, restored mid-voyage and landed them. Selima request exercised separately from campaign promotion. |
+| N01 | Mastabas; stepped, bent, true and brick-core pyramids; sphinxes, obelisks, sun temples, mausoleums | PM pp. 129–149; PR monument corrections | Original mastaba sizes, pyramid families, Sphinx, obelisks, sun temple and mausoleums have material and guild tests. Detailed evidence follows below. Some site scheduling and animation are approximate. |
+| E01 | Ratings, requests, gifts, debt, invasions; mission-specific availability | PM pp. 17–19, 191–195; PR control-panel/messages corrections | Source catalog, requests, ratings and event effects implemented; first five missions action-tested. See campaign evidence below; later missions remain staged. |
+| X01 | Henna, oil, lamps, paint, white marble; henna farms, paint/lamp makers, artisans | CM “Commodities”, “Industries”, production diagram | Henna farms, imported oil, production of lamps and paint, and artisan supply. Physical input consumption and warehouse deliveries tested. Numeric workshop parameters await original expansion data. |
+| X02 | Four royal-tomb sizes, Abu Simbel, Pharos, Great Library, Caesareum; cliff placement | CM “Monuments”, “Cliffs” | Small cliff tomb has a physical lamp and artisan supply proof. Remaining tomb sizes and named wonders are tracked individually. |
+| X03 | Zoo supplied with game meat/straw; additional original-mission availability | CM “Entertainment”, “Changes to Original Missions” | A working, supplied zoo served 260 residents in Godot. Base-game Bubastis and Hetepsenusret gain access under the expansion rules. The expansion manual ties Culture 75 to an operating zoo. |
 | X04 | Blood/frog/hail/locust plagues; tomb robbery; optional monument acceleration | CM “Major Plagues”, introduction, “Faster Pyramid Construction” | Cleopatra only; trace option state, event damage, prevention and recovery. |
 | X05 | Survival/deadline missions; campaign savings, troops and monument carry-over | CM “Survival & Time Limit Missions”, “Family Savings, Troop & Monument Carry-Over” | Unimplemented. Verify each mission's deadline, completion check and carried state. |
 
@@ -237,5 +237,172 @@ hauling and work cadence remain **provisional aggregation**. The four-load timbe
 supply is measured per original carpenter dispatch; it is not yet a verified
 original total for an entire pyramid. Nile currently uses one supplied carpenter
 for the six ramps. The masonry amount and footprint are verified; the complete
-original scheduling and off-road construction paths are not claimed. Larger
-pyramids and the Sphinx are not yet buildable.
+original scheduling and off-road construction paths are not claimed. The later family implementation is described below.
+
+### Pyramid families, Sphinx and burial provisions
+
+The original executable's scenario-type join at `0x004d8c10` and monument
+metadata at `0x00565a60` distinguish bent (codes1–2), brick-core (3–7),
+stepped (8–12), true pyramids (13–17), mastabas (18–20), and Sphinx (21).
+This corrects an early inference that the compressed-course table described
+brick pyramids: it describes bent pyramids.
+
+Implemented pyramid cores occupy8,12,16,20,24 square tiles. Plain-stone
+stepped requirements are240,672,1440,2640,4368 blocks. True pyramids use
+those core quantities plus192,432,768,1200,1728 limestone blocks.
+Brick-core pyramids replace plain stone with bricks and keep the limestone
+quantities. Small/medium bent pyramids use216/552 plain-stone blocks and
+168/336 limestone blocks. These are numeric facts recovered from the
+original foreman `0x004d5a00`, material totals `0x00588ef0`, section counts
+`0x005335c0` and bent height flags `0x00579b88`. One block equals100 inventory
+units. Paired workers receive a400-unit sledge. Polishing requires labor,
+without further blocks. Original measured small-stepped staging is at
+footprint offset(2,8), correcting the first prototype's(3,8). The original
+part-position table0x00533c18 and staging offsets0x00533ebc give(2,height)
+for all five square pyramid sizes.
+
+Complex placement uses actual composite occupancy: a2×2 mortuary temple,
+at least one2×2 causeway segment and a2×2 Valley Temple straddling a clear
+east-facing bank, derived from placement `0x004d1c20`. The core remains west
+of the Nile. The24×24 grand complex fits the independently authored large
+sandbox's straight west-bank reach. Auxiliary structures currently follow
+aggregate construction progress; their separate original task schedule
+has not yet been reproduced.
+
+Sphinx placement `0x00435250` reserves three adjacent6×6 sections,18×6 in the
+canonical orientation. Its task table at `0x00556c00` has22 work assignments
+in15 phases: five carpenter jobs and17 mason jobs. Each carpenter fetches
+400 timber, consistent with original guild dispatch `0x00453c40`. The
+Sphinx is carved from bedrock and needs neither delivered stone nor Work
+Camp peasants. Work quantities are transcribed numeric facts; dispatch
+cadence, sequential job scheduling and paired aggregate workers remain
+prototype approximations.
+
+Burial requirements come exclusively from the scenario records. Original
+partial-dispatch handler `0x004094d0` increments delivered loads and removes
+`loads ×100` inventory units. Selector `0x00409550` limits the dispatch to
+remaining requirements and unreserved stored whole loads. Nile persists
+that ledger and removes real connected-storage inventory on each player
+order. Late missions remain gated until their other dependencies are
+implemented; burial support does not silently make them playable.
+
+Monument ratings use original weights at `0x00565a60` and the calculation
+at `0x004db190`: round(`sqrt(points)×6.32`), capped100. Only configured
+monument types and multiplicities count in campaign missions. The original
+burial-load point divisors are applied per eligible required resource.
+Final construction ratings are verified; intermediate percentages use the
+current aggregate construction scheduler.
+
+Tests cover family quantities, atomic west-bank composite placement,
+physical brick/limestone sledges and polishing, Sphinx guild work and
+wood conservation, partial burial dispatch, completed rating examples,
+and saved in-flight pyramid construction. Original art source sheets and
+in-engine recordings live under `/mnt/holding/project-nile/monument-art`
+and `/mnt/holding/project-nile/monument-families-review`.
+
+Mastabas now use the original 4×10, 6×14 and 8×18 footprints and 10,800,
+24,000 and 74,400 brick requirements. The original mode-5 part-height table
+(0x0057982c), course counters (0x00588f2c), and staging offsets (0x00533ebc)
+exclude the special first part from material courses. A controlled original
+foreman probe confirmed the small total as 27 four-load sledges (screenshot
+`/mnt/holding/project-nile/monument-original-20261123/57-mastaba-info.png`).
+Work Camp peasants prepare the site and haul bricks; paired Bricklayers install
+six courses, with six additional upper courses on the large form. The original
+ramp predicate 0x004d3960 excludes mastabas, so no timber or Carpenters are
+required. Travel and the aggregate work cadence remain provisional. Legacy
+3×3 `mastaba` snapshots remain loadable, but do not earn campaign monument credit.
+The full small-mastaba physical supply, SQLite replay and Godot construction
+capture are in `/mnt/holding/project-nile/mastaba-review`.
+
+Obelisk placement uses the original all-at-once granite requirement: 10,000 for
+3×3 small and 20,000 for 5×5 large. The citywide storage check and debit are at
+original 0x00463d10 (granite resource26); Nile additionally excludes reserved
+cargo so the debit cannot break an active shipment. Placement failures leave
+state untouched. Job tables 0x005469b0 and 0x0054fcf0 specify respectively four
+Carpenter plus six Mason jobs, and eight Carpenter plus ten Mason jobs. Guild
+actors travel physically and bring timber; no Work Camp or granite sledges are
+used after placement. A second unfinished obelisk is refused, matching original
+0x004cbd90. The small obelisk completes through the normal Godot menu in
+`/mnt/holding/project-nile/obelisk-review`, including its foreman and SQLite reload.
+
+The Sun Temple's primary part table at `0x00594ca8` occupies 135 tiles:
+11×10 court, four 2×2 causeway segments and a 3×3 fore-temple. Placement
+`0x00463d10` debits 22,000 sandstone; foreman `0x00520aa0` requires a later
+16,000. Its obelisk has 13 original work assignments, including eight
+400-timber Carpenter trips. The Mausoleum variants all occupy 22×8 and all
+have the original English title “Mausoleum”. Their placement debit is
+24,000 sandstone, followed by 25,600 more (`0x004c6b80`); four Carpenter
+ramps consume 1,600 timber. Nile's grouped storeys, part reveal sequence,
+work cadence and staging offset remain approximations. Both finish through
+physical workers and deliveries in `/mnt/holding/project-nile/temple-review`.
+
+Royal Burial Tombs are distinct from base-game Mausoleums. The expansion
+manual, locally preserved as `/mnt/holding/project-nile/reference-manuals/queen-of-the-nile.pdf`,
+verifies cliff-only placement, impassable cliffs, Work Camp lamp deliveries,
+Stonemasons, and Artisans supplied with paint and plaster made from clay.
+No expansion executable was found, so the first small tomb's 4×4 footprint,
+1,600 lamps, 80 clay, 80 paint and phase cadence are explicitly provisional.
+Lamps are locally produced from imported oil and pottery; paint comes from
+henna. Artisans carry their clay and paint together to the staging road.
+Neither their supplies nor delivered lamps can complete a phase before
+workers arrive. Cliffs are saved terrain and only added to new valley worlds.
+Tests cover the full industry chain, missing artisan inputs, cliff placement,
+material conservation and SQLite replay during an artisan's supplied commute.
+
+
+### Campaign event and rating evidence, November 23, 2026
+
+`internal/campaign/data` contains factual configuration for all38 base missions.
+Public starts and handoffs use `campaign.Playable`; source scenarios beyond
+Men-nefer remain staged until their construction-and-simulation playthrough wins.
+The first five missions now pass their extracted original victory predicates.
+Men-nefer's action test produces papyrus, trades for bricks, builds the original
+10,800-brick small mastaba and reaches population1500, culture15, prosperity20,
+monuments9 and kingdom40. It does not lower those targets.
+
+Primary evidence uses the hashed original executable above. Private traces are
+under `/mnt/holding/project-nile/campaign-research-20261123/` and are not shipped.
+
+| Behavior | Original evidence | Coverage and limit |
+|---|---|---|
+| Immigration priorities | `selected7/0044b6c0.c`, `0044ba70.c`: vacant homes, homes with more than seven vacancies, then smaller vacancies; four-person parties and one assignment per home | `migration_test.go`; the global dispatch interval remains provisional |
+| Requests and chains | `0x0043fdf0`, `0x00440080`, `0x00440970`: goods100units/load, currencyunscaled,1–4month delivery,24month goods grace, relative child delays; copied children lose recurrence flag | `campaign/events_test.go`, `campaign_requests_test.go`; conditional resource/location inheritance and retaliation activation remain open |
+| Political partner identity | `0x00441c50`→`0x004385a0` joins event Location to city route; filebyte101 is warning leadmonths, not a cityID | Timna's dormant Men-nefer route and latent goods reproduced from city/Empire records; no coordinates exported |
+| Government and complexes | `0x00403000`: palace/mansion ranks0–5,6–7,8–10; independent complex flags at scenario1240..1248 | `TestOriginalGovernmentRankAndComplexFlags`; known gods do not automatically permit complexes |
+| Ratings and tribute | `0x0045ff50/0x0045ffb0` quarterly prosperity using completed-year finances; `0x00460590` population-weighted housing cap; `0x0044d340` annual tribute; `0x00460740` kingdom decay/progress | `ratings_test.go`, campaign action tests; school age denominator and monthly foods-eaten sample remain conservative approximations |
+| Invasions | `0x0043ab20`: land Normal80%,150soldier cap; river locations9–16 skip difficulty scaling but also cap150, with escortbyte58; `0x0043a110` starts completion child at arrival | Original Timna/Iunet fixtures test land, naval and escort-only attacks. Geography and combat composition remain independent/provisional |
+| Distant battles | `0x0043fd60/0x0043b520/0x0043b8c0`: original route travel months; `0x00440530` battle deadline and late/return states; `0x00439e80/0x004a2150/0x004a2680` strength and casualty bands | Two recruited companies leave, resolve a real Selima request, wait, return and replay identically from SQLite. Formation training and one-shot divine aid remain unverified inputs |
+
+Original culture thresholds are implemented from `0x0045a500/0x00459bf0` with
+staffed venue capacity (`0x0041bba0`) and temple coverage (`0x0041bb20`). Household
+walked access is separate from citywide rating capacity. The campaign army fixture
+reschedules one actual conditional request for focused verification; it is not
+proof that the full Selima chapter is playable.
+
+### River ferries, health and the governor
+
+The original Pharaoh manual, pp.110–112, gives each landing its own boat.
+Both cross when one has four passengers, or after a partial load waits.
+An unstaffed crossing admits immigrants. Cargo stays with its destination
+walker and organized companies require military transport. Nile pairs two
+nearby opposite shores. The current timeout is eight simulation ticks.
+The two-bank test restores SQLite while a stone carrier is aboard and
+verifies the west-bank warehouse and the complete replay hash.
+
+The printed manual distinguishes localized disease, malaria exposure around
+the river and marshes, and citywide plague (pp.151–155). Nile tracks the first
+two per house. Water and an apothecary protect against malaria. Disease can
+empty a household. Monthly exposure and neighborhood spread are provisional.
+
+The original governor accounts distinguish salary, personal savings, gifts
+and donations. Construction can use up to 5,000 debens of credit. Interest
+falls due annually and may take the city below the construction limit (manual
+pp.106–107). The current 10% interest rate, Ra discount and other numerical
+complex benefits await retail measurements. The original calendar 50%, 80%
+and 100% settings were timed at 91.6, 30.4 and 1.72 seconds per month under
+Wine. These are six-month means.
+
+The local expansion reference is the original printed manual in
+`/mnt/holding/project-nile/reference-manuals/queen-of-the-nile.pdf`.
+The production diagram, cliffs, zoo, plagues, scenario clocks and campaign
+carry-over table appear on pp.4–10. [Original manual, archived June 30, 2024](https://web.archive.org/web/20240630162529/https://sierrachest.com/gfx/games/Pharaoh_C/box/Queen%20of%20the%20Nile.pdf)

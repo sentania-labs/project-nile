@@ -28,7 +28,11 @@ func (b Building) footprintDimensions() (int, int) {
 	if b.Kind == "hut" {
 		return b.lotSide(), b.lotSide()
 	}
-	return dimensions(b.Kind)
+	w, h := dimensions(b.Kind)
+	if b.Facing%2 != 0 {
+		return h, w
+	}
+	return w, h
 }
 
 func (w World) refreshEstate(b *Building, previous, score, health int) {

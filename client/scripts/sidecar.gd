@@ -13,7 +13,7 @@ var sandbox_transport := false
 var last_diagnostic := ""
 var awaiting_first_reply := true
 
-func start(mode: String = "") -> bool:
+static func executable_path() -> String:
 	var executable := OS.get_environment("NILE_SIM")
 	if executable.is_empty():
 		if OS.has_feature("editor"):
@@ -21,6 +21,10 @@ func start(mode: String = "") -> bool:
 		else:
 			executable = OS.get_executable_path().get_base_dir().path_join("nile-sim")
 		if OS.get_name() == "Windows": executable += ".exe"
+	return executable
+
+func start(mode: String = "") -> bool:
+	var executable:=executable_path()
 	var save_path := OS.get_environment("NILE_SANDBOX_SAVE" if mode == "sandbox" else "NILE_SAVE")
 	if save_path.is_empty() and mode=="sandbox" and get_tree().root.has_meta("nile_save_path"):
 		save_path=str(get_tree().root.get_meta("nile_save_path"))

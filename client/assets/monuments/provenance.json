@@ -42,5 +42,70 @@
     "artistic_approval": "pending in-engine review",
     "processing_note": "Chroma-key cleanup also removes enclosed scaffold openings; alpha/mipmaps checked in Godot.",
     "validation": "Godot import and physical Sphinx construction / grand-complex placement passed; human artistic acceptance pending."
+  },
+  "mastaba_pack": {
+    "agent": "Codex street_runtime",
+    "generator": "built-in image_gen",
+    "rights": "Original generated artwork; no extracted Pharaoh art",
+    "raw_sources": [
+      "/mnt/holding/project-nile/monument-art/mastaba-complete.png",
+      "/mnt/holding/project-nile/monument-art/mastaba-foundation.png"
+    ],
+    "processor": "generate2dsprite props;1536px;fit .9;bottom align;chroma key + enclosed magenta cleanup",
+    "assets": {
+      "mastaba-complete.png": "7c6574f3762a61b4b33fb0daedb18edae004e7831023ad70627e5b2a4510ee6b",
+      "mastaba-foundation.png": "5f297213f367d93fdf0bf34893a85a2f743e170b33a318f2752165a516b3281f"
+    },
+    "artistic_approval": "pending in-engine review; larger silhouettes share first mastaba source"
+  },
+  "obelisk_pack": {
+    "agent": "Codex street_runtime",
+    "generator": "built-in image_gen",
+    "rights": "Original artwork",
+    "raw_source": "/mnt/holding/project-nile/monument-art/obelisks.png",
+    "processor": "Intact cell extraction at actual magenta gutter y610, centered padded cells; generate2dsprite strict QC, chroma cleanup",
+    "assets": {
+      "smallobelisk.png": "6a650d2d15093717d0763b123016db3f4c013f6a9dca815ac8997f4ca05155b6",
+      "largeobelisk.png": "69532d4633263c55520500c776c99cdbc4d600a3258bdaf87685637c3a64c854",
+      "smallobelisk_work.png": "f177859cc912a6510c87dbfb018bf564d53bcb7ce24c911e57c1a388dc4f8f76",
+      "largeobelisk_work.png": "46d187b8da4f83723c6c51ea8218dd2e37fd3294cf97685a43afe17a68d78a13"
+    },
+    "artistic_approval": "pending in-engine review"
+  },
+  "temple_pack": {
+    "agent": "Codex street_runtime",
+    "generator": "built-in image_gen",
+    "rights": "Original generated artwork; no original game assets",
+    "raw_sources": [
+      "/mnt/holding/project-nile/monument-art/mausoleum.png",
+      "/mnt/holding/project-nile/monument-art/mausoleum-foundation.png",
+      "/mnt/holding/project-nile/monument-art/suntemple.png",
+      "/mnt/holding/project-nile/monument-art/suntemple-work.png"
+    ],
+    "processor": "generate2dsprite props;1536px;fit .9;bottom alignment;chroma key and enclosed magenta cleanup",
+    "assets": {
+      "mausoleum.png": "658d23c322746ba9e1da55c0894db77a476520a5d93747cbe14290e871f9719b",
+      "mausoleum-foundation.png": "d01a4a8a627f77668d573bb55b8a0fb907b1a628148a679ade972730e02ddd0f",
+      "suntemple.png": "b9443c200544716afe88b4d4aafb588bc0e4ec257dc81635d6a68a689f5d2120",
+      "suntemple-work.png": "9656ec093375bded7136dbd60662935444343c475763c3781f796436314d1811"
+    },
+    "artistic_approval": "Agent inspected actual Godot captures; human acceptance pending. Mausoleum art variants currently share one original source.",
+    "validation": "Strict sprite QC, mipmapped Godot import, actual UI placement, physical construction, right-click foreman and exact SQLite reload passed. Captures: /mnt/holding/project-nile/temple-review/{suntemple,mausoleum}."
+  },
+  "royal_tomb_pack": {
+    "agent": "Codex street_runtime",
+    "generator": "built-in image_gen",
+    "rights": "Original generated artwork; original project cliffrock used as style reference",
+    "raw_sources": [
+      "/mnt/holding/project-nile/monument-art/royaltomb.png",
+      "/mnt/holding/project-nile/monument-art/royaltomb-work.png"
+    ],
+    "processor": "generate2dsprite strict QC;1024px;fit .9;bottom alignment;chroma key and enclosed magenta cleanup",
+    "assets": {
+      "royaltomb.png": "3ca09918c198903e158c24e543cbf4930e090e7064b43aea6a24156c1ab4732a",
+      "royaltomb-work.png": "0683bc2884c05b73a841de9b73559662550f2d6ce981c272311957ddda1309a3"
+    },
+    "artistic_approval": "Agent inspected construction and completed Godot captures; human acceptance pending.",
+    "validation": "Strict sprite QC, mipmapped Godot import, UI cliff placement, full local industry and physical construction, right-click foreman, exact SQLite reload. Captures: /mnt/holding/project-nile/royal-tomb-review."
   }
 }

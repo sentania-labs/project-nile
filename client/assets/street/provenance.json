@@ -1419,7 +1419,7 @@
       "source_path": "/mnt/holding/project-nile/city-assets/valley-nine.png",
       "source": "Original built-in image_gen multi-prop pack",
       "source_sha256": "1a124cf1ed1858fd16b655b4a8fdeca384f7fb8df6faebe96126a194334c89a5",
-      "sha256": "6d8214aaeb6adaf2a0448c4122b714dcf23d4a16e223cb1e204b09309f57e2c9",
+      "sha256": "1b9c15a8e5d28b53e8e7eeb81d73642ad56f169fed2a0f5239982873ec45cfee",
       "dimensions": [
         375,
         261
@@ -1428,7 +1428,10 @@
       "prompt": "client/assets/street/prompts/valley-nine.txt",
       "prompt_sha256": "7bc619674ec0aab1bfd693cebf92108e7de227c40b5983083d35352d28aab304",
       "transparent_background": true,
-      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive.",
+      "matte_cleanup_source": "/mnt/holding/project-nile/city-assets/foliage-before-despill/reedbed.png",
+      "matte_cleanup_source_sha256": "6d8214aaeb6adaf2a0448c4122b714dcf23d4a16e223cb1e204b09309f57e2c9",
+      "matte_cleanup_tool": "tools/assets/despill_foliage.py"
     },
     {
       "id": "gazelle",
@@ -1453,7 +1456,7 @@
       "source_path": "/mnt/holding/project-nile/city-assets/valley-nine.png",
       "source": "Original built-in image_gen multi-prop pack",
       "source_sha256": "1a124cf1ed1858fd16b655b4a8fdeca384f7fb8df6faebe96126a194334c89a5",
-      "sha256": "e90453210c4d4466e1ea4e395e4fb3409c9a725502f4d98806f506b3f844add8",
+      "sha256": "24ddb7d7b9a5621cde7a9cc1d912322ab1ad79e45dea087b3e03682a8ebe156b",
       "dimensions": [
         376,
         270
@@ -1462,7 +1465,10 @@
       "prompt": "client/assets/street/prompts/valley-nine.txt",
       "prompt_sha256": "7bc619674ec0aab1bfd693cebf92108e7de227c40b5983083d35352d28aab304",
       "transparent_background": true,
-      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive.",
+      "matte_cleanup_source": "/mnt/holding/project-nile/city-assets/foliage-before-despill/sycamore.png",
+      "matte_cleanup_source_sha256": "e90453210c4d4466e1ea4e395e4fb3409c9a725502f4d98806f506b3f844add8",
+      "matte_cleanup_tool": "tools/assets/despill_foliage.py"
     },
     {
       "id": "conservatory",
@@ -2182,7 +2188,7 @@
       "source_path": "/mnt/holding/project-nile/city-assets/valley-resources.png",
       "source": "Original built-in image_gen multi-prop pack",
       "source_sha256": "a530613727fbdf01edbe1d3e9a420aba3a9d9d4339869f78e6728c47114088c3",
-      "sha256": "27c971578cf7215f8ce3d9a2805bfc09d07883c7d1aefc83fb4fb1e9243dd793",
+      "sha256": "6414108a8a8205b008a70b532561890bd01b9fbf0c16de3225dc3354a0d0c619",
       "dimensions": [
         376,
         323
@@ -2191,7 +2197,10 @@
       "prompt": "client/assets/street/prompts/valley-resources.txt",
       "prompt_sha256": "30856286197b644d91799ebb5185b46f516c35dd1bb83f131a9c9f59425ba0d2",
       "transparent_background": true,
-      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive.",
+      "matte_cleanup_source": "/mnt/holding/project-nile/city-assets/foliage-before-despill/woodland.png",
+      "matte_cleanup_source_sha256": "27c971578cf7215f8ce3d9a2805bfc09d07883c7d1aefc83fb4fb1e9243dd793",
+      "matte_cleanup_tool": "tools/assets/despill_foliage.py"
     },
     {
       "id": "quarryrock",
@@ -2247,17 +2256,17 @@
     {
       "id": "ferry",
       "runtime_path": "client/assets/street/ferry.png",
-      "source_path": "/mnt/holding/project-nile/city-assets/valley-resources.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/royal-civic.png",
       "source": "Original built-in image_gen multi-prop pack",
-      "source_sha256": "a530613727fbdf01edbe1d3e9a420aba3a9d9d4339869f78e6728c47114088c3",
-      "sha256": "0c59080226a6215efe7f795aa5cb5166d29c140de4fd053da75a68fd2c33f36e",
+      "source_sha256": "dd7c0c0fedaa42737973af68750702f2215ca3f18d0dfa6f0183e52275ef91bc",
+      "sha256": "8d777fa0a1ae18aba17e1c70308cebaa0ff35504bf0ae0e4a15ac26fa66428a5",
       "dimensions": [
         376,
-        344
+        230
       ],
       "mode": "RGBA",
-      "prompt": "client/assets/street/prompts/valley-resources.txt",
-      "prompt_sha256": "30856286197b644d91799ebb5185b46f516c35dd1bb83f131a9c9f59425ba0d2",
+      "prompt": "client/assets/street/prompts/royal-civic.txt",
+      "prompt_sha256": "be5c2929805d4f6e1e2a0a992a952d29dd4ff6611c62b60c1b7b8d02d3cd0b5f",
       "transparent_background": true,
       "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
     },
@@ -2424,6 +2433,459 @@
       "model": "not exposed by tool",
       "cost": "No external asset generation credits; built-in cost not exposed",
       "approval": "pending Scott review"
+    },
+    {
+      "id": "hennafarm",
+      "runtime_path": "client/assets/street/hennafarm.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/cleopatra-workshops.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "2872de4aceb7cbf8552e3d6b113d6ec9343d431824ccb062a230163264a541b1",
+      "sha256": "17e96af8e41b399a4fd592c08382ab92d7c0990383ebc65034657ec2a75dba6e",
+      "dimensions": [
+        376,
+        249
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/cleopatra-workshops.txt",
+      "prompt_sha256": "7bdaae4c42a9f41cf0715dfd89a8016af8801b9c4bffbc7a94801eb011279c83",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "paintmaker",
+      "runtime_path": "client/assets/street/paintmaker.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/cleopatra-workshops.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "2872de4aceb7cbf8552e3d6b113d6ec9343d431824ccb062a230163264a541b1",
+      "sha256": "5f9695bc410f7fe5ba747bc1c980c262699a591a9c919a96e12afe27e245ee1f",
+      "dimensions": [
+        376,
+        280
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/cleopatra-workshops.txt",
+      "prompt_sha256": "7bdaae4c42a9f41cf0715dfd89a8016af8801b9c4bffbc7a94801eb011279c83",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "lampmaker",
+      "runtime_path": "client/assets/street/lampmaker.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/cleopatra-workshops.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "2872de4aceb7cbf8552e3d6b113d6ec9343d431824ccb062a230163264a541b1",
+      "sha256": "9d6bb451bf3ed3d53e589ad4139cc861e9c54e76f3bcfc6582b22bf8e3604d65",
+      "dimensions": [
+        375,
+        266
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/cleopatra-workshops.txt",
+      "prompt_sha256": "7bdaae4c42a9f41cf0715dfd89a8016af8801b9c4bffbc7a94801eb011279c83",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "artisans",
+      "runtime_path": "client/assets/street/artisans.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/cleopatra-workshops.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "2872de4aceb7cbf8552e3d6b113d6ec9343d431824ccb062a230163264a541b1",
+      "sha256": "b86535eeec07849bf2832ddad55d15e6bc22c1038a645017c99bb4496522f41a",
+      "dimensions": [
+        376,
+        265
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/cleopatra-workshops.txt",
+      "prompt_sha256": "7bdaae4c42a9f41cf0715dfd89a8016af8801b9c4bffbc7a94801eb011279c83",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "zoo",
+      "runtime_path": "client/assets/street/zoo.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/cleopatra-workshops.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "2872de4aceb7cbf8552e3d6b113d6ec9343d431824ccb062a230163264a541b1",
+      "sha256": "0179232955331142c05c130ae66115751d2bc81f2ec7e15a69cad2160dcae97d",
+      "dimensions": [
+        376,
+        254
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/cleopatra-workshops.txt",
+      "prompt_sha256": "7bdaae4c42a9f41cf0715dfd89a8016af8801b9c4bffbc7a94801eb011279c83",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "familymansion",
+      "runtime_path": "client/assets/street/familymansion.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/cleopatra-workshops.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "2872de4aceb7cbf8552e3d6b113d6ec9343d431824ccb062a230163264a541b1",
+      "sha256": "8a00d3ad2eb7adb23dd3951968a320430e9bf048196389c183a9cea759ce0c70",
+      "dimensions": [
+        376,
+        246
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/cleopatra-workshops.txt",
+      "prompt_sha256": "7bdaae4c42a9f41cf0715dfd89a8016af8801b9c4bffbc7a94801eb011279c83",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "smallstatue",
+      "runtime_path": "client/assets/street/smallstatue.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/cleopatra-workshops.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "2872de4aceb7cbf8552e3d6b113d6ec9343d431824ccb062a230163264a541b1",
+      "sha256": "df2dd389f75a0be2487c7707c8ded7870f617bb96ad52253f3bba9b68a8cf2da",
+      "dimensions": [
+        189,
+        376
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/cleopatra-workshops.txt",
+      "prompt_sha256": "7bdaae4c42a9f41cf0715dfd89a8016af8801b9c4bffbc7a94801eb011279c83",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "mediumstatue",
+      "runtime_path": "client/assets/street/mediumstatue.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/cleopatra-workshops.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "2872de4aceb7cbf8552e3d6b113d6ec9343d431824ccb062a230163264a541b1",
+      "sha256": "de9c2e74f9631fecbe9890d5b4b1cce4a6913cb2ba82c305656b5f56b6957268",
+      "dimensions": [
+        292,
+        376
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/cleopatra-workshops.txt",
+      "prompt_sha256": "7bdaae4c42a9f41cf0715dfd89a8016af8801b9c4bffbc7a94801eb011279c83",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "largestatue",
+      "runtime_path": "client/assets/street/largestatue.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/cleopatra-workshops.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "2872de4aceb7cbf8552e3d6b113d6ec9343d431824ccb062a230163264a541b1",
+      "sha256": "9da6817bba300dbba8822f15121ece8a298e4225b9f21916402a13c258e51f31",
+      "dimensions": [
+        283,
+        376
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/cleopatra-workshops.txt",
+      "prompt_sha256": "7bdaae4c42a9f41cf0715dfd89a8016af8801b9c4bffbc7a94801eb011279c83",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "archerfort",
+      "runtime_path": "client/assets/street/archerfort.png",
+      "source_path": "/mnt/holding/project-nile/army-original-20261123/archerfort.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "a6fb258c69ae58ed688a3fcaf44302015d0d9ff6ccdad95c37fe3415d54671a7",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/archerfort.txt",
+      "prompt_sha256": "4ae191def377d38c25a8740a17fb365ab8e18259b7e61d8bab1d76dd9e665ab2",
+      "transparent_background": true,
+      "validation": "Godot4.7.2 imported; actual1920x1080 combined-arms UI construction, march, formation, interception, save/reload and recall passed. Captures visually inspected.",
+      "initiating_agent": "Codex",
+      "generator": "built-in image_gen",
+      "model": "not exposed by tool",
+      "cost": "No external asset generation credits; built-in cost not exposed",
+      "approval": "pending Scott review",
+      "rendered_capture": "/mnt/holding/project-nile/combined-arms-review-20261123/archers-and-chariots.png",
+      "artistic_approval": "Agent visual review complete; human art acceptance remains separate."
+    },
+    {
+      "id": "chariotfort",
+      "runtime_path": "client/assets/street/chariotfort.png",
+      "source_path": "/mnt/holding/project-nile/army-original-20261123/chariotfort.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "96e56443ced0b487228da869b25c26017f8229d33beac52898742b7d1819d41a",
+      "dimensions": [
+        1659,
+        948
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/chariotfort.txt",
+      "prompt_sha256": "0b0191b56a4cb5727b616c4a88c4c25c56c66e82ed6c45d01bc1edfee070c3c7",
+      "transparent_background": true,
+      "validation": "Godot4.7.2 imported; actual1920x1080 combined-arms UI construction, march, formation, interception, save/reload and recall passed. Captures visually inspected.",
+      "initiating_agent": "Codex",
+      "generator": "built-in image_gen",
+      "model": "not exposed by tool",
+      "cost": "No external asset generation credits; built-in cost not exposed",
+      "approval": "pending Scott review",
+      "rendered_capture": "/mnt/holding/project-nile/combined-arms-review-20261123/archers-and-chariots.png",
+      "artistic_approval": "Agent visual review complete; human art acceptance remains separate."
+    },
+    {
+      "id": "chariotmaker",
+      "runtime_path": "client/assets/street/chariotmaker.png",
+      "source_path": "/mnt/holding/project-nile/army-original-20261123/chariotmaker.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "4e900d016aa6b607f76107472bbd4344dc9b550d83bd29f45f7a86d696f3f847",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/chariotmaker.txt",
+      "prompt_sha256": "a066db209a7baab082586090b433c9c221d0b6d57c9fa956f5104ec50b330b24",
+      "transparent_background": true,
+      "validation": "Godot4.7.2 imported; actual1920x1080 combined-arms UI construction, march, formation, interception, save/reload and recall passed. Captures visually inspected.",
+      "initiating_agent": "Codex",
+      "generator": "built-in image_gen",
+      "model": "not exposed by tool",
+      "cost": "No external asset generation credits; built-in cost not exposed",
+      "approval": "pending Scott review",
+      "rendered_capture": "/mnt/holding/project-nile/combined-arms-review-20261123/archers-and-chariots.png",
+      "artistic_approval": "Agent visual review complete; human art acceptance remains separate."
+    },
+    {
+      "id": "academy",
+      "runtime_path": "client/assets/street/academy.png",
+      "source_path": "/mnt/holding/project-nile/army-original-20261123/academy.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "fed1efc2f513ada2cd7007f27bf91b30f58a7457106797c4d389298f4d274bae",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/academy.txt",
+      "prompt_sha256": "41c3662fe8943a7af6eb6fa53ed7d72a54cd548f8fe5a184c533ec5041be9be6",
+      "transparent_background": true,
+      "validation": "Godot4.7.2 imported; actual1920x1080 combined-arms UI construction, march, formation, interception, save/reload and recall passed. Captures visually inspected.",
+      "initiating_agent": "Codex",
+      "generator": "built-in image_gen",
+      "model": "not exposed by tool",
+      "cost": "No external asset generation credits; built-in cost not exposed",
+      "approval": "pending Scott review",
+      "rendered_capture": "/mnt/holding/project-nile/combined-arms-review-20261123/archers-and-chariots.png",
+      "artistic_approval": "Agent visual review complete; human art acceptance remains separate."
+    },
+    {
+      "id": "wall",
+      "runtime_path": "client/assets/street/wall.png",
+      "source_path": "/mnt/holding/project-nile/army-original-20261123/wall.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "f1e4da2de09838efed486a19e3f42b89fc5b8a1cc6a4ae3b6401d2fe955347e6",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/wall.txt",
+      "prompt_sha256": "a8683ff37c634f6434d2c67d1a2dd4da67fd116ff94cbe3e1344af2b8e535b9b",
+      "transparent_background": true,
+      "validation": "Godot4.7.2 imported; actual1920x1080 combined-arms UI construction, march, formation, interception, save/reload and recall passed. Captures visually inspected.",
+      "initiating_agent": "Codex",
+      "generator": "built-in image_gen",
+      "model": "not exposed by tool",
+      "cost": "No external asset generation credits; built-in cost not exposed",
+      "approval": "pending Scott review",
+      "rendered_capture": "/mnt/holding/project-nile/combined-arms-review-20261123/archers-and-chariots.png",
+      "artistic_approval": "Agent visual review complete; human art acceptance remains separate."
+    },
+    {
+      "id": "gatehouse",
+      "runtime_path": "client/assets/street/gatehouse.png",
+      "source_path": "/mnt/holding/project-nile/army-original-20261123/gatehouse.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "7c9b8beeb7f7f757dce7ef3d33a9af1c01dae57df24f34622d4488943e296877",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/gatehouse.txt",
+      "prompt_sha256": "9300013afbbae658fe300c46f46d1090d5b969c033b95b775e1ae1d4c94e36d8",
+      "transparent_background": true,
+      "validation": "Godot4.7.2 imported; actual1920x1080 combined-arms UI construction, march, formation, interception, save/reload and recall passed. Captures visually inspected.",
+      "initiating_agent": "Codex",
+      "generator": "built-in image_gen",
+      "model": "not exposed by tool",
+      "cost": "No external asset generation credits; built-in cost not exposed",
+      "approval": "pending Scott review",
+      "rendered_capture": "/mnt/holding/project-nile/combined-arms-review-20261123/archers-and-chariots.png",
+      "artistic_approval": "Agent visual review complete; human art acceptance remains separate."
+    },
+    {
+      "id": "tower",
+      "runtime_path": "client/assets/street/tower.png",
+      "source_path": "/mnt/holding/project-nile/army-original-20261123/tower.png",
+      "source": "Unmodified built-in image_gen PNG",
+      "sha256": "89a65655bf337b14bc111bd3f96585c13ef8b0755bca655893536f21a6f8561b",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/tower.txt",
+      "prompt_sha256": "03fa632202f216cd9212705647d51d3a9b02cd981971b454c052b7a6960db6ab",
+      "transparent_background": true,
+      "validation": "Godot4.7.2 imported; actual1920x1080 combined-arms UI construction, march, formation, interception, save/reload and recall passed. Captures visually inspected.",
+      "initiating_agent": "Codex",
+      "generator": "built-in image_gen",
+      "model": "not exposed by tool",
+      "cost": "No external asset generation credits; built-in cost not exposed",
+      "approval": "pending Scott review",
+      "rendered_capture": "/mnt/holding/project-nile/combined-arms-review-20261123/archers-and-chariots.png",
+      "artistic_approval": "Agent visual review complete; human art acceptance remains separate."
+    },
+    {
+      "id": "townpalace",
+      "runtime_path": "client/assets/street/townpalace.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/royal-civic.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "dd7c0c0fedaa42737973af68750702f2215ca3f18d0dfa6f0183e52275ef91bc",
+      "sha256": "c1b1c0c7007236b94c9f3569b0ca68ef331b0963cb1b15f183a42c5c3edf0210",
+      "dimensions": [
+        376,
+        252
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/royal-civic.txt",
+      "prompt_sha256": "be5c2929805d4f6e1e2a0a992a952d29dd4ff6611c62b60c1b7b8d02d3cd0b5f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "citypalace",
+      "runtime_path": "client/assets/street/citypalace.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/royal-civic.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "dd7c0c0fedaa42737973af68750702f2215ca3f18d0dfa6f0183e52275ef91bc",
+      "sha256": "56996fafbad8d50146fccee72df34febb4252266f0430ae8d14a47b9d24a33b7",
+      "dimensions": [
+        376,
+        239
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/royal-civic.txt",
+      "prompt_sha256": "be5c2929805d4f6e1e2a0a992a952d29dd4ff6611c62b60c1b7b8d02d3cd0b5f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "dynastymansion",
+      "runtime_path": "client/assets/street/dynastymansion.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/royal-civic.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "dd7c0c0fedaa42737973af68750702f2215ca3f18d0dfa6f0183e52275ef91bc",
+      "sha256": "5a4b2eac7bbf47c0f7723b78ac40a179fbf68ac05d84d1d3964a8eee4779fd22",
+      "dimensions": [
+        375,
+        244
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/royal-civic.txt",
+      "prompt_sha256": "be5c2929805d4f6e1e2a0a992a952d29dd4ff6611c62b60c1b7b8d02d3cd0b5f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "complexsanctuary",
+      "runtime_path": "client/assets/street/complexsanctuary.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/royal-civic.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "dd7c0c0fedaa42737973af68750702f2215ca3f18d0dfa6f0183e52275ef91bc",
+      "sha256": "7510844fa47f6fb971753be63d880297eb51cebe2049419189d95c414144e25f",
+      "dimensions": [
+        375,
+        246
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/royal-civic.txt",
+      "prompt_sha256": "be5c2929805d4f6e1e2a0a992a952d29dd4ff6611c62b60c1b7b8d02d3cd0b5f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "complexaltar",
+      "runtime_path": "client/assets/street/complexaltar.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/royal-civic.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "dd7c0c0fedaa42737973af68750702f2215ca3f18d0dfa6f0183e52275ef91bc",
+      "sha256": "03bc9c97318ad0849b39123ab9630fc7c21d16ea58e805613d91e88d9a96ba67",
+      "dimensions": [
+        376,
+        243
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/royal-civic.txt",
+      "prompt_sha256": "be5c2929805d4f6e1e2a0a992a952d29dd4ff6611c62b60c1b7b8d02d3cd0b5f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "complexoracle",
+      "runtime_path": "client/assets/street/complexoracle.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/royal-civic.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "dd7c0c0fedaa42737973af68750702f2215ca3f18d0dfa6f0183e52275ef91bc",
+      "sha256": "e461273405b896a371c717d3416ede0d32539d2df3a861dd9bec6c24f59559c2",
+      "dimensions": [
+        375,
+        255
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/royal-civic.txt",
+      "prompt_sha256": "be5c2929805d4f6e1e2a0a992a952d29dd4ff6611c62b60c1b7b8d02d3cd0b5f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "cliffrock",
+      "runtime_path": "client/assets/street/cliffrock.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/royal-civic.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "dd7c0c0fedaa42737973af68750702f2215ca3f18d0dfa6f0183e52275ef91bc",
+      "sha256": "771ae24962ce7a2c57655644dc5e17e33e278745567d3f6ac6f80a74552b6b78",
+      "dimensions": [
+        375,
+        230
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/royal-civic.txt",
+      "prompt_sha256": "be5c2929805d4f6e1e2a0a992a952d29dd4ff6611c62b60c1b7b8d02d3cd0b5f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "reeds",
+      "runtime_path": "client/assets/street/reeds.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/royal-civic.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "dd7c0c0fedaa42737973af68750702f2215ca3f18d0dfa6f0183e52275ef91bc",
+      "sha256": "47d4c28e2c58e859b953fa9b2e62cfca3604eca795a80d881c10cbc33a51a4c0",
+      "dimensions": [
+        375,
+        243
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/royal-civic.txt",
+      "prompt_sha256": "be5c2929805d4f6e1e2a0a992a952d29dd4ff6611c62b60c1b7b8d02d3cd0b5f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive.",
+      "matte_cleanup_source": "/mnt/holding/project-nile/city-assets/foliage-before-despill/reeds.png",
+      "matte_cleanup_source_sha256": "88802a5cb7317dd8f30b21ce94a6f26703b88e7f3d40b26a32282571e77661d2",
+      "matte_cleanup_tool": "tools/assets/despill_foliage.py"
     }
   ],
   "validation_environment": {

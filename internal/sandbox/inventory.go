@@ -15,6 +15,7 @@ type ResourceInfo struct {
 var foodKinds = []string{"grain", "meat", "figs", "pomegranates", "lettuce", "chickpeas", "beef", "fish"}
 var bazaarGoods = []string{"grain", "meat", "figs", "pomegranates", "lettuce", "chickpeas", "beef", "fish", "pottery", "beer", "linen", "jewelry"}
 var resourceCatalog = []ResourceInfo{
+	{"henna", "Henna", "units"}, {"oil", "Oil", "units"}, {"paint", "Paint", "units"}, {"lamps", "Lamps", "units"}, {"marble", "White marble", "units"},
 	{"chariots", "Chariots", "units"},
 	{"pomegranates", "Pomegranates", "units"}, {"lettuce", "Lettuce", "units"}, {"chickpeas", "Chickpeas", "units"}, {"beef", "Beef", "units"}, {"fish", "Fish", "units"},
 	{"gems", "Gemstones", "units"}, {"copper", "Copper", "units"}, {"weapons", "Weapons", "units"},
@@ -72,6 +73,9 @@ func setInventory(b *Building, r string, n int) {
 func resourceLimit(b Building, r string) int {
 	if !validResource(r) {
 		return 0
+	}
+	if expansionInput(b.Kind, r) {
+		return 200
 	}
 	if extracted[b.Kind] == r || b.Kind == "woodcutter" && r == "timber" {
 		return 400
@@ -200,6 +204,9 @@ func (w World) HouseGoods(id int64, r string) int { return w.ResourceAmount(id, 
 func (w World) incomingResource(id int64, r string) int {
 	n := w.boatIncoming(id, r)
 	for _, a := range w.Walkers {
+		if a.Role == "builder" && (a.Source == id || a.Origin == id) {
+			n += a.Supplies[r]
+		}
 		if a.Resource != r {
 			continue
 		}
@@ -421,6 +428,7 @@ func (w World) goodsView(v *View) {
 			n += inventory(b, r.ID)
 		}
 		for _, a := range w.Walkers {
+			n += a.Supplies[r.ID]
 			ar := a.Resource
 			if ar == "" && (a.Role == "cart" || a.Role == "buyer" || a.Role == "seller") {
 				ar = "grain"
@@ -478,6 +486,9 @@ func (w World) validateGoods() error {
 		}
 	}
 	for _, a := range w.Walkers {
+		for r, n := range a.Supplies {
+			totals[r] += n
+		}
 		if a.Role != "trader" && newResource(a.Resource) {
 			totals[a.Resource] += a.Cargo
 		}
@@ -487,7 +498,7 @@ func (w World) validateGoods() error {
 			continue
 		}
 		p, c := w.resourceCounters(r.ID)
-		if p+w.ResourceImported[r.ID] != c+int64(totals[r.ID]+w.boatInventory(r.ID))+w.ResourceExported[r.ID]+w.RequestSent[r.ID] {
+		if p+w.ResourceImported[r.ID]+w.CityEvents.Gifts[r.ID] != c+int64(totals[r.ID]+w.boatInventory(r.ID))+w.ResourceExported[r.ID]+w.RequestSent[r.ID] {
 			return errors.New("resource conservation failed: " + r.ID)
 		}
 	}

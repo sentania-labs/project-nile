@@ -23,16 +23,19 @@ func (w *World) dispatchMigrants() {
 		}
 	}
 	remaining := MigrantBatch
-	for pass := 0; pass < 2 && remaining > 0; pass++ {
+	// Original0x0044b6c0 prioritizes vacant lots, then occupied homes with
+	// more than seven vacancies, then the remaining small vacancies. Without
+	// the middle pass, a fluctuating early neighborhood starves later homes.
+	for pass := 0; pass < 3 && remaining > 0; pass++ {
 		for _, home := range w.Buildings {
 			if remaining == 0 {
 				break
 			}
-			if home.Kind != "hut" || !home.Connected || home.Damaged != "" || reserved[home.ID] || home.Pop >= home.Capacity || (pass == 0 && home.Pop != 0) || (pass == 1 && home.Pop == 0) {
+			if home.Kind != "hut" || !home.Connected || home.Damaged != "" || reserved[home.ID] || home.Pop >= home.Capacity || (pass == 0 && home.Pop != 0) || (pass == 1 && (home.Pop == 0 || home.Capacity-home.Pop <= 7)) {
 				continue
 			}
 			people := min(remaining, home.Capacity-home.Pop)
-			if w.spawn("immigrant", "travel", 0, home.ID, 0, w.path([]Point{w.entry()}, home), 0, 0) {
+			if w.spawn("immigrant", "travel", 0, home.ID, 0, w.pathWithFerries([]Point{w.entry()}, home, true), 0, 0) {
 				w.Walkers[len(w.Walkers)-1].People = people
 				reserved[home.ID] = true
 				remaining -= people

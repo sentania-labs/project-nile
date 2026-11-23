@@ -37,7 +37,7 @@ func (b Building) roadAccess(p Point) bool {
 	if isPyramid(b.Kind) {
 		return p == monumentStaging(b)
 	}
-	if slices.Contains(venues, b.Kind) && b.contains(p) {
+	if (slices.Contains(venues, b.Kind) || b.Kind == "gatehouse") && b.contains(p) {
 		return true
 	}
 	if b.Kind == "hut" {
@@ -91,7 +91,7 @@ func (w *World) BuildRoads(path []Point) error {
 		added = append(added, p)
 	}
 	cost := int64(len(added)) * constructionCost("road")
-	if w.BudgetEnabled && w.Treasury < cost {
+	if w.cannotBuildFor(cost) {
 		return errors.New("not enough treasury for the complete road")
 	}
 	if len(added) == 0 {
@@ -103,7 +103,7 @@ func (w *World) BuildRoads(path []Point) error {
 	if w.LaborPriority == "" {
 		w.policyDefaults()
 	}
-	w.spend(cost)
+	w.spendConstruction(cost)
 	w.Roads = append(w.Roads, added...)
 	w.refresh()
 	return nil

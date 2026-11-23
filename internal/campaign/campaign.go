@@ -19,6 +19,7 @@ const Nubt = 0
 const Thinis = 1
 const Perwadjyt = 2
 const Nekhen = 3
+const Mennefer = 4
 const FoodPopulation = 150
 const WaterMeat = 400
 
@@ -28,19 +29,23 @@ type Criterion struct {
 }
 
 type Mission struct {
-	ID            int                  `json:"id"`
-	Name          string               `json:"name"`
-	Period        string               `json:"period"`
-	StartYear     int                  `json:"start_year_signed"`
-	RescueFunds   int64                `json:"rescue_loan_raw"`
-	InitialFunds  int64                `json:"initial_funds"`
-	Goals         map[string]Criterion `json:"goals"`
-	NextMissionID []int                `json:"next_mission_ids"`
-	Map           MapSize              `json:"map"`
-	KnownGods     [5]int               `json:"gods_known_raw"`
-	MonumentCodes [3]int               `json:"monument_codes_raw"`
-	BurialGoods   map[string]int       `json:"burial_requirements_raw"`
-	EditorFlags   [47]int              `json:"editor_allow_flags_raw"`
+	ID             int                  `json:"id"`
+	Name           string               `json:"name"`
+	Period         string               `json:"period"`
+	StartYear      int                  `json:"start_year_signed"`
+	Rank           int                  `json:"player_rank_raw"`
+	EnemyID        int                  `json:"enemy_id_raw"`
+	MilestoneYears [3]int               `json:"milestone_years_raw"`
+	RescueFunds    int64                `json:"rescue_loan_raw"`
+	InitialFunds   int64                `json:"initial_funds"`
+	Goals          map[string]Criterion `json:"goals"`
+	NextMissionID  []int                `json:"next_mission_ids"`
+	Map            MapSize              `json:"map"`
+	ComplexFlags   [5]int               `json:"temple_complex_flags_raw"`
+	KnownGods      [5]int               `json:"gods_known_raw"`
+	MonumentCodes  [3]int               `json:"monument_codes_raw"`
+	BurialGoods    map[string]int       `json:"burial_requirements_raw"`
+	EditorFlags    [47]int              `json:"editor_allow_flags_raw"`
 }
 
 type MapSize struct {
@@ -82,6 +87,10 @@ func Definition(id int) (Mission, bool) {
 // State is included in the world's SQLite snapshot. Unlocks survive later
 // population/stock losses, and an achieved victory remains achieved.
 type State struct {
+	Ratings              *RatingState `json:"ratings,omitempty"`
+	EducationOpened      bool         `json:"education_opened,omitempty"`
+	TradeOpened          bool         `json:"trade_opened,omitempty"`
+	MonumentOpened       bool         `json:"monument_opened,omitempty"`
 	FinanceOpened        bool         `json:"finance_opened,omitempty"`
 	EventsInitialized    bool         `json:"events_initialized,omitempty"`
 	Events               []EventState `json:"events,omitempty"`
@@ -108,32 +117,44 @@ type State struct {
 // Observation uses actual connected/staffed stocks, not lifetime production.
 // QualifyingHomes counts occupied houses at or above the scenario housing tier.
 type Observation struct {
-	Culture          int
-	Prosperity       int
-	Monuments        int
-	Kingdom          int
-	BurialComplete   bool
-	Tick             int64
-	Population       int
-	EligibleMeat     int
-	EligibleFigs     int
-	StoredPottery    int
-	StoredBeer       int
-	DiseaseDeaths    int64
-	QualifyingHomes  int
-	FireCount        int
-	CollapseCount    int
-	ActiveFirehouses int
-	ActiveArchitects int
-	GoldDelivered    int64
-	BastFavor        int
+	Culture           int
+	Prosperity        int
+	Monuments         int
+	Kingdom           int
+	BurialComplete    bool
+	Tick              int64
+	Population        int
+	EligibleMeat      int
+	EligibleFigs      int
+	StoredPottery     int
+	StoredBeer        int
+	StoredBricks      int
+	ApartmentHomes    int
+	TeacherDispatched bool
+	DiseaseDeaths     int64
+	QualifyingHomes   int
+	FireCount         int
+	CollapseCount     int
+	ActiveFirehouses  int
+	ActiveArchitects  int
+	GoldDelivered     int64
+	BastFavor         int
 }
 
 func New(id int) (*State, error) {
-	if id != Nubt && id != Thinis && id != Perwadjyt && id != Nekhen {
+	if !Playable(id) {
 		return nil, errors.New("this campaign mission is not playable yet")
 	}
-	s := &State{Version: StateVersion, MissionID: id}
+	return NewScenario(id)
+}
+
+// NewScenario initializes a source scenario for development verification. Public
+// mission starts and handoffs use New, which requires a proven Playable mission.
+func NewScenario(id int) (*State, error) {
+	if _, ok := Definition(id); !ok {
+		return nil, errors.New("unknown campaign scenario")
+	}
+	s := &State{Version: StateVersion, MissionID: id, Ratings: &RatingState{}}
 	if id >= Thinis {
 		s.FoodUnlocked, s.WaterUnlocked, s.FireUnlocked, s.ArchitectOpened = true, true, true, true
 	}
@@ -167,6 +188,11 @@ func (s *State) Observe(o Observation) {
 	if s.MissionID == Nekhen {
 		s.FinanceOpened = s.FinanceOpened || o.StoredBeer >= 300
 	}
+	if s.MissionID == Mennefer {
+		s.EducationOpened = s.EducationOpened || o.ApartmentHomes > 0
+		s.TradeOpened = s.TradeOpened || s.EducationOpened && o.TeacherDispatched
+		s.MonumentOpened = s.MonumentOpened || s.TradeOpened && o.StoredBricks >= 800
+	}
 	mission, _ := Definition(s.MissionID)
 	if !s.Won && mission.GoalsMet(o.Progress()) {
 		s.Won = true
@@ -180,6 +206,14 @@ func (s *State) Allows(kind string) bool {
 	}
 	if s.MissionID >= Nekhen {
 		m, _ := Definition(s.MissionID)
+		if s.MissionID == Mennefer {
+			switch kind {
+			case "scribalschool", "papyrusmaker", "reedgatherer":
+				return s.EducationOpened
+			case "mastaba", "smallmastaba", "bricklayers":
+				return s.MonumentOpened
+			}
+		}
 		if s.MissionID == Nekhen && (kind == "courthouse" || kind == "residence") {
 			return s.FinanceOpened
 		}
@@ -224,7 +258,7 @@ func (s *State) Validate(tick int64) error {
 	if s == nil {
 		return nil
 	}
-	if s.Version != StateVersion || s.MissionID < Nubt || s.MissionID > Nekhen || s.VictoryTick < 0 || s.VictoryTick > tick {
+	if s.Version != StateVersion || s.MissionID < Nubt || s.MissionID >= len(definitions()) || s.VictoryTick < 0 || s.VictoryTick > tick {
 		return errors.New("invalid campaign state")
 	}
 	if (s.WaterUnlocked && !s.FoodUnlocked) || (!s.Won && s.VictoryTick != 0) {
@@ -236,6 +270,9 @@ func (s *State) Validate(tick int64) error {
 	}
 	if s.EntertainmentOpened && !s.ReligionOpened {
 		return errors.New("entertainment opened before religion")
+	}
+	if s.MissionID == Mennefer && (s.TradeOpened && !s.EducationOpened || s.MonumentOpened && !s.TradeOpened) {
+		return errors.New("inconsistent Men-nefer tutorial sequence")
 	}
 	for i, id := range s.Completed {
 		if id < 0 || id >= s.MissionID || (i > 0 && s.Completed[i-1] >= id) {
@@ -303,13 +340,21 @@ func (s *State) View(o Observation) *View {
 	}
 	for _, id := range mission.NextMissionID {
 		next, _ := Definition(id)
-		v.NextMissions = append(v.NextMissions, NextMission{ID: id, Name: next.Name, Playable: id == Thinis || id == Perwadjyt || id == Nekhen})
+		v.NextMissions = append(v.NextMissions, NextMission{ID: id, Name: next.Name, Playable: Playable(id)})
 	}
 	switch {
 	case s.Won:
 		v.Stage, v.Guidance = "victory", mission.Name+" has reached its goals. You can continue tending this city or advance to the next available mission."
 	case s.MissionID == Nekhen:
 		v.Stage, v.Guidance = "apartments", "Grow grain and barley, manufacture pottery and beer, and supply physicians and musicians to ten Modest Apartments. Establish a city of 1,000 residents."
+	case s.MissionID == Mennefer && !s.EducationOpened:
+		v.Stage, v.Guidance = "apartments", "Develop an occupied Spacious Apartment with food, pottery, beer, clean water, worship, physicians and entertainment to open education."
+	case s.MissionID == Mennefer && !s.TradeOpened:
+		v.Stage, v.Guidance = "education", "Deliver locally made papyrus to a staffed Scribal School. Its first teacher opens regional commerce."
+	case s.MissionID == Mennefer && !s.MonumentOpened:
+		v.Stage, v.Guidance = "bricks", "Open a trade route and import 800 bricks into Storage Yards to begin the Small Mastaba."
+	case s.MissionID == Mennefer:
+		v.Stage, v.Guidance = "monument", "Complete the Small Mastaba and sustain the city's population, culture, prosperity and relations with the Kingdom."
 	case s.MissionID == Perwadjyt && !s.IndustryOpened:
 		v.Stage, v.Guidance = "floodplain", "Build Fig Farms on the floodplain and staff Work Camps. Store 800 figs in staffed granaries to open pottery production."
 		v.Objectives = append(v.Objectives, Objective{"figs", "Figs in connected granaries with at least half staffing", o.EligibleFigs, 800, false})

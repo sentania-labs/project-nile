@@ -141,3 +141,131 @@ func TestRecruiterRequiresPhysicalWeaponsAndPreservesTerrainRoutes(t *testing.T)
 		t.Fatal("troops could muster inside a building")
 	}
 }
+
+func TestArchersTrainPhysicallyAndChariotsRequireTimberManufacturing(t *testing.T) {
+	w := riverFixture(t)
+	for x := 11; x <= 20; x++ {
+		id := addGoodsBuilding(t, &w, "hut", x, 18)
+		w.building(id).Pop = 5
+		w.Arrivals += 5
+	}
+	w.refresh()
+	recruiter := addGoodsBuilding(t, &w, "recruiter", 18, 14)
+	w.BuildRoads([]Point{{18, 13}, {19, 13}, {20, 13}, {21, 13}, {22, 13}, {23, 13}, {24, 13}, {25, 13}})
+	academy := addGoodsBuilding(t, &w, "academy", 11, 12)
+	archers := addGoodsBuilding(t, &w, "archerfort", 17, 24)
+	chariots := addGoodsBuilding(t, &w, "chariotfort", 17, 2)
+	maker := addGoodsBuilding(t, &w, "chariotmaker", 14, 8)
+	yard := addGoodsBuilding(t, &w, "storageyard", 26, 10)
+	runValid(t, &w, 220)
+	if w.Military.ArchersRecruited == 0 || w.Military.ChariotsRecruited != 0 || w.GoodsConsumed["weapons"] != 0 {
+		t.Fatal("self-equipped archers or chariot input dependency failed")
+	}
+	if err := w.OpenTrade(tradeRouteID); err != nil {
+		t.Fatal(err)
+	}
+	if err := w.SetTradePolicy("timber", "import", 1600); err != nil {
+		t.Fatal(err)
+	}
+	sawDelivery, sawTraining, sawChariot := false, false, false
+	for range 1500 {
+		runValid(t, &w, 1)
+		for _, a := range w.Walkers {
+			if a.Target == maker && a.Resource == "timber" && a.Cargo > 0 {
+				sawDelivery = true
+			}
+			if a.Target == recruiter && a.Resource == "chariots" && a.Cargo > 0 {
+				sawChariot = true
+			}
+		}
+		for _, a := range w.Troops {
+			if a.School == academy && a.Stage == "training" {
+				sawTraining = true
+			}
+		}
+		if w.Military.ChariotsRecruited >= 4 {
+			break
+		}
+	}
+	if !sawDelivery || !sawTraining || !sawChariot || w.Military.ChariotsRecruited < 4 || w.GoodsConsumed["chariots"] != w.Military.ChariotsRecruited*100 {
+		t.Fatalf("incomplete chariot chain timber%v training%v chariot%v stats%+v yard%d", sawDelivery, sawTraining, sawChariot, w.Military, w.ResourceAmount(yard, "timber"))
+	}
+	runValid(t, &w, 120)
+	if err := w.MilitaryOrder(archers, "muster", Point{25, 22}); err != nil {
+		t.Fatal(err)
+	}
+	if err := w.MilitaryOrder(chariots, "muster", Point{25, 17}); err != nil {
+		t.Fatal(err)
+	}
+	runValid(t, &w, 45)
+	if err := w.TestInvasion(); err != nil {
+		t.Fatal(err)
+	}
+	store, err := Open(filepath.Join(t.TempDir(), "combined-arms.nile"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer store.Close()
+	if err = store.Save(w); err != nil {
+		t.Fatal(err)
+	}
+	copy, err := store.Load()
+	if err != nil {
+		t.Fatal(err)
+	}
+	runValid(t, &w, 100)
+	runValid(t, &copy, 100)
+	if w.Hash() != copy.Hash() || w.Military.Defeated != 4 || w.Military.Breaches != 0 {
+		t.Fatalf("combined arms replay or defense failed %+v", w.Military)
+	}
+}
+
+func wallFixture(t *testing.T, tower bool) World {
+	w := goodsFixture(t)
+	addGoodsBuilding(t, &w, "gatehouse", 10, 15)
+	addGoodsBuilding(t, &w, "gatehouse", 25, 15)
+	for y := 15; y <= 16; y++ {
+		for x := 6; x < 32; x++ {
+			if x == 10 || x == 11 || x == 25 || x == 26 {
+				continue
+			}
+			addGoodsBuilding(t, &w, "wall", x, y)
+		}
+	}
+	if tower {
+		addGoodsBuilding(t, &w, "tower", 27, 15)
+		w.BuildRoads([]Point{{25, 14}, {26, 14}, {27, 14}, {28, 14}})
+		addGoodsBuilding(t, &w, "recruiter", 11, 12)
+		runValid(t, &w, 130)
+		if w.Military.SentriesRecruited != 2 {
+			t.Fatal("tower did not receive physical sentries")
+		}
+	}
+	return w
+}
+func TestWallsDelayRecordedInvadersAndStaffedTowersRepelThem(t *testing.T) {
+	for _, defended := range []bool{false, true} {
+		w := wallFixture(t, defended)
+		if err := w.SpawnInvasion(91, "foreign", 4, Point{31, 13}); err != nil {
+			t.Fatal(err)
+		}
+		before := w.Hash()
+		if w.SpawnInvasion(91, "foreign", 4, Point{31, 13}) == nil || w.Hash() != before {
+			t.Fatal("duplicate campaign invasion mutated state")
+		}
+		runValid(t, &w, 45)
+		if w.Military.Breaches != 0 {
+			t.Fatal("invaders walked through intact walls")
+		}
+		runValid(t, &w, 220)
+		if defended {
+			if w.Military.Defeated != 4 || w.Military.Breaches != 0 || w.Invasions[0].Status != "repelled" {
+				t.Fatalf("tower defense failed %+v", w.Military)
+			}
+		} else {
+			if w.Military.Breaches != 4 || w.Invasions[0].Status != "breached" {
+				t.Fatalf("invaders failed to breach undefended walls %+v", w.Military)
+			}
+		}
+	}
+}

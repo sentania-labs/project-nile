@@ -7,7 +7,7 @@ import "errors"
 const FarmCrew = 10
 const FigSeasonWork = 144 * FarmCrew
 
-var campCrops = map[string]string{"figfarm": "figs", "pomegranatefarm": "pomegranates", "lettucefarm": "lettuce", "chickpeafarm": "chickpeas"}
+var campCrops = map[string]string{"hennafarm": "henna", "figfarm": "figs", "pomegranatefarm": "pomegranates", "lettucefarm": "lettuce", "chickpeafarm": "chickpeas"}
 
 func init() {
 	buildingCatalog = append(buildingCatalog,

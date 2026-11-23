@@ -69,11 +69,6 @@ func (w *World) produceAndConsume() {
 				b.Work = 0
 			}
 		}
-		if b.Kind == "hut" && b.Pop > 0 && w.Tick%ConsumptionInterval == 0 {
-			amount := min(b.Stock, (b.Pop+4)/5)
-			b.Stock -= amount
-			w.GrainConsumed += int64(amount)
-		}
 	}
 }
 
@@ -108,6 +103,7 @@ func (w World) patrolFor(start Point, role string) []Point {
 }
 func (w *World) dispatch() {
 	w.dispatchMigrants()
+	w.dispatchLaborSeekers()
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
 		if !b.Connected || b.Damaged != "" || b.Workers < b.WorkersNeeded {
@@ -202,8 +198,13 @@ func reverseJourney(walker *Walker, target int64, stage string) {
 	walker.Stage = stage
 }
 func (w *World) moveWalkers() {
+	w.advanceFerries()
 	remaining := make([]Walker, 0, len(w.Walkers))
 	for _, walker := range w.Walkers {
+		if walker.Next < len(walker.Route) && !adjacent(Point{walker.X, walker.Y}, walker.Route[walker.Next]) {
+			remaining = append(remaining, walker)
+			continue
+		}
 		w.respectRoadblock(&walker)
 		if walker.Role == "stonehauler" {
 			if w.advanceStoneHauler(&walker) {
@@ -245,6 +246,9 @@ func (w *World) moveWalkers() {
 			p := walker.Route[walker.Next]
 			walker.X, walker.Y = p.X, p.Y
 			walker.Next++
+		}
+		if walker.Role == "laborseeker" && walker.Stage == "patrol" {
+			w.visitLaborHomes(walker)
 		}
 		if (walker.Role == "firefighter" || walker.Role == "architect" || walker.Role == "taxcollector" || walker.Role == "watercarrier" || walker.Role == "priest" || walker.Role == "entertainer" || slices.Contains(amenities, walker.Role)) && walker.Stage == "patrol" {
 			w.visitService(walker)

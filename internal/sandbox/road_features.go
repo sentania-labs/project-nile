@@ -22,16 +22,19 @@ func (w *World) buildRoadFeature(kind string, p Point) error {
 	if w.roadFeature(p) >= 0 {
 		return errors.New("this road already has a plaza or roadblock")
 	}
-	if w.BudgetEnabled && w.Treasury < constructionCost(kind) {
+	if w.cannotBuildFor(constructionCost(kind)) {
 		return errors.New("not enough treasury")
 	}
 	w.RoadFeatures = append(w.RoadFeatures, RoadFeature{Point: p, Kind: kind})
-	w.spend(constructionCost(kind))
+	w.spendConstruction(constructionCost(kind))
 	w.refresh()
 	return nil
 }
 
 func (w World) blockedStreet(p Point, role string) bool {
+	if b := w.defenseAt(p); b != nil && b.Kind == "gatehouse" && b.Damaged == "" {
+		return true
+	}
 	i := w.roadFeature(p)
 	if i < 0 || w.RoadFeatures[i].Kind != "roadblock" {
 		return false
@@ -93,4 +96,4 @@ func (w World) validateRoadFeatures() error {
 	return nil
 }
 
-var roadGroups = []string{"seller", "watercarrier", "firefighter", "architect", "taxcollector", "priest", "doctor", "teacher", "entertainer", "policeman"}
+var roadGroups = []string{"laborseeker", "seller", "watercarrier", "firefighter", "architect", "taxcollector", "priest", "doctor", "teacher", "entertainer", "policeman"}
