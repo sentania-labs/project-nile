@@ -94,7 +94,7 @@ func (w World) refreshHome(b *Building, previous int) {
 		return
 	}
 	b.Tier, b.Capacity, b.TierName = 2, 9, "Meager Shanty"
-	hasTemple := b.ShrineAccess
+	hasTemple := false
 	for _, until := range b.GodUntil {
 		if until > w.Tick {
 			hasTemple = true

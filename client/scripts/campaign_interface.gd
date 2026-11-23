@@ -71,6 +71,8 @@ func refresh(operation: String) -> void:
 	if panel.visible and (operation in ["dispatch_request", "refuse_request", "dispatch_army"] or current_signature != request_signature):
 		show_objectives()
 	request_signature = current_signature
+	if not mission.won and not mission.get("failed",false):
+		won_shown = false
 	if mission.won and not won_shown:
 		won_shown = true
 		briefing = false

@@ -27,3 +27,17 @@ func TestIdleCropWorkExpiresAtInundation(t *testing.T) {
 		}
 	}
 }
+
+func TestHouseholdReligionRequiresAPriestVisit(t *testing.T) {
+	w := NewTown()
+	home := Building{Kind: "hut", Pop: 4, Water: true, Food: true, Market: true, Desirability: 6, ShrineAccess: true}
+	w.refreshHome(&home, 2)
+	if home.Tier != 2 {
+		t.Fatalf("legacy shrine proximity promoted home to %d", home.Tier)
+	}
+	home.GodUntil[0] = w.Tick + MarketDuration
+	w.refreshHome(&home, 2)
+	if home.Tier != 3 {
+		t.Fatalf("priest's visit did not advance household: %+v", home)
+	}
+}

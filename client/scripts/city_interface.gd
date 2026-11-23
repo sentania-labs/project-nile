@@ -1,6 +1,7 @@
 extends RefCounted
 ## City menus and overseers. This class reads state; it never advances simulation.
 
+const ServiceOverlays := preload("res://scripts/service_overlays.gd")
 const MiniMap = preload("res://scripts/city_minimap.gd")
 const GROUPS := ["Homes", "Food", "Industry", "Safety", "Civic", "Monument", "Religion", "Streets", "Health", "Education", "Entertainment", "Military"]
 var groups: Dictionary = {}
@@ -21,6 +22,7 @@ var minimap: Control
 var categories: Dictionary = {}
 var active_category := "Homes"
 var overlay_picker: OptionButton
+var undo_button: Button
 var repair_button: Button
 var game_menu: MenuButton
 var overseers_button: Button
@@ -153,9 +155,30 @@ func setup(owner: Node) -> void:
 	overlay_picker.add_theme_font_size_override("font_size", 12)
 	overlay_picker.clip_text = true
 	overlay_picker.fit_to_longest_item = false
-	for label: String in OVERLAYS: overlay_picker.add_item("Overlay: " + label)
+	overlay_picker.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	overlay_picker.tooltip_text = "Show service coverage and building risks"
+	for state_name: String in ["normal", "hover", "pressed", "focus"]:
+		overlay_picker.add_theme_stylebox_override(state_name, game._style(Color("d1a16b") if state_name == "normal" else Color("dfb67e"), Color("785634"), 2))
+	for color_name: String in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color", "arrow_color"]:
+		overlay_picker.add_theme_color_override(color_name, Color("392617"))
+	var overlay_menu := overlay_picker.get_popup()
+	overlay_menu.add_theme_stylebox_override("panel", game._style(Color("e1c28d"), Color("785634"), 2))
+	overlay_menu.add_theme_stylebox_override("hover", game._style(Color("c39259"), Color("9f733f"), 1))
+	overlay_menu.add_theme_color_override("font_color", Color("392617"))
+	overlay_menu.add_theme_color_override("font_hover_color", Color("25170e"))
+	for label: String in OVERLAYS: overlay_picker.add_item("Overlays" if label == "None" else label)
+	for group: String in ServiceOverlays.GROUPS:
+		var sub := PopupMenu.new()
+		sub.name = group
+		overlay_menu.add_child(sub)
+		var modes: Dictionary = ServiceOverlays.GROUPS[group]
+		for label: String in modes:
+			sub.add_item(label)
+			sub.set_item_metadata(sub.item_count-1,modes[label])
+		sub.id_pressed.connect(func(id: int) -> void: game._set_overlay(sub.get_item_metadata(sub.get_item_index(id))))
+		overlay_menu.add_submenu_item(group,group)
 	overlay_picker.item_selected.connect(func(index: int) -> void:
-		game._set_overlay(OVERLAYS.values()[index])
+		if index<OVERLAYS.size(): game._set_overlay(OVERLAYS.values()[index])
 		overlay_picker.release_focus())
 	column.move_child(minimap,-1)
 	column.add_child(overlay_picker)
@@ -203,10 +226,17 @@ func setup(owner: Node) -> void:
 	for entry: Array in [["inspect", "Inspect"], ["road", "Road"], ["clear", "Clear"]]:
 		var button: Button = game._button(entry[1], game._set_tool.bind(entry[0]))
 		button.toggle_mode = true
-		button.custom_minimum_size = Vector2(56, 27)
+		button.custom_minimum_size = Vector2(45, 27)
 		button.add_theme_font_size_override("font_size", 11)
 		game.tool_buttons[entry[0]] = button
 		commands.add_child(button)
+	undo_button = game._button("↶",func() -> void:
+		game._cancel_gesture()
+		game._queue_command("undo"))
+	undo_button.tooltip_text = "Undo last construction"
+	undo_button.custom_minimum_size = Vector2(28,27)
+	undo_button.disabled = true
+	commands.add_child(undo_button)
 	construction_menu = PanelContainer.new()
 	construction_menu.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	construction_menu.offset_left = -530
@@ -603,6 +633,7 @@ func show_inspector() -> void:
 
 
 func update_city() -> void:
+	undo_button.disabled = not game.last_reply.get("can_undo",false)
 	game.status.visible = not game.status.text.is_empty()
 	build_info.visible = game.active_tool != "inspect"
 	if build_info.visible:
@@ -704,3 +735,16 @@ func _update_overseer() -> void:
 					if not b.get("staging_access", false): lines.append("Workers cannot reach the staging area. Check the road access at the monument.")
 			lines.append("\nMastabas need bricks. Pyramids need core blocks, ramps and guild workers. Cased pyramids also need limestone and polishing. Sphinxes are carved from bedrock. Inspect a site for its current need.")
 	overseer_text.text = "\n".join(lines)
+
+func select_overlay(kind: String) -> void:
+	var index:=OVERLAYS.values().find(kind)
+	if index>=0:
+		overlay_picker.select(index)
+		overlay_picker.text = "Overlays" if kind.is_empty() else str(OVERLAYS.keys()[index])
+		return
+	for modes: Dictionary in ServiceOverlays.GROUPS.values():
+		var label: Variant=modes.find_key(kind)
+		if label!=null:
+			overlay_picker.select(-1)
+			overlay_picker.text=label
+			return

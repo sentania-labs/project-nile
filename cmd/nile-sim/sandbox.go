@@ -53,6 +53,7 @@ type sandboxRequest struct {
 }
 
 type sandboxResponse struct {
+	CanUndo    bool         `json:"can_undo,omitempty"`
 	SavePath   string       `json:"save_path,omitempty"`
 	ID         int64        `json:"id"`
 	OK         bool         `json:"ok"`
@@ -152,6 +153,7 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 	scan := bufio.NewScanner(in)
 	scan.Buffer(make([]byte, 4096), 1<<20)
 	enc := json.NewEncoder(out)
+	var undo sandboxUndo
 	for scan.Scan() {
 		received := now()
 		clockErr := clock.catchUp(&world, received)
@@ -168,9 +170,19 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 		if err == nil {
 			err = clockErr
 		}
+		if !undo.available(world) {
+			undo = sandboxUndo{}
+		}
+		var candidate sandboxUndo
+		if err == nil && constructionEdit(req.Op) {
+			candidate.tick = world.Tick
+			candidate.before, err = json.Marshal(world)
+		}
 		quit := false
 		if err == nil {
 			switch req.Op {
+			case "undo":
+				err = undo.restore(&world)
 			case "state":
 			case "resume":
 				if !clock.running {
@@ -379,7 +391,20 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 				err = errors.New("unknown operation")
 			}
 		}
-		resp := sandboxResponse{TickMillis: clock.tickPeriod().Milliseconds(), SavePath: store.Path, ID: req.ID, OK: err == nil, State: world.View(), Hash: world.Hash(), Running: clock.running, Speed: clock.speed}
+		if err == nil {
+			if constructionEdit(req.Op) {
+				current, marshalErr := json.Marshal(world)
+				if marshalErr != nil {
+					return marshalErr
+				}
+				if !bytes.Equal(current, candidate.before) {
+					undo = candidate
+				}
+			} else if !preservesUndo(req.Op) {
+				undo = sandboxUndo{}
+			}
+		}
+		resp := sandboxResponse{CanUndo: undo.available(world), TickMillis: clock.tickPeriod().Milliseconds(), SavePath: store.Path, ID: req.ID, OK: err == nil, State: world.View(), Hash: world.Hash(), Running: clock.running, Speed: clock.speed}
 		if err != nil {
 			resp.Error = err.Error()
 		}
