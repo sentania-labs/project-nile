@@ -10,6 +10,8 @@ var next_id := 1
 var deadline := 0
 var stopping := false
 var message_limit := 65536
+var last_diagnostic := ""
+var awaiting_first_reply := true
 
 func start(mode: String = "") -> bool:
 	var executable := OS.get_environment("NILE_SIM")
@@ -25,9 +27,14 @@ func start(mode: String = "") -> bool:
 	var arguments := PackedStringArray(["--save", save_path])
 	if mode == "sandbox": arguments.append("--sandbox")
 	message_limit = 2097152 if mode == "sandbox" else 65536
+	last_diagnostic = ""
+	awaiting_first_reply = true
+	if not FileAccess.file_exists(executable):
+		failed.emit("Missing %s. Extract the entire game ZIP into one folder." % executable.get_file())
+		return false
 	child = OS.execute_with_pipe(executable, arguments, false)
 	if child.is_empty():
-		failed.emit("Could not start the local simulation. Run make build first.")
+		failed.emit("Could not launch the local simulation. Check that the operating system allows the bundled executable to run.")
 		return false
 	incoming.clear()
 	pending = 0
@@ -42,7 +49,7 @@ func request(op: String, ticks: int = 0, fields: Dictionary = {}) -> bool:
 		if fields.has(key): message[key] = fields[key]
 	pending = next_id
 	next_id += 1
-	deadline = Time.get_ticks_msec() + 5000
+	deadline = Time.get_ticks_msec() + (20000 if awaiting_first_reply else 5000)
 	var pipe: FileAccess = child.stdio
 	pipe.store_string(JSON.stringify(message) + "\n")
 	if pipe.get_error() != OK:
@@ -58,7 +65,9 @@ func _process(_delta: float) -> void:
 	incoming.append_array(bytes)
 	var diagnostics: FileAccess = child.stderr
 	var errors := diagnostics.get_buffer(4096)
-	if not errors.is_empty(): push_warning(errors.get_string_from_utf8())
+	if not errors.is_empty():
+		last_diagnostic = errors.get_string_from_utf8().strip_edges().left(512)
+		push_warning(last_diagnostic)
 	if incoming.size() > message_limit:
 		_abort("The simulation exceeded the message limit.")
 		return
@@ -71,6 +80,7 @@ func _process(_delta: float) -> void:
 			_abort("The simulation sent an invalid response.")
 			return
 		pending = 0
+		awaiting_first_reply = false
 		response_received.emit(parsed)
 		newline = incoming.find(10)
 	if pending != 0 and Time.get_ticks_msec() > deadline:
@@ -81,7 +91,12 @@ func _process(_delta: float) -> void:
 
 func _abort(reason: String) -> void:
 	stop()
-	failed.emit(reason)
+	if "locked" in last_diagnostic.to_lower() or "SQLITE_BUSY" in last_diagnostic:
+		failed.emit("The save is in use. Close other copies of Nile and retry.")
+	elif not last_diagnostic.is_empty():
+		failed.emit(last_diagnostic)
+	else:
+		failed.emit(reason)
 
 func stop() -> void:
 	if child.is_empty(): return

@@ -101,7 +101,7 @@ func _build_hud() -> void:
 	ribbon.add_child(row)
 	row.add_child(_label("N I L E", 21, Color("f2db9f")))
 	row.add_child(_label("RIVERBANK SETTLEMENT", 12))
-	stats = _label("Connecting to settlement…", 14)
+	stats = _label("Starting local settlement…", 14)
 	stats.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	stats.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	row.add_child(stats)
@@ -166,6 +166,8 @@ func _build_hud() -> void:
 	column.add_child(spacer)
 	status = _label("Roads connect homes to arriving settlers.", 12, Color("735936"))
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	status.max_lines_visible = 4
+	status.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	column.add_child(status)
 	pause_button = _button("Resume" if paused else "Pause", _toggle_pause)
 	column.add_child(pause_button)
@@ -186,17 +188,24 @@ func _build_hud() -> void:
 
 
 func _queue_command(op: String, fields: Dictionary = {}) -> void:
+	if sim.child.is_empty(): return
 	command_queue.append({"op": op, "fields": fields})
 
 
 func _load_save() -> void:
-	if sim.child.is_empty() and not sim.start("sandbox"):
-		return
+	if sim.child.is_empty():
+		stats.text = "Starting local settlement…"
+		if not sim.start("sandbox"): return
+		_queue_command("state")
+		if state.is_empty():
+			_queue_command("resume")
+			return
 	_queue_command("pause")
 	_queue_command("load")
 
 
 func _toggle_pause() -> void:
+	if sim.child.is_empty(): return
 	pause_button.disabled = true
 	_queue_command("resume" if paused else "pause")
 
@@ -222,6 +231,12 @@ func _process(delta: float) -> void:
 
 
 func _on_reply(reply: Dictionary) -> void:
+	if stats.text == "Starting local settlement…":
+		status.text = "Settlement ready."
+	status.tooltip_text = ""
+	load_button.text = "Load"
+	save_button.disabled = false
+	for button: Button in tool_buttons.values(): button.disabled = false
 	last_reply = reply
 	replies += 1
 	paused = not bool(reply.get("running", false))
@@ -245,9 +260,16 @@ func _on_reply(reply: Dictionary) -> void:
 func _on_failure(reason: String) -> void:
 	paused = true
 	command_queue.clear()
-	status.text = reason + " Use Load to recover."
+	stats.text = "Settlement stopped"
+	active_tool = "inspect"
+	painting_roads = false
+	status.text = reason.replace("\n", " ").replace("\r", " ").left(140)
+	status.tooltip_text = reason
+	load_button.text = "Retry"
+	save_button.disabled = true
+	for button: Button in tool_buttons.values(): button.disabled = true
 	pause_button.text = "Resume"
-	pause_button.disabled = false
+	pause_button.disabled = true
 
 
 func _texture_for(asset_id: String) -> Texture2D:
@@ -369,6 +391,7 @@ func _refresh_inspector() -> void:
 
 
 func _set_tool(tool: String) -> void:
+	if sim != null and sim.child.is_empty(): return
 	active_tool = tool
 	painting_roads = false
 	for key: String in tool_buttons:
