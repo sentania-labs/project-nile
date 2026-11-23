@@ -1,0 +1,7245 @@
+{
+  "schema_version": 1,
+  "source_sha256": "12753b3330c5df49c1b5072324814f879a769e6793562150fafe5b9d34b91ab2",
+  "decoder": {
+    "source": "https://github.com/madler/zlib/tree/v1.3.1/contrib/blast",
+    "purpose": "PKWARE DCL container decompression only"
+  },
+  "evidence": {
+    "source": "Direct licensed Gold metadata; base executable addresses do not verify expansion runtime behavior.",
+    "layout": "Descriptor50:61 city records of106bytes; descriptor114:20x36x4 quota bytes; descriptor142:200x98 Empire objects. City object ID at86 joins matching object city/name/route fields24..26 for every exported city.",
+    "resource_flags": "36 boolean buy/sell slots at6/42; latent Empire-object resource IDs at30..43 and52..59. Retain expansion resource IDs31..35.",
+    "quotas": "Original stored loads multiplied by100, as the existing base trade representation. Exported city/route joins include dormant partners.",
+    "army_travel": "Descriptor143 retains50x324 route records. Only derived months max(1,length_i32_at308*header_byte0/400) exported; expansion execution equivalence needs verification.",
+    "names": "Geographic names only from original English group195.",
+    "limits": "No original map coordinates, route points, images, narrative or executable code exported."
+  },
+  "missions": [
+    {
+      "id": 38,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 19,
+          "name": "Itjtawy",
+          "route_id": 3,
+          "empire_object_id": 0,
+          "army_travel_months": 1,
+          "potential_buys": [
+            15,
+            16,
+            34
+          ],
+          "potential_sells": [
+            9,
+            23
+          ],
+          "initially_open": false,
+          "buys": [
+            15,
+            16,
+            34
+          ],
+          "sells": [
+            9,
+            23
+          ],
+          "cost_to_open": 825,
+          "sea_trade": true,
+          "annual_limits": {
+            "9": 2500,
+            "15": 2500,
+            "16": 1500,
+            "23": 2500,
+            "34": 1500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 5,
+          "name_id_raw": 23,
+          "name": "Kerma",
+          "route_id": 5,
+          "empire_object_id": 1,
+          "army_travel_months": 1,
+          "potential_buys": [
+            17,
+            33
+          ],
+          "potential_sells": [
+            19
+          ],
+          "initially_open": false,
+          "buys": [
+            17,
+            33
+          ],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 940,
+          "sea_trade": true,
+          "annual_limits": {
+            "17": 2500,
+            "19": 2500,
+            "33": 1500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 1,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 2,
+          "empire_object_id": 2,
+          "army_travel_months": 1,
+          "potential_buys": [
+            4,
+            14,
+            19
+          ],
+          "potential_sells": [
+            1,
+            2,
+            15,
+            23,
+            28
+          ],
+          "initially_open": false,
+          "buys": [
+            4,
+            14,
+            19
+          ],
+          "sells": [
+            1,
+            2,
+            15,
+            23,
+            28
+          ],
+          "cost_to_open": 940,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "2": 2500,
+            "4": 2500,
+            "14": 2500,
+            "15": 4000,
+            "19": 1500,
+            "23": 1500,
+            "28": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 0,
+          "empire_object_id": 3,
+          "army_travel_months": 0,
+          "potential_buys": [
+            12,
+            25,
+            26
+          ],
+          "potential_sells": [
+            24
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "12": 0,
+            "24": 0,
+            "25": 0,
+            "26": 0
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 5,
+          "name_id_raw": 36,
+          "name": "Pwenet",
+          "route_id": 6,
+          "empire_object_id": 5,
+          "army_travel_months": 0,
+          "potential_buys": [
+            4,
+            13
+          ],
+          "potential_sells": [
+            18,
+            19
+          ],
+          "initially_open": false,
+          "buys": [
+            4,
+            13
+          ],
+          "sells": [
+            18,
+            19
+          ],
+          "cost_to_open": 525,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 2500,
+            "13": 1500,
+            "18": 2500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 6,
+          "name_id_raw": 42,
+          "name": "Sawu",
+          "route_id": 8,
+          "empire_object_id": 6,
+          "army_travel_months": 0,
+          "potential_buys": [
+            32
+          ],
+          "potential_sells": [
+            18,
+            31
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 190,
+          "sea_trade": false,
+          "annual_limits": {
+            "18": 1500,
+            "31": 1500,
+            "32": 1500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 6,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 0,
+          "empire_object_id": 7,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [
+            1
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 0
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 3,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 1,
+          "empire_object_id": 8,
+          "army_travel_months": 0,
+          "potential_buys": [
+            12
+          ],
+          "potential_sells": [
+            2,
+            14
+          ],
+          "initially_open": false,
+          "buys": [
+            12
+          ],
+          "sells": [
+            2,
+            14
+          ],
+          "cost_to_open": 80,
+          "sea_trade": true,
+          "annual_limits": {
+            "2": 2500,
+            "12": 4000,
+            "14": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 0,
+          "name_id_raw": 55,
+          "name": "Deir el-Medina",
+          "route_id": 0,
+          "empire_object_id": 34,
+          "army_travel_months": 1,
+          "potential_buys": [],
+          "potential_sells": [
+            4,
+            11,
+            16,
+            32
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            4,
+            11,
+            16,
+            32
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 0,
+            "11": 0,
+            "16": 0,
+            "32": 0
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 5,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 7,
+          "empire_object_id": 35,
+          "army_travel_months": 0,
+          "potential_buys": [
+            17,
+            19
+          ],
+          "potential_sells": [
+            31
+          ],
+          "initially_open": false,
+          "buys": [
+            17,
+            19
+          ],
+          "sells": [
+            31
+          ],
+          "cost_to_open": 1700,
+          "sea_trade": true,
+          "annual_limits": {
+            "17": 1500,
+            "19": 2500,
+            "31": 4000
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 6,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 0,
+          "empire_object_id": 36,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 4,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 4,
+          "empire_object_id": 37,
+          "army_travel_months": 1,
+          "potential_buys": [
+            12,
+            13
+          ],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 335,
+          "sea_trade": true,
+          "annual_limits": {
+            "12": 2500,
+            "13": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 12324425,
+        "stored_bytes": 230,
+        "decoded_sha256": "820e7be4f6d94550fd4dc35184d1b841f30d21f8f36b49d7e0a4d444194cacb6"
+      }
+    },
+    {
+      "id": 39,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 19,
+          "name": "Itjtawy",
+          "route_id": 2,
+          "empire_object_id": 0,
+          "army_travel_months": 0,
+          "potential_buys": [
+            4,
+            13,
+            19
+          ],
+          "potential_sells": [
+            1,
+            10,
+            15,
+            20,
+            28
+          ],
+          "initially_open": false,
+          "buys": [
+            4,
+            13,
+            19
+          ],
+          "sells": [
+            1,
+            10,
+            15,
+            20,
+            28
+          ],
+          "cost_to_open": 370,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "4": 2500,
+            "10": 2500,
+            "13": 1500,
+            "15": 2500,
+            "19": 2500,
+            "20": 1500,
+            "28": 1500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 6,
+          "name_id_raw": 23,
+          "name": "Kerma",
+          "route_id": 0,
+          "empire_object_id": 1,
+          "army_travel_months": 0,
+          "potential_buys": [
+            17
+          ],
+          "potential_sells": [
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "17": 0,
+            "19": 0
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 2,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 0,
+          "empire_object_id": 2,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 0,
+          "empire_object_id": 3,
+          "army_travel_months": 0,
+          "potential_buys": [
+            12,
+            25,
+            26
+          ],
+          "potential_sells": [
+            24
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "12": 0,
+            "24": 0,
+            "25": 0,
+            "26": 0
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 6,
+          "name_id_raw": 36,
+          "name": "Pwenet",
+          "route_id": 0,
+          "empire_object_id": 5,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 5,
+          "name_id_raw": 42,
+          "name": "Sawu",
+          "route_id": 4,
+          "empire_object_id": 6,
+          "army_travel_months": 1,
+          "potential_buys": [
+            1,
+            15,
+            34
+          ],
+          "potential_sells": [
+            19,
+            31
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            15,
+            34
+          ],
+          "sells": [
+            19,
+            31
+          ],
+          "cost_to_open": 245,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 4000,
+            "15": 2500,
+            "19": 2500,
+            "31": 1500,
+            "34": 1500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 6,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 0,
+          "empire_object_id": 7,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 3,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 1,
+          "empire_object_id": 8,
+          "army_travel_months": 1,
+          "potential_buys": [
+            13,
+            32
+          ],
+          "potential_sells": [
+            14,
+            17
+          ],
+          "initially_open": false,
+          "buys": [
+            13,
+            32
+          ],
+          "sells": [
+            14,
+            17
+          ],
+          "cost_to_open": 80,
+          "sea_trade": true,
+          "annual_limits": {
+            "13": 2500,
+            "14": 2500,
+            "17": 2500,
+            "32": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 0,
+          "name_id_raw": 55,
+          "name": "Deir el-Medina",
+          "route_id": 0,
+          "empire_object_id": 34,
+          "army_travel_months": 1,
+          "potential_buys": [],
+          "potential_sells": [
+            3,
+            4,
+            11,
+            32
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            3,
+            4,
+            11,
+            32
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "3": 0,
+            "4": 0,
+            "11": 0,
+            "32": 0
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 4,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 0,
+          "empire_object_id": 35,
+          "army_travel_months": 0,
+          "potential_buys": [
+            17,
+            19
+          ],
+          "potential_sells": [
+            20,
+            29,
+            31
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "17": 0,
+            "19": 0,
+            "20": 0,
+            "29": 0,
+            "31": 0
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 6,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 0,
+          "empire_object_id": 36,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 3,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 3,
+          "empire_object_id": 37,
+          "army_travel_months": 1,
+          "potential_buys": [
+            15,
+            20,
+            33
+          ],
+          "potential_sells": [
+            19
+          ],
+          "initially_open": false,
+          "buys": [
+            15,
+            20,
+            33
+          ],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 335,
+          "sea_trade": true,
+          "annual_limits": {
+            "15": 2500,
+            "19": 2500,
+            "20": 4000,
+            "33": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 12668588,
+        "stored_bytes": 201,
+        "decoded_sha256": "eadafbdef1b66c6cf7be44201ef983b7218e9944346134623fb5279f879c72dc"
+      }
+    },
+    {
+      "id": 40,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 19,
+          "name": "Itjtawy",
+          "route_id": 2,
+          "empire_object_id": 0,
+          "army_travel_months": 1,
+          "potential_buys": [
+            5,
+            19
+          ],
+          "potential_sells": [
+            1,
+            9
+          ],
+          "initially_open": false,
+          "buys": [
+            5,
+            19
+          ],
+          "sells": [
+            1,
+            9
+          ],
+          "cost_to_open": 810,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "5": 2500,
+            "9": 4000,
+            "19": 2500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 1,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 1,
+          "empire_object_id": 1,
+          "army_travel_months": 0,
+          "potential_buys": [
+            17,
+            31
+          ],
+          "potential_sells": [
+            1,
+            10,
+            23,
+            28
+          ],
+          "initially_open": false,
+          "buys": [
+            17,
+            31
+          ],
+          "sells": [
+            1,
+            10,
+            23,
+            28
+          ],
+          "cost_to_open": 900,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 4000,
+            "10": 1500,
+            "17": 1500,
+            "23": 2500,
+            "28": 1500,
+            "31": 1500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 6,
+          "name_id_raw": 36,
+          "name": "Pwenet",
+          "route_id": 10,
+          "empire_object_id": 3,
+          "army_travel_months": 1,
+          "potential_buys": [
+            13
+          ],
+          "potential_sells": [
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 780,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 1500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 5,
+          "name_id_raw": 42,
+          "name": "Sawu",
+          "route_id": 7,
+          "empire_object_id": 4,
+          "army_travel_months": 1,
+          "potential_buys": [
+            15,
+            17
+          ],
+          "potential_sells": [
+            19,
+            31
+          ],
+          "initially_open": false,
+          "buys": [
+            15,
+            17
+          ],
+          "sells": [
+            19,
+            31
+          ],
+          "cost_to_open": 200,
+          "sea_trade": false,
+          "annual_limits": {
+            "15": 1500,
+            "17": 1500,
+            "19": 2500,
+            "31": 1500
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 6,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 0,
+          "empire_object_id": 5,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 3,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 4,
+          "empire_object_id": 6,
+          "army_travel_months": 1,
+          "potential_buys": [
+            28,
+            33
+          ],
+          "potential_sells": [
+            11
+          ],
+          "initially_open": false,
+          "buys": [
+            28,
+            33
+          ],
+          "sells": [
+            11
+          ],
+          "cost_to_open": 60,
+          "sea_trade": true,
+          "annual_limits": {
+            "11": 2500,
+            "28": 1500,
+            "33": 1500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 0,
+          "name_id_raw": 55,
+          "name": "Deir el-Medina",
+          "route_id": 0,
+          "empire_object_id": 29,
+          "army_travel_months": 1,
+          "potential_buys": [],
+          "potential_sells": [
+            5,
+            7,
+            14,
+            16
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            5,
+            7,
+            14,
+            16
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "5": 0,
+            "7": 0,
+            "14": 0,
+            "16": 0
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 4,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 11,
+          "empire_object_id": 30,
+          "army_travel_months": 0,
+          "potential_buys": [
+            17,
+            19
+          ],
+          "potential_sells": [
+            31
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1700,
+          "sea_trade": true,
+          "annual_limits": {
+            "17": 1500,
+            "19": 2500,
+            "31": 4000
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 5,
+          "empire_object_id": 31,
+          "army_travel_months": 1,
+          "potential_buys": [
+            10,
+            12
+          ],
+          "potential_sells": [
+            19
+          ],
+          "initially_open": false,
+          "buys": [
+            10,
+            12
+          ],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 340,
+          "sea_trade": true,
+          "annual_limits": {
+            "10": 2500,
+            "12": 2500,
+            "19": 1500
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 5,
+          "name_id_raw": 24,
+          "name": "Kharga Oasis",
+          "route_id": 8,
+          "empire_object_id": 32,
+          "army_travel_months": 1,
+          "potential_buys": [
+            7,
+            12
+          ],
+          "potential_sells": [
+            6,
+            32
+          ],
+          "initially_open": false,
+          "buys": [
+            7,
+            12
+          ],
+          "sells": [
+            6,
+            32
+          ],
+          "cost_to_open": 225,
+          "sea_trade": false,
+          "annual_limits": {
+            "6": 2500,
+            "7": 1500,
+            "12": 4000,
+            "32": 2500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 6,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 9,
+          "empire_object_id": 33,
+          "army_travel_months": 1,
+          "potential_buys": [
+            12,
+            31
+          ],
+          "potential_sells": [
+            6,
+            32
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 500,
+          "sea_trade": false,
+          "annual_limits": {
+            "6": 1500,
+            "12": 4000,
+            "31": 1500,
+            "32": 1500
+          }
+        },
+        {
+          "id": 12,
+          "type_raw": 3,
+          "name_id_raw": 47,
+          "name": "Thinis",
+          "route_id": 3,
+          "empire_object_id": 34,
+          "army_travel_months": 1,
+          "potential_buys": [
+            15
+          ],
+          "potential_sells": [
+            11,
+            13,
+            34
+          ],
+          "initially_open": false,
+          "buys": [
+            15
+          ],
+          "sells": [
+            11,
+            13,
+            34
+          ],
+          "cost_to_open": 125,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "13": 2500,
+            "15": 2500,
+            "34": 2500
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 4,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 6,
+          "empire_object_id": 35,
+          "army_travel_months": 1,
+          "potential_buys": [
+            5,
+            13,
+            17
+          ],
+          "potential_sells": [
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 540,
+          "sea_trade": false,
+          "annual_limits": {
+            "5": 2500,
+            "13": 2500,
+            "17": 1500,
+            "19": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 13013569,
+        "stored_bytes": 251,
+        "decoded_sha256": "6d77dd8f2f3f497fbb8f6fcc70c28a8cbf7d8a453a483d4b2dcd2e7441b54562"
+      }
+    },
+    {
+      "id": 41,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 6,
+          "name_id_raw": 2,
+          "name": "Bahariya Oasis",
+          "route_id": 12,
+          "empire_object_id": 0,
+          "army_travel_months": 2,
+          "potential_buys": [
+            3,
+            31
+          ],
+          "potential_sells": [
+            14
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 860,
+          "sea_trade": false,
+          "annual_limits": {
+            "3": 2500,
+            "14": 2500,
+            "31": 2500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 6,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 13,
+          "empire_object_id": 1,
+          "army_travel_months": 0,
+          "potential_buys": [
+            17,
+            19
+          ],
+          "potential_sells": [
+            16
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "16": 2500,
+            "17": 1500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 4,
+          "name_id_raw": 19,
+          "name": "Itjtawy",
+          "route_id": 3,
+          "empire_object_id": 2,
+          "army_travel_months": 0,
+          "potential_buys": [
+            15,
+            20
+          ],
+          "potential_sells": [
+            4,
+            23,
+            26
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 900,
+          "sea_trade": true,
+          "annual_limits": {
+            "4": 4000,
+            "15": 1500,
+            "20": 2500,
+            "23": 2500,
+            "26": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 6,
+          "name_id_raw": 26,
+          "name": "Knossos",
+          "route_id": 11,
+          "empire_object_id": 3,
+          "army_travel_months": 0,
+          "potential_buys": [
+            20,
+            23
+          ],
+          "potential_sells": [
+            13,
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 850,
+          "sea_trade": true,
+          "annual_limits": {
+            "13": 1500,
+            "19": 2500,
+            "20": 1500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 1,
+          "empire_object_id": 4,
+          "army_travel_months": 0,
+          "potential_buys": [
+            10,
+            19,
+            20,
+            31
+          ],
+          "potential_sells": [
+            1,
+            4,
+            13,
+            16,
+            23
+          ],
+          "initially_open": false,
+          "buys": [
+            10,
+            19,
+            20,
+            31
+          ],
+          "sells": [
+            1,
+            4,
+            13,
+            16,
+            23
+          ],
+          "cost_to_open": 850,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 4000,
+            "4": 4000,
+            "10": 2500,
+            "13": 2500,
+            "16": 2500,
+            "19": 2500,
+            "20": 1500,
+            "23": 4000,
+            "31": 2500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 4,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 0,
+          "empire_object_id": 5,
+          "army_travel_months": 0,
+          "potential_buys": [
+            12,
+            25,
+            26
+          ],
+          "potential_sells": [
+            24
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "12": 0,
+            "24": 0,
+            "25": 0,
+            "26": 0
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 6,
+          "name_id_raw": 36,
+          "name": "Pwenet",
+          "route_id": 5,
+          "empire_object_id": 7,
+          "army_travel_months": 4,
+          "potential_buys": [
+            4
+          ],
+          "potential_sells": [
+            18,
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 2000,
+          "sea_trade": true,
+          "annual_limits": {
+            "4": 2500,
+            "18": 2500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 5,
+          "name_id_raw": 37,
+          "name": "Qadesh",
+          "route_id": 9,
+          "empire_object_id": 8,
+          "army_travel_months": 1,
+          "potential_buys": [
+            17,
+            23
+          ],
+          "potential_sells": [
+            19,
+            31
+          ],
+          "initially_open": true,
+          "buys": [
+            17,
+            23
+          ],
+          "sells": [
+            19,
+            31
+          ],
+          "cost_to_open": 65,
+          "sea_trade": false,
+          "annual_limits": {
+            "17": 1500,
+            "19": 2500,
+            "23": 1500,
+            "31": 1500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 39,
+          "name": "Rowarty",
+          "route_id": 2,
+          "empire_object_id": 9,
+          "army_travel_months": 1,
+          "potential_buys": [
+            18,
+            20,
+            29
+          ],
+          "potential_sells": [
+            3,
+            13,
+            15,
+            17
+          ],
+          "initially_open": false,
+          "buys": [
+            18,
+            20,
+            29
+          ],
+          "sells": [
+            3,
+            13,
+            15,
+            17
+          ],
+          "cost_to_open": 625,
+          "sea_trade": true,
+          "annual_limits": {
+            "3": 2500,
+            "13": 1500,
+            "15": 2500,
+            "17": 2500,
+            "18": 1500,
+            "20": 1500,
+            "29": 1500
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 6,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 8,
+          "empire_object_id": 10,
+          "army_travel_months": 1,
+          "potential_buys": [
+            13
+          ],
+          "potential_sells": [
+            18,
+            19,
+            20
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 105,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 2500,
+            "18": 2500,
+            "19": 2500,
+            "20": 2500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 1,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 4,
+          "empire_object_id": 11,
+          "army_travel_months": 3,
+          "potential_buys": [
+            10,
+            20,
+            31
+          ],
+          "potential_sells": [
+            1,
+            16,
+            26
+          ],
+          "initially_open": false,
+          "buys": [
+            10,
+            20,
+            31
+          ],
+          "sells": [
+            1,
+            16,
+            26
+          ],
+          "cost_to_open": 1600,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "10": 2500,
+            "16": 2500,
+            "20": 1500,
+            "26": 2500,
+            "31": 4000
+          }
+        },
+        {
+          "id": 12,
+          "type_raw": 5,
+          "name_id_raw": 21,
+          "name": "Jericho",
+          "route_id": 7,
+          "empire_object_id": 29,
+          "army_travel_months": 1,
+          "potential_buys": [
+            17
+          ],
+          "potential_sells": [
+            19,
+            31
+          ],
+          "initially_open": false,
+          "buys": [
+            17
+          ],
+          "sells": [
+            19,
+            31
+          ],
+          "cost_to_open": 210,
+          "sea_trade": false,
+          "annual_limits": {
+            "17": 2500,
+            "19": 2500,
+            "31": 2500
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 5,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 10,
+          "empire_object_id": 30,
+          "army_travel_months": 1,
+          "potential_buys": [
+            17,
+            26
+          ],
+          "potential_sells": [
+            20,
+            29,
+            31
+          ],
+          "initially_open": false,
+          "buys": [
+            17,
+            26
+          ],
+          "sells": [
+            20,
+            29,
+            31
+          ],
+          "cost_to_open": 185,
+          "sea_trade": true,
+          "annual_limits": {
+            "17": 2500,
+            "20": 2500,
+            "26": 2500,
+            "29": 2500,
+            "31": 2500
+          }
+        },
+        {
+          "id": 14,
+          "type_raw": 5,
+          "name_id_raw": 48,
+          "name": "Timna",
+          "route_id": 6,
+          "empire_object_id": 31,
+          "army_travel_months": 1,
+          "potential_buys": [
+            4,
+            17,
+            20
+          ],
+          "potential_sells": [
+            18,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            4,
+            17,
+            20
+          ],
+          "sells": [
+            18,
+            29
+          ],
+          "cost_to_open": 450,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 2500,
+            "17": 2500,
+            "18": 2500,
+            "20": 1500,
+            "29": 4000
+          }
+        },
+        {
+          "id": 15,
+          "type_raw": 0,
+          "name_id_raw": 54,
+          "name": "Sumur",
+          "route_id": 0,
+          "empire_object_id": 32,
+          "army_travel_months": 1,
+          "potential_buys": [],
+          "potential_sells": [
+            7,
+            20,
+            29
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            7,
+            20,
+            29
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 0,
+            "20": 0,
+            "29": 0
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 13336900,
+        "stored_bytes": 282,
+        "decoded_sha256": "0985f80917a973b872a397061b39f4442ad86f2c0e04ba611cc2fe7a6262268c"
+      }
+    },
+    {
+      "id": 42,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 6,
+          "name_id_raw": 2,
+          "name": "Bahariya Oasis",
+          "route_id": 7,
+          "empire_object_id": 0,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 2,
+          "type_raw": 6,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 8,
+          "empire_object_id": 1,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 5,
+          "empire_object_id": 2,
+          "army_travel_months": 1,
+          "potential_buys": [
+            10,
+            19,
+            20
+          ],
+          "potential_sells": [
+            4,
+            15
+          ],
+          "initially_open": false,
+          "buys": [
+            10,
+            19,
+            20
+          ],
+          "sells": [
+            4,
+            15
+          ],
+          "cost_to_open": 630,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 2500,
+            "10": 2500,
+            "15": 2500,
+            "19": 1500,
+            "20": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 0,
+          "name_id_raw": 37,
+          "name": "Qadesh",
+          "route_id": 0,
+          "empire_object_id": 4,
+          "army_travel_months": 1,
+          "potential_buys": [
+            17,
+            23
+          ],
+          "potential_sells": [
+            5,
+            18
+          ],
+          "initially_open": false,
+          "buys": [
+            17,
+            23
+          ],
+          "sells": [
+            5,
+            18
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "5": 0,
+            "17": 0,
+            "18": 0,
+            "23": 0
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 6,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 9,
+          "empire_object_id": 5,
+          "army_travel_months": 0,
+          "potential_buys": [
+            5,
+            13
+          ],
+          "potential_sells": [
+            19,
+            20
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 9,
+          "sea_trade": false,
+          "annual_limits": {
+            "5": 2500,
+            "13": 2500,
+            "19": 2500,
+            "20": 2500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 2,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 6,
+          "empire_object_id": 6,
+          "army_travel_months": 2,
+          "potential_buys": [
+            19
+          ],
+          "potential_sells": [
+            4,
+            13
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1080,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 2500,
+            "13": 1500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 5,
+          "name_id_raw": 21,
+          "name": "Jericho",
+          "route_id": 2,
+          "empire_object_id": 24,
+          "army_travel_months": 1,
+          "potential_buys": [
+            5,
+            19
+          ],
+          "potential_sells": [
+            13
+          ],
+          "initially_open": false,
+          "buys": [
+            5,
+            19
+          ],
+          "sells": [
+            13
+          ],
+          "cost_to_open": 250,
+          "sea_trade": false,
+          "annual_limits": {
+            "5": 2500,
+            "13": 2500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 6,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 0,
+          "empire_object_id": 25,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 5,
+          "name_id_raw": 48,
+          "name": "Timna",
+          "route_id": 3,
+          "empire_object_id": 26,
+          "army_travel_months": 0,
+          "potential_buys": [
+            4,
+            19,
+            20
+          ],
+          "potential_sells": [
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            4,
+            19,
+            20
+          ],
+          "sells": [
+            29
+          ],
+          "cost_to_open": 500,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 2500,
+            "19": 1500,
+            "20": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 3,
+          "name_id_raw": 52,
+          "name": "Migdol",
+          "route_id": 4,
+          "empire_object_id": 28,
+          "army_travel_months": 1,
+          "potential_buys": [
+            10,
+            20
+          ],
+          "potential_sells": [
+            3,
+            4,
+            13,
+            28
+          ],
+          "initially_open": false,
+          "buys": [
+            10,
+            20
+          ],
+          "sells": [
+            3,
+            4,
+            13,
+            28
+          ],
+          "cost_to_open": 490,
+          "sea_trade": false,
+          "annual_limits": {
+            "3": 2500,
+            "4": 2500,
+            "10": 2500,
+            "13": 2500,
+            "20": 2500,
+            "28": 2500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 3,
+          "name_id_raw": 54,
+          "name": "Sumur",
+          "route_id": 1,
+          "empire_object_id": 29,
+          "army_travel_months": 1,
+          "potential_buys": [
+            4,
+            5
+          ],
+          "potential_sells": [
+            7,
+            10,
+            20,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            4,
+            5
+          ],
+          "sells": [
+            7,
+            10,
+            20,
+            29
+          ],
+          "cost_to_open": 70,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 2500,
+            "5": 4000,
+            "7": 2500,
+            "10": 2500,
+            "20": 4000,
+            "29": 1500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 13666381,
+        "stored_bytes": 216,
+        "decoded_sha256": "5a66bc43a4a6e091ab8719d6cc40a94e568b11f511faff8882b5b3d748a8ae8c"
+      }
+    },
+    {
+      "id": 43,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 6,
+          "name_id_raw": 2,
+          "name": "Bahariya Oasis",
+          "route_id": 9,
+          "empire_object_id": 0,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 2,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 4,
+          "empire_object_id": 1,
+          "army_travel_months": 3,
+          "potential_buys": [
+            14,
+            19,
+            30
+          ],
+          "potential_sells": [
+            2,
+            4,
+            15,
+            20
+          ],
+          "initially_open": false,
+          "buys": [
+            14,
+            19,
+            30
+          ],
+          "sells": [
+            2,
+            4,
+            15,
+            20
+          ],
+          "cost_to_open": 1300,
+          "sea_trade": true,
+          "annual_limits": {
+            "2": 2500,
+            "4": 4000,
+            "14": 2500,
+            "15": 2500,
+            "19": 1500,
+            "20": 1500,
+            "30": 2500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 4,
+          "name_id_raw": 37,
+          "name": "Qadesh",
+          "route_id": 12,
+          "empire_object_id": 3,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 4,
+          "type_raw": 3,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 3,
+          "empire_object_id": 4,
+          "army_travel_months": 0,
+          "potential_buys": [
+            19
+          ],
+          "potential_sells": [
+            4,
+            9,
+            13,
+            16,
+            17
+          ],
+          "initially_open": false,
+          "buys": [
+            19
+          ],
+          "sells": [
+            4,
+            9,
+            13,
+            16,
+            17
+          ],
+          "cost_to_open": 650,
+          "sea_trade": true,
+          "annual_limits": {
+            "4": 2500,
+            "9": 4000,
+            "13": 1500,
+            "16": 2500,
+            "17": 2500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 6,
+          "name_id_raw": 21,
+          "name": "Jericho",
+          "route_id": 11,
+          "empire_object_id": 22,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 250,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 6,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 13,
+          "empire_object_id": 23,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 6,
+          "name_id_raw": 48,
+          "name": "Timna",
+          "route_id": 10,
+          "empire_object_id": 24,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 3,
+          "name_id_raw": 54,
+          "name": "Sumur",
+          "route_id": 7,
+          "empire_object_id": 26,
+          "army_travel_months": 4,
+          "potential_buys": [
+            4,
+            6,
+            17
+          ],
+          "potential_sells": [
+            18,
+            19,
+            20
+          ],
+          "initially_open": false,
+          "buys": [
+            4,
+            6,
+            17
+          ],
+          "sells": [
+            18,
+            19,
+            20
+          ],
+          "cost_to_open": 2000,
+          "sea_trade": true,
+          "annual_limits": {
+            "4": 2500,
+            "6": 2500,
+            "17": 1500,
+            "18": 2500,
+            "19": 2500,
+            "20": 4000
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 0,
+          "name_id_raw": 56,
+          "name": "Abu Simbel",
+          "route_id": 0,
+          "empire_object_id": 27,
+          "army_travel_months": 1,
+          "potential_buys": [],
+          "potential_sells": [
+            2,
+            6,
+            11,
+            14,
+            30
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            2,
+            6,
+            11,
+            14,
+            30
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 0,
+            "6": 0,
+            "11": 0,
+            "14": 0,
+            "30": 0
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 3,
+          "name_id_raw": 15,
+          "name": "Heh",
+          "route_id": 1,
+          "empire_object_id": 28,
+          "army_travel_months": 0,
+          "potential_buys": [
+            2,
+            4,
+            13,
+            17
+          ],
+          "potential_sells": [
+            18
+          ],
+          "initially_open": false,
+          "buys": [
+            2,
+            4,
+            13,
+            17
+          ],
+          "sells": [
+            18
+          ],
+          "cost_to_open": 140,
+          "sea_trade": true,
+          "annual_limits": {
+            "2": 4000,
+            "4": 4000,
+            "13": 2500,
+            "17": 1500,
+            "18": 2500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 6,
+          "name_id_raw": 24,
+          "name": "Kharga Oasis",
+          "route_id": 6,
+          "empire_object_id": 29,
+          "army_travel_months": 1,
+          "potential_buys": [
+            2,
+            13,
+            15
+          ],
+          "potential_sells": [
+            6
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 150,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 2500,
+            "6": 1500,
+            "13": 1500,
+            "15": 1500
+          }
+        },
+        {
+          "id": 12,
+          "type_raw": 3,
+          "name_id_raw": 23,
+          "name": "Kerma",
+          "route_id": 2,
+          "empire_object_id": 30,
+          "army_travel_months": 0,
+          "potential_buys": [
+            6,
+            17
+          ],
+          "potential_sells": [
+            19
+          ],
+          "initially_open": false,
+          "buys": [
+            6,
+            17
+          ],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 400,
+          "sea_trade": true,
+          "annual_limits": {
+            "6": 4000,
+            "17": 2500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 5,
+          "name_id_raw": 36,
+          "name": "Pwenet",
+          "route_id": 5,
+          "empire_object_id": 31,
+          "army_travel_months": 0,
+          "potential_buys": [
+            15,
+            17
+          ],
+          "potential_sells": [
+            18,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            15,
+            17
+          ],
+          "sells": [
+            18,
+            29
+          ],
+          "cost_to_open": 400,
+          "sea_trade": false,
+          "annual_limits": {
+            "15": 1500,
+            "17": 2500,
+            "18": 2500,
+            "29": 1500
+          }
+        },
+        {
+          "id": 14,
+          "type_raw": 4,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 8,
+          "empire_object_id": 32,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 15,
+          "type_raw": 2,
+          "name_id_raw": 63,
+          "name": "Piramesse",
+          "route_id": 14,
+          "empire_object_id": 33,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 13982209,
+        "stored_bytes": 263,
+        "decoded_sha256": "b6f8e7db7285511262c1a3e3f3a619de7194cf40a7ed068c5bf5e054c5a26dd4"
+      }
+    },
+    {
+      "id": 44,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 4,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 0,
+          "empire_object_id": 0,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 2,
+          "type_raw": 5,
+          "name_id_raw": 36,
+          "name": "Pwenet",
+          "route_id": 7,
+          "empire_object_id": 2,
+          "army_travel_months": 1,
+          "potential_buys": [
+            13,
+            17
+          ],
+          "potential_sells": [
+            19
+          ],
+          "initially_open": false,
+          "buys": [
+            13,
+            17
+          ],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 585,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 2500,
+            "17": 4000,
+            "19": 2500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 6,
+          "name_id_raw": 42,
+          "name": "Sawu",
+          "route_id": 0,
+          "empire_object_id": 3,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 0,
+          "empire_object_id": 4,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 4,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 0,
+          "empire_object_id": 5,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 0,
+          "name_id_raw": 55,
+          "name": "Deir el-Medina",
+          "route_id": 0,
+          "empire_object_id": 28,
+          "army_travel_months": 1,
+          "potential_buys": [],
+          "potential_sells": [
+            1,
+            11,
+            14
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            1,
+            11,
+            14
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 0,
+            "11": 0,
+            "14": 0
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 5,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 3,
+          "empire_object_id": 29,
+          "army_travel_months": 0,
+          "potential_buys": [
+            15,
+            19
+          ],
+          "potential_sells": [
+            31
+          ],
+          "initially_open": false,
+          "buys": [
+            15,
+            19
+          ],
+          "sells": [
+            31
+          ],
+          "cost_to_open": 1780,
+          "sea_trade": true,
+          "annual_limits": {
+            "15": 1500,
+            "19": 2500,
+            "31": 4000
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 4,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 0,
+          "empire_object_id": 30,
+          "army_travel_months": 0,
+          "potential_buys": [
+            12
+          ],
+          "potential_sells": [
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "12": 0,
+            "19": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 5,
+          "name_id_raw": 24,
+          "name": "Kharga Oasis",
+          "route_id": 5,
+          "empire_object_id": 31,
+          "army_travel_months": 1,
+          "potential_buys": [
+            1,
+            12
+          ],
+          "potential_sells": [
+            6,
+            32
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            12
+          ],
+          "sells": [
+            6,
+            32
+          ],
+          "cost_to_open": 250,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 2500,
+            "6": 2500,
+            "12": 1500,
+            "32": 2500
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 5,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 6,
+          "empire_object_id": 32,
+          "army_travel_months": 1,
+          "potential_buys": [
+            9,
+            12,
+            13
+          ],
+          "potential_sells": [
+            6,
+            32
+          ],
+          "initially_open": false,
+          "buys": [
+            9,
+            12,
+            13
+          ],
+          "sells": [
+            6,
+            32
+          ],
+          "cost_to_open": 525,
+          "sea_trade": false,
+          "annual_limits": {
+            "6": 1500,
+            "9": 2500,
+            "12": 2500,
+            "13": 1500,
+            "32": 1500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 47,
+          "name": "Thinis",
+          "route_id": 0,
+          "empire_object_id": 33,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 3,
+          "name_id_raw": 54,
+          "name": "Sumur",
+          "route_id": 2,
+          "empire_object_id": 34,
+          "army_travel_months": 3,
+          "potential_buys": [
+            34
+          ],
+          "potential_sells": [
+            17,
+            20,
+            31
+          ],
+          "initially_open": false,
+          "buys": [
+            34
+          ],
+          "sells": [
+            17,
+            20,
+            31
+          ],
+          "cost_to_open": 1700,
+          "sea_trade": true,
+          "annual_limits": {
+            "17": 2500,
+            "20": 2500,
+            "31": 1500,
+            "34": 2500
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 6,
+          "name_id_raw": 37,
+          "name": "Qadesh",
+          "route_id": 0,
+          "empire_object_id": 35,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 14,
+          "type_raw": 1,
+          "name_id_raw": 63,
+          "name": "Piramesse",
+          "route_id": 1,
+          "empire_object_id": 36,
+          "army_travel_months": 1,
+          "potential_buys": [
+            15,
+            31,
+            33
+          ],
+          "potential_sells": [
+            3,
+            10,
+            17,
+            23,
+            28
+          ],
+          "initially_open": false,
+          "buys": [
+            15,
+            31,
+            33
+          ],
+          "sells": [
+            3,
+            10,
+            17,
+            23,
+            28
+          ],
+          "cost_to_open": 940,
+          "sea_trade": true,
+          "annual_limits": {
+            "3": 2500,
+            "10": 2500,
+            "15": 2500,
+            "17": 1500,
+            "23": 4000,
+            "28": 1500,
+            "31": 1500,
+            "33": 2500
+          }
+        },
+        {
+          "id": 15,
+          "type_raw": 4,
+          "name_id_raw": 52,
+          "name": "Migdol",
+          "route_id": 0,
+          "empire_object_id": 37,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 16,
+          "type_raw": 4,
+          "name_id_raw": 56,
+          "name": "Abu Simbel",
+          "route_id": 0,
+          "empire_object_id": 38,
+          "army_travel_months": 0,
+          "potential_buys": [
+            12
+          ],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "12": 0
+          }
+        },
+        {
+          "id": 17,
+          "type_raw": 5,
+          "name_id_raw": 48,
+          "name": "Timna",
+          "route_id": 4,
+          "empire_object_id": 40,
+          "army_travel_months": 2,
+          "potential_buys": [
+            1,
+            15
+          ],
+          "potential_sells": [
+            29,
+            31
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            15
+          ],
+          "sells": [
+            29,
+            31
+          ],
+          "cost_to_open": 890,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 4000,
+            "15": 1500,
+            "29": 4000,
+            "31": 1500
+          }
+        },
+        {
+          "id": 18,
+          "type_raw": 4,
+          "name_id_raw": 15,
+          "name": "Heh",
+          "route_id": 0,
+          "empire_object_id": 41,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "19": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 14327720,
+        "stored_bytes": 275,
+        "decoded_sha256": "bfa1a4e5c0ea23986b4c07888d0c0e653164bdfcf05940b1ff37abcd7e64d1f5"
+      }
+    },
+    {
+      "id": 45,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 5,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 2,
+          "empire_object_id": 0,
+          "army_travel_months": 0,
+          "potential_buys": [
+            6
+          ],
+          "potential_sells": [
+            19,
+            20,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            6
+          ],
+          "sells": [
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 880,
+          "sea_trade": true,
+          "annual_limits": {
+            "6": 2500,
+            "19": 2500,
+            "20": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 4,
+          "name_id_raw": 10,
+          "name": "Djedu",
+          "route_id": 0,
+          "empire_object_id": 1,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 5,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 1,
+          "empire_object_id": 2,
+          "army_travel_months": 2,
+          "potential_buys": [
+            4,
+            6,
+            15
+          ],
+          "potential_sells": [
+            7,
+            19,
+            20,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            4,
+            6,
+            15
+          ],
+          "sells": [
+            7,
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 970,
+          "sea_trade": true,
+          "annual_limits": {
+            "4": 4000,
+            "6": 2500,
+            "7": 2500,
+            "15": 2500,
+            "19": 2500,
+            "20": 2500,
+            "29": 4000
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 5,
+          "name_id_raw": 13,
+          "name": "Farafra Oasis",
+          "route_id": 7,
+          "empire_object_id": 3,
+          "army_travel_months": 1,
+          "potential_buys": [
+            13,
+            20
+          ],
+          "potential_sells": [
+            6,
+            19
+          ],
+          "initially_open": false,
+          "buys": [
+            13,
+            20
+          ],
+          "sells": [
+            6,
+            19
+          ],
+          "cost_to_open": 475,
+          "sea_trade": false,
+          "annual_limits": {
+            "6": 2500,
+            "13": 1500,
+            "19": 2500,
+            "20": 2500
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 6,
+          "name_id_raw": 14,
+          "name": "Gaza",
+          "route_id": 0,
+          "empire_object_id": 4,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 6,
+          "name_id_raw": 21,
+          "name": "Jericho",
+          "route_id": 0,
+          "empire_object_id": 5,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 5,
+          "name_id_raw": 27,
+          "name": "Kyrene",
+          "route_id": 9,
+          "empire_object_id": 6,
+          "army_travel_months": 0,
+          "potential_buys": [
+            4,
+            9,
+            29
+          ],
+          "potential_sells": [
+            7,
+            11,
+            19
+          ],
+          "initially_open": false,
+          "buys": [
+            4,
+            9,
+            29
+          ],
+          "sells": [
+            7,
+            11,
+            19
+          ],
+          "cost_to_open": 590,
+          "sea_trade": true,
+          "annual_limits": {
+            "4": 2500,
+            "7": 2500,
+            "9": 2500,
+            "11": 2500,
+            "19": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 4,
+          "empire_object_id": 7,
+          "army_travel_months": 0,
+          "potential_buys": [
+            14,
+            15,
+            19,
+            23
+          ],
+          "potential_sells": [
+            1,
+            4,
+            13
+          ],
+          "initially_open": false,
+          "buys": [
+            14,
+            15,
+            19,
+            23
+          ],
+          "sells": [
+            1,
+            4,
+            13
+          ],
+          "cost_to_open": 150,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "4": 2500,
+            "13": 2500,
+            "14": 2500,
+            "15": 2500,
+            "19": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 4,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 0,
+          "empire_object_id": 8,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 4,
+          "name_id_raw": 34,
+          "name": "On",
+          "route_id": 0,
+          "empire_object_id": 10,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 11,
+          "type_raw": 6,
+          "name_id_raw": 37,
+          "name": "Qadesh",
+          "route_id": 0,
+          "empire_object_id": 11,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 0,
+          "name_id_raw": 60,
+          "name": "Pi-Yer",
+          "route_id": 0,
+          "empire_object_id": 12,
+          "army_travel_months": 2,
+          "potential_buys": [
+            18,
+            29,
+            30
+          ],
+          "potential_sells": [
+            1,
+            4,
+            11,
+            22
+          ],
+          "initially_open": false,
+          "buys": [
+            18,
+            29,
+            30
+          ],
+          "sells": [
+            1,
+            4,
+            11,
+            22
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 0,
+            "4": 0,
+            "11": 0,
+            "18": 0,
+            "22": 0,
+            "29": 0,
+            "30": 0
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 4,
+          "name_id_raw": 41,
+          "name": "Sauty",
+          "route_id": 0,
+          "empire_object_id": 13,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 14,
+          "type_raw": 6,
+          "name_id_raw": 42,
+          "name": "Sawu",
+          "route_id": 0,
+          "empire_object_id": 14,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 15,
+          "type_raw": 6,
+          "name_id_raw": 44,
+          "name": "Serabit Khadim",
+          "route_id": 0,
+          "empire_object_id": 15,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 16,
+          "type_raw": 6,
+          "name_id_raw": 48,
+          "name": "Timna",
+          "route_id": 0,
+          "empire_object_id": 16,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 280,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 17,
+          "type_raw": 5,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 3,
+          "empire_object_id": 17,
+          "army_travel_months": 1,
+          "potential_buys": [
+            1,
+            17
+          ],
+          "potential_sells": [
+            19,
+            20
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            17
+          ],
+          "sells": [
+            19,
+            20
+          ],
+          "cost_to_open": 810,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "17": 2500,
+            "19": 2500,
+            "20": 2500
+          }
+        },
+        {
+          "id": 18,
+          "type_raw": 3,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 8,
+          "empire_object_id": 18,
+          "army_travel_months": 1,
+          "potential_buys": [
+            6,
+            13
+          ],
+          "potential_sells": [
+            11,
+            14
+          ],
+          "initially_open": false,
+          "buys": [
+            6,
+            13
+          ],
+          "sells": [
+            11,
+            14
+          ],
+          "cost_to_open": 950,
+          "sea_trade": true,
+          "annual_limits": {
+            "6": 2500,
+            "11": 2500,
+            "13": 2500,
+            "14": 2500
+          }
+        },
+        {
+          "id": 19,
+          "type_raw": 4,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 0,
+          "empire_object_id": 38,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 20,
+          "type_raw": 4,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 0,
+          "empire_object_id": 39,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 21,
+          "type_raw": 5,
+          "name_id_raw": 61,
+          "name": "Siwi Oasis",
+          "route_id": 6,
+          "empire_object_id": 40,
+          "army_travel_months": 0,
+          "potential_buys": [
+            12,
+            29
+          ],
+          "potential_sells": [
+            6,
+            14
+          ],
+          "initially_open": false,
+          "buys": [
+            12,
+            29
+          ],
+          "sells": [
+            6,
+            14
+          ],
+          "cost_to_open": 440,
+          "sea_trade": false,
+          "annual_limits": {
+            "6": 2500,
+            "12": 2500,
+            "14": 2500,
+            "29": 4000
+          }
+        },
+        {
+          "id": 22,
+          "type_raw": 5,
+          "name_id_raw": 2,
+          "name": "Bahariya Oasis",
+          "route_id": 5,
+          "empire_object_id": 42,
+          "army_travel_months": 1,
+          "potential_buys": [
+            7,
+            19
+          ],
+          "potential_sells": [
+            1,
+            6,
+            12
+          ],
+          "initially_open": false,
+          "buys": [
+            7,
+            19
+          ],
+          "sells": [
+            1,
+            6,
+            12
+          ],
+          "cost_to_open": 215,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 2500,
+            "6": 2500,
+            "7": 2500,
+            "12": 2500,
+            "19": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 14643288,
+        "stored_bytes": 335,
+        "decoded_sha256": "ba2b9eb821753544affb2851a56dd1541b9eaaf635bd08feabaf73c4d0ca3559"
+      }
+    },
+    {
+      "id": 46,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 6,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 0,
+          "empire_object_id": 0,
+          "army_travel_months": 0,
+          "potential_buys": [
+            11,
+            13,
+            22,
+            23
+          ],
+          "potential_sells": [
+            9,
+            16,
+            17,
+            18,
+            26,
+            30
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "9": 0,
+            "11": 2500,
+            "13": 2500,
+            "16": 0,
+            "17": 0,
+            "18": 0,
+            "22": 0,
+            "23": 0,
+            "26": 2500,
+            "30": 0
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 6,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 8,
+          "empire_object_id": 1,
+          "army_travel_months": 0,
+          "potential_buys": [
+            18,
+            19
+          ],
+          "potential_sells": [
+            19,
+            20,
+            29
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "18": 2500,
+            "19": 2500,
+            "20": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 6,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 0,
+          "empire_object_id": 2,
+          "army_travel_months": 0,
+          "potential_buys": [
+            2,
+            17,
+            19,
+            23,
+            26
+          ],
+          "potential_sells": [
+            12,
+            20
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 0,
+            "12": 0,
+            "17": 0,
+            "19": 0,
+            "20": 0,
+            "23": 0,
+            "26": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 10,
+          "name": "Djedu",
+          "route_id": 0,
+          "empire_object_id": 3,
+          "army_travel_months": 0,
+          "potential_buys": [
+            15,
+            17,
+            24,
+            25,
+            30
+          ],
+          "potential_sells": [
+            7,
+            8,
+            20,
+            22,
+            23
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 0,
+            "8": 0,
+            "15": 0,
+            "17": 0,
+            "20": 0,
+            "22": 0,
+            "23": 0,
+            "24": 2500,
+            "25": 2500,
+            "30": 0
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 5,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 1,
+          "empire_object_id": 4,
+          "army_travel_months": 1,
+          "potential_buys": [
+            4,
+            15
+          ],
+          "potential_sells": [
+            7,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            4,
+            15
+          ],
+          "sells": [
+            7,
+            29
+          ],
+          "cost_to_open": 700,
+          "sea_trade": true,
+          "annual_limits": {
+            "4": 4000,
+            "7": 2500,
+            "15": 2500,
+            "29": 4000
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 6,
+          "name_id_raw": 13,
+          "name": "Farafra Oasis",
+          "route_id": 0,
+          "empire_object_id": 5,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 6,
+          "name_id_raw": 14,
+          "name": "Gaza",
+          "route_id": 5,
+          "empire_object_id": 6,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 4,
+          "name_id_raw": 16,
+          "name": "Henen-nesw",
+          "route_id": 0,
+          "empire_object_id": 7,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 6,
+          "name_id_raw": 21,
+          "name": "Jericho",
+          "route_id": 6,
+          "empire_object_id": 8,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 6,
+          "name_id_raw": 27,
+          "name": "Kyrene",
+          "route_id": 0,
+          "empire_object_id": 9,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [
+            5,
+            10,
+            13,
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "5": 0,
+            "10": 0,
+            "13": 2500,
+            "19": 0
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 1,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 2,
+          "empire_object_id": 10,
+          "army_travel_months": 1,
+          "potential_buys": [
+            10,
+            19,
+            23,
+            29
+          ],
+          "potential_sells": [
+            4,
+            13,
+            14,
+            28
+          ],
+          "initially_open": false,
+          "buys": [
+            10,
+            19,
+            23,
+            29
+          ],
+          "sells": [
+            4,
+            13,
+            14,
+            28
+          ],
+          "cost_to_open": 200,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 2500,
+            "10": 2500,
+            "13": 2500,
+            "14": 2500,
+            "19": 2500,
+            "23": 2500,
+            "28": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 12,
+          "type_raw": 6,
+          "name_id_raw": 31,
+          "name": "Mycenae",
+          "route_id": 0,
+          "empire_object_id": 11,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [
+            13,
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 2500,
+            "19": 0
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 4,
+          "name_id_raw": 34,
+          "name": "On",
+          "route_id": 0,
+          "empire_object_id": 13,
+          "army_travel_months": 0,
+          "potential_buys": [
+            15,
+            17,
+            18,
+            19,
+            20,
+            26
+          ],
+          "potential_sells": [
+            11,
+            22,
+            25
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "15": 0,
+            "17": 0,
+            "18": 0,
+            "19": 0,
+            "20": 0,
+            "22": 0,
+            "25": 2500,
+            "26": 2500
+          }
+        },
+        {
+          "id": 14,
+          "type_raw": 6,
+          "name_id_raw": 37,
+          "name": "Qadesh",
+          "route_id": 9,
+          "empire_object_id": 14,
+          "army_travel_months": 0,
+          "potential_buys": [
+            17,
+            23
+          ],
+          "potential_sells": [
+            19,
+            20,
+            29
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "17": 2500,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 15,
+          "type_raw": 0,
+          "name_id_raw": 52,
+          "name": "Migdol",
+          "route_id": 0,
+          "empire_object_id": 15,
+          "army_travel_months": 1,
+          "potential_buys": [
+            18,
+            29,
+            30
+          ],
+          "potential_sells": [
+            3,
+            4,
+            7,
+            22
+          ],
+          "initially_open": false,
+          "buys": [
+            18,
+            29,
+            30
+          ],
+          "sells": [
+            3,
+            4,
+            7,
+            22
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "3": 0,
+            "4": 0,
+            "7": 0,
+            "18": 0,
+            "22": 0,
+            "29": 2500,
+            "30": 0
+          }
+        },
+        {
+          "id": 16,
+          "type_raw": 6,
+          "name_id_raw": 42,
+          "name": "Sawu",
+          "route_id": 0,
+          "empire_object_id": 16,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [
+            13,
+            26,
+            29
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 2500,
+            "26": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 17,
+          "type_raw": 6,
+          "name_id_raw": 44,
+          "name": "Serabit Khadim",
+          "route_id": 0,
+          "empire_object_id": 17,
+          "army_travel_months": 0,
+          "potential_buys": [
+            1,
+            11
+          ],
+          "potential_sells": [
+            18,
+            19,
+            29
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 0,
+            "11": 2500,
+            "18": 0,
+            "19": 0,
+            "29": 2500
+          }
+        },
+        {
+          "id": 18,
+          "type_raw": 6,
+          "name_id_raw": 46,
+          "name": "Sharuhen",
+          "route_id": 4,
+          "empire_object_id": 18,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 19,
+          "type_raw": 4,
+          "name_id_raw": 47,
+          "name": "Thinis",
+          "route_id": 0,
+          "empire_object_id": 19,
+          "army_travel_months": 0,
+          "potential_buys": [
+            29
+          ],
+          "potential_sells": [
+            4,
+            13,
+            15
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 0,
+            "13": 2500,
+            "15": 0,
+            "29": 2500
+          }
+        },
+        {
+          "id": 20,
+          "type_raw": 5,
+          "name_id_raw": 48,
+          "name": "Timna",
+          "route_id": 3,
+          "empire_object_id": 20,
+          "army_travel_months": 1,
+          "potential_buys": [
+            7,
+            15,
+            23
+          ],
+          "potential_sells": [
+            10,
+            13,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            7,
+            15,
+            23
+          ],
+          "sells": [
+            10,
+            13,
+            29
+          ],
+          "cost_to_open": 280,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 4000,
+            "10": 2500,
+            "13": 2500,
+            "15": 2500,
+            "23": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 21,
+          "type_raw": 6,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 7,
+          "empire_object_id": 21,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "19": 2500
+          }
+        },
+        {
+          "id": 22,
+          "type_raw": 4,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 0,
+          "empire_object_id": 22,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [
+            11,
+            13,
+            24,
+            25,
+            26,
+            29
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "13": 2500,
+            "24": 2500,
+            "25": 2500,
+            "26": 2500,
+            "29": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 14958746,
+        "stored_bytes": 285,
+        "decoded_sha256": "354ba750adba8aed2aa8b2fbd05f3e5a8d1ffa8685e7cceffa29aaa8e0e15b14"
+      }
+    },
+    {
+      "id": 47,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 6,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 0,
+          "empire_object_id": 0,
+          "army_travel_months": 0,
+          "potential_buys": [
+            11,
+            13,
+            23
+          ],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "13": 2500,
+            "23": 0
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 6,
+          "name_id_raw": 4,
+          "name": "Behdet",
+          "route_id": 0,
+          "empire_object_id": 1,
+          "army_travel_months": 0,
+          "potential_buys": [
+            20
+          ],
+          "potential_sells": [
+            7,
+            11,
+            13
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 0,
+            "11": 2500,
+            "13": 2500,
+            "20": 0
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 6,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 0,
+          "empire_object_id": 2,
+          "army_travel_months": 0,
+          "potential_buys": [
+            18,
+            19
+          ],
+          "potential_sells": [
+            19,
+            20,
+            29
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "18": 0,
+            "19": 0,
+            "20": 0,
+            "29": 0
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 6,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 0,
+          "empire_object_id": 3,
+          "army_travel_months": 0,
+          "potential_buys": [
+            19,
+            23
+          ],
+          "potential_sells": [
+            20
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "19": 0,
+            "20": 0,
+            "23": 0
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 0,
+          "name_id_raw": 59,
+          "name": "Tanis",
+          "route_id": 0,
+          "empire_object_id": 4,
+          "army_travel_months": 1,
+          "potential_buys": [
+            15,
+            17,
+            24,
+            25,
+            30
+          ],
+          "potential_sells": [
+            5,
+            7,
+            11,
+            22
+          ],
+          "initially_open": false,
+          "buys": [
+            15,
+            17,
+            24,
+            25,
+            30
+          ],
+          "sells": [
+            5,
+            7,
+            11,
+            22
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "5": 0,
+            "7": 0,
+            "11": 2500,
+            "15": 0,
+            "17": 0,
+            "22": 0,
+            "24": 0,
+            "25": 0,
+            "30": 0
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 5,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 1,
+          "empire_object_id": 5,
+          "army_travel_months": 1,
+          "potential_buys": [
+            5,
+            15
+          ],
+          "potential_sells": [
+            7,
+            20,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            5,
+            15
+          ],
+          "sells": [
+            7,
+            20,
+            29
+          ],
+          "cost_to_open": 800,
+          "sea_trade": true,
+          "annual_limits": {
+            "5": 1500,
+            "7": 2500,
+            "15": 2500,
+            "20": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 6,
+          "name_id_raw": 13,
+          "name": "Farafra Oasis",
+          "route_id": 0,
+          "empire_object_id": 6,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 6,
+          "name_id_raw": 14,
+          "name": "Gaza",
+          "route_id": 0,
+          "empire_object_id": 7,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 4,
+          "name_id_raw": 16,
+          "name": "Henen-nesw",
+          "route_id": 0,
+          "empire_object_id": 8,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 6,
+          "name_id_raw": 21,
+          "name": "Jericho",
+          "route_id": 0,
+          "empire_object_id": 9,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 11,
+          "type_raw": 6,
+          "name_id_raw": 27,
+          "name": "Kyrene",
+          "route_id": 0,
+          "empire_object_id": 10,
+          "army_travel_months": 0,
+          "potential_buys": [
+            20,
+            23
+          ],
+          "potential_sells": [
+            13
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 2500,
+            "20": 0,
+            "23": 0
+          }
+        },
+        {
+          "id": 12,
+          "type_raw": 1,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 2,
+          "empire_object_id": 11,
+          "army_travel_months": 1,
+          "potential_buys": [
+            13,
+            15,
+            20,
+            23
+          ],
+          "potential_sells": [
+            4,
+            14
+          ],
+          "initially_open": false,
+          "buys": [
+            13,
+            15,
+            20,
+            23
+          ],
+          "sells": [
+            4,
+            14
+          ],
+          "cost_to_open": 150,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 2500,
+            "13": 4000,
+            "14": 2500,
+            "15": 2500,
+            "20": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 4,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 0,
+          "empire_object_id": 12,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 14,
+          "type_raw": 4,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 0,
+          "empire_object_id": 14,
+          "army_travel_months": 0,
+          "potential_buys": [
+            23
+          ],
+          "potential_sells": [
+            13
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 2500,
+            "23": 0
+          }
+        },
+        {
+          "id": 15,
+          "type_raw": 4,
+          "name_id_raw": 34,
+          "name": "On",
+          "route_id": 0,
+          "empire_object_id": 15,
+          "army_travel_months": 0,
+          "potential_buys": [
+            19,
+            20
+          ],
+          "potential_sells": [
+            11,
+            22
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "19": 0,
+            "20": 0,
+            "22": 0
+          }
+        },
+        {
+          "id": 16,
+          "type_raw": 6,
+          "name_id_raw": 37,
+          "name": "Qadesh",
+          "route_id": 0,
+          "empire_object_id": 16,
+          "army_travel_months": 0,
+          "potential_buys": [
+            23
+          ],
+          "potential_sells": [
+            20,
+            29
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "20": 0,
+            "23": 0,
+            "29": 0
+          }
+        },
+        {
+          "id": 17,
+          "type_raw": 4,
+          "name_id_raw": 52,
+          "name": "Migdol",
+          "route_id": 0,
+          "empire_object_id": 17,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [
+            13
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 2500
+          }
+        },
+        {
+          "id": 18,
+          "type_raw": 4,
+          "name_id_raw": 41,
+          "name": "Sauty",
+          "route_id": 0,
+          "empire_object_id": 18,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 19,
+          "type_raw": 6,
+          "name_id_raw": 42,
+          "name": "Sawu",
+          "route_id": 0,
+          "empire_object_id": 19,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [
+            13,
+            26,
+            29
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 2500,
+            "26": 0,
+            "29": 0
+          }
+        },
+        {
+          "id": 20,
+          "type_raw": 6,
+          "name_id_raw": 46,
+          "name": "Sharuhen",
+          "route_id": 0,
+          "empire_object_id": 20,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 21,
+          "type_raw": 4,
+          "name_id_raw": 47,
+          "name": "Thinis",
+          "route_id": 0,
+          "empire_object_id": 21,
+          "army_travel_months": 0,
+          "potential_buys": [
+            29
+          ],
+          "potential_sells": [
+            13
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 2500,
+            "29": 0
+          }
+        },
+        {
+          "id": 22,
+          "type_raw": 6,
+          "name_id_raw": 48,
+          "name": "Timna",
+          "route_id": 0,
+          "empire_object_id": 22,
+          "army_travel_months": 0,
+          "potential_buys": [
+            7,
+            15,
+            23
+          ],
+          "potential_sells": [
+            11,
+            13,
+            29
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 280,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 0,
+            "11": 2500,
+            "13": 2500,
+            "15": 0,
+            "23": 0,
+            "29": 0
+          }
+        },
+        {
+          "id": 23,
+          "type_raw": 6,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 0,
+          "empire_object_id": 23,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 24,
+          "type_raw": 4,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 0,
+          "empire_object_id": 24,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [
+            11,
+            13
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "13": 2500
+          }
+        },
+        {
+          "id": 25,
+          "type_raw": 5,
+          "name_id_raw": 64,
+          "name": "Athens",
+          "route_id": 3,
+          "empire_object_id": 48,
+          "army_travel_months": 2,
+          "potential_buys": [
+            5,
+            23
+          ],
+          "potential_sells": [
+            10,
+            13,
+            19
+          ],
+          "initially_open": false,
+          "buys": [
+            5,
+            23
+          ],
+          "sells": [
+            10,
+            13,
+            19
+          ],
+          "cost_to_open": 1000,
+          "sea_trade": true,
+          "annual_limits": {
+            "5": 2500,
+            "10": 2500,
+            "13": 2500,
+            "19": 2500,
+            "23": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 15285421,
+        "stored_bytes": 295,
+        "decoded_sha256": "8f6c763e66b47694fda609d2c2c8113be6b5d93e870dd1bc0cebffb83e23146f"
+      }
+    },
+    {
+      "id": 48,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 4,
+          "name_id_raw": 2,
+          "name": "Bahariya Oasis",
+          "route_id": 6,
+          "empire_object_id": 0,
+          "army_travel_months": 1,
+          "potential_buys": [
+            7,
+            9,
+            22
+          ],
+          "potential_sells": [
+            5,
+            30
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 295,
+          "sea_trade": false,
+          "annual_limits": {
+            "5": 2500,
+            "7": 2500,
+            "9": 2500,
+            "22": 2500,
+            "30": 4000
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 4,
+          "name_id_raw": 5,
+          "name": "Bubastis",
+          "route_id": 15,
+          "empire_object_id": 1,
+          "army_travel_months": 0,
+          "potential_buys": [
+            15,
+            19,
+            26
+          ],
+          "potential_sells": [
+            2,
+            13,
+            16,
+            23
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 280,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 2500,
+            "13": 2500,
+            "15": 2500,
+            "16": 2500,
+            "19": 1500,
+            "23": 2500,
+            "26": 2500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 5,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 2,
+          "empire_object_id": 2,
+          "army_travel_months": 2,
+          "potential_buys": [
+            1,
+            15,
+            17
+          ],
+          "potential_sells": [
+            5,
+            20,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            15,
+            17
+          ],
+          "sells": [
+            5,
+            20,
+            29
+          ],
+          "cost_to_open": 675,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "5": 2500,
+            "15": 2500,
+            "17": 2500,
+            "20": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 5,
+          "name_id_raw": 14,
+          "name": "Gaza",
+          "route_id": 10,
+          "empire_object_id": 3,
+          "army_travel_months": 1,
+          "potential_buys": [
+            5,
+            17,
+            23
+          ],
+          "potential_sells": [
+            2,
+            19,
+            20
+          ],
+          "initially_open": false,
+          "buys": [
+            5,
+            17,
+            23
+          ],
+          "sells": [
+            2,
+            19,
+            20
+          ],
+          "cost_to_open": 700,
+          "sea_trade": true,
+          "annual_limits": {
+            "2": 2500,
+            "5": 2500,
+            "17": 2500,
+            "19": 2500,
+            "20": 2500,
+            "23": 4000
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 3,
+          "name_id_raw": 20,
+          "name": "Iunet",
+          "route_id": 7,
+          "empire_object_id": 4,
+          "army_travel_months": 2,
+          "potential_buys": [
+            9,
+            20
+          ],
+          "potential_sells": [
+            2,
+            13,
+            16,
+            25,
+            26
+          ],
+          "initially_open": false,
+          "buys": [
+            9,
+            20
+          ],
+          "sells": [
+            2,
+            13,
+            16,
+            25,
+            26
+          ],
+          "cost_to_open": 900,
+          "sea_trade": true,
+          "annual_limits": {
+            "2": 2500,
+            "9": 2500,
+            "13": 2500,
+            "16": 2500,
+            "20": 2500,
+            "25": 2500,
+            "26": 2500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 6,
+          "name_id_raw": 26,
+          "name": "Knossos",
+          "route_id": 18,
+          "empire_object_id": 5,
+          "army_travel_months": 0,
+          "potential_buys": [
+            1
+          ],
+          "potential_sells": [
+            7,
+            13,
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 525,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 4000,
+            "7": 2500,
+            "13": 2500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 5,
+          "name_id_raw": 27,
+          "name": "Kyrene",
+          "route_id": 3,
+          "empire_object_id": 6,
+          "army_travel_months": 1,
+          "potential_buys": [
+            9,
+            23,
+            30
+          ],
+          "potential_sells": [
+            10,
+            13,
+            18
+          ],
+          "initially_open": false,
+          "buys": [
+            9,
+            23,
+            30
+          ],
+          "sells": [
+            10,
+            13,
+            18
+          ],
+          "cost_to_open": 515,
+          "sea_trade": true,
+          "annual_limits": {
+            "9": 2500,
+            "10": 2500,
+            "13": 4000,
+            "18": 4000,
+            "23": 4000,
+            "30": 1500
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 4,
+          "empire_object_id": 7,
+          "army_travel_months": 0,
+          "potential_buys": [
+            12,
+            14,
+            15,
+            19
+          ],
+          "potential_sells": [
+            13,
+            16,
+            20,
+            23
+          ],
+          "initially_open": false,
+          "buys": [
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            13,
+            16,
+            20,
+            23
+          ],
+          "cost_to_open": 290,
+          "sea_trade": true,
+          "annual_limits": {
+            "12": 2500,
+            "13": 2500,
+            "14": 2500,
+            "15": 2500,
+            "16": 2500,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 5,
+          "name_id_raw": 64,
+          "name": "Athens",
+          "route_id": 1,
+          "empire_object_id": 8,
+          "army_travel_months": 1,
+          "potential_buys": [
+            1,
+            14
+          ],
+          "potential_sells": [
+            13,
+            19
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            14
+          ],
+          "sells": [
+            13,
+            19
+          ],
+          "cost_to_open": 760,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 4000,
+            "13": 2500,
+            "14": 2500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 5,
+          "name_id_raw": 36,
+          "name": "Pwenet",
+          "route_id": 8,
+          "empire_object_id": 10,
+          "army_travel_months": 3,
+          "potential_buys": [
+            5,
+            23
+          ],
+          "potential_sells": [
+            18,
+            19,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            5,
+            23
+          ],
+          "sells": [
+            18,
+            19,
+            29
+          ],
+          "cost_to_open": 1300,
+          "sea_trade": true,
+          "annual_limits": {
+            "5": 2500,
+            "18": 4000,
+            "19": 2500,
+            "23": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 6,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 13,
+          "empire_object_id": 11,
+          "army_travel_months": 0,
+          "potential_buys": [
+            1,
+            5
+          ],
+          "potential_sells": [
+            17,
+            19,
+            31
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 700,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 4000,
+            "5": 2500,
+            "17": 2500,
+            "19": 2500,
+            "31": 2500
+          }
+        },
+        {
+          "id": 12,
+          "type_raw": 0,
+          "name_id_raw": 53,
+          "name": "Alexandria",
+          "route_id": 0,
+          "empire_object_id": 28,
+          "army_travel_months": 1,
+          "potential_buys": [],
+          "potential_sells": [
+            1,
+            7,
+            14,
+            22
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            1,
+            7,
+            14,
+            22
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 0,
+            "7": 0,
+            "14": 0,
+            "22": 0
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 4,
+          "name_id_raw": 52,
+          "name": "Migdol",
+          "route_id": 16,
+          "empire_object_id": 29,
+          "army_travel_months": 0,
+          "potential_buys": [
+            30
+          ],
+          "potential_sells": [
+            7,
+            22
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "22": 2500,
+            "30": 2500
+          }
+        },
+        {
+          "id": 14,
+          "type_raw": 4,
+          "name_id_raw": 34,
+          "name": "On",
+          "route_id": 14,
+          "empire_object_id": 30,
+          "army_travel_months": 0,
+          "potential_buys": [
+            7,
+            15
+          ],
+          "potential_sells": [
+            25,
+            26,
+            30
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 220,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "15": 2500,
+            "25": 2500,
+            "26": 2500,
+            "30": 2500
+          }
+        },
+        {
+          "id": 15,
+          "type_raw": 3,
+          "name_id_raw": 28,
+          "name": "Meidum",
+          "route_id": 5,
+          "empire_object_id": 34,
+          "army_travel_months": 1,
+          "potential_buys": [
+            20,
+            30
+          ],
+          "potential_sells": [
+            1,
+            22
+          ],
+          "initially_open": false,
+          "buys": [
+            20,
+            30
+          ],
+          "sells": [
+            1,
+            22
+          ],
+          "cost_to_open": 260,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 2500,
+            "20": 2500,
+            "22": 2500,
+            "30": 2500
+          }
+        },
+        {
+          "id": 16,
+          "type_raw": 4,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 17,
+          "empire_object_id": 37,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 17,
+          "type_raw": 5,
+          "name_id_raw": 44,
+          "name": "Serabit Khadim",
+          "route_id": 9,
+          "empire_object_id": 41,
+          "army_travel_months": 1,
+          "potential_buys": [
+            1
+          ],
+          "potential_sells": [
+            18,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            1
+          ],
+          "sells": [
+            18,
+            29
+          ],
+          "cost_to_open": 600,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 2500,
+            "18": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 18,
+          "type_raw": 5,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 11,
+          "empire_object_id": 42,
+          "army_travel_months": 3,
+          "potential_buys": [
+            5,
+            10,
+            17
+          ],
+          "potential_sells": [
+            18
+          ],
+          "initially_open": false,
+          "buys": [
+            5,
+            10,
+            17
+          ],
+          "sells": [
+            18
+          ],
+          "cost_to_open": 1560,
+          "sea_trade": true,
+          "annual_limits": {
+            "5": 2500,
+            "10": 2500,
+            "17": 2500,
+            "18": 2500
+          }
+        },
+        {
+          "id": 19,
+          "type_raw": 5,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 12,
+          "empire_object_id": 43,
+          "army_travel_months": 1,
+          "potential_buys": [
+            23,
+            29
+          ],
+          "potential_sells": [
+            7,
+            17,
+            19,
+            20,
+            31
+          ],
+          "initially_open": true,
+          "buys": [
+            23,
+            29
+          ],
+          "sells": [
+            7,
+            17,
+            19,
+            20,
+            31
+          ],
+          "cost_to_open": 900,
+          "sea_trade": true,
+          "annual_limits": {
+            "7": 2500,
+            "17": 4000,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500,
+            "29": 2500,
+            "31": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 15628072,
+        "stored_bytes": 353,
+        "decoded_sha256": "fac30c4671f341cea10fb99591858ff5312d5fc8b1d6271e037d68b1652e93bd"
+      }
+    },
+    {
+      "id": 49,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 5,
+          "name_id_raw": 2,
+          "name": "Bahariya Oasis",
+          "route_id": 6,
+          "empire_object_id": 0,
+          "army_travel_months": 1,
+          "potential_buys": [
+            7,
+            19
+          ],
+          "potential_sells": [
+            6,
+            8
+          ],
+          "initially_open": false,
+          "buys": [
+            7,
+            19
+          ],
+          "sells": [
+            6,
+            8
+          ],
+          "cost_to_open": 300,
+          "sea_trade": false,
+          "annual_limits": {
+            "6": 2500,
+            "7": 2500,
+            "8": 2500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 5,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 2,
+          "empire_object_id": 1,
+          "army_travel_months": 2,
+          "potential_buys": [
+            1,
+            15,
+            17
+          ],
+          "potential_sells": [
+            20,
+            29,
+            35
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            15,
+            17
+          ],
+          "sells": [
+            20,
+            29,
+            35
+          ],
+          "cost_to_open": 675,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 4000,
+            "15": 2500,
+            "17": 1500,
+            "20": 2500,
+            "29": 2500,
+            "35": 4000
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 6,
+          "name_id_raw": 14,
+          "name": "Gaza",
+          "route_id": 10,
+          "empire_object_id": 2,
+          "army_travel_months": 1,
+          "potential_buys": [
+            17,
+            23
+          ],
+          "potential_sells": [
+            19,
+            20
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 700,
+          "sea_trade": true,
+          "annual_limits": {
+            "17": 4000,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 3,
+          "name_id_raw": 20,
+          "name": "Iunet",
+          "route_id": 7,
+          "empire_object_id": 3,
+          "army_travel_months": 2,
+          "potential_buys": [
+            9,
+            20
+          ],
+          "potential_sells": [
+            1,
+            14,
+            16
+          ],
+          "initially_open": false,
+          "buys": [
+            9,
+            20
+          ],
+          "sells": [
+            1,
+            14,
+            16
+          ],
+          "cost_to_open": 900,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 4000,
+            "9": 2500,
+            "14": 2500,
+            "16": 2500,
+            "20": 4000
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 6,
+          "name_id_raw": 26,
+          "name": "Knossos",
+          "route_id": 17,
+          "empire_object_id": 4,
+          "army_travel_months": 0,
+          "potential_buys": [
+            1
+          ],
+          "potential_sells": [
+            13,
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 525,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 4000,
+            "13": 2500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 5,
+          "name_id_raw": 27,
+          "name": "Kyrene",
+          "route_id": 3,
+          "empire_object_id": 5,
+          "army_travel_months": 1,
+          "potential_buys": [
+            15,
+            23
+          ],
+          "potential_sells": [
+            13,
+            18
+          ],
+          "initially_open": false,
+          "buys": [
+            15,
+            23
+          ],
+          "sells": [
+            13,
+            18
+          ],
+          "cost_to_open": 515,
+          "sea_trade": true,
+          "annual_limits": {
+            "13": 2500,
+            "15": 2500,
+            "18": 2500,
+            "23": 1500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 4,
+          "empire_object_id": 6,
+          "army_travel_months": 1,
+          "potential_buys": [
+            12,
+            13,
+            19,
+            20
+          ],
+          "potential_sells": [
+            1,
+            14,
+            15,
+            23
+          ],
+          "initially_open": false,
+          "buys": [
+            12,
+            13,
+            19,
+            20
+          ],
+          "sells": [
+            1,
+            14,
+            15,
+            23
+          ],
+          "cost_to_open": 155,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 4000,
+            "12": 2500,
+            "13": 2500,
+            "14": 4000,
+            "15": 2500,
+            "19": 2500,
+            "20": 4000,
+            "23": 2500
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 5,
+          "name_id_raw": 64,
+          "name": "Athens",
+          "route_id": 1,
+          "empire_object_id": 7,
+          "army_travel_months": 1,
+          "potential_buys": [
+            1,
+            14,
+            23,
+            35
+          ],
+          "potential_sells": [
+            19
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            14,
+            23,
+            35
+          ],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 760,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 4000,
+            "14": 1500,
+            "19": 2500,
+            "23": 4000,
+            "35": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 6,
+          "name_id_raw": 36,
+          "name": "Pwenet",
+          "route_id": 8,
+          "empire_object_id": 9,
+          "army_travel_months": 3,
+          "potential_buys": [
+            23
+          ],
+          "potential_sells": [
+            18,
+            19,
+            29
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1300,
+          "sea_trade": true,
+          "annual_limits": {
+            "18": 4000,
+            "19": 2500,
+            "23": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 6,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 13,
+          "empire_object_id": 10,
+          "army_travel_months": 0,
+          "potential_buys": [
+            1,
+            6
+          ],
+          "potential_sells": [
+            17,
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 810,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 4000,
+            "6": 2500,
+            "17": 2500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 0,
+          "name_id_raw": 53,
+          "name": "Alexandria",
+          "route_id": 0,
+          "empire_object_id": 27,
+          "army_travel_months": 1,
+          "potential_buys": [],
+          "potential_sells": [
+            1,
+            7,
+            11,
+            22
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            1,
+            7,
+            11,
+            22
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 0,
+            "7": 0,
+            "11": 0,
+            "22": 0
+          }
+        },
+        {
+          "id": 12,
+          "type_raw": 4,
+          "name_id_raw": 52,
+          "name": "Migdol",
+          "route_id": 15,
+          "empire_object_id": 28,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [
+            7,
+            22
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "22": 2500
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 4,
+          "name_id_raw": 34,
+          "name": "On",
+          "route_id": 14,
+          "empire_object_id": 29,
+          "army_travel_months": 1,
+          "potential_buys": [
+            7,
+            15
+          ],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 190,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "15": 2500
+          }
+        },
+        {
+          "id": 14,
+          "type_raw": 3,
+          "name_id_raw": 28,
+          "name": "Meidum",
+          "route_id": 5,
+          "empire_object_id": 33,
+          "army_travel_months": 1,
+          "potential_buys": [
+            10,
+            20
+          ],
+          "potential_sells": [
+            9
+          ],
+          "initially_open": false,
+          "buys": [
+            10,
+            20
+          ],
+          "sells": [
+            9
+          ],
+          "cost_to_open": 250,
+          "sea_trade": false,
+          "annual_limits": {
+            "9": 4000,
+            "10": 2500,
+            "20": 4000
+          }
+        },
+        {
+          "id": 15,
+          "type_raw": 4,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 16,
+          "empire_object_id": 36,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 16,
+          "type_raw": 6,
+          "name_id_raw": 44,
+          "name": "Serabit Khadim",
+          "route_id": 9,
+          "empire_object_id": 40,
+          "army_travel_months": 1,
+          "potential_buys": [
+            17
+          ],
+          "potential_sells": [
+            18,
+            29
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 600,
+          "sea_trade": false,
+          "annual_limits": {
+            "17": 2500,
+            "18": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 17,
+          "type_raw": 6,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 11,
+          "empire_object_id": 41,
+          "army_travel_months": 3,
+          "potential_buys": [
+            6,
+            17
+          ],
+          "potential_sells": [
+            8,
+            18,
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1560,
+          "sea_trade": true,
+          "annual_limits": {
+            "6": 2500,
+            "8": 2500,
+            "17": 2500,
+            "18": 2500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 18,
+          "type_raw": 5,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 12,
+          "empire_object_id": 42,
+          "army_travel_months": 0,
+          "potential_buys": [
+            1,
+            14,
+            23
+          ],
+          "potential_sells": [
+            17,
+            19,
+            20
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            14,
+            23
+          ],
+          "sells": [
+            17,
+            19,
+            20
+          ],
+          "cost_to_open": 900,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "14": 4000,
+            "17": 1500,
+            "19": 2500,
+            "20": 1500,
+            "23": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 15972365,
+        "stored_bytes": 320,
+        "decoded_sha256": "fe884df36737fbbab7018ae562a43ce5d42d6dc93569cfb4ec4147e09a02b53f"
+      }
+    },
+    {
+      "id": 50,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 6,
+          "name_id_raw": 14,
+          "name": "Gaza",
+          "route_id": 5,
+          "empire_object_id": 0,
+          "army_travel_months": 0,
+          "potential_buys": [
+            1,
+            17,
+            23
+          ],
+          "potential_sells": [
+            2,
+            19,
+            20
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 700,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "2": 2500,
+            "17": 2500,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 3,
+          "empire_object_id": 1,
+          "army_travel_months": 0,
+          "potential_buys": [
+            19,
+            20
+          ],
+          "potential_sells": [
+            13,
+            23
+          ],
+          "initially_open": false,
+          "buys": [
+            19,
+            20
+          ],
+          "sells": [
+            13,
+            23
+          ],
+          "cost_to_open": 90,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 2500,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 5,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 6,
+          "empire_object_id": 3,
+          "army_travel_months": 0,
+          "potential_buys": [
+            1,
+            13,
+            23
+          ],
+          "potential_sells": [
+            17,
+            19,
+            20,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            13,
+            23
+          ],
+          "sells": [
+            17,
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 780,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "13": 2500,
+            "17": 2500,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 2,
+          "name_id_raw": 53,
+          "name": "Alexandria",
+          "route_id": 1,
+          "empire_object_id": 20,
+          "army_travel_months": 1,
+          "potential_buys": [
+            19,
+            20
+          ],
+          "potential_sells": [
+            1,
+            7,
+            13
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 90,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "7": 2500,
+            "13": 2500,
+            "19": 2500,
+            "20": 2500
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 3,
+          "name_id_raw": 28,
+          "name": "Meidum",
+          "route_id": 4,
+          "empire_object_id": 24,
+          "army_travel_months": 1,
+          "potential_buys": [
+            20,
+            22
+          ],
+          "potential_sells": [
+            1
+          ],
+          "initially_open": false,
+          "buys": [
+            20,
+            22
+          ],
+          "sells": [
+            1
+          ],
+          "cost_to_open": 185,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 2500,
+            "20": 2500,
+            "22": 2500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 3,
+          "name_id_raw": 52,
+          "name": "Migdol",
+          "route_id": 2,
+          "empire_object_id": 27,
+          "army_travel_months": 1,
+          "potential_buys": [
+            17,
+            23
+          ],
+          "potential_sells": [
+            1,
+            2,
+            10,
+            20
+          ],
+          "initially_open": false,
+          "buys": [
+            17,
+            23
+          ],
+          "sells": [
+            1,
+            2,
+            10,
+            20
+          ],
+          "cost_to_open": 190,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 2500,
+            "2": 2500,
+            "10": 1500,
+            "17": 2500,
+            "20": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 0,
+          "name_id_raw": 62,
+          "name": "Maritis",
+          "route_id": 0,
+          "empire_object_id": 28,
+          "army_travel_months": 1,
+          "potential_buys": [],
+          "potential_sells": [
+            4,
+            7,
+            22
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            4,
+            7,
+            22
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 0,
+            "7": 0,
+            "22": 0
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 16303093,
+        "stored_bytes": 172,
+        "decoded_sha256": "bc43c1ee1551c816ff848ebedcfb6ccf1b3a98952ee4d1f2a6cfad0316a90526"
+      }
+    },
+    {
+      "id": 51,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 5,
+          "name_id_raw": 2,
+          "name": "Bahariya Oasis",
+          "route_id": 11,
+          "empire_object_id": 0,
+          "army_travel_months": 1,
+          "potential_buys": [
+            7,
+            17
+          ],
+          "potential_sells": [
+            8
+          ],
+          "initially_open": false,
+          "buys": [
+            7,
+            17
+          ],
+          "sells": [
+            8
+          ],
+          "cost_to_open": 235,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "8": 2500,
+            "17": 2500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 5,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 4,
+          "empire_object_id": 1,
+          "army_travel_months": 0,
+          "potential_buys": [
+            1,
+            15,
+            17
+          ],
+          "potential_sells": [
+            20,
+            35
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            15,
+            17
+          ],
+          "sells": [
+            20,
+            35
+          ],
+          "cost_to_open": 670,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "15": 2500,
+            "17": 1500,
+            "20": 2500,
+            "35": 4000
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 5,
+          "name_id_raw": 14,
+          "name": "Gaza",
+          "route_id": 6,
+          "empire_object_id": 2,
+          "army_travel_months": 1,
+          "potential_buys": [
+            17,
+            23
+          ],
+          "potential_sells": [
+            19,
+            20
+          ],
+          "initially_open": false,
+          "buys": [
+            17,
+            23
+          ],
+          "sells": [
+            19,
+            20
+          ],
+          "cost_to_open": 620,
+          "sea_trade": true,
+          "annual_limits": {
+            "17": 4000,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 3,
+          "name_id_raw": 20,
+          "name": "Iunet",
+          "route_id": 12,
+          "empire_object_id": 3,
+          "army_travel_months": 2,
+          "potential_buys": [
+            19,
+            20
+          ],
+          "potential_sells": [
+            4,
+            14,
+            16,
+            17,
+            30
+          ],
+          "initially_open": false,
+          "buys": [
+            19,
+            20
+          ],
+          "sells": [
+            4,
+            14,
+            16,
+            17,
+            30
+          ],
+          "cost_to_open": 990,
+          "sea_trade": true,
+          "annual_limits": {
+            "4": 1500,
+            "14": 4000,
+            "16": 2500,
+            "17": 2500,
+            "19": 2500,
+            "20": 4000,
+            "30": 4000
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 5,
+          "name_id_raw": 26,
+          "name": "Knossos",
+          "route_id": 3,
+          "empire_object_id": 4,
+          "army_travel_months": 1,
+          "potential_buys": [
+            1,
+            15,
+            19,
+            23
+          ],
+          "potential_sells": [
+            7,
+            13
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            15,
+            19,
+            23
+          ],
+          "sells": [
+            7,
+            13
+          ],
+          "cost_to_open": 430,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 4000,
+            "7": 2500,
+            "13": 2500,
+            "15": 2500,
+            "19": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 6,
+          "name_id_raw": 27,
+          "name": "Kyrene",
+          "route_id": 16,
+          "empire_object_id": 5,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 8,
+          "empire_object_id": 6,
+          "army_travel_months": 0,
+          "potential_buys": [
+            19,
+            20
+          ],
+          "potential_sells": [
+            1,
+            13,
+            14,
+            23
+          ],
+          "initially_open": false,
+          "buys": [
+            19,
+            20
+          ],
+          "sells": [
+            1,
+            13,
+            14,
+            23
+          ],
+          "cost_to_open": 150,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 4000,
+            "13": 4000,
+            "14": 4000,
+            "19": 2500,
+            "20": 4000,
+            "23": 2500
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 5,
+          "name_id_raw": 64,
+          "name": "Athens",
+          "route_id": 2,
+          "empire_object_id": 7,
+          "army_travel_months": 0,
+          "potential_buys": [
+            1,
+            14,
+            18,
+            35
+          ],
+          "potential_sells": [
+            13,
+            19
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            14,
+            18,
+            35
+          ],
+          "sells": [
+            13,
+            19
+          ],
+          "cost_to_open": 700,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "13": 4000,
+            "14": 2500,
+            "18": 2500,
+            "19": 2500,
+            "35": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 5,
+          "name_id_raw": 36,
+          "name": "Pwenet",
+          "route_id": 13,
+          "empire_object_id": 9,
+          "army_travel_months": 3,
+          "potential_buys": [
+            17,
+            23
+          ],
+          "potential_sells": [
+            18,
+            19,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            17,
+            23
+          ],
+          "sells": [
+            18,
+            19,
+            29
+          ],
+          "cost_to_open": 1500,
+          "sea_trade": true,
+          "annual_limits": {
+            "17": 2500,
+            "18": 4000,
+            "19": 2500,
+            "23": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 5,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 5,
+          "empire_object_id": 10,
+          "army_travel_months": 0,
+          "potential_buys": [
+            1,
+            9
+          ],
+          "potential_sells": [
+            17,
+            19,
+            20
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            9
+          ],
+          "sells": [
+            17,
+            19,
+            20
+          ],
+          "cost_to_open": 750,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "9": 2500,
+            "17": 2500,
+            "19": 2500,
+            "20": 4000
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 0,
+          "name_id_raw": 53,
+          "name": "Alexandria",
+          "route_id": 0,
+          "empire_object_id": 27,
+          "army_travel_months": 1,
+          "potential_buys": [],
+          "potential_sells": [
+            1,
+            7,
+            14,
+            22
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            1,
+            7,
+            14,
+            22
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 0,
+            "7": 0,
+            "14": 0,
+            "22": 0
+          }
+        },
+        {
+          "id": 12,
+          "type_raw": 4,
+          "name_id_raw": 52,
+          "name": "Migdol",
+          "route_id": 14,
+          "empire_object_id": 28,
+          "army_travel_months": 0,
+          "potential_buys": [
+            10
+          ],
+          "potential_sells": [
+            7,
+            22
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "10": 2500,
+            "22": 2500
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 4,
+          "name_id_raw": 34,
+          "name": "On",
+          "route_id": 9,
+          "empire_object_id": 29,
+          "army_travel_months": 0,
+          "potential_buys": [
+            7,
+            15
+          ],
+          "potential_sells": [
+            13,
+            26,
+            30
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 165,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "13": 2500,
+            "15": 2500,
+            "26": 2500,
+            "30": 4000
+          }
+        },
+        {
+          "id": 14,
+          "type_raw": 4,
+          "name_id_raw": 28,
+          "name": "Meidum",
+          "route_id": 10,
+          "empire_object_id": 33,
+          "army_travel_months": 1,
+          "potential_buys": [
+            19,
+            20
+          ],
+          "potential_sells": [
+            4,
+            9,
+            16
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 240,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 1500,
+            "9": 2500,
+            "16": 2500,
+            "19": 2500,
+            "20": 2500
+          }
+        },
+        {
+          "id": 15,
+          "type_raw": 4,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 0,
+          "empire_object_id": 36,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 16,
+          "type_raw": 5,
+          "name_id_raw": 44,
+          "name": "Serabit Khadim",
+          "route_id": 7,
+          "empire_object_id": 40,
+          "army_travel_months": 1,
+          "potential_buys": [
+            9,
+            17
+          ],
+          "potential_sells": [
+            18,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            9,
+            17
+          ],
+          "sells": [
+            18,
+            29
+          ],
+          "cost_to_open": 515,
+          "sea_trade": false,
+          "annual_limits": {
+            "9": 2500,
+            "17": 2500,
+            "18": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 17,
+          "type_raw": 6,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 15,
+          "empire_object_id": 41,
+          "army_travel_months": 0,
+          "potential_buys": [
+            17
+          ],
+          "potential_sells": [
+            18
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1560,
+          "sea_trade": false,
+          "annual_limits": {
+            "17": 2500,
+            "18": 2500
+          }
+        },
+        {
+          "id": 18,
+          "type_raw": 6,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 0,
+          "empire_object_id": 42,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 19,
+          "type_raw": 5,
+          "name_id_raw": 58,
+          "name": "Rome",
+          "route_id": 1,
+          "empire_object_id": 43,
+          "army_travel_months": 1,
+          "potential_buys": [
+            1,
+            14,
+            19
+          ],
+          "potential_sells": [
+            10
+          ],
+          "initially_open": false,
+          "buys": [
+            1,
+            14,
+            19
+          ],
+          "sells": [
+            10
+          ],
+          "cost_to_open": 820,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 4000,
+            "10": 2500,
+            "14": 4000,
+            "19": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 16646772,
+        "stored_bytes": 336,
+        "decoded_sha256": "cd99bfb26d96f91db079b374142fd018fb2c308d62c3102f1c313a4c85a73c97"
+      }
+    },
+    {
+      "id": 52,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 6,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 0,
+          "empire_object_id": 0,
+          "army_travel_months": 0,
+          "potential_buys": [
+            15
+          ],
+          "potential_sells": [
+            5,
+            7,
+            29
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 675,
+          "sea_trade": false,
+          "annual_limits": {
+            "5": 0,
+            "7": 0,
+            "15": 0,
+            "29": 0
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 6,
+          "name_id_raw": 14,
+          "name": "Gaza",
+          "route_id": 0,
+          "empire_object_id": 1,
+          "army_travel_months": 0,
+          "potential_buys": [
+            5,
+            17,
+            23
+          ],
+          "potential_sells": [
+            2,
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 700,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 0,
+            "5": 0,
+            "17": 0,
+            "19": 0,
+            "23": 0
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 6,
+          "name_id_raw": 26,
+          "name": "Knossos",
+          "route_id": 2,
+          "empire_object_id": 2,
+          "army_travel_months": 0,
+          "potential_buys": [
+            1
+          ],
+          "potential_sells": [
+            7,
+            13,
+            19,
+            29
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 300,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 4000,
+            "7": 2500,
+            "13": 2500,
+            "19": 2500,
+            "29": 1500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 6,
+          "name_id_raw": 27,
+          "name": "Kyrene",
+          "route_id": 4,
+          "empire_object_id": 3,
+          "army_travel_months": 1,
+          "potential_buys": [
+            20,
+            23
+          ],
+          "potential_sells": [
+            10,
+            13,
+            18
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 310,
+          "sea_trade": true,
+          "annual_limits": {
+            "10": 2500,
+            "13": 2500,
+            "18": 2500,
+            "20": 4000,
+            "23": 2500
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 4,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 0,
+          "empire_object_id": 4,
+          "army_travel_months": 0,
+          "potential_buys": [
+            12,
+            14,
+            15,
+            19,
+            20
+          ],
+          "potential_sells": [
+            13,
+            23
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 290,
+          "sea_trade": false,
+          "annual_limits": {
+            "12": 0,
+            "13": 0,
+            "14": 0,
+            "15": 0,
+            "19": 0,
+            "20": 0,
+            "23": 0
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 5,
+          "name_id_raw": 64,
+          "name": "Athens",
+          "route_id": 1,
+          "empire_object_id": 5,
+          "army_travel_months": 0,
+          "potential_buys": [
+            1
+          ],
+          "potential_sells": [
+            13,
+            19,
+            29
+          ],
+          "initially_open": false,
+          "buys": [
+            1
+          ],
+          "sells": [
+            13,
+            19,
+            29
+          ],
+          "cost_to_open": 185,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 4000,
+            "13": 4000,
+            "19": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 6,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 0,
+          "empire_object_id": 7,
+          "army_travel_months": 0,
+          "potential_buys": [
+            5
+          ],
+          "potential_sells": [
+            17,
+            19
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 700,
+          "sea_trade": false,
+          "annual_limits": {
+            "5": 0,
+            "17": 0,
+            "19": 0
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 1,
+          "name_id_raw": 53,
+          "name": "Alexandria",
+          "route_id": 3,
+          "empire_object_id": 24,
+          "army_travel_months": 1,
+          "potential_buys": [
+            19,
+            20
+          ],
+          "potential_sells": [
+            1,
+            4,
+            7,
+            13
+          ],
+          "initially_open": false,
+          "buys": [
+            19,
+            20
+          ],
+          "sells": [
+            1,
+            4,
+            7,
+            13
+          ],
+          "cost_to_open": 525,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "4": 2500,
+            "7": 2500,
+            "13": 2500,
+            "19": 2500,
+            "20": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 4,
+          "name_id_raw": 28,
+          "name": "Meidum",
+          "route_id": 0,
+          "empire_object_id": 28,
+          "army_travel_months": 0,
+          "potential_buys": [
+            20
+          ],
+          "potential_sells": [
+            1,
+            22
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 475,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 0,
+            "20": 0,
+            "22": 0
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 4,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 17,
+          "empire_object_id": 31,
+          "army_travel_months": 0,
+          "potential_buys": [],
+          "potential_sells": [],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 11,
+          "type_raw": 6,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 0,
+          "empire_object_id": 32,
+          "army_travel_months": 0,
+          "potential_buys": [
+            5,
+            10,
+            17
+          ],
+          "potential_sells": [
+            18,
+            19,
+            21
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1560,
+          "sea_trade": false,
+          "annual_limits": {
+            "5": 0,
+            "10": 0,
+            "17": 0,
+            "18": 0,
+            "19": 0,
+            "21": 0
+          }
+        },
+        {
+          "id": 12,
+          "type_raw": 6,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 0,
+          "empire_object_id": 33,
+          "army_travel_months": 0,
+          "potential_buys": [
+            23,
+            29
+          ],
+          "potential_sells": [
+            7,
+            17,
+            19,
+            20
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 900,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 0,
+            "17": 0,
+            "19": 0,
+            "20": 0,
+            "23": 0,
+            "29": 0
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 0,
+          "name_id_raw": 57,
+          "name": "Actium",
+          "route_id": 0,
+          "empire_object_id": 34,
+          "army_travel_months": 1,
+          "potential_buys": [],
+          "potential_sells": [
+            7,
+            8,
+            20
+          ],
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            7,
+            8,
+            20
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 0,
+            "8": 0,
+            "20": 0
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 16968252,
+        "stored_bytes": 223,
+        "decoded_sha256": "3bf35caa35dbf1ac89f8a28018e25109bcce68c8546066c9c5a0fbce092f4193"
+      }
+    }
+  ],
+  "edition": "Pharaoh Gold: Cleopatra campaign, licensed local GOG corpus"
+}

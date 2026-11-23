@@ -108,3 +108,14 @@ func TestArmyLateArrivalUsesTravelRemainingAtBattleDeadline(t *testing.T) {
 		t.Fatal("late army did not receive its source outcome and shorter return")
 	}
 }
+
+func TestDestroyedLateArmyDoesNotAwaitAnImpossibleReturn(t *testing.T) {
+	s, e := armyScenario(t, 34, 14)
+	s.Events[0].Status = "army_late"
+	if err := s.ResolveArmy(e.ID, true); err != nil {
+		t.Fatal(err)
+	}
+	if s.Events[0].Status != "completed" || s.Events[0].Remaining != 0 {
+		t.Fatal("destroyed army was left waiting for survivors to return")
+	}
+}

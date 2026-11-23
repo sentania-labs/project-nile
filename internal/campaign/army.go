@@ -31,8 +31,8 @@ func BattleLossPercent(strength, required int, divineAid bool) int {
 
 func (s *State) ArmyTravelMonths(id int) int {
 	for _, e := range s.Events {
-		if e.ID == id && e.Item == 32 {
-			for _, city := range Cities(s.MissionID) {
+		if e.ID == id && s.resourceID(e.Item) == "troops" {
+			for _, city := range s.sourceCities() {
 				if city.Route == e.Location && city.ArmyTravelMonths > 0 {
 					return city.ArmyTravelMonths
 				}
@@ -73,18 +73,18 @@ func (s *State) ResolveArmy(id int, defeated bool) error {
 		d, _ := s.template(e.SourceID)
 		chain := d.Complete
 		travel := s.ArmyTravelMonths(id)
-		if e.Status == "army_late" {
-			chain = d.Late
-			travel = max(1, travel-e.Remaining)
-		} else if defeated {
+		if defeated {
 			chain = d.Defeat
 			e.Status, e.Remaining = "completed", 0
+		} else if e.Status == "army_late" {
+			chain = d.Late
+			travel = max(1, travel-e.Remaining)
 		}
 		if e.Status != "completed" {
 			e.Status, e.Remaining = "army_return_wait", travel
 		}
 		s.Events[i] = e
-		s.chain(chain, s.EventMonth)
+		s.chain(chain, s.EventMonth, e)
 		return nil
 	}
 	return errors.New("military request is not awaiting a battle outcome")

@@ -8,11 +8,15 @@ import (
 	"errors"
 	"fmt"
 	"slices"
+	"strings"
 	"sync"
 )
 
 //go:embed data/base-campaign.json
 var sourceData []byte
+
+//go:embed data/cleopatra-campaign.json
+var expansionSourceData []byte
 
 const StateVersion = 1
 const Nubt = 0
@@ -20,6 +24,7 @@ const Thinis = 1
 const Perwadjyt = 2
 const Nekhen = 3
 const Mennefer = 4
+const Timna = 5
 const FoodPopulation = 150
 const WaterMeat = 400
 
@@ -29,23 +34,27 @@ type Criterion struct {
 }
 
 type Mission struct {
-	ID             int                  `json:"id"`
-	Name           string               `json:"name"`
-	Period         string               `json:"period"`
-	StartYear      int                  `json:"start_year_signed"`
-	Rank           int                  `json:"player_rank_raw"`
-	EnemyID        int                  `json:"enemy_id_raw"`
-	MilestoneYears [3]int               `json:"milestone_years_raw"`
-	RescueFunds    int64                `json:"rescue_loan_raw"`
-	InitialFunds   int64                `json:"initial_funds"`
-	Goals          map[string]Criterion `json:"goals"`
-	NextMissionID  []int                `json:"next_mission_ids"`
-	Map            MapSize              `json:"map"`
-	ComplexFlags   [5]int               `json:"temple_complex_flags_raw"`
-	KnownGods      [5]int               `json:"gods_known_raw"`
-	MonumentCodes  [3]int               `json:"monument_codes_raw"`
-	BurialGoods    map[string]int       `json:"burial_requirements_raw"`
-	EditorFlags    [47]int              `json:"editor_allow_flags_raw"`
+	SourceRecord struct {
+		FormatVersion int `json:"format_version"`
+	} `json:"source_record"`
+	RequiredStructures []string             `json:"required_structures,omitempty"`
+	ID                 int                  `json:"id"`
+	Name               string               `json:"name"`
+	Period             string               `json:"period"`
+	StartYear          int                  `json:"start_year_signed"`
+	Rank               int                  `json:"player_rank_raw"`
+	EnemyID            int                  `json:"enemy_id_raw"`
+	MilestoneYears     [3]int               `json:"milestone_years_raw"`
+	RescueFunds        int64                `json:"rescue_loan_raw"`
+	InitialFunds       int64                `json:"initial_funds"`
+	Goals              map[string]Criterion `json:"goals"`
+	NextMissionID      []int                `json:"next_mission_ids"`
+	Map                MapSize              `json:"map"`
+	ComplexFlags       [5]int               `json:"temple_complex_flags_raw"`
+	KnownGods          [5]int               `json:"gods_known_raw"`
+	MonumentCodes      [3]int               `json:"monument_codes_raw"`
+	BurialGoods        map[string]int       `json:"burial_requirements_raw"`
+	EditorFlags        [47]int              `json:"editor_allow_flags_raw"`
 }
 
 type MapSize struct {
@@ -63,8 +72,32 @@ var definitions = sync.OnceValue(func() []Mission {
 	if len(catalog.Missions) != 38 {
 		panic("incomplete embedded original campaign facts")
 	}
+	var expansion struct {
+		Missions []Mission `json:"missions"`
+	}
+	if err := json.Unmarshal(expansionSourceData, &expansion); err != nil {
+		panic("invalid embedded Cleopatra facts: " + err.Error())
+	}
+	if len(expansion.Missions) != 15 {
+		panic("incomplete embedded Cleopatra facts")
+	}
+	for i, mission := range expansion.Missions {
+		if mission.ID != FirstCleopatra+i || mission.SourceVersion() != 160 {
+			panic("invalid Cleopatra scenario identity")
+		}
+		for _, code := range mission.MonumentCodes {
+			if kind := MonumentKind(code); kind != "" {
+				mission.RequiredStructures = append(mission.RequiredStructures, kind)
+			}
+		}
+		catalog.Missions = append(catalog.Missions, mission)
+	}
 	return catalog.Missions
 })
+
+func (m Mission) SourceVersion() int { return m.SourceRecord.FormatVersion }
+
+func (m Mission) ResourceID(id int) string { return ResourceIDForVersion(id, m.SourceVersion()) }
 
 func Definition(id int) (Mission, bool) {
 	if id < 0 || id >= len(definitions()) {
@@ -72,6 +105,7 @@ func Definition(id int) (Mission, bool) {
 	}
 	original := definitions()[id]
 	result := original
+	result.RequiredStructures = slices.Clone(original.RequiredStructures)
 	result.NextMissionID = slices.Clone(original.NextMissionID)
 	result.Goals = make(map[string]Criterion, len(original.Goals))
 	for name, criterion := range original.Goals {
@@ -87,6 +121,9 @@ func Definition(id int) (Mission, bool) {
 // State is included in the world's SQLite snapshot. Unlocks survive later
 // population/stock losses, and an achieved victory remains achieved.
 type State struct {
+	customSourceVersion  int
+	eventSource          []EventDefinition
+	citySource           []City
 	Ratings              *RatingState `json:"ratings,omitempty"`
 	EducationOpened      bool         `json:"education_opened,omitempty"`
 	TradeOpened          bool         `json:"trade_opened,omitempty"`
@@ -111,34 +148,37 @@ type State struct {
 	BeautificationOpened bool         `json:"beautification_opened"`
 	Completed            []int        `json:"completed,omitempty"`
 	Won                  bool         `json:"won"`
+	DefeatTick           int64        `json:"defeat_tick,omitempty"`
 	VictoryTick          int64        `json:"victory_tick"`
 }
 
 // Observation uses actual connected/staffed stocks, not lifetime production.
 // QualifyingHomes counts occupied houses at or above the scenario housing tier.
 type Observation struct {
-	Culture           int
-	Prosperity        int
-	Monuments         int
-	Kingdom           int
-	BurialComplete    bool
-	Tick              int64
-	Population        int
-	EligibleMeat      int
-	EligibleFigs      int
-	StoredPottery     int
-	StoredBeer        int
-	StoredBricks      int
-	ApartmentHomes    int
-	TeacherDispatched bool
-	DiseaseDeaths     int64
-	QualifyingHomes   int
-	FireCount         int
-	CollapseCount     int
-	ActiveFirehouses  int
-	ActiveArchitects  int
-	GoldDelivered     int64
-	BastFavor         int
+	CompletedStructures map[string]int
+	ElapsedMonths       int64
+	Culture             int
+	Prosperity          int
+	Monuments           int
+	Kingdom             int
+	BurialComplete      bool
+	Tick                int64
+	Population          int
+	EligibleMeat        int
+	EligibleFigs        int
+	StoredPottery       int
+	StoredBeer          int
+	StoredBricks        int
+	ApartmentHomes      int
+	TeacherDispatched   bool
+	DiseaseDeaths       int64
+	QualifyingHomes     int
+	FireCount           int
+	CollapseCount       int
+	ActiveFirehouses    int
+	ActiveArchitects    int
+	GoldDelivered       int64
+	BastFavor           int
 }
 
 func New(id int) (*State, error) {
@@ -194,9 +234,14 @@ func (s *State) Observe(o Observation) {
 		s.MonumentOpened = s.MonumentOpened || s.TradeOpened && o.StoredBricks >= 800
 	}
 	mission, _ := Definition(s.MissionID)
-	if !s.Won && mission.GoalsMet(o.Progress()) {
-		s.Won = true
-		s.VictoryTick = o.Tick
+	if !s.Won && s.DefeatTick == 0 {
+		switch mission.OutcomeAtMonth(o.Progress(), o.ElapsedMonths) {
+		case ScenarioWon:
+			s.Won = true
+			s.VictoryTick = o.Tick
+		case ScenarioLost:
+			s.DefeatTick = o.Tick
+		}
 	}
 }
 
@@ -258,7 +303,7 @@ func (s *State) Validate(tick int64) error {
 	if s == nil {
 		return nil
 	}
-	if s.Version != StateVersion || s.MissionID < Nubt || s.MissionID >= len(definitions()) || s.VictoryTick < 0 || s.VictoryTick > tick {
+	if s.Version != StateVersion || s.MissionID < Nubt || s.MissionID >= len(definitions()) || s.VictoryTick < 0 || s.VictoryTick > tick || s.DefeatTick < 0 || s.DefeatTick > tick || s.DefeatTick > 0 && s.Won {
 		return errors.New("invalid campaign state")
 	}
 	if (s.WaterUnlocked && !s.FoodUnlocked) || (!s.Won && s.VictoryTick != 0) {
@@ -305,20 +350,26 @@ type NextMission struct {
 }
 
 type View struct {
-	Requests         []Request     `json:"requests"`
-	Kingdom          int           `json:"kingdom"`
-	RescueReceived   int64         `json:"rescue_received"`
-	MissionID        int           `json:"mission_id"`
-	Name             string        `json:"name"`
-	StartYear        int           `json:"start_year"`
-	Stage            string        `json:"stage"`
-	Guidance         string        `json:"guidance"`
-	Won              bool          `json:"won"`
-	VictoryTick      int64         `json:"victory_tick"`
-	Objectives       []Objective   `json:"objectives"`
-	AllowedBuildings []string      `json:"allowed_buildings"`
-	NextMissions     []NextMission `json:"next_missions"`
-	Completed        []int         `json:"completed"`
+	DefeatTick       int64             `json:"defeat_tick,omitempty"`
+	ElapsedMonths    int64             `json:"elapsed_months"`
+	TimeLimitMonths  int               `json:"time_limit_months,omitempty"`
+	SurvivalMonths   int               `json:"survival_months,omitempty"`
+	Failed           bool              `json:"failed,omitempty"`
+	Warnings         []InvasionWarning `json:"warnings"`
+	Requests         []Request         `json:"requests"`
+	Kingdom          int               `json:"kingdom"`
+	RescueReceived   int64             `json:"rescue_received"`
+	MissionID        int               `json:"mission_id"`
+	Name             string            `json:"name"`
+	StartYear        int               `json:"start_year"`
+	Stage            string            `json:"stage"`
+	Guidance         string            `json:"guidance"`
+	Won              bool              `json:"won"`
+	VictoryTick      int64             `json:"victory_tick"`
+	Objectives       []Objective       `json:"objectives"`
+	AllowedBuildings []string          `json:"allowed_buildings"`
+	NextMissions     []NextMission     `json:"next_missions"`
+	Completed        []int             `json:"completed"`
 }
 
 func (s *State) View(o Observation) *View {
@@ -326,13 +377,18 @@ func (s *State) View(o Observation) *View {
 		return nil
 	}
 	mission, _ := Definition(s.MissionID)
-	v := &View{RescueReceived: s.RescueReceived, MissionID: s.MissionID, Name: mission.Name, StartYear: mission.StartYear,
-		Requests: s.Requests(), Kingdom: s.Kingdom,
+	v := &View{DefeatTick: s.DefeatTick, Failed: s.DefeatTick > 0, RescueReceived: s.RescueReceived, MissionID: s.MissionID, Name: mission.Name, StartYear: mission.StartYear,
+		Warnings: s.InvasionWarnings(), Requests: s.Requests(), Kingdom: s.Kingdom,
 		Won: s.Won, VictoryTick: s.VictoryTick, AllowedBuildings: []string{}, NextMissions: []NextMission{},
-		Objectives: []Objective{{ID: "housing", Label: "Occupied Meager Shanties or better", Current: o.QualifyingHomes,
-			Target: mission.Goals["housing_count"].Value, Complete: o.QualifyingHomes >= mission.Goals["housing_count"].Value}}}
+		Objectives: mission.Objectives(o.Progress())}
 	v.Completed = append([]int{}, s.Completed...)
-	v.Objectives = mission.Objectives(o.Progress())
+	v.ElapsedMonths = o.ElapsedMonths
+	if goal := mission.Goals["time_limit_years"]; goal.Enabled != 0 {
+		v.TimeLimitMonths = goal.Value * 12
+	}
+	if goal := mission.Goals["survival_years"]; goal.Enabled != 0 {
+		v.SurvivalMonths = goal.Value * 12
+	}
 	for _, kind := range buildingKinds() {
 		if s.Allows(kind) {
 			v.AllowedBuildings = append(v.AllowedBuildings, kind)
@@ -343,6 +399,8 @@ func (s *State) View(o Observation) *View {
 		v.NextMissions = append(v.NextMissions, NextMission{ID: id, Name: next.Name, Playable: Playable(id)})
 	}
 	switch {
+	case s.DefeatTick > 0:
+		v.Stage, v.Guidance = "defeat", "The mission deadline passed before the required conditions were met. Start this mission again to try a different city plan."
 	case s.Won:
 		v.Stage, v.Guidance = "victory", mission.Name+" has reached its goals. You can continue tending this city or advance to the next available mission."
 	case s.MissionID == Nekhen:
@@ -371,6 +429,10 @@ func (s *State) View(o Observation) *View {
 		v.Objectives = append(v.Objectives, Objective{"bast", "Bast's favor", o.BastFavor, 40, false})
 	case s.MissionID == Thinis:
 		v.Stage, v.Guidance = "entertainment", "Train jugglers and keep a Booth performing. Supply ten homes with food, clean water, worship and entertainment."
+	case s.MissionID == Timna:
+		v.Stage, v.Guidance = "copper_and_defense", "Mine copper for trade and royal requests, manufacture weapons, and protect the city with recruited companies. "+mission.objectiveGuidance()
+	case s.MissionID > Timna:
+		v.Stage, v.Guidance = "city_objectives", mission.objectiveGuidance()
 	case s.FireUnlocked && o.ActiveFirehouses == 0:
 		v.Stage, v.Guidance = "fire_protection", "Build and staff a Firehouse on the road to protect your village."
 	case s.ArchitectOpened && o.ActiveArchitects == 0:
@@ -385,6 +447,23 @@ func (s *State) View(o Observation) *View {
 		v.Stage, v.Guidance = "housing_evolution", "Let Water Supply and Bazaar walkers reach six occupied homes so they can become Meager Shanties."
 	}
 	return v
+}
+
+// These labels and targets are the same source-derived predicates used for
+// victory. Later chapters never inherit Nubt's tutorial milestones.
+func (m Mission) objectiveGuidance() string {
+	parts := []string{}
+	for _, goal := range m.Objectives(Progress{}) {
+		if goal.ID == "burial" {
+			continue
+		}
+		parts = append(parts, fmt.Sprintf("%s %d", strings.ToLower(goal.Label), goal.Target))
+	}
+	text := "Reach " + strings.Join(parts, "; ") + "."
+	if len(m.BurialGoods) > 0 {
+		text += " Supply the required burial provisions."
+	}
+	return text
 }
 
 // Next validates branch selection before a caller replaces the current world.

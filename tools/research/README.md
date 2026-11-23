@@ -169,3 +169,39 @@ inputs in `docs/pharaoh-mechanics.md`. The Men-nefer action test wins through re
 papyrus exports and10,800 imported bricks; capture it with
 `-run TestMenneferWinsWithPapyrusExportsAndImportedMastaba` and the same capture
 directory environment variable. Later chapters are still staged.
+
+## Licensed Cleopatra campaign
+
+`extract_cleopatra.py` reads the licensed Gold installation separately, without
+replacing the base corpus. Its 60-entry directory contains 53 records; all record
+boundaries are checked. Expansion IDs 38–52 use format 160 with 181 descriptors.
+Scenario and event chunks keep their base layouts, while Empire objects grow to
+98 bytes. The three `cleopatra-campaign*` files preserve 15 original missions,
+414 declared events and 241 city records, including disabled goals, exact starting
+funds, allowance flags, burial loads, dormant trade and annual limits. No original
+terrain, route points, narrative, code or assets are exported.
+
+```sh
+python3 tools/research/extract_cleopatra.py \
+  --source-dir '/mnt/public/Pharaoh Gold' \
+  --decoder /mnt/holding/project-nile/campaign-research-20261123/blast/blast \
+  --output-dir internal/campaign/data
+
+NILE_GOLD_DIR='/mnt/public/Pharaoh Gold' \
+NILE_BLAST_DECODER=/mnt/holding/project-nile/campaign-research-20261123/blast/blast \
+NILE_ORIGINAL_DIR=/mnt/holding/project-nile/original-wine-VwPQ/Executable \
+  python3 -m unittest discover -s tools/research -p 'test_*.py' -v
+```
+
+Private source copies and disassembly remain in
+`/mnt/holding/project-nile/cleopatra-source-research`. The matching executable
+SHA-256 is `b21b7d719491bb45dfb324ba95231a5b0960ab25fea1bf3fb21da65da7eca662`.
+Gold resource IDs 31–35 mean oil, henna, paint, lamps and marble; currency and
+military requests move to 36/37. `Mission.ResourceID` and effect `SourceVersion`
+prevent base 31/32 semantics leaking into expansion requests. Gold menu checks
+at `0x00404ce1` verify Zoo slot45, and `0x004045c8`/`0x00443d90` verify the Lamp
+Maker's oil plus pottery-production inputs. Source tests cover Pi-Yer's five
+Modest Apartments, Tut's eight-year deadline, Actium's six-year survival rule,
+exact monument variants, and saved request/defeat replay. Manual carry-over rules
+remain separate metadata. Extraction and module tests do not make a chapter
+playable; each city still needs a normal-action win and in-engine review.

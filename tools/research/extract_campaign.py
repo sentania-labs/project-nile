@@ -68,26 +68,29 @@ def read(data, fmt, offset, end=None):
     return struct.unpack_from("<" + fmt, data, offset)
 
 
-def directory(data):
-    entries = read(data, "50I", 0)
+def directory(data, entries_count=50):
+    if entries_count not in (50, 60):
+        raise FormatError("unsupported PAK directory capacity")
+    header_size = entries_count * 4
+    entries = read(data, f"{entries_count}I", 0)
     starts = []
     ended = False
     for offset in entries:
         if offset == 0:
             ended = True
-        elif ended or offset < 200 or offset >= len(data) or (starts and offset <= starts[-1]):
+        elif ended or offset < header_size or offset >= len(data) or (starts and offset <= starts[-1]):
             raise FormatError("invalid PAK directory order, gap, or bounds")
         else:
             starts.append(offset)
-    if not starts or starts[0] != 200:
+    if not starts or starts[0] != header_size:
         raise FormatError("unsupported PAK directory/header size")
     return list(zip(starts, starts[1:] + [len(data)]))
 
 
-def record_chunks(data, start, end):
+def record_chunks(data, start, end, layouts=((147, 175), (149, 175))):
     """Walk descriptor lengths only. Never execute stored pointers or decompress."""
     version, count = read(data, "II", start + 4, end)
-    if version not in (147, 149) or count != 175:
+    if (version, count) not in layouts or not 1 <= count <= 300:
         raise FormatError(f"unsupported scenario layout version={version}, descriptors={count}")
     read(data, "6000s", start + 12, end)
     cursor = start
