@@ -292,3 +292,38 @@ func TestVersionTwoEconomySnapshotMigratesToCity(t *testing.T) {
 		t.Fatal("v2 migration changed economy state beyond explicit city defaults")
 	}
 }
+
+func TestSaveOnEvictionTick(t *testing.T) {
+	for _, cause := range []string{"fire", "collapse"} {
+		t.Run(cause, func(t *testing.T) {
+			w := Initial()
+			home := &w.Buildings[0]
+			if home.Tier == 0 || home.Pop == 0 {
+				t.Fatal("expected occupied evolved home")
+			}
+			if cause == "fire" {
+				home.FireRisk = 99
+			} else {
+				home.CollapseRisk = 99
+			}
+			if err := w.Step(1); err != nil {
+				t.Fatal(err)
+			}
+			if home.Damaged != cause || home.Pop != 0 || home.Tier != 0 {
+				t.Fatalf("unexpected home on damage tick: %+v", home)
+			}
+			store, err := Open(filepath.Join(t.TempDir(), "eviction.nile"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer store.Close()
+			if err := store.Save(w); err != nil {
+				t.Fatal(err)
+			}
+			loaded, err := store.Load()
+			if err != nil || loaded.Hash() != w.Hash() {
+				t.Fatalf("damaged town failed to round trip: %v", err)
+			}
+		})
+	}
+}

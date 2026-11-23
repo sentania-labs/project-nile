@@ -438,6 +438,7 @@ func (w *World) refresh() {
 			}
 		}
 		if b.Damaged != "" {
+			b.Tier = 0
 			b.Capacity = 0
 			b.TierName = "Damaged home"
 		}
