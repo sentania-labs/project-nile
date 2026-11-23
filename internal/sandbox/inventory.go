@@ -1,6 +1,10 @@
 package sandbox
 
-import "errors"
+import (
+	"errors"
+	"maps"
+	"sync"
+)
 
 type ResourceInfo struct {
 	ID    string `json:"id"`
@@ -361,15 +365,47 @@ func (w *World) SetStorageOrder(x, y int, r, order string) error {
 	}
 	return errors.New("select a storage yard")
 }
-func (w World) refreshGoods(b *Building) {
-	b.Inventories = map[string]int{}
-	b.ResourceLimits = map[string]int{}
-	for _, r := range resourceCatalog {
-		if n := inventory(*b, r.ID); n > 0 {
-			b.Inventories[r.ID] = n
+
+// Completed ordinary buildings have fixed storage limits for their kind,
+// housing footprint, and agricultural rules. Monuments consume capacity as
+// construction advances and must recompute their limits at every refresh.
+type capacityKey struct {
+	Kind              string
+	Side, Agriculture int
+}
+
+var ordinaryLimits sync.Map
+
+func buildingResourceLimits(b *Building) map[string]int {
+	key := capacityKey{b.Kind, b.lotSide(), int(b.AgricultureVersion)}
+	fixed := !isMonument(b.Kind)
+	if fixed {
+		if limits, ok := ordinaryLimits.Load(key); ok {
+			return maps.Clone(limits.(map[string]int))
 		}
+	}
+	limits := map[string]int{}
+	for _, r := range resourceCatalog {
 		if n := resourceLimit(*b, r.ID); n > 0 {
-			b.ResourceLimits[r.ID] = n
+			limits[r.ID] = n
+		}
+	}
+	if fixed {
+		ordinaryLimits.Store(key, maps.Clone(limits))
+	}
+	return limits
+}
+func (w World) refreshGoods(b *Building) {
+	b.ResourceLimits = buildingResourceLimits(b)
+	b.Inventories = map[string]int{}
+	for _, r := range []string{"grain", "clay", "straw", "bricks"} {
+		if n := inventory(*b, r); n > 0 {
+			b.Inventories[r] = n
+		}
+	}
+	for r, n := range b.Goods {
+		if n > 0 && newResource(r) {
+			b.Inventories[r] = n
 		}
 	}
 }
