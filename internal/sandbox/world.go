@@ -16,7 +16,7 @@ const Size = 32
 const MaxTick int64 = 1<<53 - 1
 const WellReach = 2
 const MigrationInterval = 8
-const SnapshotVersion = 2
+const SnapshotVersion = 4
 const YearTicks int64 = 240
 const SeasonOffset int64 = 144
 const ConsumptionInterval int64 = 48
@@ -31,74 +31,155 @@ var Entry = Point{6, 15}
 var directions = []Point{{0, -1}, {1, 0}, {0, 1}, {-1, 0}}
 
 type Building struct {
-	ID            int64  `json:"id"`
-	Kind          string `json:"kind"`
-	X             int    `json:"x"`
-	Y             int    `json:"y"`
-	Stock         int    `json:"stock"`
-	Pop           int    `json:"pop"`
-	Tier          int    `json:"tier"`
-	Water         bool   `json:"water"`
-	Capacity      int    `json:"capacity"`
-	TierName      string `json:"tier_name"`
-	Connected     bool   `json:"connected"`
-	Width         int    `json:"width"`
-	Height        int    `json:"height"`
-	StockCapacity int    `json:"stock_capacity"`
-	Workers       int    `json:"workers"`
-	WorkersNeeded int    `json:"workers_needed"`
-	Food          bool   `json:"food"`
-	Market        bool   `json:"market"`
-	MarketUntil   int64  `json:"market_until"`
-	Work          int    `json:"work"`
-	WorkCapacity  int    `json:"work_capacity"`
+	ID                   int64  `json:"id"`
+	Kind                 string `json:"kind"`
+	X                    int    `json:"x"`
+	Y                    int    `json:"y"`
+	Stock                int    `json:"stock"`
+	Pop                  int    `json:"pop"`
+	Tier                 int    `json:"tier"`
+	Water                bool   `json:"water"`
+	Capacity             int    `json:"capacity"`
+	TierName             string `json:"tier_name"`
+	Connected            bool   `json:"connected"`
+	Width                int    `json:"width"`
+	Height               int    `json:"height"`
+	StockCapacity        int    `json:"stock_capacity"`
+	Workers              int    `json:"workers"`
+	WorkersNeeded        int    `json:"workers_needed"`
+	Food                 bool   `json:"food"`
+	Market               bool   `json:"market"`
+	MarketUntil          int64  `json:"market_until"`
+	Work                 int    `json:"work"`
+	WorkCapacity         int    `json:"work_capacity"`
+	Clay                 int    `json:"clay"`
+	Straw                int    `json:"straw"`
+	Bricks               int    `json:"bricks"`
+	FireRisk             int    `json:"fire_risk"`
+	CollapseRisk         int    `json:"collapse_risk"`
+	Damaged              string `json:"damaged"`
+	FireUntil            int64  `json:"fire_until"`
+	CollapseUntil        int64  `json:"collapse_until"`
+	TaxUntil             int64  `json:"tax_until"`
+	FireCovered          bool   `json:"fire_covered"`
+	CollapseCovered      bool   `json:"collapse_covered"`
+	TaxCovered           bool   `json:"tax_covered"`
+	ConstructionDone     int    `json:"construction_done"`
+	ConstructionRequired int    `json:"construction_required"`
+	Stage                string `json:"stage"`
+	RepairCost           int64  `json:"repair_cost"`
+	CrewOnSite           int    `json:"crew_on_site"`
+	CrewEnRoute          int    `json:"crew_en_route"`
+	CrewReturning        int    `json:"crew_returning"`
+	StagingAccess        bool   `json:"staging_access"`
+	LastTax              int64  `json:"last_tax"`
 }
 type Walker struct {
-	ID       int64   `json:"id"`
-	X        int     `json:"x"`
-	Y        int     `json:"y"`
-	Cargo    int     `json:"cargo"`
-	Role     string  `json:"role"`
-	Target   int64   `json:"target"`
-	Route    []Point `json:"route"`
-	Next     int     `json:"next"`
-	Origin   int64   `json:"origin"`
-	Source   int64   `json:"source"`
-	Stage    string  `json:"stage"`
-	Reserved int     `json:"reserved"`
+	ID         int64   `json:"id"`
+	X          int     `json:"x"`
+	Y          int     `json:"y"`
+	Cargo      int     `json:"cargo"`
+	Role       string  `json:"role"`
+	Target     int64   `json:"target"`
+	Route      []Point `json:"route"`
+	Next       int     `json:"next"`
+	Origin     int64   `json:"origin"`
+	Source     int64   `json:"source"`
+	Stage      string  `json:"stage"`
+	Reserved   int     `json:"reserved"`
+	Resource   string  `json:"resource"`
+	ShiftUntil int64   `json:"shift_until"`
 }
 type World struct {
-	Tick          int64      `json:"tick"`
-	Roads         []Point    `json:"roads"`
-	Buildings     []Building `json:"buildings"`
-	Walkers       []Walker   `json:"walkers"`
-	NextID        int64      `json:"next_id"`
-	Arrivals      int64      `json:"arrivals"`
-	Version       int        `json:"version"`
-	Departures    int64      `json:"departures"`
-	GrainProduced int64      `json:"grain_produced"`
-	GrainConsumed int64      `json:"grain_consumed"`
+	Tick           int64      `json:"tick"`
+	Roads          []Point    `json:"roads"`
+	Buildings      []Building `json:"buildings"`
+	Walkers        []Walker   `json:"walkers"`
+	NextID         int64      `json:"next_id"`
+	Arrivals       int64      `json:"arrivals"`
+	Version        int        `json:"version"`
+	Departures     int64      `json:"departures"`
+	GrainProduced  int64      `json:"grain_produced"`
+	GrainConsumed  int64      `json:"grain_consumed"`
+	Treasury       int64      `json:"treasury"`
+	Income         int64      `json:"income"`
+	Expenses       int64      `json:"expenses"`
+	LastIncome     int64      `json:"last_income"`
+	LastWages      int64      `json:"last_wages"`
+	BudgetEnabled  bool       `json:"budget_enabled"`
+	HazardsEnabled bool       `json:"hazards_enabled"`
+	FireCount      int        `json:"fire_count"`
+	CollapseCount  int        `json:"collapse_count"`
+	ClayProduced   int64      `json:"clay_produced"`
+	ClayConsumed   int64      `json:"clay_consumed"`
+	StrawProduced  int64      `json:"straw_produced"`
+	StrawConsumed  int64      `json:"straw_consumed"`
+	BricksProduced int64      `json:"bricks_produced"`
+	BricksConsumed int64      `json:"bricks_consumed"`
+	TaxRate        int        `json:"tax_rate"`
+	WageRate       int        `json:"wage_rate"`
+	LaborPriority  string     `json:"labor_priority"`
+}
+
+// Rendering needs positions and job status, not every persisted route vertex.
+// Keep transport snapshots bounded while saves retain complete replay state.
+type WalkerView struct {
+	ID         int64  `json:"id"`
+	X          int    `json:"x"`
+	Y          int    `json:"y"`
+	Cargo      int    `json:"cargo"`
+	Role       string `json:"role"`
+	Target     int64  `json:"target"`
+	Origin     int64  `json:"origin"`
+	Source     int64  `json:"source"`
+	Stage      string `json:"stage"`
+	Resource   string `json:"resource"`
+	ShiftUntil int64  `json:"shift_until"`
 }
 type View struct {
-	Tick          int64      `json:"tick"`
-	Roads         []Point    `json:"roads"`
-	Buildings     []Building `json:"buildings"`
-	Walkers       []Walker   `json:"walkers"`
-	Population    int        `json:"population"`
-	Grain         int        `json:"grain"`
-	Entry         Point      `json:"entry"`
-	GrainProduced int64      `json:"grain_produced"`
-	GrainConsumed int64      `json:"grain_consumed"`
-	Departures    int64      `json:"departures"`
-	Season        string     `json:"season"`
-	Year          int64      `json:"year"`
-	HarvestIn     int64      `json:"harvest_in"`
-	Workforce     int        `json:"workforce"`
-	Employed      int        `json:"employed"`
+	Tick               int64          `json:"tick"`
+	Roads              []Point        `json:"roads"`
+	Buildings          []Building     `json:"buildings"`
+	Walkers            []WalkerView   `json:"walkers"`
+	Population         int            `json:"population"`
+	Grain              int            `json:"grain"`
+	Entry              Point          `json:"entry"`
+	GrainProduced      int64          `json:"grain_produced"`
+	GrainConsumed      int64          `json:"grain_consumed"`
+	Departures         int64          `json:"departures"`
+	Season             string         `json:"season"`
+	Year               int64          `json:"year"`
+	HarvestIn          int64          `json:"harvest_in"`
+	Workforce          int            `json:"workforce"`
+	Employed           int            `json:"employed"`
+	Treasury           int64          `json:"treasury"`
+	Income             int64          `json:"income"`
+	Expenses           int64          `json:"expenses"`
+	LastIncome         int64          `json:"last_income"`
+	LastWages          int64          `json:"last_wages"`
+	FireCount          int            `json:"fire_count"`
+	CollapseCount      int            `json:"collapse_count"`
+	Clay               int            `json:"clay"`
+	Straw              int            `json:"straw"`
+	Bricks             int            `json:"bricks"`
+	ClayProduced       int64          `json:"clay_produced"`
+	ClayConsumed       int64          `json:"clay_consumed"`
+	StrawProduced      int64          `json:"straw_produced"`
+	StrawConsumed      int64          `json:"straw_consumed"`
+	BricksProduced     int64          `json:"bricks_produced"`
+	BricksConsumed     int64          `json:"bricks_consumed"`
+	MonumentProgress   int            `json:"monument_progress"`
+	MonumentGoal       int            `json:"monument_goal"`
+	BuildingCatalog    []CatalogEntry `json:"building_catalog"`
+	TaxRate            int            `json:"tax_rate"`
+	WageRate           int            `json:"wage_rate"`
+	LaborPriority      string         `json:"labor_priority"`
+	PotentialWorkforce int            `json:"potential_workforce"`
+	MigrationInterval  int64          `json:"migration_interval"`
 }
 
 func neighborhood() World {
-	w := World{Roads: []Point{}, Buildings: []Building{}, Walkers: []Walker{}, NextID: 1, Version: SnapshotVersion}
+	w := World{Roads: []Point{}, Buildings: []Building{}, Walkers: []Walker{}, NextID: 1, Version: SnapshotVersion, TaxRate: 2, WageRate: 1, LaborPriority: "balanced"}
 	for x := 10; x <= 22; x++ {
 		w.Roads = append(w.Roads, Point{x, 10}, Point{x, 20})
 	}
@@ -125,7 +206,7 @@ func Initial() World {
 	for _, b := range []struct {
 		kind string
 		x, y int
-	}{{"well", 14, 23}, {"well", 20, 23}, {"farm", 7, 10}, {"granary", 14, 6}, {"bazaar", 19, 8}} {
+	}{{"well", 14, 23}, {"well", 20, 23}, {"farm", 7, 10}, {"granary", 14, 6}, {"bazaar", 19, 8}, {"firehouse", 12, 9}, {"architect", 21, 9}, {"taxoffice", 11, 17}} {
 		_ = w.Build(b.kind, b.x, b.y)
 	}
 	for i := range w.Buildings {
@@ -133,6 +214,9 @@ func Initial() World {
 			w.Buildings[i].Work = 194
 		}
 	}
+	w.BudgetEnabled = true
+	w.HazardsEnabled = true
+	w.Treasury = 2500
 	w.refresh()
 	return w
 }
@@ -146,13 +230,8 @@ func abs(v int) int {
 func adjacent(a, b Point) bool  { return abs(a.X-b.X)+abs(a.Y-b.Y) == 1 }
 func (b Building) point() Point { return Point{b.X, b.Y} }
 func dimensions(kind string) (int, int) {
-	switch kind {
-	case "farm":
-		return 3, 3
-	case "granary":
-		return 4, 4
-	case "bazaar":
-		return 2, 2
+	if entry, ok := catalog(kind); ok {
+		return entry.Width, entry.Height
 	}
 	return 1, 1
 }
@@ -169,18 +248,8 @@ func stockCapacity(kind string) int {
 	}
 	return 0
 }
-func requiredWorkers(kind string) int {
-	switch kind {
-	case "farm", "bazaar":
-		return 2
-	case "granary":
-		return 1
-	}
-	return 0
-}
-func validKind(kind string) bool {
-	return kind == "hut" || kind == "well" || kind == "farm" || kind == "granary" || kind == "bazaar"
-}
+func requiredWorkers(kind string) int { entry, _ := catalog(kind); return entry.Workers }
+func validKind(kind string) bool      { _, ok := catalog(kind); return ok && kind != "road" }
 func (b Building) contains(p Point) bool {
 	return p.X >= b.X && p.X < b.X+b.Width && p.Y >= b.Y && p.Y < b.Y+b.Height
 }
@@ -306,9 +375,22 @@ func (w *World) refresh() {
 		b.StockCapacity = stockCapacity(b.Kind)
 		b.WorkersNeeded = requiredWorkers(b.Kind)
 		b.Workers = 0
+		b.RepairCost = max(int64(5), constructionCost(b.Kind)/2)
 		b.WorkCapacity = 0
 		if b.Kind == "farm" {
 			b.WorkCapacity = 288
+		}
+		b.FireCovered = b.FireUntil > w.Tick
+		b.CollapseCovered = b.CollapseUntil > w.Tick
+		b.TaxCovered = b.TaxUntil > w.Tick
+		b.ConstructionRequired = 0
+		b.Stage = ""
+		if b.Kind == "mastaba" {
+			b.ConstructionRequired = 64
+			b.Stage = monumentStage(b.ConstructionDone)
+			if b.ConstructionDone >= 64 {
+				b.WorkersNeeded = 0
+			}
 		}
 		b.Connected = false
 		for x := b.X; x < b.X+b.Width; x++ {
@@ -316,6 +398,22 @@ func (w *World) refresh() {
 		}
 		for y := b.Y; y < b.Y+b.Height; y++ {
 			b.Connected = b.Connected || reached[Point{b.X - 1, y}] || reached[Point{b.X + b.Width, y}]
+		}
+		b.CrewOnSite, b.CrewEnRoute, b.CrewReturning = 0, 0, 0
+		b.StagingAccess = b.Kind == "mastaba" && b.Connected
+		if b.Kind == "mastaba" {
+			for _, walker := range w.Walkers {
+				if walker.Role == "builder" && walker.Source == b.ID {
+					switch walker.Stage {
+					case "commute":
+						b.CrewEnRoute++
+					case "work":
+						b.CrewOnSite++
+					case "return":
+						b.CrewReturning++
+					}
+				}
+			}
 		}
 		b.Water = false
 		b.Food = b.Kind == "hut" && b.Stock > 0
@@ -332,40 +430,45 @@ func (w *World) refresh() {
 				}
 			}
 		}
-		b.Capacity, b.TierName = 5, "Small Hut"
+		b.Capacity, b.TierName = 5, "Crude Hut"
 		if b.Pop > 0 && b.Water {
-			b.Tier, b.Capacity, b.TierName = 1, 7, "Large Hut"
+			b.Tier, b.Capacity, b.TierName = 1, 7, "Sturdy Hut"
 			if b.Food && b.Market {
-				b.Tier, b.Capacity, b.TierName = 2, 9, "Small Shanty"
+				b.Tier, b.Capacity, b.TierName = 2, 9, "Meager Shanty"
 			}
+		}
+		if b.Damaged != "" {
+			b.Capacity = 0
+			b.TierName = "Damaged home"
 		}
 		if b.Pop > b.Capacity {
 			w.Departures += int64(b.Pop - b.Capacity)
 			b.Pop = b.Capacity
 		}
 	}
-	workforce := w.population() / 2
-	for i := range w.Buildings {
+	workforce := w.availableWorkforce()
+	order := make([]int, len(w.Buildings))
+	for i := range order {
+		order[i] = i
+	}
+	slices.SortStableFunc(order, func(a, b int) int {
+		return staffingRank(w.LaborPriority, w.Buildings[a].Kind) - staffingRank(w.LaborPriority, w.Buildings[b].Kind)
+	})
+	for _, i := range order {
 		b := &w.Buildings[i]
-		if b.Connected {
+		if b.Connected && b.Damaged == "" {
 			b.Workers = min(workforce, b.WorkersNeeded)
 			workforce -= b.Workers
 		}
 	}
+
 }
 func (w *World) clear(p Point) error {
 	if p == Entry {
 		return errors.New("the arrival road must stay open")
 	}
-	for _, walker := range w.Walkers {
-		if slices.Contains(walker.Route, p) {
-			return errors.New("a walker has reserved this road; wait until its journey ends")
-		}
-	}
 	if i := slices.Index(w.Roads, p); i >= 0 {
-		w.Roads = slices.Delete(w.Roads, i, i+1)
-		w.refresh()
-		return nil
+		return w.clearRoad(i, p)
 	}
 	for i, b := range w.Buildings {
 		if !b.contains(p) {
@@ -374,8 +477,8 @@ func (w *World) clear(p Point) error {
 		if b.Pop > 0 {
 			return errors.New("this home has residents")
 		}
-		if b.Stock > 0 {
-			return errors.New("this building still contains grain")
+		if b.Stock > 0 || b.Clay > 0 || b.Straw > 0 || b.Bricks > 0 {
+			return errors.New("this building still contains goods")
 		}
 		for _, walker := range w.Walkers {
 			if walker.Target == b.ID || walker.Origin == b.ID || walker.Source == b.ID {
@@ -404,12 +507,19 @@ func (w *World) ZoneHousing(a, b Point) error {
 	if len(plots) == 0 {
 		return errors.New("no vacant land in selected area")
 	}
+	if w.BudgetEnabled && w.Treasury < int64(len(plots))*constructionCost("hut") {
+		return errors.New("not enough treasury to zone this housing area")
+	}
 	if w.NextID > MaxTick-int64(len(plots)) {
 		return errors.New("entity identifier limit reached")
 	}
 	if w.Version == 0 {
 		w.Version = SnapshotVersion
 	}
+	if w.LaborPriority == "" {
+		w.policyDefaults()
+	}
+	w.spend(int64(len(plots)) * constructionCost("hut"))
 	for _, p := range plots {
 		w.Buildings = append(w.Buildings, Building{ID: w.NextID, Kind: "hut", X: p.X, Y: p.Y, Width: 1, Height: 1})
 		w.NextID++
@@ -438,9 +548,12 @@ func (w *World) Build(kind string, x, y int) error {
 		if occupied[tile] {
 			return errors.New("the building footprint overlaps an occupied tile")
 		}
-		if kind == "farm" && tile.X > 9 {
-			return errors.New("floodplain farms must fit in the fertile strip beside the Nile")
+		if (kind == "farm" || kind == "claypit") && tile.X > 9 {
+			return errors.New("this building must fit in the fertile strip beside the Nile")
 		}
+	}
+	if w.BudgetEnabled && w.Treasury < constructionCost(kind) {
+		return errors.New("not enough treasury for this construction")
 	}
 	if w.NextID >= MaxTick {
 		return errors.New("entity identifier limit reached")
@@ -448,6 +561,10 @@ func (w *World) Build(kind string, x, y int) error {
 	if w.Version == 0 {
 		w.Version = SnapshotVersion
 	}
+	if w.LaborPriority == "" {
+		w.policyDefaults()
+	}
+	w.spend(constructionCost(kind))
 	if kind == "road" {
 		w.Roads = append(w.Roads, p)
 	} else {
@@ -466,16 +583,18 @@ func (w *World) Step(ticks int) error {
 		w.moveWalkers()
 		w.refresh()
 		w.produceAndConsume()
+		w.cityTick()
 		w.refresh()
 		if w.Tick%MigrationInterval == 0 {
 			w.dispatch()
+			w.refresh()
 		}
 	}
 	return nil
 }
 func (w World) phase() int64 { return (w.Tick + SeasonOffset) % YearTicks }
 func (w World) View() View {
-	v := View{Tick: w.Tick, Roads: w.Roads, Buildings: w.Buildings, Walkers: w.Walkers, Entry: Entry, Population: w.population(), GrainProduced: w.GrainProduced, GrainConsumed: w.GrainConsumed, Departures: w.Departures, Year: (w.Tick+SeasonOffset)/YearTicks + 1, HarvestIn: (192 - w.phase() + YearTicks) % YearTicks}
+	v := View{Tick: w.Tick, Roads: w.Roads, Buildings: w.Buildings, Walkers: []WalkerView{}, Entry: Entry, Population: w.population(), GrainProduced: w.GrainProduced, GrainConsumed: w.GrainConsumed, Departures: w.Departures, Year: (w.Tick+SeasonOffset)/YearTicks + 1, HarvestIn: (192 - w.phase() + YearTicks) % YearTicks}
 	v.Season = "Harvest"
 	if w.phase() < 48 {
 		v.Season = "Inundation"
@@ -487,9 +606,15 @@ func (w World) View() View {
 		v.Employed += b.Workers
 	}
 	for _, walker := range w.Walkers {
-		v.Grain += walker.Cargo
+		v.Walkers = append(v.Walkers, WalkerView{ID: walker.ID, X: walker.X, Y: walker.Y, Cargo: walker.Cargo, Role: walker.Role, Target: walker.Target, Origin: walker.Origin, Source: walker.Source, Stage: walker.Stage, Resource: walker.Resource, ShiftUntil: walker.ShiftUntil})
+		if walker.Resource == "" || walker.Resource == "grain" {
+			v.Grain += walker.Cargo
+		}
 	}
-	v.Workforce = v.Population / 2
+	v.Workforce = w.availableWorkforce()
+	v.PotentialWorkforce = v.Population / 2
+	v.MigrationInterval = w.migrationInterval()
+	w.cityView(&v)
 	return v
 }
 func (w World) Hash() string {
@@ -499,6 +624,16 @@ func (w World) Hash() string {
 }
 func (w *World) upgrade() error {
 	if w.Version == SnapshotVersion {
+		return nil
+	}
+	if w.Version == 3 {
+		w.Version = SnapshotVersion
+		w.policyDefaults()
+		w.refresh()
+		return nil
+	}
+	if w.Version == 2 {
+		w.enableCity()
 		return nil
 	}
 	if w.Version != 0 {
@@ -518,8 +653,7 @@ func (w *World) upgrade() error {
 		}
 		w.Walkers[i].Stage = "travel"
 	}
-	w.Version = SnapshotVersion
-	w.refresh()
+	w.enableCity()
 	return nil
 }
 func (w World) Validate() error {
@@ -540,7 +674,7 @@ func (w World) Validate() error {
 			return errors.New("invalid building")
 		}
 		for _, p := range b.tiles() {
-			if !valid(p) || occupied[p] || (b.Kind == "farm" && p.X > 9) {
+			if !valid(p) || occupied[p] || ((b.Kind == "farm" || b.Kind == "claypit") && p.X > 9) {
 				return errors.New("invalid building footprint")
 			}
 			occupied[p] = true
@@ -567,6 +701,12 @@ func (w World) Validate() error {
 	roads := w.roadSet()
 	immigrants := 0
 	for _, walker := range w.Walkers {
+		if walker.Role != "builder" && walker.ShiftUntil != 0 {
+			return errors.New("invalid shift on a non-builder walker")
+		}
+		if walker.Role != "porter" && walker.Resource != "" && walker.Resource != "grain" {
+			return errors.New("invalid walker resource")
+		}
 		if walker.ID < 1 || walker.ID >= w.NextID || ids[walker.ID] || walker.Cargo < 0 || walker.Cargo > 32 || walker.Reserved < 0 || walker.Reserved > 16 || len(walker.Route) == 0 || walker.Next < 1 || walker.Next > len(walker.Route) || walker.Route[walker.Next-1] != (Point{walker.X, walker.Y}) {
 			return errors.New("invalid walker")
 		}
@@ -613,8 +753,12 @@ func (w World) Validate() error {
 			} else {
 				return errors.New("invalid buyer stage")
 			}
+		case "porter", "firefighter", "architect", "taxcollector", "builder":
+			if err := w.validateCityWalker(walker, *target); err != nil {
+				return err
+			}
 		case "seller":
-			if target.Kind != "bazaar" || target.ID != walker.Origin || walker.Source != 0 || walker.Stage != "patrol" || walker.Reserved != 0 || walker.Route[0] != walker.Route[len(walker.Route)-1] {
+			if target.Kind != "bazaar" || target.ID != walker.Origin || walker.Source != 0 || (walker.Stage != "patrol" && walker.Stage != "return") || walker.Reserved != 0 || (walker.Stage == "patrol" && walker.Route[0] != walker.Route[len(walker.Route)-1]) {
 				return errors.New("invalid seller patrol")
 			}
 		default:
@@ -634,5 +778,5 @@ func (w World) Validate() error {
 			return errors.New("inventory reservations exceed capacity")
 		}
 	}
-	return nil
+	return w.validateCity()
 }

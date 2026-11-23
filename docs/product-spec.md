@@ -24,11 +24,14 @@ It supersedes the earlier v0.5 PostgreSQL/server/mandatory-Firstmate assumptions
 
 ## Neighborhood sandbox
 
-Start on a Nile floodplain with an occupied neighborhood and a partly grown
-grain crop. Extend roads, drag out housing plots, provide water and deliver
+Found a town at the river entry, or enter a village with a partly grown grain
+crop. Extend roads, drag out housing plots, provide water and deliver
 food to advance housing. Farms, granaries and bazaars occupy their full tile
 footprints. The Go simulation tracks grain in buildings, on the road and in
-homes. Save/load preserves active trips.
+homes. Clay and farm straw feed a brickworks. Builders and brick deliveries
+reach a small mastaba along roads. Overseers show the city’s labor and
+finances, and overlays identify gaps in service coverage. Save/load preserves
+active trips and construction shifts.
 
 The neighborhood target includes supply loss and recovery, roadblocks for
 roaming walkers, original housing dependencies and original walker behavior.

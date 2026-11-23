@@ -21,7 +21,7 @@ are useful secondary indexes; their conclusions remain subject to original evide
 
 | ID | Behavior/evidence | Confidence and open question | Nile tests / deviation |
 |---|---|---|---|
-| H01 | `R/models/Pharaoh_Model_Normal.txt`, `housing-table.json`: 20 tiers, 22 named fields; early capacities 5, 7, 9 | High for extracted data; runtime modifiers unverified | Small Hut (5), Large Hut (7), Small Shanty (9) implemented |
+| H01 | `R/models/Pharaoh_Model_Normal.txt`, `housing-table.json`: 20 tiers, 22 named fields; early capacities 5, 7, 9 | High for extracted data; runtime modifiers unverified | Crude Hut (5), Sturdy Hut (7), Meager Shanty (9) implemented |
 | H02 | `R/pass7/00446be0.c`: current/next tier checks service and inventory requirements | Static control-flow evidence; map all service fields | Not implemented / none approved |
 | H03 | `R/pass7/00445ac0.c`: maintenance before advancement; two failed-check increments precede downgrade | Static evidence; calendar timing unresolved | Not implemented / none approved |
 | S01 | `D/selected2/00474d50.c`: bounded tile scan refreshes eligible field to 0x60 | Exact walker/service identity and elapsed-time meaning unresolved; not evidence for radial municipal coverage | Not implemented / none approved |
@@ -33,8 +33,7 @@ are useful secondary indexes; their conclusions remain subject to original evide
 
 Manual reference: [original Pharaoh manual](https://cdn.akamai.steamstatic.com/steam/apps/564530/manuals/Pharaoh_-_manual.pdf?t=1481822384),
 printed pages 50–52 and 86–88 for walkers/bazaars, page 23 for the interface.
-These are manual statements, not newly observed game behavior. No original-game
-playthrough occurred in this kickoff. Prior static extraction must not become
+These are manual statements, not newly observed game behavior. Original disc play was subsequently observed under Wine (below). Prior static extraction must not become
 an unqualified claim of exact mechanical fidelity.
 
 For the food-distribution increment, resolve the remaining early housing dependency fields,
@@ -54,7 +53,32 @@ evidence. A well supplies nearby huts directly. A staffed water supply is
 a separate future building.
 
 The player designates vacant plots. Immigrants travel to them from the entry
-road. A watered hut can advance to Large Hut. Access to a bazaar and a type of
-food can support a Small Shanty. The original table also has desirability
+road. A watered hut can advance to Sturdy Hut. Access to a bazaar and a type of
+food can support a Meager Shanty. The original table also has desirability
 thresholds. Those thresholds, original migration cadence, exact agricultural
 yields and original walker dispatch intervals remain unverified in play.
+
+
+## Original disc comparison, November 22, 2026
+
+Ran the archived Pharaoh disc under Wine 10, used the Normal difficulty
+Sandbox and Alexandria custom missions, and started the Nubt campaign.
+In Nubt one drag placed six roadside housing markers. Thirty residents moved in. The occupied Crude Hut inspector reported five people and identified water as its next requirement. The campaign objective named the third tier Meager Shanty.
+The municipal menu showed 30 debens each for the firehouse and architect’s
+post and 75 for the tax collector. Distribution showed 250 for the granary,
+40 for the bazaar and 70 for the storage yard. Compare the Normal building
+table for the supported construction prices.
+
+Alexandria offered monuments through the religious buildings menu. After a
+large pyramid site was placed, the construction foreman reported that workers
+could not reach its staging area. The monument overseer showed zero progress
+and described the labor and materials required. This observation establishes
+the access feedback and progression interface. It does not establish the
+small mastaba’s footprint, quantities or timing. Nile uses a compact 3×3
+mastaba and 64 brick units.
+
+The private, original-window captures are under
+`/mnt/holding/project-nile/original-wine-VwPQ/`, including
+`og-housing-tutorial.png`, `og-municipal-services.png`,
+`og-construction-foreman.png` and `og-monument-overseer.png`.
+Only separately created artwork ships in Nile.

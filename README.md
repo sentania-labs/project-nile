@@ -1,13 +1,19 @@
 # Project Nile
 
-Grow a grain-producing village on a local 32×32 Nile map. Drag out housing
-plots along a road. Immigrants walk in and settle them. Wells supply water,
-farmers grow grain, and the granary supplies a bazaar whose sellers carry food
-to nearby homes. Inspect a house to see whether it can grow.
+Build a town from its Nile entry road, or expand the starter village. Zone
+housing, connect homes to wells and a bazaar, and keep grain moving through
+the granary. Staff a firehouse and an architect’s post to protect the town.
+Use the city overlays and overseers to inspect labor, risk and tax coverage.
 
-The first three housing capacities are 5, 7 and 9. The farm calendar, staffing
-and delivery quantities are sandbox rules. Desirability, treasury and historical
-unlocks remain future work.
+To build a small mastaba, connect a clay pit and grain farm to a brickworks.
+The farm supplies straw at harvest. Porters carry materials along roads, and
+bricklayers need road access to the monument. The sandbox tracks each
+delivery, construction progress and money spent. Save and Load preserve the
+town and active jobs.
+
+The first three housing capacities are 5, 7 and 9. Desirability, higher
+housing tiers and the campaign remain open. Farm yields, staffing, hazard
+timing and the 64-brick mastaba are sandbox rules.
 
 ## Run
 

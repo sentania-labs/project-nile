@@ -222,6 +222,516 @@
       "prompt_sha256": "fb8a12f97500b284e87fae15e9bc784096761fc2da729e7fff0cec80a8a4e8de",
       "transparent_background": true,
       "validation": "PNG integrity and source hash verified. Imported and rendered in the Godot neighborhood sandbox."
+    },
+    {
+      "id": "mastaba_foundation",
+      "runtime_path": "client/assets/street/mastaba_foundation.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/mastaba.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "57e507b9a8d8739197bb8b4aa83df7fa2ad54098d21b6c749909d75b5e051fb0",
+      "sha256": "2f7ef8a1caabd2af4fbd95aca1cf0b26d6a118db2bf6d1a5dc5625ab210868d0",
+      "dimensions": [
+        435,
+        261
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-mast.txt",
+      "prompt_sha256": "9702e3def3e45a3a63d73d04c0cdb57f8706af29c72478e1c689d8fe274541c7",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "mastaba_building",
+      "runtime_path": "client/assets/street/mastaba_building.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/mastaba.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "57e507b9a8d8739197bb8b4aa83df7fa2ad54098d21b6c749909d75b5e051fb0",
+      "sha256": "11abb4133bbf9498e2fa198622580a170a2e17103fb7704d607c14ed818a2d5b",
+      "dimensions": [
+        435,
+        287
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-mast.txt",
+      "prompt_sha256": "9702e3def3e45a3a63d73d04c0cdb57f8706af29c72478e1c689d8fe274541c7",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "mastaba",
+      "runtime_path": "client/assets/street/mastaba.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/mastaba.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "57e507b9a8d8739197bb8b4aa83df7fa2ad54098d21b6c749909d75b5e051fb0",
+      "sha256": "fed3e95d6d421805a40a26cd4b6246343d8cab111e3ceaf9fc97b670ac2f75ab",
+      "dimensions": [
+        435,
+        303
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-mast.txt",
+      "prompt_sha256": "9702e3def3e45a3a63d73d04c0cdb57f8706af29c72478e1c689d8fe274541c7",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "firehouse",
+      "runtime_path": "client/assets/street/firehouse.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/services.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "83fc9222d1c74f07e7bfbe50651e0522c2da2713546a59ff7e1bf23b0aa93336",
+      "sha256": "4f90cd06f645cfcceb964261f512e6d59b687b430c1202b20398c09594e4b34e",
+      "dimensions": [
+        435,
+        426
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-services.txt",
+      "prompt_sha256": "49b7c215b2539e5ffb59eb5df6502d9b6c93fa1a681c83b539ad76b565d97a05",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "architect",
+      "runtime_path": "client/assets/street/architect.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/services.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "83fc9222d1c74f07e7bfbe50651e0522c2da2713546a59ff7e1bf23b0aa93336",
+      "sha256": "1d657d6d3250328ba54417f16503dca5f0cf641ebfffc47a173ed10e8786cbf5",
+      "dimensions": [
+        435,
+        366
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-services.txt",
+      "prompt_sha256": "49b7c215b2539e5ffb59eb5df6502d9b6c93fa1a681c83b539ad76b565d97a05",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "taxoffice",
+      "runtime_path": "client/assets/street/taxoffice.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/services.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "83fc9222d1c74f07e7bfbe50651e0522c2da2713546a59ff7e1bf23b0aa93336",
+      "sha256": "80d243c1b9d7680445fd1fb87e3048c482d1f1135fe8207dd97ae32c32082297",
+      "dimensions": [
+        435,
+        390
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-services.txt",
+      "prompt_sha256": "49b7c215b2539e5ffb59eb5df6502d9b6c93fa1a681c83b539ad76b565d97a05",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "claypit",
+      "runtime_path": "client/assets/street/claypit.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/industry.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "5441bc55da0cbc5b9f83ac26e7c9c104ae466690672308a943bec08f0d8d4ff0",
+      "sha256": "f64fff7335f9863a515a0f650c9f5b36c85bf17a23cf04d1de0a47f3f2e88d58",
+      "dimensions": [
+        435,
+        372
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-industry.txt",
+      "prompt_sha256": "636dd291c7eda523da97e198b8baee96e262f8c4f89a2caa1f038480f4a55494",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "brickworks",
+      "runtime_path": "client/assets/street/brickworks.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/industry.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "5441bc55da0cbc5b9f83ac26e7c9c104ae466690672308a943bec08f0d8d4ff0",
+      "sha256": "3dde01f5110fae9a0cf494d7ce3287548f2837da56e1587e1d8fad632a9de2b7",
+      "dimensions": [
+        435,
+        331
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-industry.txt",
+      "prompt_sha256": "636dd291c7eda523da97e198b8baee96e262f8c4f89a2caa1f038480f4a55494",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "storageyard",
+      "runtime_path": "client/assets/street/storageyard.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/industry.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "5441bc55da0cbc5b9f83ac26e7c9c104ae466690672308a943bec08f0d8d4ff0",
+      "sha256": "d231c06bbbe2a7b5c927dc8931ba58fd4f6788e3dfa3a92c2c3c4ca6465c3910",
+      "dimensions": [
+        435,
+        364
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-industry.txt",
+      "prompt_sha256": "636dd291c7eda523da97e198b8baee96e262f8c4f89a2caa1f038480f4a55494",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "vacant_plot",
+      "runtime_path": "client/assets/street/vacant_plot.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/people.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "47883b27df7c3a33da3b718e530810fc78a12678cb4097b9477020de7c941217",
+      "sha256": "057fca3744a9befbba76af4623e9d38311b2d66848ebc33b1755c5b14a83b6f1",
+      "dimensions": [
+        283,
+        326
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-people.txt",
+      "prompt_sha256": "09b4b4e2b78cb1c66099ae20d41a582c78e4dcd1341e99b7c5fab02dc45a6a03",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "fire_marshal",
+      "runtime_path": "client/assets/street/fire_marshal.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/people.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "47883b27df7c3a33da3b718e530810fc78a12678cb4097b9477020de7c941217",
+      "sha256": "179ed3e5fe15f35e319f52b75b0f57269a016056ff18c51092f5fe7827491a66",
+      "dimensions": [
+        259,
+        326
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-people.txt",
+      "prompt_sha256": "09b4b4e2b78cb1c66099ae20d41a582c78e4dcd1341e99b7c5fab02dc45a6a03",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "city_architect",
+      "runtime_path": "client/assets/street/city_architect.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/people.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "47883b27df7c3a33da3b718e530810fc78a12678cb4097b9477020de7c941217",
+      "sha256": "60588da6e4a39d9b4b3dd1181a952f03cf25434abfdf0a7281488fba18cf0105",
+      "dimensions": [
+        196,
+        326
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-people.txt",
+      "prompt_sha256": "09b4b4e2b78cb1c66099ae20d41a582c78e4dcd1341e99b7c5fab02dc45a6a03",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "tax_collector",
+      "runtime_path": "client/assets/street/tax_collector.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/people.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "47883b27df7c3a33da3b718e530810fc78a12678cb4097b9477020de7c941217",
+      "sha256": "331e743bf688f538d4392c8a03505b59e5acd5cd8983e702231691e477e28cf7",
+      "dimensions": [
+        168,
+        326
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-people.txt",
+      "prompt_sha256": "09b4b4e2b78cb1c66099ae20d41a582c78e4dcd1341e99b7c5fab02dc45a6a03",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "clay_cart",
+      "runtime_path": "client/assets/street/clay_cart.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/freight.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "2f0847cf540971b8f82d2b9483671ec82cdcd06ab0236fadbf87d057ccfe49c8",
+      "sha256": "7c1dfc67c036a3cc9c5cdd57e99cf54139812d161cb5e56476f3d6300ff61152",
+      "dimensions": [
+        312,
+        326
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-freight.txt",
+      "prompt_sha256": "b8b836f53fdee4e4418b76d768aa180cb890890dfa1aaf5d9d447182752c1fc1",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "straw_cart",
+      "runtime_path": "client/assets/street/straw_cart.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/freight.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "2f0847cf540971b8f82d2b9483671ec82cdcd06ab0236fadbf87d057ccfe49c8",
+      "sha256": "ed2d9a9782c746f6876e2f91ba7e60a5562d546b800a1a26df59193c55c1ff37",
+      "dimensions": [
+        326,
+        292
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-freight.txt",
+      "prompt_sha256": "b8b836f53fdee4e4418b76d768aa180cb890890dfa1aaf5d9d447182752c1fc1",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "brick_sledge",
+      "runtime_path": "client/assets/street/brick_sledge.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/freight.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "2f0847cf540971b8f82d2b9483671ec82cdcd06ab0236fadbf87d057ccfe49c8",
+      "sha256": "d0dc6f7569382181b40667bcf1c81f3413779a6527a4343b7c5f59e32d1aab32",
+      "dimensions": [
+        326,
+        255
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-freight.txt",
+      "prompt_sha256": "b8b836f53fdee4e4418b76d768aa180cb890890dfa1aaf5d9d447182752c1fc1",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "builder",
+      "runtime_path": "client/assets/street/builder.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/freight.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "2f0847cf540971b8f82d2b9483671ec82cdcd06ab0236fadbf87d057ccfe49c8",
+      "sha256": "888c1ebbdb494cc07fa6bb614256ab139282f8fe61e774d5ace5c58e0257f84f",
+      "dimensions": [
+        156,
+        326
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-freight.txt",
+      "prompt_sha256": "b8b836f53fdee4e4418b76d768aa180cb890890dfa1aaf5d9d447182752c1fc1",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "category_homes",
+      "runtime_path": "client/assets/street/category_homes.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/icons.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "291ae990e1d11103ced7ce7616154f6248b731fc96d68281777e6ad70bb9bbbc",
+      "sha256": "1408b3d777b8fc7b39469274c8a033ee24dce66b9e10a4a2600912fc0b70763d",
+      "dimensions": [
+        136,
+        113
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-icons.txt",
+      "prompt_sha256": "55153292ac9394c537084ebe19495435d016dcb75ca9cf3c76713e83fe44b6a3",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "category_food",
+      "runtime_path": "client/assets/street/category_food.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/icons.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "291ae990e1d11103ced7ce7616154f6248b731fc96d68281777e6ad70bb9bbbc",
+      "sha256": "dc19f52e257899fca8e6df168e9958a4df8e2df5b38305dd921ce13867c21682",
+      "dimensions": [
+        136,
+        132
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-icons.txt",
+      "prompt_sha256": "55153292ac9394c537084ebe19495435d016dcb75ca9cf3c76713e83fe44b6a3",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "category_industry",
+      "runtime_path": "client/assets/street/category_industry.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/icons.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "291ae990e1d11103ced7ce7616154f6248b731fc96d68281777e6ad70bb9bbbc",
+      "sha256": "9eb9884b818d37240536135a802771da63ed9d66bffd3e92fe98c10c3b0a6e3c",
+      "dimensions": [
+        136,
+        126
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-icons.txt",
+      "prompt_sha256": "55153292ac9394c537084ebe19495435d016dcb75ca9cf3c76713e83fe44b6a3",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "category_safety",
+      "runtime_path": "client/assets/street/category_safety.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/icons.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "291ae990e1d11103ced7ce7616154f6248b731fc96d68281777e6ad70bb9bbbc",
+      "sha256": "c266709743cbdbcee9ec94c59ae0e4cdcaef4b3d7957473d3ba4b4e8d6087e6f",
+      "dimensions": [
+        130,
+        136
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-icons.txt",
+      "prompt_sha256": "55153292ac9394c537084ebe19495435d016dcb75ca9cf3c76713e83fe44b6a3",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "category_civic",
+      "runtime_path": "client/assets/street/category_civic.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/icons.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "291ae990e1d11103ced7ce7616154f6248b731fc96d68281777e6ad70bb9bbbc",
+      "sha256": "95bb073c8c8ddc58c0c6ce831afce4eb1a005c638bae207756409e001dc9709e",
+      "dimensions": [
+        136,
+        130
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-icons.txt",
+      "prompt_sha256": "55153292ac9394c537084ebe19495435d016dcb75ca9cf3c76713e83fe44b6a3",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "category_monument",
+      "runtime_path": "client/assets/street/category_monument.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/icons.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "291ae990e1d11103ced7ce7616154f6248b731fc96d68281777e6ad70bb9bbbc",
+      "sha256": "2b7553115309150572519385fa0ef2433c741c73f8966c0b3692aa9d02262547",
+      "dimensions": [
+        136,
+        95
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-icons.txt",
+      "prompt_sha256": "55153292ac9394c537084ebe19495435d016dcb75ca9cf3c76713e83fe44b6a3",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "crude_hut_a",
+      "runtime_path": "client/assets/street/crude_hut_a.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/homes.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "2774af07520781bd82c17ce70c288466813ab34ece4c07f5a9264171470f3a4d",
+      "sha256": "6cf8fdd831ecc98a0d76a26de281781199b060c832c7e2b802c4115fbfccfc9a",
+      "dimensions": [
+        326,
+        265
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-homes.txt",
+      "prompt_sha256": "b28f28649b2b87be7bd266312b4d48cb625c8c8135187f6bba7a2472ecbb001e",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "sturdy_hut_a",
+      "runtime_path": "client/assets/street/sturdy_hut_a.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/homes.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "2774af07520781bd82c17ce70c288466813ab34ece4c07f5a9264171470f3a4d",
+      "sha256": "2636c116eb1832b9680d93e8df8d0933827842fa104f6111a081d6f709eae828",
+      "dimensions": [
+        326,
+        322
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-homes.txt",
+      "prompt_sha256": "b28f28649b2b87be7bd266312b4d48cb625c8c8135187f6bba7a2472ecbb001e",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "meager_shanty_a",
+      "runtime_path": "client/assets/street/meager_shanty_a.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/homes.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "2774af07520781bd82c17ce70c288466813ab34ece4c07f5a9264171470f3a4d",
+      "sha256": "b5f57fd8c490310cc2fe183f55b2b58d056822d86c2772c21f278a2ca2e1bc49",
+      "dimensions": [
+        326,
+        256
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-homes.txt",
+      "prompt_sha256": "b28f28649b2b87be7bd266312b4d48cb625c8c8135187f6bba7a2472ecbb001e",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "crude_hut_b",
+      "runtime_path": "client/assets/street/crude_hut_b.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/homes.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "2774af07520781bd82c17ce70c288466813ab34ece4c07f5a9264171470f3a4d",
+      "sha256": "3f326814bdc3f2cfd4afa89eec4ab4477abd7ddde8e2bc304b77e381bef5c0c0",
+      "dimensions": [
+        326,
+        281
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-homes.txt",
+      "prompt_sha256": "b28f28649b2b87be7bd266312b4d48cb625c8c8135187f6bba7a2472ecbb001e",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "sturdy_hut_b",
+      "runtime_path": "client/assets/street/sturdy_hut_b.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/homes.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "2774af07520781bd82c17ce70c288466813ab34ece4c07f5a9264171470f3a4d",
+      "sha256": "8b9bb219c768d78746237a8a7c108bfd6746c2cbcd3c6f896e55ccbb4e8d6dd5",
+      "dimensions": [
+        312,
+        326
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-homes.txt",
+      "prompt_sha256": "b28f28649b2b87be7bd266312b4d48cb625c8c8135187f6bba7a2472ecbb001e",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "meager_shanty_b",
+      "runtime_path": "client/assets/street/meager_shanty_b.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/homes.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "2774af07520781bd82c17ce70c288466813ab34ece4c07f5a9264171470f3a4d",
+      "sha256": "df69d2458341b23ff54a4615009579d4606c798b2f1f92d5fc3137f7c6275541",
+      "dimensions": [
+        326,
+        271
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-homes.txt",
+      "prompt_sha256": "b28f28649b2b87be7bd266312b4d48cb625c8c8135187f6bba7a2472ecbb001e",
+      "transparent_background": true,
+      "validation": "Validated cropped alpha bounds and source hash."
+    },
+    {
+      "id": "title",
+      "runtime_path": "client/assets/street/title.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/title.png",
+      "source": "Original built-in image_gen painting",
+      "source_sha256": "aae0887735f6486f4811daca36e69ce0d0dd2cf9d54513be35ba7e3773342a34",
+      "sha256": "aae0887735f6486f4811daca36e69ce0d0dd2cf9d54513be35ba7e3773342a34",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "prompt": "client/assets/street/prompts/city-title.txt",
+      "prompt_sha256": "1b68d1507e39f3a03a6c414ac59fe55d1cb3c00ae96790d1f11bedee16222124",
+      "transparent_background": false,
+      "validation": "Verified original PNG and runtime source hash."
     }
   ],
   "validation_environment": {

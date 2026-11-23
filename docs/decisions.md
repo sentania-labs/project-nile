@@ -11,6 +11,7 @@ Updated November 22, 2026, America/Chicago.
 | Directed by Scott | Keep the Godot, Go and SQLite stack. Reproduce the original game’s buildings, unlocks and gameplay on one sandbox map first, with updated illustrated visuals. Regional features and a dedicated graphics polish pass follow sandbox gameplay. |
 | Implemented | The Godot desktop client launches the bundled Go simulation on private pipes. The simulation owns the clock and SQLite save. |
 | Implemented neighborhood | Road loop, housing plots, wells, floodplain farms, granaries, bazaar buyers and sellers, and three housing tiers. Roadblocks and desirability remain open. |
+| Implemented city sandbox | Normal-price municipal buildings, fiscal and staffing controls, service patrols, damage and repair, and a compact small mastaba built by on-site crews from delivered bricks. |
 | Rejected by Scott | The kickoff visual study is not an acceptable Pharaoh art direction. Retain it only as a diagnostic for IPC/persistence. Do not extend its primitive geometry into production art. |
 | Directed by Scott | Inspect original Pharaoh gameplay, local reference art, and the supplied New Era screenshot. Target detailed, illustrated isometric buildings, distinct silhouettes, textured terrain, dense street activity and Egyptian UI treatment. Original Pharaoh remains the mechanical authority. |
 | Candidate for visual review | Original illustrated 2D sprites in a separate, interactive Godot street scene. No final renderer choice or production art acceptance is implied. |

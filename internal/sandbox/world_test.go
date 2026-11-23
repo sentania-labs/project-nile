@@ -68,7 +68,7 @@ func TestFullMapResponseBound(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(response) > 256*1024 {
+	if len(response) > 1024*1024 {
 		t.Fatalf("full map state exceeds expected bound: %d", len(response))
 	}
 	t.Logf("full map state: %d bytes for %d buildings", len(response), len(w.Buildings))

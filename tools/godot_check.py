@@ -49,6 +49,12 @@ def main():
         if "NILE_SANDBOX_PASS" not in run(sandbox, env):
             raise SystemExit("Sandbox never completed its gameplay checks")
 
+        env["NILE_SANDBOX_SAVE"] = str(Path(scratch) / "city.nile")
+        env.pop("NILE_CITY_CAPTURE", None)
+        city = [*sandbox[:-1], "--city-smoke"]
+        if "NILE_CITY_PASS" not in run(city, env):
+            raise SystemExit("City never completed its monument and save/load checks")
+
 
 if __name__ == "__main__":
     main()

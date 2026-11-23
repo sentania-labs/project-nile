@@ -49,7 +49,7 @@ func (w *World) spawn(role, stage string, origin, target, source int64, route []
 func (w *World) produceAndConsume() {
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
-		if b.Kind == "farm" {
+		if b.Kind == "farm" && b.Damaged == "" {
 			if w.phase() == 0 {
 				b.Work = 0
 			}
@@ -60,6 +60,9 @@ func (w *World) produceAndConsume() {
 				amount := min(b.StockCapacity-b.Stock, b.Work/6)
 				b.Stock += amount
 				w.GrainProduced += int64(amount)
+				straw := min(32-b.Straw, amount/2)
+				b.Straw += straw
+				w.StrawProduced += int64(straw)
 				b.Work = 0
 			}
 		}
@@ -101,7 +104,7 @@ func (w *World) dispatch() {
 			break
 		}
 	}
-	if !hasMigrant {
+	if !hasMigrant && !(w.BudgetEnabled && w.WageRate == 0) && w.Tick%w.migrationInterval() == 0 {
 		// Fill new connected plots before adding residents to established homes.
 		// This is an explicit prototype policy, not a recovered Pharaoh rule.
 		for pass := 0; pass < 2 && !hasMigrant; pass++ {
@@ -121,7 +124,7 @@ func (w *World) dispatch() {
 	}
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
-		if !b.Connected || b.Workers < b.WorkersNeeded {
+		if !b.Connected || b.Damaged != "" || b.Workers < b.WorkersNeeded {
 			continue
 		}
 		switch b.Kind {
@@ -187,6 +190,9 @@ func (w *World) dispatch() {
 			}
 		}
 	}
+	w.dispatchMaterials()
+	w.dispatchServices()
+	w.dispatchBuilders()
 }
 func reverseJourney(walker *Walker, target int64, stage string) {
 	route := slices.Clone(walker.Route)
@@ -200,10 +206,19 @@ func reverseJourney(walker *Walker, target int64, stage string) {
 func (w *World) moveWalkers() {
 	remaining := make([]Walker, 0, len(w.Walkers))
 	for _, walker := range w.Walkers {
+		if walker.Role == "builder" {
+			if w.advanceBuilder(&walker) {
+				remaining = append(remaining, walker)
+			}
+			continue
+		}
 		if walker.Next < len(walker.Route) {
 			p := walker.Route[walker.Next]
 			walker.X, walker.Y = p.X, p.Y
 			walker.Next++
+		}
+		if walker.Role == "firefighter" || walker.Role == "architect" || walker.Role == "taxcollector" {
+			w.visitService(walker)
 		}
 		if walker.Role == "seller" {
 			position := Point{walker.X, walker.Y}
@@ -252,6 +267,16 @@ func (w *World) moveWalkers() {
 			}
 		case "seller":
 			target.Stock += walker.Cargo
+		case "porter":
+			if walker.Stage == "deliver" {
+				*materialStock(target, walker.Resource) += walker.Cargo
+				walker.Cargo = 0
+				reverseJourney(&walker, walker.Origin, "return")
+				remaining = append(remaining, walker)
+			}
+		case "firefighter", "architect", "taxcollector":
+			// Patrol complete; the staffed source will dispatch the next walker.
+
 		}
 	}
 	w.Walkers = remaining

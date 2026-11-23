@@ -108,3 +108,28 @@ func TestSandboxSpeedChangePreservesElapsedFraction(t *testing.T) {
 		t.Fatalf("speed timing: %+v", responses)
 	}
 }
+
+func TestNewTownOnlyChangesMemoryUntilSave(t *testing.T) {
+	requests := []string{`{"id":1,"op":"save"}`, `{"id":2,"op":"new_town","scenario":"empty"}`, `{"id":3,"op":"load"}`, `{"id":4,"op":"new_town","scenario":"invalid"}`}
+	responses := runTimedSandbox(t, requests, []time.Duration{0, 0, 0, 0})
+	if !responses[1].OK || responses[1].Running || responses[1].State.Population != 0 || len(responses[1].State.Buildings) != 0 || responses[1].State.Treasury != 2500 {
+		t.Fatal("new town did not reset paused in-memory state")
+	}
+	if !responses[2].OK || responses[2].Hash != responses[0].Hash {
+		t.Fatal("new town modified the saved civilization")
+	}
+	if responses[3].OK || responses[3].Hash != responses[2].Hash {
+		t.Fatal("invalid scenario mutated state")
+	}
+}
+
+func TestPolicyProtocolValidationAndSaveRestore(t *testing.T) {
+	requests := []string{`{"id":1,"op":"set_policy","tax_rate":4,"wage_rate":2,"labor_priority":"services"}`, `{"id":2,"op":"save"}`, `{"id":3,"op":"new_town"}`, `{"id":4,"op":"load"}`, `{"id":5,"op":"set_policy","tax_rate":11,"wage_rate":2,"labor_priority":"services"}`, `{"id":6,"op":"set_policy","tax_rate":0,"labor_priority":"balanced"}`}
+	responses := runTimedSandbox(t, requests, []time.Duration{0, 0, 0, 0, 0, 0})
+	if !responses[0].OK || responses[0].State.TaxRate != 4 || responses[0].State.WageRate != 2 || responses[0].State.LaborPriority != "services" {
+		t.Fatal("policy not applied")
+	}
+	if responses[3].Hash != responses[1].Hash || responses[4].OK || responses[5].OK || responses[5].Hash != responses[3].Hash {
+		t.Fatal("policy persistence or validation failed")
+	}
+}

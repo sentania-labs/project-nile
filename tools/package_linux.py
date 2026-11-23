@@ -76,8 +76,9 @@ def main():
     (output / "README.txt").write_text(
         "Project Nile: Nile settlement sandbox.\n"
         f"Extract all files together and run {game}. Keep {sim} alongside it.\n"
-        "Drag Housing beside roads. Provide well water and distribute grain to grow a neighborhood.\n"
-        "Use the in-game save and load controls for this local settlement.\n"
+        "Choose Game > New Town to start from the entry road. Drag Housing beside roads.\n"
+        "Supply a brickworks with clay and farm straw, connect a mastaba and watch the builders.\n"
+        "Inspect risk, labor and treasury through the overlays and overseers. Save and load locally.\n"
         f"For the Go/SQLite diagnostic: {game} -- --diagnostic\n"
         "Diagnostic saves use your local Godot user-data directory. Restart restores the last explicit save.\n"
         "Godot and dependency notices are in licenses/. No new Project Nile license declared.\n")

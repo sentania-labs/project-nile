@@ -14,15 +14,19 @@ import (
 )
 
 type sandboxRequest struct {
-	ID    int64  `json:"id"`
-	Op    string `json:"op"`
-	Kind  string `json:"kind,omitempty"`
-	X     int    `json:"x,omitempty"`
-	Y     int    `json:"y,omitempty"`
-	X2    int    `json:"x2,omitempty"`
-	Y2    int    `json:"y2,omitempty"`
-	Ticks *int   `json:"ticks,omitempty"`
-	Speed int    `json:"speed,omitempty"`
+	TaxRate       *int   `json:"tax_rate,omitempty"`
+	WageRate      *int   `json:"wage_rate,omitempty"`
+	LaborPriority string `json:"labor_priority,omitempty"`
+	ID            int64  `json:"id"`
+	Op            string `json:"op"`
+	Kind          string `json:"kind,omitempty"`
+	X             int    `json:"x,omitempty"`
+	Y             int    `json:"y,omitempty"`
+	X2            int    `json:"x2,omitempty"`
+	Y2            int    `json:"y2,omitempty"`
+	Ticks         *int   `json:"ticks,omitempty"`
+	Speed         int    `json:"speed,omitempty"`
+	Scenario      string `json:"scenario,omitempty"`
 }
 
 type sandboxResponse struct {
@@ -123,6 +127,26 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 				} else {
 					clock.speed = req.Speed
 				}
+			case "new_town":
+				if req.Scenario != "" && req.Scenario != "empty" && req.Scenario != "starter" {
+					err = errors.New("scenario must be empty or starter")
+				} else {
+					world = sandbox.NewTown()
+					if req.Scenario == "starter" {
+						world = sandbox.Initial()
+					}
+					clock.running = false
+					clock.anchor = received
+					clock.remainder = 0
+				}
+			case "set_policy":
+				if req.TaxRate == nil || req.WageRate == nil {
+					err = errors.New("tax_rate and wage_rate are required")
+				} else {
+					err = world.SetPolicy(*req.TaxRate, *req.WageRate, req.LaborPriority)
+				}
+			case "repair":
+				err = world.Repair(req.X, req.Y)
 			case "zone":
 				err = world.ZoneHousing(sandbox.Point{X: req.X, Y: req.Y}, sandbox.Point{X: req.X2, Y: req.Y2})
 			case "build":

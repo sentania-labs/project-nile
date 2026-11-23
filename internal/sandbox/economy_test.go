@@ -152,6 +152,7 @@ func TestLoadsLegacyStreetSnapshot(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	original.enableCity()
 	if loaded.Hash() != original.Hash() {
 		t.Fatal("legacy migration changed simulated state")
 	}
