@@ -20,7 +20,7 @@ func buildMonumentDistrict(t *testing.T, w *World) {
 	}
 	roads := []Point{{8, 5}, {9, 5}, {10, 5}, {10, 6}, {10, 7}, {10, 8}, {10, 9}, {23, 10}, {24, 10}, {25, 10}, {25, 9}, {23, 12}, {23, 18}}
 	for _, p := range roads {
-		if err := w.Build("road", p.X, p.Y); err != nil {
+		if err := w.BuildRoads([]Point{p}); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -62,7 +62,7 @@ func TestCityBuildsMonumentWithPhysicalMaterials(t *testing.T) {
 }
 func TestNewTownAndConstructionBudget(t *testing.T) {
 	w := NewTown()
-	if len(w.Roads) != 1 || len(w.Buildings) != 0 || w.Treasury != 2500 {
+	if len(w.Roads) != Size || len(w.Buildings) != 0 || w.Treasury != 2500 {
 		t.Fatal("invalid new town")
 	}
 	if err := w.ZoneHousing(Point{7, 14}, Point{8, 14}); err != nil {
@@ -164,19 +164,19 @@ func TestMaterialDeliverySaveReplay(t *testing.T) {
 func TestFreshTownCanReachCompletedMonument(t *testing.T) {
 	w := NewTown()
 	for x := 10; x <= 22; x++ {
-		if err := w.Build("road", x, 10); err != nil {
+		if err := w.BuildRoads([]Point{{x, 10}}); err != nil {
 			t.Fatal(err)
 		}
-		if err := w.Build("road", x, 20); err != nil {
+		if err := w.BuildRoads([]Point{{x, 20}}); err != nil {
 			t.Fatal(err)
 		}
 	}
 	for y := 11; y < 20; y++ {
-		w.Build("road", 10, y)
-		w.Build("road", 22, y)
+		w.BuildRoads([]Point{{10, y}})
+		w.BuildRoads([]Point{{22, y}})
 	}
 	for x := 7; x < 10; x++ {
-		w.Build("road", x, 15)
+		w.BuildRoads([]Point{{x, 15}})
 	}
 	if err := w.ZoneHousing(Point{14, 21}, Point{15, 21}); err != nil {
 		t.Fatal(err)

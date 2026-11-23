@@ -36,6 +36,7 @@ var dragging := false
 var focus := Vector2.ZERO
 var neighborhood_zoom := 0.85
 var terrain_shader: Shader
+var view_turns := 0
 
 
 func _ready() -> void:
@@ -134,12 +135,30 @@ func _load_data() -> bool:
 	return true
 
 
+func _quarter_turn(point: Vector2, turns: int) -> Vector2:
+	match posmod(turns, 4):
+		1: return Vector2(-point.y, point.x)
+		2: return -point
+		3: return Vector2(point.y, -point.x)
+	return point
+
+
 func _iso(x: float, y: float) -> Vector2:
-	return Vector2((x - y) * tile_width * 0.5, (x + y) * tile_height * 0.5)
+	var point := _quarter_turn(Vector2(x, y), view_turns)
+	return Vector2((point.x - point.y) * tile_width * 0.5, (point.x + point.y) * tile_height * 0.5)
 
 
 func _tile_at(point: Vector2) -> Vector2:
-	return Vector2(point.x / tile_width + point.y / tile_height, point.y / tile_height - point.x / tile_width)
+	var projected := Vector2(point.x / tile_width + point.y / tile_height, point.y / tile_height - point.x / tile_width)
+	return _quarter_turn(projected, -view_turns)
+
+
+func _front_corner(rect: Rect2) -> Vector2:
+	match view_turns:
+		1: return _iso(rect.end.x, rect.position.y)
+		2: return _iso(rect.position.x, rect.position.y)
+		3: return _iso(rect.position.x, rect.end.y)
+	return _iso(rect.end.x, rect.end.y)
 
 
 func _footprint(rect: Rect2) -> PackedVector2Array:
@@ -158,6 +177,7 @@ uniform float edge_feather = 0.0;
 uniform int boundary_count = 0;
 uniform vec2 boundary_points[128];
 uniform bool road = false;
+uniform int view_turns = 0;
 uniform vec2 road_origin = vec2(0.0);
 uniform vec4 exposed_edges = vec4(0.0);
 uniform vec2 tile_size = vec2(96.0, 48.0);
@@ -179,7 +199,11 @@ void fragment() {
         float edge_distance = 100000.0;
         if (road) {
             vec2 cell = vec2(ground_position.x / tile_size.x + ground_position.y / tile_size.y,
-                             ground_position.y / tile_size.y - ground_position.x / tile_size.x) - road_origin;
+                             ground_position.y / tile_size.y - ground_position.x / tile_size.x);
+            if (view_turns == 1) { cell = vec2(cell.y, -cell.x); }
+            if (view_turns == 2) { cell = -cell; }
+            if (view_turns == 3) { cell = vec2(-cell.y, cell.x); }
+            cell -= road_origin;
             float perpendicular_scale = 1.0 / length(1.0 / tile_size);
             if (exposed_edges.x > 0.5) { edge_distance = min(edge_distance, cell.x * perpendicular_scale); }
             if (exposed_edges.y > 0.5) { edge_distance = min(edge_distance, (1.0 - cell.x) * perpendicular_scale); }
@@ -289,6 +313,7 @@ func _add_terrain_polygon(kind: String, points: PackedVector2Array, feather: flo
 	if feather > 0.0:
 		material.set_shader_parameter("road", kind == "road")
 		if kind == "road":
+			material.set_shader_parameter("view_turns", view_turns)
 			material.set_shader_parameter("road_origin", road_origin)
 			material.set_shader_parameter("exposed_edges", exposed_edges)
 			material.set_shader_parameter("tile_size", Vector2(tile_width, tile_height))

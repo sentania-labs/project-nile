@@ -24,7 +24,7 @@ It supersedes the earlier v0.5 PostgreSQL/server/mandatory-Firstmate assumptions
 
 ## Neighborhood sandbox
 
-Found a town at the river entry, or enter a village with a partly grown grain
+Found a town along the overland Kingdom Road, or enter a village with a partly grown grain
 crop. Extend roads, drag out housing plots, provide water and deliver
 food to advance housing. Farms, granaries and bazaars occupy their full tile
 footprints. The Go simulation tracks grain in buildings, on the road and in
@@ -53,7 +53,25 @@ fidelity work.
 
 Target 60 FPS at 1920×1080 on RTX 4070 laptop-class hardware, also inspect 720p,
 1440p, 3456×2160 and 3440×1440. No population/world-capacity claim is established.
-Full campaign, warfare, diplomacy, multiplayer, infinite terrain, sophisticated
-congestion, advanced migration and district editing remain deferred. Boundary
+The AFK scope below supersedes the kickoff deferrals for warfare and campaigns.
+Multiplayer, infinite terrain, sophisticated congestion, advanced migration and district editing remain deferred. Boundary
 design must eventually support nested districts without exposing overlays in
 ordinary play. No future system is to be built merely to demonstrate extensibility.
+
+
+## AFK acceptance agreed with Scott
+
+Deliver an offline Windows free-build game covering the civilian, religious,
+military, monumental and scripted player capabilities of Pharaoh and Cleopatra.
+Expose late-game events in the sandbox for direct play. Verify the original
+where evidence exists and record remaining uncertainties. Include a locally
+bundled original score, remappable pan/zoom/rotation, drag-preview roads that
+commit on release, a Kingdom Road, and a quiet original-style city interface.
+Test supply failures, recovery and SQLite restore during active jobs and battles.
+
+The campaign stretch goal covers both original mission sequences, their branch
+choices, objectives and victory transitions, with original writing and artwork.
+A mission counts as playable after a briefing-to-victory test and transition.
+A catalog of mission data is research evidence. The Windows handoff includes a
+fresh sandbox and mature cities for testing farming, trade, monuments and war.
+Regional expansion and player-managed intercity transport follow the sandbox.

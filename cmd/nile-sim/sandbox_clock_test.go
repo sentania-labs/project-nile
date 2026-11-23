@@ -133,3 +133,23 @@ func TestPolicyProtocolValidationAndSaveRestore(t *testing.T) {
 		t.Fatal("policy persistence or validation failed")
 	}
 }
+
+func TestSandboxAtomicRoadProtocolAndKingdomSave(t *testing.T) {
+	requests := []string{
+		`{"id":1,"op":"new_town","scenario":"empty"}`,
+		`{"id":2,"op":"road","tiles":[{"x":10,"y":15},{"x":11,"y":15},{"x":12,"y":15}]}`,
+		`{"id":3,"op":"road","tiles":[{"x":12,"y":15},{"x":13,"y":16}]}`,
+		`{"id":4,"op":"save"}`,
+		`{"id":5,"op":"new_town","scenario":"starter"}`,
+		`{"id":6,"op":"load"}`,
+	}
+	responses := runTimedSandbox(t, requests, make([]time.Duration, len(requests)))
+	for i, response := range responses {
+		if response.OK != (i != 2) {
+			t.Fatalf("response %d: %s", i, response.Error)
+		}
+	}
+	if len(responses[0].State.KingdomRoad) != 32 || responses[1].State.Treasury != 2492 || responses[2].Hash != responses[1].Hash || responses[5].Hash != responses[1].Hash {
+		t.Fatal("road transaction or Kingdom Road save round trip failed")
+	}
+}

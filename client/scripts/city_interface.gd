@@ -5,12 +5,12 @@ const MiniMap = preload("res://scripts/city_minimap.gd")
 const CATEGORIES := {
 	"Homes": ["hut", "well"],
 	"Food": ["farm", "granary", "bazaar"],
-	"Industry": ["claypit", "brickworks", "storageyard"],
+	"Industry": ["goldmine", "claypit", "brickworks", "storageyard"],
 	"Safety": ["firehouse", "architect"],
-	"Civic": ["taxoffice"],
+	"Civic": ["taxoffice", "palace"],
 	"Monument": ["mastaba"],
 }
-const LABELS := {"hut": "Housing", "well": "Well", "farm": "Grain farm", "granary": "Granary", "bazaar": "Bazaar", "claypit": "Clay pit", "brickworks": "Brickworks", "storageyard": "Storage yard", "firehouse": "Firehouse", "architect": "Architect", "taxoffice": "Tax office", "mastaba": "Mastaba"}
+const LABELS := {"goldmine": "Gold mine", "palace": "Village palace", "hut": "Housing", "well": "Well", "farm": "Grain farm", "granary": "Granary", "bazaar": "Bazaar", "claypit": "Clay pit", "brickworks": "Brickworks", "storageyard": "Storage yard", "firehouse": "Firehouse", "architect": "Architect", "taxoffice": "Tax office", "mastaba": "Mastaba"}
 const OVERLAYS := {"None": "", "Water": "water", "Food": "food", "Fire risk": "fire", "Collapse risk": "collapse", "Tax coverage": "tax", "Employment": "labor"}
 
 var game: Node
@@ -40,6 +40,10 @@ var labor_priority: OptionButton
 var policy_apply: Button
 var policy_notice: Label
 var policy_dirty := false
+var help_modal: Control
+var inspector_modal: Control
+var build_info: Label
+var options_menu: MenuButton
 
 
 func setup(owner: Node) -> void:
@@ -56,11 +60,14 @@ func setup(owner: Node) -> void:
 	ribbon.offset_bottom = 44
 	ribbon.add_theme_stylebox_override("panel", game._style(Color("c48d55"), Color("80502e"), 2))
 	game.hud.add_child(ribbon)
+	var typeface := SystemFont.new()
+	typeface.font_names = PackedStringArray(["Palatino Linotype", "Palatino", "Georgia", "DejaVu Serif"])
+	typeface.font_weight = 600
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 10)
 	ribbon.add_child(row)
 	game_menu = MenuButton.new()
-	game_menu.text = "Game"
+	game_menu.text = "File"
 	game_menu.flat = true
 	game_menu.add_theme_color_override("font_color", Color("392617"))
 	row.add_child(game_menu)
@@ -74,12 +81,35 @@ func setup(owner: Node) -> void:
 	menu.id_pressed.connect(_game_action)
 	overseers_button = game._button("Overseers", show_overseers)
 	overseers_button.custom_minimum_size.y = 26
+	overseers_button.flat = true
+	options_menu = MenuButton.new()
+	options_menu.text = "Options"
+	options_menu.add_theme_color_override("font_color", Color("392617"))
+	options_menu.get_popup().add_item("Sound and controls…", 0)
+	options_menu.get_popup().id_pressed.connect(func(_id: int) -> void:
+		game._cancel_gesture()
+		var settings := game.get_node_or_null("/root/CitySettings")
+		if settings != null: settings.open_settings())
+	row.add_child(options_menu)
+	var help: Button = game._button("Help", func() -> void: game._cancel_gesture(); help_modal.show())
+	help.flat = true
+	row.add_child(help)
 	row.add_child(overseers_button)
-	row.add_child(game._label("N I L E", 18, Color("392617")))
+	for button: Button in [game_menu, options_menu, help, overseers_button]:
+		button.add_theme_font_override("font", typeface)
+		button.add_theme_font_size_override("font_size", 18)
+		button.add_theme_color_override("font_color", Color("392617"))
 	game.stats = game._label("Starting local settlement…", 13, Color("392617"))
 	game.stats.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	game.stats.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	game.stats.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	game.stats.add_theme_font_override("font", typeface)
+	game.stats.add_theme_font_size_override("font_size", 17)
 	row.add_child(game.stats)
+	var trim := preload("res://scripts/city_frieze.gd").new()
+	game.hud.add_child(trim)
+	trim.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	trim.offset_top = 39
+	trim.offset_bottom = 44
 	var paper := TextureRect.new()
 	paper.texture = load("res://assets/street/sidebar.png")
 	paper.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -111,7 +141,9 @@ func setup(owner: Node) -> void:
 	overlay_picker.clip_text = true
 	overlay_picker.fit_to_longest_item = false
 	for label: String in OVERLAYS: overlay_picker.add_item("Overlay: " + label)
-	overlay_picker.item_selected.connect(func(index: int) -> void: game._set_overlay(OVERLAYS.values()[index]))
+	overlay_picker.item_selected.connect(func(index: int) -> void:
+		game._set_overlay(OVERLAYS.values()[index])
+		overlay_picker.release_focus())
 	column.add_child(overlay_picker)
 	var category_grid := GridContainer.new()
 	category_grid.columns = 3
@@ -192,30 +224,13 @@ func setup(owner: Node) -> void:
 			game.palette.add_child(button)
 	set_category("Homes", false)
 	game.tool_buttons.inspect.set_pressed_no_signal(true)
-	game.title_label = game._label("Build a lasting city", 17, Color("35281d"))
-	game.title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	column.add_child(game.title_label)
-	game.kind_label = game._label("Homes, work and a monument", 12, Color("735936"))
-	game.kind_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	column.add_child(game.kind_label)
-	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size.y = 90
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	column.add_child(scroll)
-	game.detail_label = game._label("", 12, Color("35281d"))
-	game.detail_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	game.detail_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	scroll.add_child(game.detail_label)
-	game.production_bar = ProgressBar.new()
-	game.production_bar.custom_minimum_size.y = 12
-	game.production_bar.show_percentage = false
-	game.production_bar.visible = false
-	column.add_child(game.production_bar)
-	repair_button = game._button("Repair", game._repair_selected)
-	repair_button.visible = false
-	column.add_child(repair_button)
-	game.status = game._label("Build from the riverbank toward a lasting monument.", 11, Color("735936"))
+	build_info = game._label("", 13, Color("35281d"))
+	build_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	column.add_child(build_info)
+	var spacer := Control.new()
+	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(spacer)
+	game.status = game._label("", 11, Color("735936"))
 	game.status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	game.status.max_lines_visible = 3
 	game.status.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -245,7 +260,9 @@ func setup(owner: Node) -> void:
 	game.footprints_button.toggle_mode = true
 	game.footprints_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	views.add_child(game.footprints_button)
-	column.add_child(game._label("Right-drag: pan · wheel: zoom\nSpace: pause · Esc: inspect", 10, Color("735936")))
+	game.tool_buttons.inspect.tooltip_text = "Right-click a building or walker to inspect. Right-drag to pan."
+	game.tool_buttons.road.tooltip_text = "Drag to preview roads. Release to build; right-click or Esc cancels."
+	game.pause_button.tooltip_text = "Space: pause or resume"
 	_build_modals()
 
 
@@ -269,6 +286,8 @@ func category_for(kind: String) -> String:
 
 
 func _game_action(id: int) -> void:
+	game_menu.release_focus()
+	game._cancel_gesture()
 	match id:
 		0: new_town_modal.show()
 		1: game._queue_command("save")
@@ -305,6 +324,35 @@ func _modal(title: String, dimensions: Vector2) -> Array:
 
 
 func _build_modals() -> void:
+	var help := _modal("Building on the Nile", Vector2(540, 325))
+	help_modal = help[0]
+	var guide: Label = game._label("Branch a road from the Kingdom Road. Drag to mark house plots within two tiles of a connected street. A nearby well lets the first homes grow.\n\nPlace farms on the dark floodplain. After the harvest, carts take grain to a granary and bazaar sellers bring it to homes.\n\nRight-click a building or a walker to inspect it. Open Options to change camera keys and music volume.", 16, Color("392617"))
+	guide.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	help[1].add_child(guide)
+	var inspection := _modal("Inspection", Vector2(540, 520))
+	inspector_modal = inspection[0]
+	game.title_label = game._label("", 21, Color("35281d"))
+	game.title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	inspection[1].add_child(game.title_label)
+	game.kind_label = game._label("", 15, Color("735936"))
+	game.kind_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	inspection[1].add_child(game.kind_label)
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	inspection[1].add_child(scroll)
+	game.detail_label = game._label("", 15, Color("35281d"))
+	game.detail_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	game.detail_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	scroll.add_child(game.detail_label)
+	game.production_bar = ProgressBar.new()
+	game.production_bar.custom_minimum_size.y = 12
+	game.production_bar.show_percentage = false
+	game.production_bar.visible = false
+	inspection[1].add_child(game.production_bar)
+	repair_button = game._button("Repair", game._repair_selected)
+	repair_button.visible = false
+	inspection[1].add_child(repair_button)
 	var town := _modal("Found a new town", Vector2(540, 240))
 	new_town_modal = town[0]
 	var text: Label = game._label("Choose an empty riverbank or an established neighborhood. Save your current town first if you want to keep its latest changes.", 15, Color("35281d"))
@@ -376,6 +424,7 @@ func _build_modals() -> void:
 
 
 func show_overseers() -> void:
+	game._cancel_gesture()
 	_sync_policy()
 	_update_overseer()
 	overseer_modal.show()
@@ -414,14 +463,39 @@ func dismiss_modal() -> bool:
 	if construction_menu.visible:
 		construction_menu.hide()
 		return true
-	for modal: Control in [new_town_modal, overseer_modal, completion_modal]:
+	for modal: Control in [new_town_modal, overseer_modal, completion_modal, inspector_modal, help_modal]:
 		if modal.visible:
 			modal.hide()
 			return true
 	return false
 
 
+func has_open_modal() -> bool:
+	for modal: Control in [new_town_modal, overseer_modal, completion_modal, inspector_modal, help_modal]:
+		if modal.visible: return true
+	return false
+
+
+func show_inspector() -> void:
+	if game.selected.is_empty(): return
+	game._cancel_gesture()
+	construction_menu.hide()
+	game._refresh_inspector()
+	inspector_modal.show()
+
+
 func update_city() -> void:
+	game.status.visible = not game.status.text.is_empty()
+	build_info.visible = game.active_tool != "inspect"
+	if build_info.visible:
+		var entry: Dictionary = game._catalog_entry(game.active_tool)
+		build_info.text = "%s · %d Db" % [str(entry.get("label", game.active_tool.capitalize())), int(entry.get("cost", 0))]
+	if game.selected.is_empty(): inspector_modal.hide()
+	if inspector_modal.visible:
+		var inspection_panel: Control = inspector_modal.get_child(0)
+		var height := clampf(170.0 + game.detail_label.get_minimum_size().y + (35 if repair_button.visible else 0), 270, 520)
+		inspection_panel.offset_top = -height * 0.5
+		inspection_panel.offset_bottom = height * 0.5
 	var visible_area: Rect2 = game.get_viewport_rect()
 	visible_area.size.x -= 210
 	visible_area.position.y = 44
@@ -451,7 +525,7 @@ func _update_overseer() -> void:
 	match overseer_topic:
 		"City":
 			lines.append("Population: %d\nTreasury: %d debens\nGrain: %d\nYear %d · %s" % [int(s.get("population", 0)), int(s.get("treasury", 0)), int(s.get("grain", 0)), int(s.get("year", 1)), str(s.get("season", "Growing"))])
-			lines.append("\nKeep households fed and protected. Produce clay and straw, fire bricks, and supply a mastaba to complete your city's monument.")
+			lines.append("\nFood in town: %d grain" % int(s.get("grain", 0)))
 		"Food":
 			lines.append("Grain available: %d\nHarvested: %d\nConsumed: %d" % [int(s.get("grain", 0)), int(s.get("grain_produced", 0)), int(s.get("grain_consumed", 0))])
 			for b: Dictionary in s.get("buildings", []):
@@ -464,6 +538,8 @@ func _update_overseer() -> void:
 					lines.append("%s: %d / %d workers" % [LABELS.get(str(b.kind), str(b.kind).capitalize()), int(b.get("workers", 0)), int(b.get("workers_needed", 0))])
 		"Treasury":
 			lines.append("Treasury: %d debens\nIncome: %d\nExpenses: %d" % [int(s.get("treasury", 0)), int(s.get("income", 0)), int(s.get("expenses", 0))])
+			lines.append("Gold received: %d Db\nGold in transit: %d Db" % [int(s.get("gold_delivered", 0)), int(s.get("gold_in_transit", 0))])
+			if not s.get("taxes_enabled", false): lines.append("A staffed palace is needed to collect taxes.")
 			lines.append("Last collection: %d Db\nLast wages: %d Db" % [int(s.get("last_income", 0)), int(s.get("last_wages", 0))])
 			lines.append("\nTax collectors must reach households. Taxes above 5 Db slow new arrivals. Zero wages halt staffing and immigration. Labor priority directs scarce workers first.")
 		"Safety":

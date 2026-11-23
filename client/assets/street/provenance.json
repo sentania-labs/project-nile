@@ -732,6 +732,74 @@
       "prompt_sha256": "1b68d1507e39f3a03a6c414ac59fe55d1cb3c00ae96790d1f11bedee16222124",
       "transparent_background": false,
       "validation": "Verified original PNG and runtime source hash."
+    },
+    {
+      "id": "goldmine",
+      "runtime_path": "client/assets/street/goldmine.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/gold-pack-01.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "eee13e14feb72f445275c080ad2f211c201f6dc046b958377dc92e0b0e54a5b0",
+      "sha256": "93b884daa05f9e96e697db8b8ac6a79cf4dd25c093772496a8c69894b612120c",
+      "dimensions": [
+        481,
+        352
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-gold.txt",
+      "prompt_sha256": "f79d44d16d805a142efa4625aac780b961b9dfb9ed24b0a0b7ca6cf58c658aff",
+      "transparent_background": true,
+      "validation": "2x2 strict output bounds, 512-pixel cells, bottom aligned. Palace source reaches cell edge with complete contour."
+    },
+    {
+      "id": "palace",
+      "runtime_path": "client/assets/street/palace.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/gold-pack-01.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "eee13e14feb72f445275c080ad2f211c201f6dc046b958377dc92e0b0e54a5b0",
+      "sha256": "b077107768215c558006f77eeb2777b38d47e75eeea018269ec4ffe3e9164e68",
+      "dimensions": [
+        481,
+        351
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-gold.txt",
+      "prompt_sha256": "f79d44d16d805a142efa4625aac780b961b9dfb9ed24b0a0b7ca6cf58c658aff",
+      "transparent_background": true,
+      "validation": "2x2 strict output bounds, 512-pixel cells, bottom aligned. Palace source reaches cell edge with complete contour."
+    },
+    {
+      "id": "gold_outcrop",
+      "runtime_path": "client/assets/street/gold_outcrop.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/gold-pack-01.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "eee13e14feb72f445275c080ad2f211c201f6dc046b958377dc92e0b0e54a5b0",
+      "sha256": "8f07b449e63323cd4eddfb97adbd0bc368a75c5d5303e6bc34f3f5003fcdbc5f",
+      "dimensions": [
+        481,
+        347
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-gold.txt",
+      "prompt_sha256": "f79d44d16d805a142efa4625aac780b961b9dfb9ed24b0a0b7ca6cf58c658aff",
+      "transparent_background": true,
+      "validation": "2x2 strict output bounds, 512-pixel cells, bottom aligned. Palace source reaches cell edge with complete contour."
+    },
+    {
+      "id": "gold_sledge",
+      "runtime_path": "client/assets/street/gold_sledge.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/gold-pack-01.png",
+      "source": "Original built-in image_gen sheet, magenta cleanup and trim",
+      "source_sha256": "eee13e14feb72f445275c080ad2f211c201f6dc046b958377dc92e0b0e54a5b0",
+      "sha256": "95020a4bafc92dbb93bb00784446207639bfe1216e5b2884bcb94957b18a55f0",
+      "dimensions": [
+        481,
+        279
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/city-gold.txt",
+      "prompt_sha256": "f79d44d16d805a142efa4625aac780b961b9dfb9ed24b0a0b7ca6cf58c658aff",
+      "transparent_background": true,
+      "validation": "2x2 strict output bounds, 512-pixel cells, bottom aligned. Palace source reaches cell edge with complete contour."
     }
   ],
   "validation_environment": {

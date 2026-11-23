@@ -168,11 +168,11 @@ func (w World) validateBuilder(walker Walker, target, home Building) error {
 	}
 	switch walker.Stage {
 	case "commute":
-		if target.ID != site.ID || walker.ShiftUntil != 0 || !home.adjacent(walker.Route[0]) {
+		if target.ID != site.ID || walker.ShiftUntil != 0 || !home.roadAccess(walker.Route[0]) {
 			return errors.New("invalid builder commute")
 		}
 	case "work":
-		if target.ID != site.ID || walker.Next != len(walker.Route) || walker.ShiftUntil < w.Tick || !home.adjacent(walker.Route[0]) {
+		if target.ID != site.ID || walker.Next != len(walker.Route) || walker.ShiftUntil < w.Tick || !home.roadAccess(walker.Route[0]) {
 			return errors.New("invalid on-site builder")
 		}
 	case "return":

@@ -1,0 +1,6354 @@
+{
+  "schema_version": 1,
+  "edition": "Pharaoh base campaign, local original corpus; Cleopatra not covered",
+  "sources": {
+    "campaign.txt": {
+      "sha256": "28df4bb13015ec8ed19e1b8a004547dbfc60f301dff10866f338fcdc051856f2",
+      "bytes": 4344,
+      "matches_verified_corpus": true
+    },
+    "MISSION1.PAK": {
+      "sha256": "42fc2104f66bf7a5b23dada1830a40bbe4ef0582d8d9c1cf3de4f6e5bc725b19",
+      "bytes": 12195626,
+      "matches_verified_corpus": true
+    },
+    "Pharaoh_Text.eng": {
+      "sha256": "d060eec7c23caab444602d198de89ad65335feff3f71f35bc8319d333aa11580",
+      "bytes": 240366,
+      "matches_verified_corpus": true
+    }
+  },
+  "evidence": {
+    "numeric_values": "Read directly from the hashed original files at the documented offsets.",
+    "field_meanings": "Public format reconstruction, checked against all 38 record boundaries; not all runtime semantics verified.",
+    "campaign_edges": "Derived from campaign.txt path/merge rules; not a claim of played-through verification.",
+    "event_type_names": "Secondary format interpretations; unknown codes remain numeric.",
+    "editor_labels": "Original English language group 67, independent from the numeric flags.",
+    "editor_flag_mapping": "Only slots 28 Bridge and 29 Ferry Landing have specific secondary corroboration; other label/flag joins are provisional."
+  },
+  "limitations": [
+    "Scenario goals are stored criteria, not the complete executable tutorial/completion logic.",
+    "Editor flags are not effective build menus. Tutorial and engine unlock rules remain unverified.",
+    "47 numeric editor slots but only 46 original labels: slot 47 is unlabeled; no label invented.",
+    "Event timing, recurrence, resource units, consequence links and code meanings need original-engine checks.",
+    "Declared event count zero exports no events, even when unused allocation contains nonzero bytes.",
+    "Original map terrain, object placement, images, prose, executable code and pointer values are excluded.",
+    "No Cleopatra campaign files have been verified by this extraction."
+  ],
+  "format_references": [
+    "https://github.com/dalerank/Akhenaten/blob/e8c58b147a00e71a894ac6de1f33885efb0f8b16/src/io/chunk_serializer.cpp",
+    "https://github.com/dalerank/Akhenaten/blob/e8c58b147a00e71a894ac6de1f33885efb0f8b16/src/io/gamestate/file_schema_sav.cpp",
+    "https://github.com/dalerank/Akhenaten/blob/e8c58b147a00e71a894ac6de1f33885efb0f8b16/src/scenario/scenario.cpp",
+    "https://github.com/dalerank/Akhenaten/blob/e8c58b147a00e71a894ac6de1f33885efb0f8b16/src/scenario/scenario_event_manager.cpp",
+    "https://github.com/dalerank/Akhenaten/blob/e8c58b147a00e71a894ac6de1f33885efb0f8b16/src/scenario/scenario_event_manager.h",
+    "https://github.com/dalerank/Akhenaten/blob/e8c58b147a00e71a894ac6de1f33885efb0f8b16/docs/bridge_editor_allow_triage.md"
+  ],
+  "scenario_layout": {
+    "descriptor_index": 75,
+    "bytes": 1592,
+    "endianness": "little",
+    "fields": {
+      "start_year_signed": [
+        0,
+        "i16"
+      ],
+      "empire_id_raw": [
+        4,
+        "i16"
+      ],
+      "gods_known_raw": [
+        10,
+        "5 x u8, stride 2"
+      ],
+      "initial_funds": [
+        32,
+        "i32"
+      ],
+      "enemy_id_raw": [
+        36,
+        "i16"
+      ],
+      "map_dimensions": [
+        44,
+        "2 x i32"
+      ],
+      "player_rank_raw": [
+        650,
+        "i16"
+      ],
+      "goal_values": [
+        844,
+        "6 x i32"
+      ],
+      "goal_enabled": [
+        868,
+        "6 x u8"
+      ],
+      "time_limit_enabled_and_years": [
+        880,
+        "2 x i32"
+      ],
+      "survival_enabled_and_years": [
+        888,
+        "2 x i32"
+      ],
+      "population_enabled_and_goal": [
+        896,
+        "2 x i32"
+      ],
+      "rescue_loan_raw": [
+        956,
+        "i32"
+      ],
+      "milestone_years_raw": [
+        960,
+        "3 x i32"
+      ],
+      "editor_allow_flags_raw": [
+        1032,
+        "47 x i16"
+      ],
+      "monument_codes_raw": [
+        1288,
+        "3 x u16"
+      ],
+      "burial_requirements_raw": [
+        1296,
+        "36 x u32"
+      ]
+    },
+    "goal_order": [
+      "culture",
+      "prosperity",
+      "monuments",
+      "kingdom",
+      "housing_count",
+      "housing_level_index"
+    ]
+  },
+  "event_layout": {
+    "descriptor_index": 136,
+    "bytes": 18628,
+    "record_bytes": 124,
+    "capacity": 150,
+    "declared_count": [
+      0,
+      "i16"
+    ],
+    "file": "base-campaign-events.jsonl",
+    "record_index": "Zero-based position in each mission records array.",
+    "columns": [
+      {
+        "name": "event_id",
+        "offset": 4,
+        "struct_type": "h"
+      },
+      {
+        "name": "type_code",
+        "offset": 6,
+        "struct_type": "B"
+      },
+      {
+        "name": "month_raw",
+        "offset": 7,
+        "struct_type": "B"
+      },
+      {
+        "name": "item_value_raw",
+        "offset": 8,
+        "struct_type": "h"
+      },
+      {
+        "name": "item_fixed_raw",
+        "offset": 10,
+        "struct_type": "h"
+      },
+      {
+        "name": "item_min_raw",
+        "offset": 12,
+        "struct_type": "h"
+      },
+      {
+        "name": "item_max_raw",
+        "offset": 14,
+        "struct_type": "h"
+      },
+      {
+        "name": "amount_value_raw",
+        "offset": 16,
+        "struct_type": "h"
+      },
+      {
+        "name": "amount_fixed_raw",
+        "offset": 18,
+        "struct_type": "h"
+      },
+      {
+        "name": "amount_min_raw",
+        "offset": 20,
+        "struct_type": "h"
+      },
+      {
+        "name": "amount_max_raw",
+        "offset": 22,
+        "struct_type": "h"
+      },
+      {
+        "name": "year_raw",
+        "offset": 24,
+        "struct_type": "h"
+      },
+      {
+        "name": "time_aux_1_raw",
+        "offset": 28,
+        "struct_type": "h"
+      },
+      {
+        "name": "time_aux_2_raw",
+        "offset": 30,
+        "struct_type": "h"
+      },
+      {
+        "name": "on_completed_action_raw",
+        "offset": 40,
+        "struct_type": "h"
+      },
+      {
+        "name": "on_refusal_action_raw",
+        "offset": 42,
+        "struct_type": "h"
+      },
+      {
+        "name": "trigger_code",
+        "offset": 44,
+        "struct_type": "B"
+      },
+      {
+        "name": "tag_raw",
+        "offset": 46,
+        "struct_type": "H"
+      },
+      {
+        "name": "months_initial_raw",
+        "offset": 48,
+        "struct_type": "B"
+      },
+      {
+        "name": "festival_deity_raw",
+        "offset": 58,
+        "struct_type": "b"
+      },
+      {
+        "name": "invasion_target_raw",
+        "offset": 60,
+        "struct_type": "b"
+      },
+      {
+        "name": "parameter_raw",
+        "offset": 82,
+        "struct_type": "i"
+      },
+      {
+        "name": "on_too_late_action_raw",
+        "offset": 86,
+        "struct_type": "h"
+      },
+      {
+        "name": "on_defeat_action_raw",
+        "offset": 88,
+        "struct_type": "h"
+      },
+      {
+        "name": "sender_faction_raw",
+        "offset": 90,
+        "struct_type": "b"
+      },
+      {
+        "name": "subtype_raw",
+        "offset": 100,
+        "struct_type": "b"
+      },
+      {
+        "name": "city_id_raw",
+        "offset": 101,
+        "struct_type": "b"
+      }
+    ]
+  },
+  "event_type_interpretations": {
+    "0": "none",
+    "1": "request",
+    "2": "invasion",
+    "6": "sea_trade_problem",
+    "7": "land_trade_problem",
+    "8": "wage_increase",
+    "9": "wage_decrease",
+    "10": "contaminated_water",
+    "11": "gold_mine_collapse",
+    "12": "clay_pit_flood",
+    "13": "demand_increase",
+    "14": "demand_decrease",
+    "15": "price_increase",
+    "16": "price_decrease",
+    "17": "reputation_increase",
+    "18": "reputation_decrease",
+    "19": "city_status_change",
+    "20": "message",
+    "21": "failed_flood",
+    "22": "perfect_flood",
+    "23": "gift_from_pharaoh",
+    "24": "locusts",
+    "25": "frogs",
+    "26": "hailstorm",
+    "27": "blood_river",
+    "28": "crime_wave",
+    "29": "mummy",
+    "30": "foreign_army_attack_warning",
+    "31": "distant_battle",
+    "32": "distant_battle_won"
+  },
+  "editor_text_labels": {
+    "1": "Raw materials",
+    "2": "Gold Mine",
+    "3": "Water Lift",
+    "4": "Irrigation Ditch",
+    "5": "Fishing Wharf",
+    "6": "Work Camp",
+    "7": "Granary",
+    "8": "Bazaar",
+    "9": "Storage Yard",
+    "10": "Dock",
+    "11": "Juggling",
+    "12": "Music",
+    "13": "Dancing",
+    "14": "Senet games",
+    "15": "Festival Square",
+    "16": "Scribal School",
+    "17": "Library",
+    "18": "Water Supply",
+    "19": "Dentist",
+    "20": "Apothecary",
+    "21": "Physician",
+    "22": "Mortuary",
+    "23": "Tax Collector",
+    "24": "Courthouse",
+    "25": "Palace",
+    "26": "Mansion",
+    "27": "Roadblock",
+    "28": "Bridge",
+    "29": "Ferry Landing",
+    "30": "Gardens",
+    "31": "Plaza",
+    "32": "Statues",
+    "33": "Wall",
+    "34": "Tower",
+    "35": "Gatehouse",
+    "36": "Recruiter",
+    "37": "Fort: Infantry",
+    "38": "Fort: Archers",
+    "39": "Fort: Charioteers",
+    "40": "Academy",
+    "41": "Weaponsmith",
+    "42": "Chariot Maker",
+    "43": "Warship Wharf",
+    "44": "Transport Wharf",
+    "45": "Sphinx",
+    "46": "Pyramid"
+  },
+  "periods": [
+    {
+      "id": "predynastic_period",
+      "mission_ids": [
+        0,
+        1,
+        2
+      ],
+      "initial_path_choices": [],
+      "entry_mission_ids": [
+        0
+      ]
+    },
+    {
+      "id": "archaic_period",
+      "mission_ids": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "initial_path_choices": [],
+      "entry_mission_ids": [
+        3
+      ]
+    },
+    {
+      "id": "old_kingdom",
+      "mission_ids": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22
+      ],
+      "initial_path_choices": [
+        3,
+        4
+      ],
+      "entry_mission_ids": [
+        8,
+        9
+      ]
+    },
+    {
+      "id": "middle_kingdom",
+      "mission_ids": [
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "initial_path_choices": [
+        15,
+        16
+      ],
+      "entry_mission_ids": [
+        23,
+        24
+      ]
+    },
+    {
+      "id": "new_kingdom",
+      "mission_ids": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "initial_path_choices": [
+        23,
+        24
+      ],
+      "entry_mission_ids": [
+        32,
+        33
+      ]
+    }
+  ],
+  "missions": [
+    {
+      "id": 0,
+      "name": "Nubt",
+      "aliases": [
+        "Naqada"
+      ],
+      "period": "predynastic_period",
+      "path_id": 0,
+      "campaign_line": 68,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        1
+      ],
+      "source_record": {
+        "offset": 200,
+        "bytes": 302701,
+        "sha256": "cd8c5fc7dd952dae50c8c706d9810534c6d1466ef1431750efee7af582dd8af2",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 92364,
+        "event_chunk_offset": 204597
+      },
+      "start_year_signed": -3500,
+      "initial_funds": 2500,
+      "map": {
+        "width_tiles": 84,
+        "height_tiles": 84,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "prosperity": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "monuments": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "kingdom": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "housing_count": {
+          "value": 6,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 2,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 0,
+          "enabled_raw": 0
+        }
+      },
+      "empire_id_raw": 0,
+      "enemy_id_raw": 7,
+      "player_rank_raw": 0,
+      "gods_known_raw": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rescue_loan_raw": 2500,
+      "milestone_years_raw": [
+        0,
+        0,
+        0
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "monument_codes_raw": [
+        0,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 0,
+        "type_code_counts": {}
+      }
+    },
+    {
+      "id": 1,
+      "name": "Thinis",
+      "aliases": [],
+      "period": "predynastic_period",
+      "path_id": 0,
+      "campaign_line": 69,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        2
+      ],
+      "source_record": {
+        "offset": 302901,
+        "bytes": 308838,
+        "sha256": "a9b463319a442d424fe22c6d5e81546c090bea64d35910081b96079113a46496",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 399579,
+        "event_chunk_offset": 511820
+      },
+      "start_year_signed": -3100,
+      "initial_funds": 3000,
+      "map": {
+        "width_tiles": 112,
+        "height_tiles": 112,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 10,
+          "enabled_raw": 0
+        },
+        "prosperity": {
+          "value": 10,
+          "enabled_raw": 0
+        },
+        "monuments": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "kingdom": {
+          "value": 10,
+          "enabled_raw": 0
+        },
+        "housing_count": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 5,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 0,
+          "enabled_raw": 0
+        }
+      },
+      "empire_id_raw": 0,
+      "enemy_id_raw": 7,
+      "player_rank_raw": 0,
+      "gods_known_raw": [
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "rescue_loan_raw": 750,
+      "milestone_years_raw": [
+        0,
+        0,
+        0
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "monument_codes_raw": [
+        0,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 0,
+        "type_code_counts": {}
+      }
+    },
+    {
+      "id": 2,
+      "name": "Perwadjyt",
+      "aliases": [
+        "Buto"
+      ],
+      "period": "predynastic_period",
+      "path_id": 0,
+      "campaign_line": 70,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        3
+      ],
+      "source_record": {
+        "offset": 611739,
+        "bytes": 309619,
+        "sha256": "89928f77d090276dba2fca5cba708bacf98a54aefa5fda49b6d30ed6ef85bb65",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 709655,
+        "event_chunk_offset": 821896
+      },
+      "start_year_signed": -3050,
+      "initial_funds": 6000,
+      "map": {
+        "width_tiles": 112,
+        "height_tiles": 112,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 10,
+          "enabled_raw": 0
+        },
+        "prosperity": {
+          "value": 10,
+          "enabled_raw": 0
+        },
+        "monuments": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "kingdom": {
+          "value": 10,
+          "enabled_raw": 0
+        },
+        "housing_count": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 6,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 600,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 0,
+      "enemy_id_raw": 7,
+      "player_rank_raw": 2,
+      "gods_known_raw": [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rescue_loan_raw": 4000,
+      "milestone_years_raw": [
+        0,
+        0,
+        0
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        0,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 0,
+        "type_code_counts": {}
+      }
+    },
+    {
+      "id": 3,
+      "name": "Nekhen",
+      "aliases": [
+        "Hierkonpolis"
+      ],
+      "period": "archaic_period",
+      "path_id": 0,
+      "campaign_line": 73,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        4
+      ],
+      "source_record": {
+        "offset": 921358,
+        "bytes": 307056,
+        "sha256": "dee0000fb4dd0d6857308d20509bbcb2bba86be94748add66d05dba81ccae2ca",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 1017422,
+        "event_chunk_offset": 1129665
+      },
+      "start_year_signed": -3000,
+      "initial_funds": 10000,
+      "map": {
+        "width_tiles": 112,
+        "height_tiles": 112,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 10,
+          "enabled_raw": 0
+        },
+        "prosperity": {
+          "value": 10,
+          "enabled_raw": 0
+        },
+        "monuments": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "kingdom": {
+          "value": 10,
+          "enabled_raw": 0
+        },
+        "housing_count": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 8,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 1000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 0,
+      "enemy_id_raw": 7,
+      "player_rank_raw": 1,
+      "gods_known_raw": [
+        1,
+        2,
+        0,
+        0,
+        1
+      ],
+      "rescue_loan_raw": 5000,
+      "milestone_years_raw": [
+        0,
+        0,
+        0
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        0,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 0,
+        "type_code_counts": {}
+      }
+    },
+    {
+      "id": 4,
+      "name": "Men-nefer",
+      "aliases": [
+        "Memphis"
+      ],
+      "period": "archaic_period",
+      "path_id": 0,
+      "campaign_line": 74,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        5
+      ],
+      "source_record": {
+        "offset": 1228414,
+        "bytes": 311212,
+        "sha256": "7dc3760b2341dd85cb06e334eb6658fd66711d4b7752dd9741085b9d5ab65b3a",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 1327987,
+        "event_chunk_offset": 1440216
+      },
+      "start_year_signed": -2900,
+      "initial_funds": 9000,
+      "map": {
+        "width_tiles": 140,
+        "height_tiles": 140,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 15,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 20,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 9,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 40,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 1500,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 1,
+      "enemy_id_raw": 5,
+      "player_rank_raw": 1,
+      "gods_known_raw": [
+        1,
+        0,
+        2,
+        0,
+        1
+      ],
+      "rescue_loan_raw": 6000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "monument_codes_raw": [
+        18,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 13,
+        "type_code_counts": {
+          "1": 4,
+          "13": 1,
+          "14": 1,
+          "17": 3,
+          "18": 3,
+          "23": 1
+        }
+      }
+    },
+    {
+      "id": 5,
+      "name": "Timna",
+      "aliases": [],
+      "period": "archaic_period",
+      "path_id": 0,
+      "campaign_line": 76,
+      "choice_after_path_ids": [
+        1,
+        2
+      ],
+      "next_mission_ids": [
+        6,
+        7
+      ],
+      "source_record": {
+        "offset": 1539626,
+        "bytes": 314090,
+        "sha256": "e1bfc729f4556916c18c7058e1ea8b142b17e0fb7afe3c4ed52257fe9c009cd5",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 1641718,
+        "event_chunk_offset": 1753953
+      },
+      "start_year_signed": -2850,
+      "initial_funds": 6000,
+      "map": {
+        "width_tiles": 140,
+        "height_tiles": 140,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "prosperity": {
+          "value": 15,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "kingdom": {
+          "value": 70,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 2000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 1,
+      "enemy_id_raw": 7,
+      "player_rank_raw": 2,
+      "gods_known_raw": [
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      "rescue_loan_raw": 3000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        0,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 16,
+        "type_code_counts": {
+          "1": 4,
+          "2": 4,
+          "17": 3,
+          "18": 3,
+          "19": 1,
+          "23": 1
+        }
+      }
+    },
+    {
+      "id": 6,
+      "name": "Behdet",
+      "aliases": [
+        "Apollinopolis"
+      ],
+      "period": "archaic_period",
+      "path_id": 1,
+      "campaign_line": 81,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        8,
+        9
+      ],
+      "source_record": {
+        "offset": 1853716,
+        "bytes": 310540,
+        "sha256": "80fba510bee7745ccebc8303d554c19a77626e3a7a7414540876e570188206db",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 1950384,
+        "event_chunk_offset": 2062782
+      },
+      "start_year_signed": -2685,
+      "initial_funds": 5000,
+      "map": {
+        "width_tiles": 112,
+        "height_tiles": 112,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 15,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 20,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 11,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 45,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 2500,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 1,
+      "enemy_id_raw": 6,
+      "player_rank_raw": 2,
+      "gods_known_raw": [
+        1,
+        2,
+        0,
+        0,
+        0
+      ],
+      "rescue_loan_raw": 2500,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        19,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 22,
+        "type_code_counts": {
+          "1": 4,
+          "2": 4,
+          "12": 1,
+          "13": 1,
+          "17": 4,
+          "18": 6,
+          "21": 1,
+          "23": 1
+        }
+      }
+    },
+    {
+      "id": 7,
+      "name": "Abedju",
+      "aliases": [
+        "Abydos"
+      ],
+      "period": "archaic_period",
+      "path_id": 2,
+      "campaign_line": 83,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        8,
+        9
+      ],
+      "source_record": {
+        "offset": 2164256,
+        "bytes": 313979,
+        "sha256": "fcbec7f0eb044178fac41fc3d87df0d6e23fd470da13ed70935d553bf420ef75",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 2264863,
+        "event_chunk_offset": 2377183
+      },
+      "start_year_signed": -2685,
+      "initial_funds": 10000,
+      "map": {
+        "width_tiles": 140,
+        "height_tiles": 140,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 25,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 25,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 17,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 60,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 2500,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 0,
+      "enemy_id_raw": 6,
+      "player_rank_raw": 3,
+      "gods_known_raw": [
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rescue_loan_raw": 5000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        19,
+        18,
+        18
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 21,
+        "type_code_counts": {
+          "1": 2,
+          "2": 3,
+          "6": 1,
+          "8": 2,
+          "10": 2,
+          "13": 2,
+          "14": 1,
+          "17": 2,
+          "18": 4,
+          "22": 1,
+          "23": 1
+        }
+      }
+    },
+    {
+      "id": 8,
+      "name": "Selima Oasis",
+      "aliases": [],
+      "period": "old_kingdom",
+      "path_id": 3,
+      "campaign_line": 92,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        10
+      ],
+      "source_record": {
+        "offset": 2478235,
+        "bytes": 309854,
+        "sha256": "1cd5a3e3f744f5b522673293a00cd6bdcfa244f831c1e3675dbdd9c05e0816b2",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 2574351,
+        "event_chunk_offset": 2686672
+      },
+      "start_year_signed": -2650,
+      "initial_funds": 6000,
+      "map": {
+        "width_tiles": 112,
+        "height_tiles": 112,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 20,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 20,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "kingdom": {
+          "value": 55,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 3000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 0,
+      "enemy_id_raw": 5,
+      "player_rank_raw": 3,
+      "gods_known_raw": [
+        0,
+        1,
+        0,
+        2,
+        0
+      ],
+      "rescue_loan_raw": 2500,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        0,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 28,
+        "type_code_counts": {
+          "1": 3,
+          "2": 3,
+          "8": 1,
+          "13": 2,
+          "15": 1,
+          "16": 1,
+          "17": 3,
+          "18": 3,
+          "19": 6,
+          "20": 5
+        }
+      }
+    },
+    {
+      "id": 9,
+      "name": "Abu",
+      "aliases": [
+        "Elephantine"
+      ],
+      "period": "old_kingdom",
+      "path_id": 4,
+      "campaign_line": 93,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        10
+      ],
+      "source_record": {
+        "offset": 2788089,
+        "bytes": 315485,
+        "sha256": "79db25e564cef08f881e99fc770c345a406877966f9732edeb9779bc83aa914c",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 2891005,
+        "event_chunk_offset": 3003221
+      },
+      "start_year_signed": -2650,
+      "initial_funds": 9000,
+      "map": {
+        "width_tiles": 140,
+        "height_tiles": 140,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 30,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 30,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "kingdom": {
+          "value": 50,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 4000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 1,
+      "enemy_id_raw": 5,
+      "player_rank_raw": 6,
+      "gods_known_raw": [
+        1,
+        0,
+        2,
+        0,
+        0
+      ],
+      "rescue_loan_raw": 4500,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        0,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 20,
+        "type_code_counts": {
+          "1": 2,
+          "2": 3,
+          "6": 1,
+          "7": 1,
+          "10": 1,
+          "13": 3,
+          "17": 2,
+          "18": 4,
+          "19": 2,
+          "20": 1
+        }
+      }
+    },
+    {
+      "id": 10,
+      "name": "Saqqara",
+      "aliases": [],
+      "period": "old_kingdom",
+      "path_id": 0,
+      "campaign_line": 95,
+      "choice_after_path_ids": [
+        5,
+        6
+      ],
+      "next_mission_ids": [
+        11,
+        12
+      ],
+      "source_record": {
+        "offset": 3103574,
+        "bytes": 321188,
+        "sha256": "ab861a6269fa886090fbe2d6b29602aba84bcbff66c17d3e8d635298de897b74",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 3211639,
+        "event_chunk_offset": 3323892
+      },
+      "start_year_signed": -2630,
+      "initial_funds": 12000,
+      "map": {
+        "width_tiles": 170,
+        "height_tiles": 170,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "prosperity": {
+          "value": 15,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 19,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 50,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 3500,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 1,
+      "enemy_id_raw": 5,
+      "player_rank_raw": 4,
+      "gods_known_raw": [
+        0,
+        1,
+        2,
+        0,
+        1
+      ],
+      "rescue_loan_raw": 5200,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        9,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {
+        "13": 10,
+        "17": 5,
+        "20": 10,
+        "23": 5,
+        "26": 15
+      },
+      "events": {
+        "declared_count": 31,
+        "type_code_counts": {
+          "1": 9,
+          "2": 1,
+          "7": 1,
+          "8": 2,
+          "9": 2,
+          "10": 1,
+          "11": 2,
+          "13": 4,
+          "14": 4,
+          "15": 1,
+          "16": 1,
+          "17": 1,
+          "18": 1,
+          "23": 1
+        }
+      }
+    },
+    {
+      "id": 11,
+      "name": "Serabit Khadim",
+      "aliases": [],
+      "period": "old_kingdom",
+      "path_id": 5,
+      "campaign_line": 100,
+      "choice_after_path_ids": [
+        7,
+        8
+      ],
+      "next_mission_ids": [
+        13,
+        14
+      ],
+      "source_record": {
+        "offset": 3424762,
+        "bytes": 308533,
+        "sha256": "86f91f386e79ea3c9bfefedd119c3935249b80e44329693d170c04e06f56d67b",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 3522388,
+        "event_chunk_offset": 3634396
+      },
+      "start_year_signed": -2600,
+      "initial_funds": 15000,
+      "map": {
+        "width_tiles": 112,
+        "height_tiles": 112,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "prosperity": {
+          "value": 10,
+          "enabled_raw": 0
+        },
+        "monuments": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "kingdom": {
+          "value": 80,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 4,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 2000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 8,
+      "enemy_id_raw": 7,
+      "player_rank_raw": 5,
+      "gods_known_raw": [
+        0,
+        2,
+        1,
+        1,
+        0
+      ],
+      "rescue_loan_raw": 3500,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "monument_codes_raw": [
+        0,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 32,
+        "type_code_counts": {
+          "1": 5,
+          "2": 8,
+          "7": 1,
+          "12": 7,
+          "14": 1,
+          "17": 3,
+          "18": 4,
+          "19": 2,
+          "23": 1
+        }
+      }
+    },
+    {
+      "id": 12,
+      "name": "Meidum",
+      "aliases": [],
+      "period": "old_kingdom",
+      "path_id": 6,
+      "campaign_line": 105,
+      "choice_after_path_ids": [
+        7,
+        8
+      ],
+      "next_mission_ids": [
+        13,
+        14
+      ],
+      "source_record": {
+        "offset": 3733295,
+        "bytes": 322997,
+        "sha256": "bcbd64925a6aba259e5b39beeed2afa9d479ec8a34886c2adc596adc5cac021c",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 3843703,
+        "event_chunk_offset": 3955952
+      },
+      "start_year_signed": -2600,
+      "initial_funds": 10000,
+      "map": {
+        "width_tiles": 170,
+        "height_tiles": 170,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 25,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 25,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 39,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 40,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 11,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 3000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 1,
+      "enemy_id_raw": 5,
+      "player_rank_raw": 4,
+      "gods_known_raw": [
+        1,
+        0,
+        1,
+        0,
+        2
+      ],
+      "rescue_loan_raw": 3000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        11,
+        8,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 73,
+        "type_code_counts": {
+          "1": 31,
+          "2": 3,
+          "6": 1,
+          "8": 4,
+          "9": 1,
+          "10": 1,
+          "12": 2,
+          "13": 6,
+          "14": 5,
+          "15": 2,
+          "16": 4,
+          "17": 3,
+          "18": 2,
+          "21": 3,
+          "22": 1,
+          "23": 4
+        }
+      }
+    },
+    {
+      "id": 13,
+      "name": "Buhen",
+      "aliases": [],
+      "period": "old_kingdom",
+      "path_id": 7,
+      "campaign_line": 110,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        15
+      ],
+      "source_record": {
+        "offset": 4056292,
+        "bytes": 309642,
+        "sha256": "43ca00c3970738a828d35ed4055284ae3b1ee31756786a905cce25d96fc8d59c",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 4153782,
+        "event_chunk_offset": 4266033
+      },
+      "start_year_signed": -2575,
+      "initial_funds": 10000,
+      "map": {
+        "width_tiles": 112,
+        "height_tiles": 112,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 25,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 25,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 6,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 75,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 3000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 13,
+      "enemy_id_raw": 6,
+      "player_rank_raw": 5,
+      "gods_known_raw": [
+        0,
+        0,
+        1,
+        2,
+        0
+      ],
+      "rescue_loan_raw": 5000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0
+      ],
+      "monument_codes_raw": [
+        22,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 51,
+        "type_code_counts": {
+          "1": 11,
+          "2": 11,
+          "12": 10,
+          "13": 2,
+          "14": 2,
+          "15": 2,
+          "17": 3,
+          "18": 4,
+          "19": 3,
+          "20": 1,
+          "23": 2
+        }
+      }
+    },
+    {
+      "id": 14,
+      "name": "South Dahshur",
+      "aliases": [],
+      "period": "old_kingdom",
+      "path_id": 8,
+      "campaign_line": 111,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        15
+      ],
+      "source_record": {
+        "offset": 4365934,
+        "bytes": 313533,
+        "sha256": "d554721ff238fd9e8f3ffaca3b86e9d0ca589ecdeccaa917e4b5ec7d1c409042",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 4467167,
+        "event_chunk_offset": 4579417
+      },
+      "start_year_signed": -2575,
+      "initial_funds": 10000,
+      "map": {
+        "width_tiles": 140,
+        "height_tiles": 140,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 15,
+          "enabled_raw": 0
+        },
+        "prosperity": {
+          "value": 25,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 21,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 50,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 19,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 3500,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 13,
+      "enemy_id_raw": 5,
+      "player_rank_raw": 5,
+      "gods_known_raw": [
+        1,
+        1,
+        2,
+        0,
+        0
+      ],
+      "rescue_loan_raw": 3500,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "monument_codes_raw": [
+        2,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {
+        "26": 32
+      },
+      "events": {
+        "declared_count": 39,
+        "type_code_counts": {
+          "1": 9,
+          "2": 2,
+          "9": 1,
+          "12": 4,
+          "14": 3,
+          "15": 2,
+          "17": 6,
+          "18": 8,
+          "19": 2,
+          "23": 2
+        }
+      }
+    },
+    {
+      "id": 15,
+      "name": "North Dahshur",
+      "aliases": [],
+      "period": "old_kingdom",
+      "path_id": 0,
+      "campaign_line": 113,
+      "choice_after_path_ids": [
+        9,
+        10
+      ],
+      "next_mission_ids": [
+        16,
+        17
+      ],
+      "source_record": {
+        "offset": 4679467,
+        "bytes": 313557,
+        "sha256": "3813f5ae46852e13bd5ef90bdc30fe5594042f48fc1bf3a0a3f5906d12413938",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 4781337,
+        "event_chunk_offset": 4893351
+      },
+      "start_year_signed": -2563,
+      "initial_funds": 10000,
+      "map": {
+        "width_tiles": 140,
+        "height_tiles": 140,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 20,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 30,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 32,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 55,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 3000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 14,
+      "enemy_id_raw": 5,
+      "player_rank_raw": 6,
+      "gods_known_raw": [
+        1,
+        1,
+        2,
+        1,
+        0
+      ],
+      "rescue_loan_raw": 4000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        15,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {
+        "13": 12,
+        "15": 12,
+        "23": 12
+      },
+      "events": {
+        "declared_count": 32,
+        "type_code_counts": {
+          "1": 4,
+          "2": 7,
+          "12": 2,
+          "14": 1,
+          "17": 4,
+          "18": 7,
+          "19": 1,
+          "20": 2,
+          "23": 4
+        }
+      }
+    },
+    {
+      "id": 16,
+      "name": "Iunet",
+      "aliases": [
+        "Dendera"
+      ],
+      "period": "old_kingdom",
+      "path_id": 9,
+      "campaign_line": 118,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        18
+      ],
+      "source_record": {
+        "offset": 4993024,
+        "bytes": 315700,
+        "sha256": "6adce319649a66e917b4ce92fd1235029d394896011f34ed7b83954aaea94dbc",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 5095599,
+        "event_chunk_offset": 5207619
+      },
+      "start_year_signed": -2551,
+      "initial_funds": 10000,
+      "map": {
+        "width_tiles": 140,
+        "height_tiles": 140,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 30,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 30,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 9,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 65,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 16,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 4000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 1,
+      "enemy_id_raw": 4,
+      "player_rank_raw": 6,
+      "gods_known_raw": [
+        0,
+        1,
+        0,
+        1,
+        2
+      ],
+      "rescue_loan_raw": 2500,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        18,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {
+        "26": 16
+      },
+      "events": {
+        "declared_count": 23,
+        "type_code_counts": {
+          "1": 4,
+          "2": 10,
+          "12": 1,
+          "17": 2,
+          "18": 3,
+          "19": 2,
+          "23": 1
+        }
+      }
+    },
+    {
+      "id": 17,
+      "name": "On",
+      "aliases": [
+        "Heliopolis"
+      ],
+      "period": "old_kingdom",
+      "path_id": 10,
+      "campaign_line": 119,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        18
+      ],
+      "source_record": {
+        "offset": 5308724,
+        "bytes": 313475,
+        "sha256": "3131e95350cb33b09d1fcda54664ed7ec2005e5e2c7deed2b4f6a4439597a554",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 5411327,
+        "event_chunk_offset": 5523355
+      },
+      "start_year_signed": -2551,
+      "initial_funds": 6000,
+      "map": {
+        "width_tiles": 140,
+        "height_tiles": 140,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 40,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 35,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 18,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 60,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 4000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 1,
+      "enemy_id_raw": 4,
+      "player_rank_raw": 6,
+      "gods_known_raw": [
+        1,
+        2,
+        0,
+        0,
+        1
+      ],
+      "rescue_loan_raw": 3000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        18,
+        18,
+        18
+      ],
+      "burial_requirements_raw": {
+        "17": 8,
+        "19": 8,
+        "20": 8,
+        "25": 32,
+        "26": 32
+      },
+      "events": {
+        "declared_count": 20,
+        "type_code_counts": {
+          "1": 2,
+          "2": 5,
+          "8": 1,
+          "12": 1,
+          "13": 2,
+          "17": 2,
+          "18": 4,
+          "19": 1,
+          "20": 1,
+          "22": 1
+        }
+      }
+    },
+    {
+      "id": 18,
+      "name": "Rostja",
+      "aliases": [
+        "Giza"
+      ],
+      "period": "old_kingdom",
+      "path_id": 0,
+      "campaign_line": 121,
+      "choice_after_path_ids": [
+        11,
+        12
+      ],
+      "next_mission_ids": [
+        19,
+        20
+      ],
+      "source_record": {
+        "offset": 5622199,
+        "bytes": 320643,
+        "sha256": "bda479799cf0988139ec24eb0b4bccef9897c2fd089992f854154964407dc507",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 5729929,
+        "event_chunk_offset": 5842187
+      },
+      "start_year_signed": -2508,
+      "initial_funds": 10000,
+      "map": {
+        "width_tiles": 170,
+        "height_tiles": 170,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 25,
+          "enabled_raw": 0
+        },
+        "prosperity": {
+          "value": 25,
+          "enabled_raw": 0
+        },
+        "monuments": {
+          "value": 53,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 50,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 80,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 0,
+          "enabled_raw": 0
+        }
+      },
+      "empire_id_raw": 18,
+      "enemy_id_raw": 5,
+      "player_rank_raw": 6,
+      "gods_known_raw": [
+        0,
+        1,
+        2,
+        0,
+        0
+      ],
+      "rescue_loan_raw": 5000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        21,
+        16,
+        14
+      ],
+      "burial_requirements_raw": {
+        "15": 6,
+        "18": 6,
+        "19": 3,
+        "20": 18,
+        "26": 12
+      },
+      "events": {
+        "declared_count": 44,
+        "type_code_counts": {
+          "1": 12,
+          "2": 7,
+          "6": 2,
+          "9": 1,
+          "14": 2,
+          "15": 3,
+          "16": 1,
+          "17": 4,
+          "18": 2,
+          "19": 4,
+          "20": 1,
+          "23": 5
+        }
+      }
+    },
+    {
+      "id": 19,
+      "name": "Bahariya Oasis",
+      "aliases": [],
+      "period": "old_kingdom",
+      "path_id": 11,
+      "campaign_line": 126,
+      "choice_after_path_ids": [
+        13,
+        14
+      ],
+      "next_mission_ids": [
+        21,
+        22
+      ],
+      "source_record": {
+        "offset": 5942842,
+        "bytes": 313277,
+        "sha256": "01acc367f9bc99f4d970745afb95ac09857b828fe31cd975dac5fc7035aa5caf",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 6044081,
+        "event_chunk_offset": 6156349
+      },
+      "start_year_signed": -2465,
+      "initial_funds": 7500,
+      "map": {
+        "width_tiles": 140,
+        "height_tiles": 140,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 15,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 25,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 13,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 40,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 3000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 18,
+      "enemy_id_raw": 5,
+      "player_rank_raw": 6,
+      "gods_known_raw": [
+        0,
+        2,
+        0,
+        1,
+        0
+      ],
+      "rescue_loan_raw": 2500,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "monument_codes_raw": [
+        24,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 29,
+        "type_code_counts": {
+          "2": 21,
+          "7": 2,
+          "10": 1,
+          "13": 1,
+          "14": 1,
+          "15": 1,
+          "19": 1,
+          "23": 1
+        }
+      }
+    },
+    {
+      "id": 20,
+      "name": "Djedu",
+      "aliases": [
+        "Abusir"
+      ],
+      "period": "old_kingdom",
+      "path_id": 12,
+      "campaign_line": 131,
+      "choice_after_path_ids": [
+        13,
+        14
+      ],
+      "next_mission_ids": [
+        21,
+        22
+      ],
+      "source_record": {
+        "offset": 6256119,
+        "bytes": 317365,
+        "sha256": "8211ab8eb775dd8d1900b82f8d5c83b8c2d37b42ae994482e89981efeda2c4a0",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 6358352,
+        "event_chunk_offset": 6470992
+      },
+      "start_year_signed": -2465,
+      "initial_funds": 7500,
+      "map": {
+        "width_tiles": 140,
+        "height_tiles": 140,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 45,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 40,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 13,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 50,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 4500,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 19,
+      "enemy_id_raw": 5,
+      "player_rank_raw": 7,
+      "gods_known_raw": [
+        2,
+        1,
+        0,
+        0,
+        1
+      ],
+      "rescue_loan_raw": 2500,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        24,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 47,
+        "type_code_counts": {
+          "1": 13,
+          "2": 4,
+          "7": 1,
+          "8": 1,
+          "10": 1,
+          "13": 6,
+          "15": 4,
+          "17": 4,
+          "18": 6,
+          "19": 6,
+          "23": 1
+        }
+      }
+    },
+    {
+      "id": 21,
+      "name": "Dunqul Oasis",
+      "aliases": [],
+      "period": "old_kingdom",
+      "path_id": 13,
+      "campaign_line": 136,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        23,
+        24
+      ],
+      "source_record": {
+        "offset": 6573484,
+        "bytes": 328177,
+        "sha256": "4cf6b27f5ceafec4879e413f23693d184741aa5f9ea3f0bbe090c780fe076684",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 6685536,
+        "event_chunk_offset": 6797875
+      },
+      "start_year_signed": -2246,
+      "initial_funds": 6000,
+      "map": {
+        "width_tiles": 170,
+        "height_tiles": 170,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 20,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 20,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 6,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 80,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 14,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 3500,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 0,
+      "enemy_id_raw": 4,
+      "player_rank_raw": 8,
+      "gods_known_raw": [
+        0,
+        1,
+        1,
+        2,
+        0
+      ],
+      "rescue_loan_raw": 1500,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        22,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 22,
+        "type_code_counts": {
+          "1": 3,
+          "2": 4,
+          "13": 1,
+          "17": 2,
+          "18": 2,
+          "19": 10
+        }
+      }
+    },
+    {
+      "id": 22,
+      "name": "Dakhla Oasis",
+      "aliases": [],
+      "period": "old_kingdom",
+      "path_id": 14,
+      "campaign_line": 137,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        23,
+        24
+      ],
+      "source_record": {
+        "offset": 6901661,
+        "bytes": 322141,
+        "sha256": "e54892290ee63902e577688cb7e9d8810efadeb34dba9154c0d1dd339be5e1a9",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 7010820,
+        "event_chunk_offset": 7123077
+      },
+      "start_year_signed": -2246,
+      "initial_funds": 6000,
+      "map": {
+        "width_tiles": 170,
+        "height_tiles": 170,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 50,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 45,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 6,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 65,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 11,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 5000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 1,
+      "enemy_id_raw": 6,
+      "player_rank_raw": 8,
+      "gods_known_raw": [
+        0,
+        1,
+        2,
+        0,
+        1
+      ],
+      "rescue_loan_raw": 2500,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        22,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 57,
+        "type_code_counts": {
+          "1": 24,
+          "2": 1,
+          "7": 4,
+          "8": 2,
+          "9": 2,
+          "10": 1,
+          "12": 4,
+          "13": 2,
+          "14": 2,
+          "15": 1,
+          "16": 1,
+          "17": 3,
+          "18": 5,
+          "19": 1,
+          "20": 1,
+          "23": 3
+        }
+      }
+    },
+    {
+      "id": 23,
+      "name": "Thinis",
+      "aliases": [],
+      "period": "middle_kingdom",
+      "path_id": 15,
+      "campaign_line": 147,
+      "choice_after_path_ids": [
+        17,
+        18
+      ],
+      "next_mission_ids": [
+        25,
+        26
+      ],
+      "source_record": {
+        "offset": 7223802,
+        "bytes": 351330,
+        "sha256": "60e0bfa5bdc82eda151b8a6b5e94bdf15bab692818d288a071a17cd95077fe19",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 7354253,
+        "event_chunk_offset": 7469836
+      },
+      "start_year_signed": -2016,
+      "initial_funds": 13350,
+      "map": {
+        "width_tiles": 226,
+        "height_tiles": 226,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 25,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 35,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "kingdom": {
+          "value": 90,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 4500,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 23,
+      "enemy_id_raw": 6,
+      "player_rank_raw": 9,
+      "gods_known_raw": [
+        2,
+        1,
+        1,
+        0,
+        0
+      ],
+      "rescue_loan_raw": 4200,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        0,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 65,
+        "type_code_counts": {
+          "1": 9,
+          "2": 12,
+          "13": 1,
+          "17": 11,
+          "18": 15,
+          "19": 14,
+          "23": 3
+        }
+      }
+    },
+    {
+      "id": 24,
+      "name": "Waset",
+      "aliases": [
+        "Thebes"
+      ],
+      "period": "middle_kingdom",
+      "path_id": 16,
+      "campaign_line": 152,
+      "choice_after_path_ids": [
+        17,
+        18
+      ],
+      "next_mission_ids": [
+        25,
+        26
+      ],
+      "source_record": {
+        "offset": 7575132,
+        "bytes": 322751,
+        "sha256": "63c6e8810ceabe1fe8972c050f7e5745b4363a7e467c3ef4e1c86084c7fe1b3a",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 7684536,
+        "event_chunk_offset": 7796548
+      },
+      "start_year_signed": -2015,
+      "initial_funds": 9000,
+      "map": {
+        "width_tiles": 170,
+        "height_tiles": 170,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 55,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 45,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 20,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 70,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 6000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 1,
+      "enemy_id_raw": 6,
+      "player_rank_raw": 8,
+      "gods_known_raw": [
+        1,
+        2,
+        0,
+        0,
+        1
+      ],
+      "rescue_loan_raw": 4000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        24,
+        13,
+        0
+      ],
+      "burial_requirements_raw": {
+        "10": 16,
+        "13": 16,
+        "19": 10
+      },
+      "events": {
+        "declared_count": 45,
+        "type_code_counts": {
+          "1": 8,
+          "2": 5,
+          "17": 12,
+          "18": 10,
+          "19": 2,
+          "20": 7,
+          "21": 1
+        }
+      }
+    },
+    {
+      "id": 25,
+      "name": "Kebet",
+      "aliases": [
+        "Coptos"
+      ],
+      "period": "middle_kingdom",
+      "path_id": 17,
+      "campaign_line": 157,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        27
+      ],
+      "source_record": {
+        "offset": 7897883,
+        "bytes": 333727,
+        "sha256": "e8a10e8f39e58690515661ca7317a0f9f18d4b15e286d18bdc34cc41ef458c3b",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 8017932,
+        "event_chunk_offset": 8130015
+      },
+      "start_year_signed": -1952,
+      "initial_funds": 20000,
+      "map": {
+        "width_tiles": 170,
+        "height_tiles": 170,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 40,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 45,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 14,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 85,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 13,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 7000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 24,
+      "enemy_id_raw": 6,
+      "player_rank_raw": 9,
+      "gods_known_raw": [
+        2,
+        1,
+        0,
+        1,
+        0
+      ],
+      "rescue_loan_raw": 3500,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        23,
+        22,
+        22
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 36,
+        "type_code_counts": {
+          "1": 7,
+          "2": 9,
+          "13": 5,
+          "14": 2,
+          "15": 2,
+          "16": 2,
+          "18": 2,
+          "19": 3,
+          "20": 1,
+          "21": 2,
+          "22": 1
+        }
+      }
+    },
+    {
+      "id": 26,
+      "name": "Menat Khufu",
+      "aliases": [
+        "Beni Hassan"
+      ],
+      "period": "middle_kingdom",
+      "path_id": 18,
+      "campaign_line": 159,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        27
+      ],
+      "source_record": {
+        "offset": 8231610,
+        "bytes": 324176,
+        "sha256": "4f7ee75d7b6dce6151fbf9e7c259351f27b27991534fd432e751d604368ad040",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 8342114,
+        "event_chunk_offset": 8454374
+      },
+      "start_year_signed": -1951,
+      "initial_funds": 10000,
+      "map": {
+        "width_tiles": 170,
+        "height_tiles": 170,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 60,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 50,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 21,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 75,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 7000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 1,
+      "enemy_id_raw": 6,
+      "player_rank_raw": 9,
+      "gods_known_raw": [
+        2,
+        1,
+        0,
+        0,
+        1
+      ],
+      "rescue_loan_raw": 2500,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        22,
+        22,
+        3
+      ],
+      "burial_requirements_raw": {
+        "13": 8,
+        "15": 32,
+        "17": 32,
+        "23": 8,
+        "26": 32
+      },
+      "events": {
+        "declared_count": 42,
+        "type_code_counts": {
+          "1": 8,
+          "2": 2,
+          "13": 2,
+          "17": 12,
+          "18": 6,
+          "20": 12
+        }
+      }
+    },
+    {
+      "id": 27,
+      "name": "Itjtawy",
+      "aliases": [],
+      "period": "middle_kingdom",
+      "path_id": 0,
+      "campaign_line": 161,
+      "choice_after_path_ids": [
+        19,
+        20
+      ],
+      "next_mission_ids": [
+        28,
+        29
+      ],
+      "source_record": {
+        "offset": 8555786,
+        "bytes": 342678,
+        "sha256": "8a04cfd200c98ce051044837e229f494311f8c4a9130759ab81e87e43349afe8",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 8682987,
+        "event_chunk_offset": 8795292
+      },
+      "start_year_signed": -1880,
+      "initial_funds": 8000,
+      "map": {
+        "width_tiles": 226,
+        "height_tiles": 226,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 60,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 60,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 33,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 85,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 6,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 17,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 7500,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 1,
+      "enemy_id_raw": 7,
+      "player_rank_raw": 10,
+      "gods_known_raw": [
+        1,
+        0,
+        1,
+        1,
+        2
+      ],
+      "rescue_loan_raw": 3000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        21,
+        4,
+        3
+      ],
+      "burial_requirements_raw": {
+        "1": 10,
+        "13": 25,
+        "15": 12,
+        "19": 12,
+        "23": 15
+      },
+      "events": {
+        "declared_count": 120,
+        "type_code_counts": {
+          "1": 28,
+          "2": 7,
+          "7": 5,
+          "8": 2,
+          "9": 2,
+          "10": 3,
+          "12": 1,
+          "13": 3,
+          "14": 1,
+          "15": 3,
+          "16": 2,
+          "17": 15,
+          "18": 32,
+          "19": 4,
+          "20": 6,
+          "23": 6
+        }
+      }
+    },
+    {
+      "id": 28,
+      "name": "Iken",
+      "aliases": [
+        "Mirgissa"
+      ],
+      "period": "middle_kingdom",
+      "path_id": 19,
+      "campaign_line": 166,
+      "choice_after_path_ids": [
+        21,
+        22
+      ],
+      "next_mission_ids": [
+        30,
+        31
+      ],
+      "source_record": {
+        "offset": 8898464,
+        "bytes": 342644,
+        "sha256": "471dfab1e33b59021500d58d1439551b87a62554193eedba1e1227a9c1239202",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 9024919,
+        "event_chunk_offset": 9137205
+      },
+      "start_year_signed": -1800,
+      "initial_funds": 7000,
+      "map": {
+        "width_tiles": 226,
+        "height_tiles": 226,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 45,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 40,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 11,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 80,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 20,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 6000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 13,
+      "enemy_id_raw": 4,
+      "player_rank_raw": 10,
+      "gods_known_raw": [
+        1,
+        0,
+        0,
+        2,
+        1
+      ],
+      "rescue_loan_raw": 3000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        23,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 41,
+        "type_code_counts": {
+          "1": 6,
+          "2": 16,
+          "13": 1,
+          "14": 1,
+          "15": 1,
+          "17": 2,
+          "18": 3,
+          "19": 8,
+          "23": 3
+        }
+      }
+    },
+    {
+      "id": 29,
+      "name": "Sawu",
+      "aliases": [
+        "Mersa Gawasis"
+      ],
+      "period": "middle_kingdom",
+      "path_id": 20,
+      "campaign_line": 171,
+      "choice_after_path_ids": [
+        21,
+        22
+      ],
+      "next_mission_ids": [
+        30,
+        31
+      ],
+      "source_record": {
+        "offset": 9241108,
+        "bytes": 326240,
+        "sha256": "ac55baee2ff4afd01388c441e141bded0b44c78875eb2eec4ec0f10b1319d0c9",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 9350834,
+        "event_chunk_offset": 9463169
+      },
+      "start_year_signed": -1800,
+      "initial_funds": 8000,
+      "map": {
+        "width_tiles": 170,
+        "height_tiles": 170,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 65,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 65,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 21,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 75,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 17,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 8000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 1,
+      "enemy_id_raw": 7,
+      "player_rank_raw": 10,
+      "gods_known_raw": [
+        0,
+        1,
+        1,
+        0,
+        2
+      ],
+      "rescue_loan_raw": 3000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        26,
+        3,
+        0
+      ],
+      "burial_requirements_raw": {
+        "10": 12,
+        "13": 4,
+        "17": 16,
+        "23": 16
+      },
+      "events": {
+        "declared_count": 35,
+        "type_code_counts": {
+          "1": 8,
+          "2": 9,
+          "11": 1,
+          "12": 1,
+          "17": 3,
+          "18": 3,
+          "19": 5,
+          "20": 5
+        }
+      }
+    },
+    {
+      "id": 30,
+      "name": "Heh",
+      "aliases": [
+        "Semna"
+      ],
+      "period": "middle_kingdom",
+      "path_id": 21,
+      "campaign_line": 176,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        32,
+        33
+      ],
+      "source_record": {
+        "offset": 9567348,
+        "bytes": 318111,
+        "sha256": "85401b3e404b1ecdf683191be8fbdd084c33088bb70201d662eb6b40a4cf7a09",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 9670048,
+        "event_chunk_offset": 9782376
+      },
+      "start_year_signed": -1710,
+      "initial_funds": 5500,
+      "map": {
+        "width_tiles": 140,
+        "height_tiles": 140,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 50,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 45,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 15,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 60,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 6000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 20,
+      "enemy_id_raw": 6,
+      "player_rank_raw": 10,
+      "gods_known_raw": [
+        2,
+        1,
+        0,
+        1,
+        0
+      ],
+      "rescue_loan_raw": 0,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        27,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {
+        "10": 16,
+        "13": 8,
+        "15": 8,
+        "18": 16
+      },
+      "events": {
+        "declared_count": 38,
+        "type_code_counts": {
+          "1": 5,
+          "2": 14,
+          "13": 1,
+          "15": 1,
+          "16": 2,
+          "17": 3,
+          "18": 5,
+          "19": 5,
+          "23": 2
+        }
+      }
+    },
+    {
+      "id": 31,
+      "name": "Bubastis",
+      "aliases": [],
+      "period": "middle_kingdom",
+      "path_id": 22,
+      "campaign_line": 177,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        32,
+        33
+      ],
+      "source_record": {
+        "offset": 9885459,
+        "bytes": 320180,
+        "sha256": "369d02f7f0cbd697850b659365fdf310592cdb913baafb5e67055c507be5f8a0",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 9989714,
+        "event_chunk_offset": 10102623
+      },
+      "start_year_signed": -1710,
+      "initial_funds": 10000,
+      "map": {
+        "width_tiles": 140,
+        "height_tiles": 140,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 85,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 85,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 15,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 65,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 4,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 19,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 0,
+          "enabled_raw": 0
+        }
+      },
+      "empire_id_raw": 20,
+      "enemy_id_raw": 0,
+      "player_rank_raw": 10,
+      "gods_known_raw": [
+        1,
+        0,
+        1,
+        0,
+        2
+      ],
+      "rescue_loan_raw": 0,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        23,
+        23,
+        0
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 20,
+        "type_code_counts": {
+          "1": 7,
+          "2": 3,
+          "13": 3,
+          "14": 3,
+          "18": 1,
+          "19": 1,
+          "20": 2
+        }
+      }
+    },
+    {
+      "id": 32,
+      "name": "Khmun",
+      "aliases": [
+        "Hermopolis"
+      ],
+      "period": "new_kingdom",
+      "path_id": 23,
+      "campaign_line": 186,
+      "choice_after_path_ids": [
+        25,
+        26
+      ],
+      "next_mission_ids": [
+        34,
+        35
+      ],
+      "source_record": {
+        "offset": 10205639,
+        "bytes": 316447,
+        "sha256": "f0a7f3968c2510458d95677425fb134df522f46794dd9662008afa0aa399dd9b",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 10308963,
+        "event_chunk_offset": 10420993
+      },
+      "start_year_signed": -1541,
+      "initial_funds": 9000,
+      "map": {
+        "width_tiles": 140,
+        "height_tiles": 140,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 55,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 50,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 18,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 75,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 14,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 6000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 21,
+      "enemy_id_raw": 0,
+      "player_rank_raw": 10,
+      "gods_known_raw": [
+        0,
+        2,
+        1,
+        1,
+        0
+      ],
+      "rescue_loan_raw": 3500,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        3,
+        0,
+        0
+      ],
+      "burial_requirements_raw": {
+        "10": 5,
+        "15": 20,
+        "17": 32,
+        "19": 20,
+        "23": 10
+      },
+      "events": {
+        "declared_count": 24,
+        "type_code_counts": {
+          "1": 5,
+          "2": 7,
+          "13": 1,
+          "14": 1,
+          "19": 6,
+          "20": 1,
+          "23": 3
+        }
+      }
+    },
+    {
+      "id": 33,
+      "name": "Sauty",
+      "aliases": [
+        "Lykopolis"
+      ],
+      "period": "new_kingdom",
+      "path_id": 24,
+      "campaign_line": 191,
+      "choice_after_path_ids": [
+        25,
+        26
+      ],
+      "next_mission_ids": [
+        34,
+        35
+      ],
+      "source_record": {
+        "offset": 10522086,
+        "bytes": 318754,
+        "sha256": "710bb0fa8ea3d0dedaede05c38524b3e158ab1302cf63ab1448048659b63af96",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 10625515,
+        "event_chunk_offset": 10737852
+      },
+      "start_year_signed": -1541,
+      "initial_funds": 9000,
+      "map": {
+        "width_tiles": 140,
+        "height_tiles": 140,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 70,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 75,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 40,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 60,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 14,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 6500,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 21,
+      "enemy_id_raw": 0,
+      "player_rank_raw": 10,
+      "gods_known_raw": [
+        2,
+        1,
+        0,
+        1,
+        0
+      ],
+      "rescue_loan_raw": 0,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        4,
+        4,
+        4
+      ],
+      "burial_requirements_raw": {
+        "13": 32,
+        "17": 16,
+        "19": 16,
+        "28": 8
+      },
+      "events": {
+        "declared_count": 48,
+        "type_code_counts": {
+          "1": 23,
+          "2": 2,
+          "13": 5,
+          "14": 2,
+          "15": 1,
+          "19": 14,
+          "23": 1
+        }
+      }
+    },
+    {
+      "id": 34,
+      "name": "Byblos",
+      "aliases": [],
+      "period": "new_kingdom",
+      "path_id": 25,
+      "campaign_line": 196,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        36
+      ],
+      "source_record": {
+        "offset": 10840840,
+        "bytes": 334923,
+        "sha256": "15ac623c5147da897344bcc8343fe2d2a7473b9dbe5da5ee45cd40c6198c76d0",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 10962537,
+        "event_chunk_offset": 11074619
+      },
+      "start_year_signed": -1480,
+      "initial_funds": 45000,
+      "map": {
+        "width_tiles": 170,
+        "height_tiles": 170,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 60,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 40,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 14,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 75,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 6000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 33,
+      "enemy_id_raw": 2,
+      "player_rank_raw": 10,
+      "gods_known_raw": [
+        0,
+        0,
+        1,
+        1,
+        2
+      ],
+      "rescue_loan_raw": 5000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        23,
+        22,
+        22
+      ],
+      "burial_requirements_raw": {},
+      "events": {
+        "declared_count": 55,
+        "type_code_counts": {
+          "1": 16,
+          "2": 11,
+          "6": 1,
+          "13": 3,
+          "15": 3,
+          "17": 2,
+          "18": 7,
+          "19": 12
+        }
+      }
+    },
+    {
+      "id": 35,
+      "name": "Baki",
+      "aliases": [
+        "Kuban"
+      ],
+      "period": "new_kingdom",
+      "path_id": 26,
+      "campaign_line": 197,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [
+        37
+      ],
+      "source_record": {
+        "offset": 11175763,
+        "bytes": 340045,
+        "sha256": "a4098164ef0850580dc23e2c37a68e2e05f04c51a05335c7800128a9c0699df8",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 11299682,
+        "event_chunk_offset": 11411921
+      },
+      "start_year_signed": -1479,
+      "initial_funds": 7000,
+      "map": {
+        "width_tiles": 226,
+        "height_tiles": 226,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 70,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 70,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 35,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 85,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 19,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 10000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 1,
+      "enemy_id_raw": 4,
+      "player_rank_raw": 10,
+      "gods_known_raw": [
+        1,
+        2,
+        1,
+        1,
+        0
+      ],
+      "rescue_loan_raw": 2500,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        25,
+        4,
+        3
+      ],
+      "burial_requirements_raw": {
+        "10": 32,
+        "13": 32,
+        "17": 32,
+        "19": 32,
+        "28": 32
+      },
+      "events": {
+        "declared_count": 31,
+        "type_code_counts": {
+          "1": 11,
+          "2": 5,
+          "17": 4,
+          "18": 4,
+          "19": 4,
+          "20": 3
+        }
+      }
+    },
+    {
+      "id": 36,
+      "name": "Rowarty",
+      "aliases": [
+        "Avaris"
+      ],
+      "period": "new_kingdom",
+      "path_id": 25,
+      "campaign_line": 198,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [],
+      "source_record": {
+        "offset": 11515808,
+        "bytes": 338789,
+        "sha256": "09a0b4995d0cd03e9e75fdbfa941f477b5d8e6a9f136367a147e013a26234785",
+        "format_version": 147,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 11641655,
+        "event_chunk_offset": 11753672
+      },
+      "start_year_signed": -1279,
+      "initial_funds": 10000,
+      "map": {
+        "width_tiles": 226,
+        "height_tiles": 226,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 65,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 50,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 29,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 80,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 10,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 7000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 35,
+      "enemy_id_raw": 1,
+      "player_rank_raw": 10,
+      "gods_known_raw": [
+        1,
+        0,
+        1,
+        2,
+        0
+      ],
+      "rescue_loan_raw": 5000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        26,
+        4,
+        3
+      ],
+      "burial_requirements_raw": {
+        "13": 12,
+        "15": 12,
+        "17": 8,
+        "19": 4
+      },
+      "events": {
+        "declared_count": 62,
+        "type_code_counts": {
+          "1": 21,
+          "2": 10,
+          "6": 2,
+          "7": 1,
+          "13": 1,
+          "16": 2,
+          "17": 3,
+          "18": 7,
+          "19": 11,
+          "23": 4
+        }
+      }
+    },
+    {
+      "id": 37,
+      "name": "Hetepsenusret",
+      "aliases": [
+        "Kahun"
+      ],
+      "period": "new_kingdom",
+      "path_id": 26,
+      "campaign_line": 199,
+      "choice_after_path_ids": [],
+      "next_mission_ids": [],
+      "source_record": {
+        "offset": 11854597,
+        "bytes": 341029,
+        "sha256": "cc42c8835effea1c730df854a803eb24eea19f66580e5810e1127f343c91eec1",
+        "format_version": 149,
+        "descriptor_count": 175,
+        "scenario_chunk_offset": 11981262,
+        "event_chunk_offset": 12093522
+      },
+      "start_year_signed": -1382,
+      "initial_funds": 2000,
+      "map": {
+        "width_tiles": 226,
+        "height_tiles": 226,
+        "terrain_exported": false
+      },
+      "goals": {
+        "culture": {
+          "value": 80,
+          "enabled_raw": 1
+        },
+        "prosperity": {
+          "value": 80,
+          "enabled_raw": 1
+        },
+        "monuments": {
+          "value": 70,
+          "enabled_raw": 1
+        },
+        "kingdom": {
+          "value": 75,
+          "enabled_raw": 1
+        },
+        "housing_count": {
+          "value": 0,
+          "enabled_raw": 1
+        },
+        "housing_level_index": {
+          "value": 14,
+          "enabled_raw": 1
+        },
+        "time_limit_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "survival_years": {
+          "value": 0,
+          "enabled_raw": 0
+        },
+        "population": {
+          "value": 12000,
+          "enabled_raw": 1
+        }
+      },
+      "empire_id_raw": 23,
+      "enemy_id_raw": 1,
+      "player_rank_raw": 10,
+      "gods_known_raw": [
+        1,
+        1,
+        1,
+        0,
+        2
+      ],
+      "rescue_loan_raw": 3000,
+      "milestone_years_raw": [
+        10,
+        20,
+        30
+      ],
+      "editor_allow_flags_raw": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "monument_codes_raw": [
+        27,
+        7,
+        5
+      ],
+      "burial_requirements_raw": {
+        "10": 32,
+        "13": 32,
+        "17": 32,
+        "19": 32,
+        "23": 32
+      },
+      "events": {
+        "declared_count": 69,
+        "type_code_counts": {
+          "1": 23,
+          "2": 3,
+          "10": 1,
+          "13": 6,
+          "17": 6,
+          "18": 4,
+          "19": 11,
+          "20": 3,
+          "21": 3,
+          "22": 1,
+          "23": 8
+        }
+      }
+    }
+  ]
+}
