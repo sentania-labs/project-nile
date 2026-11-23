@@ -1,0 +1,751 @@
+{
+  "tile_width": 96,
+  "tile_height": 48,
+  "width": 32,
+  "height": 32,
+  "focus": [
+    14,
+    12
+  ],
+  "zoom": 0.85,
+  "placements": [
+    {
+      "asset": "granary",
+      "id": "granary-1",
+      "x": 11,
+      "y": 7
+    },
+    {
+      "asset": "bazaar",
+      "id": "bazaar-2",
+      "x": 17,
+      "y": 12
+    },
+    {
+      "asset": "house",
+      "id": "house-3",
+      "x": 7,
+      "y": 7
+    },
+    {
+      "asset": "house",
+      "id": "house-4",
+      "x": 7,
+      "y": 9
+    },
+    {
+      "asset": "house",
+      "id": "house-5",
+      "x": 9,
+      "y": 8
+    },
+    {
+      "asset": "house",
+      "id": "house-6",
+      "x": 11,
+      "y": 12
+    },
+    {
+      "asset": "house",
+      "id": "house-7",
+      "x": 13,
+      "y": 12
+    },
+    {
+      "asset": "house",
+      "id": "house-8",
+      "x": 11,
+      "y": 15
+    },
+    {
+      "asset": "house",
+      "id": "house-9",
+      "x": 13,
+      "y": 15
+    },
+    {
+      "asset": "house",
+      "id": "house-10",
+      "x": 17,
+      "y": 7
+    },
+    {
+      "asset": "house",
+      "id": "house-11",
+      "x": 19,
+      "y": 7
+    },
+    {
+      "asset": "house",
+      "id": "house-12",
+      "x": 17,
+      "y": 9
+    },
+    {
+      "asset": "house",
+      "id": "house-13",
+      "x": 19,
+      "y": 9
+    },
+    {
+      "asset": "house",
+      "id": "house-14",
+      "x": 21,
+      "y": 12
+    },
+    {
+      "asset": "house",
+      "id": "house-15",
+      "x": 21,
+      "y": 15
+    },
+    {
+      "asset": "house",
+      "id": "house-16",
+      "x": 17,
+      "y": 17
+    },
+    {
+      "asset": "house",
+      "id": "house-17",
+      "x": 20,
+      "y": 18
+    },
+    {
+      "asset": "hut",
+      "id": "hut-18",
+      "x": 5,
+      "y": 7
+    },
+    {
+      "asset": "hut",
+      "id": "hut-19",
+      "x": 5,
+      "y": 8
+    },
+    {
+      "asset": "hut",
+      "id": "hut-20",
+      "x": 5,
+      "y": 9
+    },
+    {
+      "asset": "hut",
+      "id": "hut-21",
+      "x": 6,
+      "y": 9
+    },
+    {
+      "asset": "hut",
+      "id": "hut-22",
+      "x": 7,
+      "y": 12
+    },
+    {
+      "asset": "hut",
+      "id": "hut-23",
+      "x": 8,
+      "y": 12
+    },
+    {
+      "asset": "hut",
+      "id": "hut-24",
+      "x": 9,
+      "y": 12
+    },
+    {
+      "asset": "hut",
+      "id": "hut-25",
+      "x": 7,
+      "y": 14
+    },
+    {
+      "asset": "hut",
+      "id": "hut-26",
+      "x": 8,
+      "y": 14
+    },
+    {
+      "asset": "hut",
+      "id": "hut-27",
+      "x": 9,
+      "y": 14
+    },
+    {
+      "asset": "hut",
+      "id": "hut-28",
+      "x": 7,
+      "y": 15
+    },
+    {
+      "asset": "hut",
+      "id": "hut-29",
+      "x": 8,
+      "y": 15
+    },
+    {
+      "asset": "hut",
+      "id": "hut-30",
+      "x": 9,
+      "y": 15
+    },
+    {
+      "asset": "hut",
+      "id": "hut-31",
+      "x": 11,
+      "y": 18
+    },
+    {
+      "asset": "hut",
+      "id": "hut-32",
+      "x": 12,
+      "y": 18
+    },
+    {
+      "asset": "hut",
+      "id": "hut-33",
+      "x": 13,
+      "y": 18
+    },
+    {
+      "asset": "hut",
+      "id": "hut-34",
+      "x": 14,
+      "y": 18
+    },
+    {
+      "asset": "hut",
+      "id": "hut-35",
+      "x": 17,
+      "y": 20
+    },
+    {
+      "asset": "hut",
+      "id": "hut-36",
+      "x": 18,
+      "y": 20
+    },
+    {
+      "asset": "hut",
+      "id": "hut-37",
+      "x": 19,
+      "y": 20
+    },
+    {
+      "asset": "palm",
+      "id": "palm-38",
+      "x": 9,
+      "y": 5,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-39",
+      "x": 15,
+      "y": 5,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-40",
+      "x": 21,
+      "y": 6,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-41",
+      "x": 22,
+      "y": 10,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-42",
+      "x": 24,
+      "y": 13,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-43",
+      "x": 24,
+      "y": 17,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-44",
+      "x": 22,
+      "y": 20,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-45",
+      "x": 15,
+      "y": 20,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-46",
+      "x": 10,
+      "y": 20,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-47",
+      "x": 5,
+      "y": 17,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-48",
+      "x": 4,
+      "y": 12,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-49",
+      "x": 5,
+      "y": 5,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-50",
+      "x": 8,
+      "y": 3,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-51",
+      "x": 18,
+      "y": 4,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-52",
+      "x": 27,
+      "y": 21,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-53",
+      "x": 26,
+      "y": 7,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-54",
+      "x": 2,
+      "y": 10,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-55",
+      "x": 3,
+      "y": 14,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-56",
+      "x": 4,
+      "y": 19,
+      "selectable": false
+    },
+    {
+      "asset": "palm",
+      "id": "palm-57",
+      "x": 6,
+      "y": 23,
+      "selectable": false
+    },
+    {
+      "asset": "resident",
+      "id": "resident-58",
+      "x": 8.5,
+      "y": 11.4,
+      "selectable": false
+    },
+    {
+      "asset": "resident",
+      "id": "resident-59",
+      "x": 12.8,
+      "y": 11.5,
+      "selectable": false
+    },
+    {
+      "asset": "resident",
+      "id": "resident-60",
+      "x": 16.5,
+      "y": 8.5,
+      "selectable": false
+    },
+    {
+      "asset": "resident",
+      "id": "resident-61",
+      "x": 16.4,
+      "y": 12.7,
+      "selectable": false
+    },
+    {
+      "asset": "resident",
+      "id": "resident-62",
+      "x": 16.6,
+      "y": 15.8,
+      "selectable": false
+    },
+    {
+      "asset": "resident",
+      "id": "resident-63",
+      "x": 16.3,
+      "y": 18.5,
+      "selectable": false
+    },
+    {
+      "asset": "resident",
+      "id": "resident-64",
+      "x": 20.1,
+      "y": 11.5,
+      "selectable": false
+    },
+    {
+      "asset": "resident",
+      "id": "resident-65",
+      "x": 23.1,
+      "y": 11.3,
+      "selectable": false
+    },
+    {
+      "asset": "resident",
+      "id": "resident-66",
+      "x": 10.4,
+      "y": 14.7,
+      "selectable": false
+    },
+    {
+      "asset": "resident",
+      "id": "resident-67",
+      "x": 12,
+      "y": 17.4,
+      "selectable": false
+    }
+  ],
+  "roads": [
+    {
+      "x": 4,
+      "y": 11
+    },
+    {
+      "x": 5,
+      "y": 11
+    },
+    {
+      "x": 6,
+      "y": 11
+    },
+    {
+      "x": 7,
+      "y": 11
+    },
+    {
+      "x": 7,
+      "y": 17
+    },
+    {
+      "x": 8,
+      "y": 11
+    },
+    {
+      "x": 8,
+      "y": 17
+    },
+    {
+      "x": 9,
+      "y": 11
+    },
+    {
+      "x": 9,
+      "y": 17
+    },
+    {
+      "x": 10,
+      "y": 11
+    },
+    {
+      "x": 10,
+      "y": 12
+    },
+    {
+      "x": 10,
+      "y": 13
+    },
+    {
+      "x": 10,
+      "y": 14
+    },
+    {
+      "x": 10,
+      "y": 15
+    },
+    {
+      "x": 10,
+      "y": 16
+    },
+    {
+      "x": 10,
+      "y": 17
+    },
+    {
+      "x": 10,
+      "y": 18
+    },
+    {
+      "x": 11,
+      "y": 11
+    },
+    {
+      "x": 11,
+      "y": 17
+    },
+    {
+      "x": 12,
+      "y": 11
+    },
+    {
+      "x": 12,
+      "y": 17
+    },
+    {
+      "x": 13,
+      "y": 11
+    },
+    {
+      "x": 13,
+      "y": 17
+    },
+    {
+      "x": 14,
+      "y": 11
+    },
+    {
+      "x": 14,
+      "y": 17
+    },
+    {
+      "x": 15,
+      "y": 11
+    },
+    {
+      "x": 15,
+      "y": 17
+    },
+    {
+      "x": 16,
+      "y": 4
+    },
+    {
+      "x": 16,
+      "y": 5
+    },
+    {
+      "x": 16,
+      "y": 6
+    },
+    {
+      "x": 16,
+      "y": 7
+    },
+    {
+      "x": 16,
+      "y": 8
+    },
+    {
+      "x": 16,
+      "y": 9
+    },
+    {
+      "x": 16,
+      "y": 10
+    },
+    {
+      "x": 16,
+      "y": 11
+    },
+    {
+      "x": 16,
+      "y": 12
+    },
+    {
+      "x": 16,
+      "y": 13
+    },
+    {
+      "x": 16,
+      "y": 14
+    },
+    {
+      "x": 16,
+      "y": 15
+    },
+    {
+      "x": 16,
+      "y": 16
+    },
+    {
+      "x": 16,
+      "y": 17
+    },
+    {
+      "x": 16,
+      "y": 18
+    },
+    {
+      "x": 16,
+      "y": 19
+    },
+    {
+      "x": 16,
+      "y": 20
+    },
+    {
+      "x": 16,
+      "y": 21
+    },
+    {
+      "x": 16,
+      "y": 22
+    },
+    {
+      "x": 17,
+      "y": 11
+    },
+    {
+      "x": 18,
+      "y": 11
+    },
+    {
+      "x": 19,
+      "y": 11
+    },
+    {
+      "x": 20,
+      "y": 11
+    },
+    {
+      "x": 21,
+      "y": 11
+    },
+    {
+      "x": 22,
+      "y": 11
+    },
+    {
+      "x": 23,
+      "y": 11
+    },
+    {
+      "x": 24,
+      "y": 11
+    },
+    {
+      "x": 25,
+      "y": 11
+    }
+  ],
+  "terrain_polygons": [
+    {
+      "kind": "grass",
+      "points": [
+        [
+          -20,
+          -20
+        ],
+        [
+          -25,
+          45
+        ],
+        [
+          11,
+          45
+        ],
+        [
+          11,
+          29
+        ],
+        [
+          8,
+          23
+        ],
+        [
+          5,
+          18
+        ],
+        [
+          3,
+          12
+        ],
+        [
+          -2,
+          6
+        ],
+        [
+          -7,
+          -5
+        ]
+      ]
+    },
+    {
+      "kind": "water",
+      "points": [
+        [
+          -20,
+          -20
+        ],
+        [
+          -25,
+          45
+        ],
+        [
+          9,
+          45
+        ],
+        [
+          9,
+          29
+        ],
+        [
+          6,
+          23
+        ],
+        [
+          3,
+          18
+        ],
+        [
+          1,
+          12
+        ],
+        [
+          -4,
+          6
+        ],
+        [
+          -9,
+          -5
+        ]
+      ]
+    }
+  ]
+}

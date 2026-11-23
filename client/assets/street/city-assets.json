@@ -1,0 +1,408 @@
+{
+  "mastaba_foundation": {
+    "id": "mastaba_foundation",
+    "path": "mastaba_foundation.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 282,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Surveyed foundations"
+  },
+  "mastaba_building": {
+    "id": "mastaba_building",
+    "path": "mastaba_building.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 282,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Mastaba masonry"
+  },
+  "mastaba": {
+    "id": "mastaba",
+    "path": "mastaba.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 282,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Small Mastaba"
+  },
+  "firehouse": {
+    "id": "firehouse",
+    "path": "firehouse.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 94,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Firehouse"
+  },
+  "architect": {
+    "id": "architect",
+    "path": "architect.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 94,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Architect\u2019s Post"
+  },
+  "taxoffice": {
+    "id": "taxoffice",
+    "path": "taxoffice.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 188,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Tax Collector"
+  },
+  "claypit": {
+    "id": "claypit",
+    "path": "claypit.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 188,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Clay Pit"
+  },
+  "brickworks": {
+    "id": "brickworks",
+    "path": "brickworks.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 188,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Brickworks"
+  },
+  "storageyard": {
+    "id": "storageyard",
+    "path": "storageyard.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 282,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Storage Yard"
+  },
+  "vacant_plot": {
+    "id": "vacant_plot",
+    "path": "vacant_plot.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 32,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Housing plot"
+  },
+  "fire_marshal": {
+    "id": "fire_marshal",
+    "path": "fire_marshal.png",
+    "footprint": [
+      0.15,
+      0.15
+    ],
+    "draw_width": 23,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Fire marshal"
+  },
+  "city_architect": {
+    "id": "city_architect",
+    "path": "city_architect.png",
+    "footprint": [
+      0.15,
+      0.15
+    ],
+    "draw_width": 23,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Architect"
+  },
+  "tax_collector": {
+    "id": "tax_collector",
+    "path": "tax_collector.png",
+    "footprint": [
+      0.15,
+      0.15
+    ],
+    "draw_width": 22,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Tax collector"
+  },
+  "clay_cart": {
+    "id": "clay_cart",
+    "path": "clay_cart.png",
+    "footprint": [
+      0.15,
+      0.15
+    ],
+    "draw_width": 42,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Clay porter"
+  },
+  "straw_cart": {
+    "id": "straw_cart",
+    "path": "straw_cart.png",
+    "footprint": [
+      0.15,
+      0.15
+    ],
+    "draw_width": 44,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Straw porter"
+  },
+  "brick_sledge": {
+    "id": "brick_sledge",
+    "path": "brick_sledge.png",
+    "footprint": [
+      0.15,
+      0.15
+    ],
+    "draw_width": 46,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Brick porter"
+  },
+  "builder": {
+    "id": "builder",
+    "path": "builder.png",
+    "footprint": [
+      0.15,
+      0.15
+    ],
+    "draw_width": 22,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Bricklayer"
+  },
+  "category_homes": {
+    "id": "category_homes",
+    "path": "category_homes.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 40,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Homes"
+  },
+  "category_food": {
+    "id": "category_food",
+    "path": "category_food.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 40,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Food"
+  },
+  "category_industry": {
+    "id": "category_industry",
+    "path": "category_industry.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 40,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Industry"
+  },
+  "category_safety": {
+    "id": "category_safety",
+    "path": "category_safety.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 40,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Safety"
+  },
+  "category_civic": {
+    "id": "category_civic",
+    "path": "category_civic.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 40,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Civic"
+  },
+  "category_monument": {
+    "id": "category_monument",
+    "path": "category_monument.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 40,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Monument"
+  },
+  "crude_hut_a": {
+    "id": "crude_hut_a",
+    "path": "crude_hut_a.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 85,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Crude Hut"
+  },
+  "sturdy_hut_a": {
+    "id": "sturdy_hut_a",
+    "path": "sturdy_hut_a.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 85,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Sturdy Hut"
+  },
+  "meager_shanty_a": {
+    "id": "meager_shanty_a",
+    "path": "meager_shanty_a.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 85,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Meager Shanty"
+  },
+  "crude_hut_b": {
+    "id": "crude_hut_b",
+    "path": "crude_hut_b.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 85,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Crude Hut"
+  },
+  "sturdy_hut_b": {
+    "id": "sturdy_hut_b",
+    "path": "sturdy_hut_b.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 85,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Sturdy Hut"
+  },
+  "meager_shanty_b": {
+    "id": "meager_shanty_b",
+    "path": "meager_shanty_b.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 85,
+    "anchor": [
+      0.5,
+      0.97
+    ],
+    "label": "Meager Shanty"
+  }
+}

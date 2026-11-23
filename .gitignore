@@ -1,0 +1,11 @@
+.godot/
+*.uid
+*.import
+!client/assets/street/*.png.import
+bin/
+*.nile
+*.nile-journal
+*.nile-wal
+*.nile-shm
+__pycache__/
+.lavish/
