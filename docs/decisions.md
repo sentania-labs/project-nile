@@ -9,8 +9,8 @@ Updated November 22, 2026, America/Chicago.
 | Accepted by v0.6 | Interactive player-directed iterations; optional bounded delegation; no modification of Frontier or paid generation without budget. |
 | Proven for this probe | Linux Godot can drive a bundled Go child over private pipes and restore validated SQLite state after restart/crash. Diagnostic commands never advance from rendered frame time. |
 | Directed by Scott | Keep the Godot, Go and SQLite stack. Reproduce the original game’s buildings, unlocks and gameplay on one sandbox map first, with updated illustrated visuals. Regional features and a dedicated graphics polish pass follow sandbox gameplay. |
-| Proposed next | Adopt that local integration for the first neighborhood after reviewing the evidence; retain native platform packaging as a required validation task. |
-| Proposed next | Road loop/roadblock, 4–8 houses, well, finite-food granary, bazaar buyer/seller and the first three housing tiers. |
+| Implemented | The Godot desktop client launches the bundled Go simulation on private pipes. The simulation owns the clock and SQLite save. |
+| Implemented neighborhood | Road loop, housing plots, wells, floodplain farms, granaries, bazaar buyers and sellers, and three housing tiers. Roadblocks and desirability remain open. |
 | Rejected by Scott | The kickoff visual study is not an acceptable Pharaoh art direction. Retain it only as a diagnostic for IPC/persistence. Do not extend its primitive geometry into production art. |
 | Directed by Scott | Inspect original Pharaoh gameplay, local reference art, and the supplied New Era screenshot. Target detailed, illustrated isometric buildings, distinct silhouettes, textured terrain, dense street activity and Egyptian UI treatment. Original Pharaoh remains the mechanical authority. |
 | Candidate for visual review | Original illustrated 2D sprites in a separate, interactive Godot street scene. No final renderer choice or production art acceptance is implied. |

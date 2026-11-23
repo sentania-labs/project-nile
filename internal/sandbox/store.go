@@ -2,7 +2,9 @@ package sandbox
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"database/sql"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -122,6 +124,10 @@ func (s *Store) Load() (World, error) {
 		}
 		return World{}, err
 	}
+	digest := sha256.Sum256(b)
+	if hex.EncodeToString(digest[:]) != hash {
+		return World{}, errors.New("snapshot checksum mismatch")
+	}
 	var state World
 	dec := json.NewDecoder(bytes.NewReader(b))
 	dec.DisallowUnknownFields()
@@ -131,11 +137,11 @@ func (s *Store) Load() (World, error) {
 	if err := dec.Decode(new(any)); err != io.EOF {
 		return World{}, errors.New("trailing snapshot data")
 	}
-	if err := state.Validate(); err != nil {
+	if err := state.upgrade(); err != nil {
 		return World{}, err
 	}
-	if state.Hash() != hash {
-		return World{}, errors.New("snapshot checksum mismatch")
+	if err := state.Validate(); err != nil {
+		return World{}, err
 	}
 	return state, nil
 }

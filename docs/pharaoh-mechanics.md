@@ -21,13 +21,13 @@ are useful secondary indexes; their conclusions remain subject to original evide
 
 | ID | Behavior/evidence | Confidence and open question | Nile tests / deviation |
 |---|---|---|---|
-| H01 | `R/models/Pharaoh_Model_Normal.txt`, `housing-table.json`: 20 tiers, 22 named fields; early capacities 5, 7, 9 | High for extracted data; runtime modifiers unverified | Sandbox implements Small Hut (5) and Large Hut (7); higher tiers pending |
+| H01 | `R/models/Pharaoh_Model_Normal.txt`, `housing-table.json`: 20 tiers, 22 named fields; early capacities 5, 7, 9 | High for extracted data; runtime modifiers unverified | Small Hut (5), Large Hut (7), Small Shanty (9) implemented |
 | H02 | `R/pass7/00446be0.c`: current/next tier checks service and inventory requirements | Static control-flow evidence; map all service fields | Not implemented / none approved |
 | H03 | `R/pass7/00445ac0.c`: maintenance before advancement; two failed-check increments precede downgrade | Static evidence; calendar timing unresolved | Not implemented / none approved |
 | S01 | `D/selected2/00474d50.c`: bounded tile scan refreshes eligible field to 0x60 | Exact walker/service identity and elapsed-time meaning unresolved; not evidence for radial municipal coverage | Not implemented / none approved |
 | T01 | `R/pass6/004450b0.c`: decay, desirability, then housing; 51 dispatcher states | Scheduling order supported; tick/calendar rate unknown | Diagnostic clock only / not a substitute |
-| W01 | Original manual describes destination vs roaming walkers and roadblocks allowing destination travel | Documented behavior; original routing, junction tie rules, spawn/return timing need observation or tracing | Not implemented / ring walker is explicitly a test fixture |
-| L01 | Original manual describes granary → buyer → bazaar → seller → household | Documented chain; quantities, reservations and dispatch timing unresolved | Not implemented / finite grain is test input only |
+| W01 | Original manual describes destination vs roaming walkers and roadblocks allowing destination travel | Documented behavior; original routing, junction tie rules, spawn/return timing need observation or tracing | Destination migrants, freight and buyers plus roaming sellers; roadblock rules and junction parity pending |
+| L01 | Original manual describes granary → buyer → bazaar → seller → household | Documented chain; quantities, reservations and dispatch timing unresolved | Working grain chain with road walkers; dispatch interval, load size and household consumption are provisional |
 | U01 | `R/interaction-review-20261103/pass1/004b8220.c`: cursor/button transitions | Partial static UI traces, not complete interaction semantics | Original diagnostic controls only |
 | P01 | Model tables, existing inventory and targeted goods extracts | Production ratios/timing, seasonal yields and full economic calculations not verified | Not implemented / none approved |
 
@@ -53,6 +53,8 @@ existing static investigation. Runtime equivalence still needs playthrough
 evidence. A well supplies nearby huts directly. A staffed water supply is
 a separate future building.
 
-Road-connected immigration, movement speed, dispatch cadence and evolution driven
-by water alone are prototype rules. The extracted model includes desirability;
-the sandbox currently exercises only the water dependency and first two capacities.
+The player designates vacant plots. Immigrants travel to them from the entry
+road. A watered hut can advance to Large Hut. Access to a bazaar and a type of
+food can support a Small Shanty. The original table also has desirability
+thresholds. Those thresholds, original migration cadence, exact agricultural
+yields and original walker dispatch intervals remain unverified in play.

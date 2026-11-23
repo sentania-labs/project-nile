@@ -174,6 +174,54 @@
       "prompt_sha256": "1628ddee09216ee223d9471cde6fc078bb2b6acf32946eb4533a44f235893b23",
       "transparent_background": true,
       "validation": "Sandbox candidate; engine import and capture checked by sandbox smoke."
+    },
+    {
+      "id": "farm",
+      "runtime_path": "client/assets/street/farm.png",
+      "source_path": "/mnt/holding/project-nile/sandbox-01/farm-source.png",
+      "source": "Original built-in image_gen PNG",
+      "sha256": "f3a279b05faaca25ccba233d75364d4adef9ab4415821d9f88102435514fd378",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/farm.txt",
+      "prompt_sha256": "27c2161d4abe2c8ce39304a742e551aa9f42c9276dbd7e532dde9ea2ec35ad83",
+      "transparent_background": true,
+      "validation": "PNG integrity and source hash verified. Imported and rendered in the Godot neighborhood sandbox."
+    },
+    {
+      "id": "cart",
+      "runtime_path": "client/assets/street/cart.png",
+      "source_path": "/mnt/holding/project-nile/sandbox-01/cart-source.png",
+      "source": "Original built-in image_gen PNG",
+      "sha256": "e928b016743e0d13515e194462fb5ef8203d048b10dd14bb664ef8e06aca93bd",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/cart.txt",
+      "prompt_sha256": "3443da41648d674a66c250b8ae2d677673423d3211765bd156338bade79bcfa9",
+      "transparent_background": true,
+      "validation": "PNG integrity and source hash verified. Imported and rendered in the Godot neighborhood sandbox."
+    },
+    {
+      "id": "small-shanty",
+      "runtime_path": "client/assets/street/small-shanty.png",
+      "source_path": "/mnt/holding/project-nile/sandbox-01/small-shanty-source.png",
+      "source": "Original built-in image_gen PNG",
+      "sha256": "43c4ad12340163b05899f84450e92e78bdfffef17f7956a8f8a00c952471c344",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/small-shanty.txt",
+      "prompt_sha256": "fb8a12f97500b284e87fae15e9bc784096761fc2da729e7fff0cec80a8a4e8de",
+      "transparent_background": true,
+      "validation": "PNG integrity and source hash verified. Imported and rendered in the Godot neighborhood sandbox."
     }
   ],
   "validation_environment": {

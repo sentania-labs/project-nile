@@ -19,7 +19,10 @@ type sandboxRequest struct {
 	Kind  string `json:"kind,omitempty"`
 	X     int    `json:"x,omitempty"`
 	Y     int    `json:"y,omitempty"`
+	X2    int    `json:"x2,omitempty"`
+	Y2    int    `json:"y2,omitempty"`
 	Ticks *int   `json:"ticks,omitempty"`
+	Speed int    `json:"speed,omitempty"`
 }
 
 type sandboxResponse struct {
@@ -29,6 +32,7 @@ type sandboxResponse struct {
 	State   sandbox.View `json:"state"`
 	Hash    string       `json:"hash"`
 	Running bool         `json:"running"`
+	Speed   int          `json:"speed"`
 }
 
 const sandboxTickPeriod = 200 * time.Millisecond
@@ -40,6 +44,7 @@ type sandboxClock struct {
 	running   bool
 	anchor    time.Time
 	remainder time.Duration
+	speed     int
 }
 
 func (c *sandboxClock) catchUp(world *sandbox.World, now time.Time) error {
@@ -52,8 +57,9 @@ func (c *sandboxClock) catchUp(world *sandbox.World, now time.Time) error {
 	}
 	// Divide first so a very long elapsed duration cannot overflow when the
 	// retained fraction is added. No complete ticks are dropped or clamped.
-	ticks := int64(elapsed / sandboxTickPeriod)
-	fraction := elapsed%sandboxTickPeriod + c.remainder
+	speed := max(1, c.speed)
+	ticks := int64(elapsed/sandboxTickPeriod) * int64(speed)
+	fraction := (elapsed%sandboxTickPeriod)*time.Duration(speed) + c.remainder
 	ticks += int64(fraction / sandboxTickPeriod)
 	c.remainder = fraction % sandboxTickPeriod
 	c.anchor = now
@@ -80,7 +86,7 @@ func serveSandbox(in io.Reader, out io.Writer, store *sandbox.Store) error {
 
 func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, now func() time.Time) error {
 	world := sandbox.Initial()
-	clock := sandboxClock{} // Manual steps and tests start paused.
+	clock := sandboxClock{speed: 1} // Manual steps and tests start paused.
 	scan := bufio.NewScanner(in)
 	scan.Buffer(make([]byte, 4096), 1<<20)
 	enc := json.NewEncoder(out)
@@ -111,6 +117,14 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 				}
 			case "pause":
 				clock.running = false
+			case "set_speed":
+				if req.Speed != 1 && req.Speed != 2 && req.Speed != 4 {
+					err = errors.New("speed must be 1, 2, or 4")
+				} else {
+					clock.speed = req.Speed
+				}
+			case "zone":
+				err = world.ZoneHousing(sandbox.Point{X: req.X, Y: req.Y}, sandbox.Point{X: req.X2, Y: req.Y2})
 			case "build":
 				err = world.Build(req.Kind, req.X, req.Y)
 			case "step":
@@ -139,7 +153,7 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 				err = errors.New("unknown operation")
 			}
 		}
-		resp := sandboxResponse{ID: req.ID, OK: err == nil, State: world.View(), Hash: world.Hash(), Running: clock.running}
+		resp := sandboxResponse{ID: req.ID, OK: err == nil, State: world.View(), Hash: world.Hash(), Running: clock.running, Speed: clock.speed}
 		if err != nil {
 			resp.Error = err.Error()
 		}

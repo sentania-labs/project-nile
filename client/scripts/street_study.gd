@@ -498,7 +498,7 @@ func _select_at(world_point: Vector2) -> void:
 			continue
 		var sprite := placements[index].sprite as Sprite2D
 		var local_point := sprite.to_local(world_point)
-		if sprite.get_rect().has_point(local_point) and sprite.is_pixel_opaque(local_point):
+		if sprite.visible and sprite.get_rect().has_point(local_point) and sprite.is_pixel_opaque(local_point):
 			selected = placements[index]
 			break
 	if selected.is_empty():

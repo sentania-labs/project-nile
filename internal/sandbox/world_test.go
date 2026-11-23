@@ -9,7 +9,7 @@ import (
 )
 
 func TestConnectedMigrationAndWaterCapacity(t *testing.T) {
-	w := Initial()
+	w := neighborhood()
 	if err := w.Step(1000); err != nil {
 		t.Fatal(err)
 	}
@@ -34,7 +34,7 @@ func TestConnectedMigrationAndWaterCapacity(t *testing.T) {
 }
 
 func TestVacantWateredPlotEvolvesOnlyAfterArrival(t *testing.T) {
-	w := Initial()
+	w := neighborhood()
 	if err := w.Build("well", 14, 23); err != nil {
 		t.Fatal(err)
 	}
@@ -99,7 +99,7 @@ func TestDisconnectedHouseCannotReceiveMigrants(t *testing.T) {
 }
 
 func TestMigrantMovesOnRoadAndSurvivesReload(t *testing.T) {
-	w := Initial()
+	w := neighborhood()
 	if err := w.Step(8); err != nil {
 		t.Fatal(err)
 	}
@@ -149,11 +149,11 @@ func TestMigrantMovesOnRoadAndSurvivesReload(t *testing.T) {
 }
 
 func TestPlacementErrorsPreserveWorld(t *testing.T) {
-	w := Initial()
+	w := neighborhood()
 	for _, test := range []struct {
 		kind string
 		x, y int
-	}{{"hut", 5, 15}, {"well", 32, 0}, {"road", 6, -1}, {"hut", 10, 10}, {"well", 14, 21}, {"bazaar", 15, 22}} {
+	}{{"hut", 5, 15}, {"well", 32, 0}, {"road", 6, -1}, {"hut", 10, 10}, {"well", 14, 21}, {"palace", 15, 22}} {
 		before := w.Hash()
 		if w.Build(test.kind, test.x, test.y) == nil || w.Hash() != before {
 			t.Fatalf("invalid placement mutated world: %+v", test)
@@ -178,7 +178,7 @@ func TestSaveModesCannotOverwriteEachOther(t *testing.T) {
 }
 
 func TestInvalidSnapshotRouteRejected(t *testing.T) {
-	w := Initial()
+	w := neighborhood()
 	w.Step(8)
 	w.Walkers[0].Route[1] = Point{31, 31}
 	if w.Validate() == nil {
@@ -187,7 +187,7 @@ func TestInvalidSnapshotRouteRejected(t *testing.T) {
 }
 
 func TestClearingPreservesResidentsAndReservations(t *testing.T) {
-	w := Initial()
+	w := neighborhood()
 	if err := w.Build("well", 14, 23); err != nil {
 		t.Fatal(err)
 	}
@@ -204,13 +204,16 @@ func TestClearingPreservesResidentsAndReservations(t *testing.T) {
 		t.Fatal(err)
 	}
 	before = w.Hash()
-	if w.Build("clear", 14, 23) == nil || w.Hash() != before {
-		t.Fatal("removed well needed for occupied housing")
+	if err := w.Build("clear", 14, 23); err != nil {
+		t.Fatal(err)
+	}
+	if w.View().Population != 10 || w.Departures != 2 {
+		t.Fatal("devolution did not account for departing residents")
 	}
 	if err := w.Build("clear", 7, 15); err != nil {
 		t.Fatal(err)
 	}
-	if w.Buildings[0].Connected || w.View().Population != 12 {
+	if w.Buildings[0].Connected || w.View().Population != 10 {
 		t.Fatal("clearing lost residents or failed to disconnect the road")
 	}
 	if err := w.Validate(); err != nil {

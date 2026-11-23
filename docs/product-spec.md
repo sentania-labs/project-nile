@@ -22,20 +22,18 @@ It supersedes the earlier v0.5 PostgreSQL/server/mandatory-Firstmate assumptions
 - Production art follows shared repeatable generation, processing, validation,
   import, real Godot capture, review and promotion. Paid credits require a budget.
 
-## The next proposed playable increment
+## Neighborhood sandbox
 
-One road loop, a roadblock, four to eight houses, a well, a granary containing an
-explicit finite starting-food fixture, and a bazaar with separate buyer/seller
-roles. Make the Small Hut → Large Hut → Small Shanty sequence and supply-loss
-reversal observable. Verify uncertain original walker rules before coding them;
-record any approved temporary approximation in the mechanics registry.
+Start on a Nile floodplain with an occupied neighborhood and a partly grown
+grain crop. Extend roads, drag out housing plots, provide water and deliver
+food to advance housing. Farms, granaries and bazaars occupy their full tile
+footprints. The Go simulation tracks grain in buildings, on the road and in
+homes. Save/load preserves active trips.
 
-Player acceptance: lay roads and homes, see residents and service delivery,
-inspect why a house can/cannot evolve, block roaming without blocking destination
-delivery, exhaust or restore supply, and save/reload the same neighborhood.
-Engineering acceptance: deterministic replay, inventory conservation, routing,
-service state and restored invariants. Art acceptance is a separate Scott review
-of actual Godot captures and play. The current study does not satisfy this milestone.
+The neighborhood target includes supply loss and recovery, roadblocks for
+roaming walkers, original housing dependencies and original walker behavior.
+Use the mechanics registry to distinguish the working model from remaining
+fidelity work.
 
 ## Subsequent increments
 

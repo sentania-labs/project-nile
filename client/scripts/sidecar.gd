@@ -45,7 +45,7 @@ func request(op: String, ticks: int = 0, fields: Dictionary = {}) -> bool:
 	if child.is_empty() or pending != 0 or stopping: return false
 	var message := {"id": next_id, "op": op}
 	if op == "step": message["ticks"] = ticks
-	for key: String in ["kind", "x", "y"]:
+	for key: String in ["kind", "x", "y", "x2", "y2", "speed"]:
 		if fields.has(key): message[key] = fields[key]
 	pending = next_id
 	next_id += 1

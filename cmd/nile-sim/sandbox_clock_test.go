@@ -100,3 +100,11 @@ func TestSandboxClockIndependentOfPollingFrequency(t *testing.T) {
 		t.Fatal("poll frequency changed simulation state")
 	}
 }
+
+func TestSandboxSpeedChangePreservesElapsedFraction(t *testing.T) {
+	requests := []string{`{"id":1,"op":"resume"}`, `{"id":2,"op":"set_speed","speed":4}`, `{"id":3,"op":"state"}`, `{"id":4,"op":"set_speed","speed":3}`}
+	responses := runTimedSandbox(t, requests, []time.Duration{0, 100 * time.Millisecond, 125 * time.Millisecond, 125 * time.Millisecond})
+	if responses[1].State.Tick != 0 || responses[1].Speed != 4 || responses[2].State.Tick != 1 || responses[3].OK || responses[3].Speed != 4 {
+		t.Fatalf("speed timing: %+v", responses)
+	}
+}
