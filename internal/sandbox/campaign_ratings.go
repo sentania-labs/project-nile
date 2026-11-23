@@ -54,9 +54,6 @@ func (w World) cultureCoverage() [11]int {
 			}
 			worship[god] += capacity
 		}
-		if god := slices.Index(complexKinds, b.Kind); god >= 0 {
-			worship[god] += 8000
-		}
 		switch b.Kind {
 		case "pavilion":
 			coverage[2] += 1200

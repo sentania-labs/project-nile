@@ -214,6 +214,15 @@ func monumentRequirement(kind string) int {
 	return total
 }
 func monumentStaging(b Building) Point {
+	// Earlier pyramids retained their crew entrance in every snapshot. Keep
+	// those roads and active sledge journeys connected after restoring one.
+	switch monumentPlans[b.Kind].Family {
+	case "pyramid", "stepped", "bent", "brick":
+		legacy := Point{b.X + max(0, b.Width/2-2), b.Y + b.Height}
+		if b.Height > 0 && b.MonumentStaging == legacy {
+			return legacy
+		}
+	}
 	if isRoyalTomb(b.Kind) {
 		return Point{b.X + b.Width/2, b.Y + b.Height}
 	}
