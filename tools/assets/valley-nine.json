@@ -1,0 +1,59 @@
+{
+  "name": "valley-nine",
+  "assets": [
+    [
+      "reedbed",
+      "Reeds",
+      1,
+      62
+    ],
+    [
+      "gazelle",
+      "Gazelle",
+      1,
+      36
+    ],
+    [
+      "sycamore",
+      "Sycamore",
+      1,
+      88
+    ],
+    [
+      "conservatory",
+      "Conservatory",
+      3,
+      258
+    ],
+    [
+      "danceschool",
+      "Dance school",
+      4,
+      344
+    ],
+    [
+      "bandstand",
+      "Bandstand",
+      3,
+      258
+    ],
+    [
+      "pavilion",
+      "Pavilion",
+      4,
+      344
+    ],
+    [
+      "senethouse",
+      "Senet house",
+      4,
+      344
+    ],
+    [
+      "wrestling",
+      "Wrestling",
+      3,
+      258
+    ]
+  ]
+}

@@ -1,0 +1,29 @@
+package sandbox
+
+import "testing"
+
+func TestZoneLeavesActiveOverlandRouteOpen(t *testing.T) {
+	w := NewTown()
+	w.Walkers = append(w.Walkers, Walker{Role: "hunter", Route: []Point{{21, 20}, {22, 20}}})
+	before := w.Treasury
+	if err := w.ZoneHousing(Point{21, 20}, Point{23, 20}); err != nil {
+		t.Fatal(err)
+	}
+	if len(w.Buildings) != 1 || w.Buildings[0].point() != (Point{23, 20}) || before-w.Treasury != constructionCost("hut") {
+		t.Fatal("zoning obstructed a worker or charged for a reserved route")
+	}
+}
+func TestIdleCropWorkExpiresAtInundation(t *testing.T) {
+	for _, kind := range []string{"barleyfarm", "flaxfarm"} {
+		w := NewTown()
+		if err := w.Build(kind, 6, 10); err != nil {
+			t.Fatal(err)
+		}
+		w.Buildings[0].Work = 250
+		w.Tick = YearTicks - SeasonOffset
+		w.produceGoods()
+		if w.Buildings[0].Work != 0 {
+			t.Errorf("idle %s retained pre-flood work", kind)
+		}
+	}
+}

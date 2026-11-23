@@ -18,17 +18,23 @@ func workCapacity(kind string) int {
 		return 288
 	case "goldmine":
 		return GoldWork
+	case "barleyfarm", "flaxfarm", "figfarm":
+		return 1440
+	case "brewery", "potter", "weaver", "papyrusmaker":
+		return 576
 	}
 	return 0
 }
 func walkerCapacity(role string) int {
-	if role == "goldcart" {
+	if role == "trader" || role == "goldcart" || isGoodsRole(role) || role == "hunter" {
 		return GoldLoad
 	}
 	return 32
 }
 
 func (w *World) addResourceTerrain() {
+	w.addGoodsTerrain()
+	w.addHuntingGrounds()
 	if w.Grassland == nil {
 		w.Grassland = []Point{}
 		for y := 0; y < Size; y++ {
@@ -151,7 +157,7 @@ func (w World) miningView(v *View) {
 	v.Grassland = append([]Point{}, w.Grassland...)
 	v.OreRock = append([]Point{}, w.OreRock...)
 	v.GoldProduced, v.GoldDelivered = w.GoldProduced, w.GoldDelivered
-	v.TaxIncome = w.Income - w.GoldDelivered
+	v.TaxIncome = w.Income - w.GoldDelivered - w.ExportEarned
 	v.PalaceActive = w.palaceActive()
 	v.TaxesEnabled = w.taxesEnabled()
 	for _, b := range w.Buildings {

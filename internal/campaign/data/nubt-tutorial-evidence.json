@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "mission_id": 0,
+  "source_executable_sha256": "b6169404b9e22f228d07d5cabf889d25b8cd46d53023af9c9d0d2d6034cb741a",
+  "private_evidence_directory": "/mnt/holding/project-nile/campaign-research-20261123",
+  "evidence_level": "original executable static control flow and data, corroborated by original model rows; complete runtime timing not verified",
+  "unlock_table_virtual_address": "0x0053a1c0",
+  "unlock_entries": [
+    {"index": 0, "trigger": "first fire", "building_type_ids": [167], "building_names": ["Firehouse"]},
+    {"index": 1, "trigger": "population at least 150", "building_type_ids": [115, 71, 70], "building_names": ["Hunting Lodge", "Granary", "Bazaar"]},
+    {"index": 2, "trigger": "after food unlock, at least 400 game meat across eligible granaries", "building_type_ids": [180], "building_names": ["Water Supply"]},
+    {"index": 3, "trigger": "first collapse", "building_type_ids": [81], "building_names": ["Architect's Post"]}
+  ],
+  "eligible_granaries": "Road-accessible, active granaries with at least 50 percent staffing; qualifying meat is summed across them.",
+  "population_gate_reference": "0x00445520, comparison at 0x0044577a; unlock dispatcher 0x00412980",
+  "meat_gate_reference": "0x004502f0, aggregate granary loop and threshold at 0x00450535",
+  "hazard_reference": "0x0045aec0; fire invokes unlock 0, collapse invokes unlock 3",
+  "building_names_reference": "Original Pharaoh_Model_Normal.txt rows 70,71,81,115,167,180",
+  "victory": {
+    "housing_count": 6,
+    "minimum_housing_tier_index": 2,
+    "requires_occupied_houses": true,
+    "early_house_weight": 1,
+    "reference": "0x004ced40 reads housing goal and invokes 0x004cecf0; occupied active housing at or above threshold is weighted by the table at 0x0056488c",
+    "reconstruction_only_gates_excluded": ["firehouse-built prerequisite", "granary-built prerequisite", "four-day post-action victory delay"]
+  },
+  "initial_funds": {
+    "stored_base": 2500,
+    "difficulty_percent_table": [200, 100, 100, 100, 75],
+    "reference": "Initialization at 0x004c64d7 reads table 0x005659f8 and applies percentage helper 0x004b6e70"
+  },
+  "nile_prototype_limits": [
+    "Uses independently authored 32 by 32 terrain, not the original 84 by 84 map.",
+    "Hunt yield and journey cadence, renewable prey patches, service duration, labor and hazard cadence remain prototype tuning.",
+    "Static unlock/victory evidence does not establish complete tutorial-message scheduling or original playthrough parity.",
+    "Only Nubt can be launched; Thinis is the recorded successor but is not yet playable."
+  ]
+}

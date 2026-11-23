@@ -1,0 +1,253 @@
+{
+  "version": 1,
+  "source": "Original built-in imagegen artwork, processed with generate2dsprite",
+  "source_directory": "/mnt/holding/project-nile/animation-sources",
+  "direction_rows": [
+    "southeast",
+    "southwest",
+    "northwest",
+    "northeast"
+  ],
+  "clips": {
+    "worker-walk": {
+      "path": "worker-walk.png",
+      "columns": 4,
+      "rows": 4,
+      "cell_size": 192,
+      "anchor": [
+        96,
+        173
+      ],
+      "pixel_scale": 0.2,
+      "sha256": "b83c5a440d5a80b0b6099c8e00f8c1bb92938e7374ef6abcc69706bad56116aa",
+      "raw_sha256": "6caa0778b568ff5ff3fe64e07a6e0f3f6f45714d7d164a5667551a693599c780",
+      "qc": {
+        "frame_count": 16,
+        "valid_frame_count": 16,
+        "empty_count": 0,
+        "edge_touch_count": 0,
+        "paste_clamped_count": 0,
+        "body_scale_mean": 0.40727412622385123,
+        "output_subject_height_mean": 149.25,
+        "body_scale_cv": 0.0179781999559382,
+        "anchor_x_std": 0.0706985031849571,
+        "anchor_y_std": 0.021080678070367592,
+        "anchor_y_mean": 0.9038934426229508
+      },
+      "initiating_agent": "Codex",
+      "generator": "built-in imagegen",
+      "paid_api_credits": 0,
+      "rights": "Original generated artwork; no extracted game assets."
+    },
+    "official-walk": {
+      "path": "official-walk.png",
+      "columns": 4,
+      "rows": 4,
+      "cell_size": 192,
+      "anchor": [
+        96,
+        173
+      ],
+      "pixel_scale": 0.2,
+      "sha256": "62a2cedde0ab634ef94f917e185a581f913bac98fc56843765e8c63b4b0da54e",
+      "raw_sha256": "d87c389bf060095970c1c43c7394ad4c3ce07022d16d03d0919852b38fde6f32",
+      "qc": {
+        "frame_count": 16,
+        "valid_frame_count": 16,
+        "empty_count": 0,
+        "edge_touch_count": 0,
+        "paste_clamped_count": 0,
+        "body_scale_mean": 0.42015247127403765,
+        "output_subject_height_mean": 149.8125,
+        "body_scale_cv": 0.02290790955751211,
+        "anchor_x_std": 0.07523648665494385,
+        "anchor_y_std": 0.024873818158471103,
+        "anchor_y_mean": 0.8998371335504886
+      },
+      "initiating_agent": "Codex",
+      "generator": "built-in imagegen",
+      "paid_api_credits": 0,
+      "rights": "Original generated artwork; no extracted game assets."
+    },
+    "vendor-walk": {
+      "path": "vendor-walk.png",
+      "columns": 4,
+      "rows": 4,
+      "cell_size": 192,
+      "anchor": [
+        96,
+        173
+      ],
+      "pixel_scale": 0.2,
+      "sha256": "9bd574afad6eff81d939f1a4e1021cc450ff93499558da3967c9533ac5c6ff90",
+      "raw_sha256": "1d0d13810d538e49e7e6724b6e03f67578d5d0253fca0394f93aee7a988db0d5",
+      "qc": {
+        "frame_count": 16,
+        "valid_frame_count": 16,
+        "empty_count": 0,
+        "edge_touch_count": 0,
+        "paste_clamped_count": 0,
+        "body_scale_mean": 0.4114280193736029,
+        "output_subject_height_mean": 148.0,
+        "body_scale_cv": 0.050475636697272494,
+        "anchor_x_std": 0.08063783399112077,
+        "anchor_y_std": 0.04724657434159973,
+        "anchor_y_mean": 0.8824063517915307
+      },
+      "initiating_agent": "Codex",
+      "generator": "built-in imagegen",
+      "paid_api_credits": 0,
+      "rights": "Original generated artwork; no extracted game assets."
+    },
+    "haul-walk": {
+      "path": "haul-walk.png",
+      "columns": 4,
+      "rows": 4,
+      "cell_size": 192,
+      "anchor": [
+        96,
+        173
+      ],
+      "pixel_scale": 0.3,
+      "sha256": "79d5e8e0b3c9d078e37891969a4706ddc4a633f6f90ca2e5a6f212d2ec70c6bb",
+      "raw_sha256": "8ec8ef249850ac7c30d4f1ea9e37d9784ab75cf6ccfd256c49b3e05a3ded5d82",
+      "qc": {
+        "frame_count": 16,
+        "valid_frame_count": 16,
+        "empty_count": 0,
+        "edge_touch_count": 0,
+        "paste_clamped_count": 0,
+        "body_scale_mean": 0.41959093498372724,
+        "output_subject_height_mean": 126.25,
+        "body_scale_cv": 0.016996351961749916,
+        "anchor_x_std": 0.12981896609192842,
+        "anchor_y_std": 0.04005252368002019,
+        "anchor_y_mean": 0.8392574257425746
+      },
+      "initiating_agent": "Codex",
+      "generator": "built-in imagegen",
+      "paid_api_credits": 0,
+      "rights": "Original generated artwork; no extracted game assets."
+    },
+    "haul-empty": {
+      "path": "haul-empty.png",
+      "columns": 4,
+      "rows": 4,
+      "cell_size": 192,
+      "anchor": [
+        96,
+        173
+      ],
+      "pixel_scale": 0.3,
+      "sha256": "d1e1452d5cff8923e87461fe4da196bc69436bc5ffa190d02c36d49c243855e3",
+      "raw_sha256": "f12c808b38ea04d1425fe3151334eb3a0e1817543d11fb62424c4b4b72e44a80",
+      "qc": {
+        "frame_count": 16,
+        "valid_frame_count": 16,
+        "empty_count": 0,
+        "edge_touch_count": 0,
+        "paste_clamped_count": 0,
+        "body_scale_mean": 0.35833568349151934,
+        "output_subject_height_mean": 126.125,
+        "body_scale_cv": 0.037379074090577245,
+        "anchor_x_std": 0.13920556630040073,
+        "anchor_y_std": 0.027510656179421153,
+        "anchor_y_mean": 0.8411716171617162
+      },
+      "initiating_agent": "Codex",
+      "generator": "built-in imagegen",
+      "paid_api_credits": 0,
+      "rights": "Original generated artwork; no extracted game assets."
+    },
+    "worker-dig": {
+      "path": "worker-dig.png",
+      "columns": 2,
+      "rows": 2,
+      "cell_size": 192,
+      "anchor": [
+        96,
+        173
+      ],
+      "pixel_scale": 0.2,
+      "sha256": "0828b73d51046205544604bc556c0c308a2d98156e3f8ce35997dc3c5e4cfbf1",
+      "raw_sha256": "a466a53101283e1c001adb03f1d0b00da90563e153da6817ac17c4b2c6020b01",
+      "qc": {
+        "frame_count": 4,
+        "valid_frame_count": 4,
+        "empty_count": 0,
+        "edge_touch_count": 0,
+        "paste_clamped_count": 0,
+        "body_scale_mean": 0.3845148188003529,
+        "output_subject_height_mean": 126.5,
+        "body_scale_cv": 0.009529733369671332,
+        "anchor_x_std": 0.07660663410494477,
+        "anchor_y_std": 0.03264132455387499,
+        "anchor_y_mean": 0.8530564263322884
+      },
+      "initiating_agent": "Codex",
+      "generator": "built-in imagegen",
+      "paid_api_credits": 0,
+      "rights": "Original generated artwork; no extracted game assets."
+    },
+    "worker-brick": {
+      "path": "worker-brick.png",
+      "columns": 2,
+      "rows": 2,
+      "cell_size": 192,
+      "anchor": [
+        96,
+        180
+      ],
+      "pixel_scale": 0.17,
+      "sha256": "496451832237c55df9c379b202dacd8377f44a7eb14e46747bc3e75a4d42e0d1",
+      "raw_sha256": "e28053182dc82a432491890196fc1c65bc0b905b86dfa9ff1c8c564e958610af",
+      "qc": {
+        "frame_count": 4,
+        "valid_frame_count": 4,
+        "empty_count": 0,
+        "edge_touch_count": 0,
+        "paste_clamped_count": 0,
+        "body_scale_mean": 0.5075828962430466,
+        "output_subject_height_mean": 118.0,
+        "body_scale_cv": 0.020962198946441277,
+        "anchor_x_std": 0.05797056557556906,
+        "anchor_y_std": 0.013026762324520862,
+        "anchor_y_mean": 0.8961661341853036
+      },
+      "initiating_agent": "Codex",
+      "generator": "built-in imagegen",
+      "paid_api_credits": 0,
+      "rights": "Original generated artwork; no extracted game assets."
+    },
+    "vendor-work": {
+      "path": "vendor-work.png",
+      "columns": 2,
+      "rows": 2,
+      "cell_size": 192,
+      "anchor": [
+        96,
+        173
+      ],
+      "pixel_scale": 0.2,
+      "sha256": "b458e430fe54db4bc55270366776ab17fa1d3eaf9fe3293727764a3f635eef33",
+      "raw_sha256": "da70d233b99f70468a3678fdc70c3c809b6d1082ac28d0c5399fdd3d60ae080a",
+      "qc": {
+        "frame_count": 4,
+        "valid_frame_count": 4,
+        "empty_count": 0,
+        "edge_touch_count": 0,
+        "paste_clamped_count": 0,
+        "body_scale_mean": 0.38621120434821044,
+        "output_subject_height_mean": 153.0,
+        "body_scale_cv": 0.008813042062844027,
+        "anchor_x_std": 0.012614732235108051,
+        "anchor_y_std": 0.0006950444653165587,
+        "anchor_y_mean": 0.8647672552166935
+      },
+      "initiating_agent": "Codex",
+      "generator": "built-in imagegen",
+      "paid_api_credits": 0,
+      "rights": "Original generated artwork; no extracted game assets."
+    }
+  }
+}

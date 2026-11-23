@@ -800,6 +800,924 @@
       "prompt_sha256": "f79d44d16d805a142efa4625aac780b961b9dfb9ed24b0a0b7ca6cf58c658aff",
       "transparent_background": true,
       "validation": "2x2 strict output bounds, 512-pixel cells, bottom aligned. Palace source reaches cell edge with complete contour."
+    },
+    {
+      "id": "temple_osiris",
+      "runtime_path": "client/assets/street/temple_osiris.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/civic-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "b0e96dbe87d5fa9c81b499be5294892beabb86ac1eab0a440148af9c8abbcc7f",
+      "sha256": "14993db12e356b530ed59150a250256034dfccb6d28fa3d619c21348f176a1d3",
+      "dimensions": [
+        375,
+        358
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/civic-nine.txt",
+      "prompt_sha256": "df12991288f73f93f1db3b1632fe54558eb51379af17aa2ac917809fd8a2904e",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "temple_ra",
+      "runtime_path": "client/assets/street/temple_ra.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/civic-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "b0e96dbe87d5fa9c81b499be5294892beabb86ac1eab0a440148af9c8abbcc7f",
+      "sha256": "4263557ed541583f8b26e64711587e2b85e2d49fafe857a80a2d22485e6761b9",
+      "dimensions": [
+        376,
+        356
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/civic-nine.txt",
+      "prompt_sha256": "df12991288f73f93f1db3b1632fe54558eb51379af17aa2ac917809fd8a2904e",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "temple_ptah",
+      "runtime_path": "client/assets/street/temple_ptah.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/civic-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "b0e96dbe87d5fa9c81b499be5294892beabb86ac1eab0a440148af9c8abbcc7f",
+      "sha256": "59297b1c2a8ce0c61059693e01978082a9b43f152f80b78833e1c36a90a7fc34",
+      "dimensions": [
+        376,
+        356
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/civic-nine.txt",
+      "prompt_sha256": "df12991288f73f93f1db3b1632fe54558eb51379af17aa2ac917809fd8a2904e",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "temple_seth",
+      "runtime_path": "client/assets/street/temple_seth.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/civic-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "b0e96dbe87d5fa9c81b499be5294892beabb86ac1eab0a440148af9c8abbcc7f",
+      "sha256": "7a06b36e21995e080e5da5170f185b403af0c37016c7b51ad14a204d37ce8694",
+      "dimensions": [
+        376,
+        355
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/civic-nine.txt",
+      "prompt_sha256": "df12991288f73f93f1db3b1632fe54558eb51379af17aa2ac917809fd8a2904e",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "temple_bast",
+      "runtime_path": "client/assets/street/temple_bast.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/civic-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "b0e96dbe87d5fa9c81b499be5294892beabb86ac1eab0a440148af9c8abbcc7f",
+      "sha256": "8ba8358bfd5348772e4d27547faf2948f3df45ec7b93da49f908a69071c14154",
+      "dimensions": [
+        376,
+        356
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/civic-nine.txt",
+      "prompt_sha256": "df12991288f73f93f1db3b1632fe54558eb51379af17aa2ac917809fd8a2904e",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "shrine",
+      "runtime_path": "client/assets/street/shrine.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/civic-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "b0e96dbe87d5fa9c81b499be5294892beabb86ac1eab0a440148af9c8abbcc7f",
+      "sha256": "efba9f3250cb100f9c629ba9ead7e6fd5a59d3eb11cbc41f15e56184e364cb3d",
+      "dimensions": [
+        368,
+        376
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/civic-nine.txt",
+      "prompt_sha256": "df12991288f73f93f1db3b1632fe54558eb51379af17aa2ac917809fd8a2904e",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "garden",
+      "runtime_path": "client/assets/street/garden.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/civic-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "b0e96dbe87d5fa9c81b499be5294892beabb86ac1eab0a440148af9c8abbcc7f",
+      "sha256": "1103ed0dbe04f50bf0531741cbe4089e56c122e1844f64b410678bed195af14c",
+      "dimensions": [
+        376,
+        338
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/civic-nine.txt",
+      "prompt_sha256": "df12991288f73f93f1db3b1632fe54558eb51379af17aa2ac917809fd8a2904e",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "plaza",
+      "runtime_path": "client/assets/street/plaza.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/civic-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "b0e96dbe87d5fa9c81b499be5294892beabb86ac1eab0a440148af9c8abbcc7f",
+      "sha256": "a87e3643ba724d96ccaea3500720c2fca6a746e91ebea9bc3b58ef064a00c78a",
+      "dimensions": [
+        376,
+        247
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/civic-nine.txt",
+      "prompt_sha256": "df12991288f73f93f1db3b1632fe54558eb51379af17aa2ac917809fd8a2904e",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "roadblock",
+      "runtime_path": "client/assets/street/roadblock.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/civic-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "b0e96dbe87d5fa9c81b499be5294892beabb86ac1eab0a440148af9c8abbcc7f",
+      "sha256": "84707fc86487eee9577fa4bdcef10d474d503e6c0ca1e018adf7bbdb79f576e7",
+      "dimensions": [
+        376,
+        265
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/civic-nine.txt",
+      "prompt_sha256": "df12991288f73f93f1db3b1632fe54558eb51379af17aa2ac917809fd8a2904e",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "barleyfarm",
+      "runtime_path": "client/assets/street/barleyfarm.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/trades-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "aa1b314f990914d260731b90fd2b0a8607e0f241c52eec9552c0cffb2e47e73d",
+      "sha256": "fe8af1fefadac8d7b0b9be6ceae88713db2bbb0944203b4d5b0b1322c356523f",
+      "dimensions": [
+        376,
+        253
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/trades-nine.txt",
+      "prompt_sha256": "52d66778c8af6c1505ece67dd2ddccd64d9958a9948e710b8fa834939482e391",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "flaxfarm",
+      "runtime_path": "client/assets/street/flaxfarm.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/trades-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "aa1b314f990914d260731b90fd2b0a8607e0f241c52eec9552c0cffb2e47e73d",
+      "sha256": "4f6cdf61eedb6eb149fc50843ed4cee87a32ee8ae261edad88d6e6653b536f26",
+      "dimensions": [
+        376,
+        249
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/trades-nine.txt",
+      "prompt_sha256": "52d66778c8af6c1505ece67dd2ddccd64d9958a9948e710b8fa834939482e391",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "reedgatherer",
+      "runtime_path": "client/assets/street/reedgatherer.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/trades-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "aa1b314f990914d260731b90fd2b0a8607e0f241c52eec9552c0cffb2e47e73d",
+      "sha256": "b7725ebe37f4e81a5e578f949497ff5af6259c34e012d9625aceada5615f9f7b",
+      "dimensions": [
+        376,
+        252
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/trades-nine.txt",
+      "prompt_sha256": "52d66778c8af6c1505ece67dd2ddccd64d9958a9948e710b8fa834939482e391",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "brewery",
+      "runtime_path": "client/assets/street/brewery.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/trades-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "aa1b314f990914d260731b90fd2b0a8607e0f241c52eec9552c0cffb2e47e73d",
+      "sha256": "61011406ffa434d81206f64b9a8f489398092d152b7b2fcf8a13434faf398369",
+      "dimensions": [
+        375,
+        244
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/trades-nine.txt",
+      "prompt_sha256": "52d66778c8af6c1505ece67dd2ddccd64d9958a9948e710b8fa834939482e391",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "papyrusmaker",
+      "runtime_path": "client/assets/street/papyrusmaker.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/trades-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "aa1b314f990914d260731b90fd2b0a8607e0f241c52eec9552c0cffb2e47e73d",
+      "sha256": "ce0ef036da68d7776edcc89fe912c5066c2aa1a14210d0ae89076dabd9f0f2ae",
+      "dimensions": [
+        376,
+        244
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/trades-nine.txt",
+      "prompt_sha256": "52d66778c8af6c1505ece67dd2ddccd64d9958a9948e710b8fa834939482e391",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "potter",
+      "runtime_path": "client/assets/street/potter.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/trades-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "aa1b314f990914d260731b90fd2b0a8607e0f241c52eec9552c0cffb2e47e73d",
+      "sha256": "cc8bd17c401ccb8a65c460d2bc21137525f5bf3177e7a5b023ff75d565a01253",
+      "dimensions": [
+        376,
+        241
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/trades-nine.txt",
+      "prompt_sha256": "52d66778c8af6c1505ece67dd2ddccd64d9958a9948e710b8fa834939482e391",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "weaver",
+      "runtime_path": "client/assets/street/weaver.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/trades-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "aa1b314f990914d260731b90fd2b0a8607e0f241c52eec9552c0cffb2e47e73d",
+      "sha256": "13f6b35eea54e8256115f9885f44339fb878ce555648466963c6b91ce0caeef5",
+      "dimensions": [
+        376,
+        243
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/trades-nine.txt",
+      "prompt_sha256": "52d66778c8af6c1505ece67dd2ddccd64d9958a9948e710b8fa834939482e391",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "huntinglodge",
+      "runtime_path": "client/assets/street/huntinglodge.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/trades-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "aa1b314f990914d260731b90fd2b0a8607e0f241c52eec9552c0cffb2e47e73d",
+      "sha256": "a81b7cfb16ffd648d35359aa92c140f95defdddf14d6916efb984ca8c12f57f4",
+      "dimensions": [
+        375,
+        246
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/trades-nine.txt",
+      "prompt_sha256": "52d66778c8af6c1505ece67dd2ddccd64d9958a9948e710b8fa834939482e391",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "watersupply",
+      "runtime_path": "client/assets/street/watersupply.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/trades-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "aa1b314f990914d260731b90fd2b0a8607e0f241c52eec9552c0cffb2e47e73d",
+      "sha256": "cc65e9e3276733370df0ab063bcf7e70cbcc11206c113f49eec52a17b7e1107a",
+      "dimensions": [
+        376,
+        240
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/trades-nine.txt",
+      "prompt_sha256": "52d66778c8af6c1505ece67dd2ddccd64d9958a9948e710b8fa834939482e391",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "home_4",
+      "runtime_path": "client/assets/street/home_4.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/houses-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "25e993075d87d327b021353c686cf022184816448385ce99ca8d6d4493b00e36",
+      "sha256": "0637a563ca308afc9dee73a0b275b129c922b819d5837e8a5e42710531205ce3",
+      "dimensions": [
+        375,
+        307
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/houses-nine.txt",
+      "prompt_sha256": "30f06a76c9d7b8d50f300b0687de97517add5da0c23d2c5f7f2fddb72499190f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "home_5",
+      "runtime_path": "client/assets/street/home_5.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/houses-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "25e993075d87d327b021353c686cf022184816448385ce99ca8d6d4493b00e36",
+      "sha256": "cb44ff86d168e1208083ca007f1634f3ae63911e2b12c8b31514d2223aea7da2",
+      "dimensions": [
+        376,
+        269
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/houses-nine.txt",
+      "prompt_sha256": "30f06a76c9d7b8d50f300b0687de97517add5da0c23d2c5f7f2fddb72499190f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "home_6",
+      "runtime_path": "client/assets/street/home_6.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/houses-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "25e993075d87d327b021353c686cf022184816448385ce99ca8d6d4493b00e36",
+      "sha256": "1c871860260a8fcefd218e6ff9b726f7bd298b1420036885a30f53f2f1b6d577",
+      "dimensions": [
+        376,
+        300
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/houses-nine.txt",
+      "prompt_sha256": "30f06a76c9d7b8d50f300b0687de97517add5da0c23d2c5f7f2fddb72499190f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "home_7",
+      "runtime_path": "client/assets/street/home_7.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/houses-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "25e993075d87d327b021353c686cf022184816448385ce99ca8d6d4493b00e36",
+      "sha256": "c470add0f8b3fdb469ce892cd81aa933f7b5d83323b9ec2f71f7104320818647",
+      "dimensions": [
+        376,
+        289
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/houses-nine.txt",
+      "prompt_sha256": "30f06a76c9d7b8d50f300b0687de97517add5da0c23d2c5f7f2fddb72499190f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "home_8",
+      "runtime_path": "client/assets/street/home_8.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/houses-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "25e993075d87d327b021353c686cf022184816448385ce99ca8d6d4493b00e36",
+      "sha256": "a2bd8e177014a8277801dda1425298444bb8d56073892675b1ddb6ab1b8f9ff8",
+      "dimensions": [
+        375,
+        263
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/houses-nine.txt",
+      "prompt_sha256": "30f06a76c9d7b8d50f300b0687de97517add5da0c23d2c5f7f2fddb72499190f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "home_9",
+      "runtime_path": "client/assets/street/home_9.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/houses-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "25e993075d87d327b021353c686cf022184816448385ce99ca8d6d4493b00e36",
+      "sha256": "84b06eaec87c52287f5dad107b9a1bdcbbd17f737f952476e9e8bb536ea815eb",
+      "dimensions": [
+        375,
+        321
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/houses-nine.txt",
+      "prompt_sha256": "30f06a76c9d7b8d50f300b0687de97517add5da0c23d2c5f7f2fddb72499190f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "home_10",
+      "runtime_path": "client/assets/street/home_10.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/houses-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "25e993075d87d327b021353c686cf022184816448385ce99ca8d6d4493b00e36",
+      "sha256": "39f0e01781e19818bcc15e27697cfc6d0a26c7d927123536fe885c05c2b746c7",
+      "dimensions": [
+        375,
+        361
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/houses-nine.txt",
+      "prompt_sha256": "30f06a76c9d7b8d50f300b0687de97517add5da0c23d2c5f7f2fddb72499190f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "home_11",
+      "runtime_path": "client/assets/street/home_11.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/houses-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "25e993075d87d327b021353c686cf022184816448385ce99ca8d6d4493b00e36",
+      "sha256": "de60b9b59390a3c8c24c30acff43eb24f92c873df409c6207a86cbd94de2d796",
+      "dimensions": [
+        376,
+        292
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/houses-nine.txt",
+      "prompt_sha256": "30f06a76c9d7b8d50f300b0687de97517add5da0c23d2c5f7f2fddb72499190f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "home_12",
+      "runtime_path": "client/assets/street/home_12.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/houses-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "25e993075d87d327b021353c686cf022184816448385ce99ca8d6d4493b00e36",
+      "sha256": "b9ff189a0c49b5dfdd1c288f6c2c53478c3231e65c1f423bae8c4a4b222838ee",
+      "dimensions": [
+        376,
+        246
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/houses-nine.txt",
+      "prompt_sha256": "30f06a76c9d7b8d50f300b0687de97517add5da0c23d2c5f7f2fddb72499190f",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "apothecary",
+      "runtime_path": "client/assets/street/apothecary.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/services-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "cb9ad3531959ae1fc5fdc553fcc5aacfe974c443dffee8e1d6b14c077f63cbfb",
+      "sha256": "fdb31af34c084db88080580d58a2ce20b09175fabb12d2588b647a0257457a9f",
+      "dimensions": [
+        376,
+        271
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/services-nine.txt",
+      "prompt_sha256": "bc0e1d399f655f01b1061b28a2bfb6556296fc7d19f289e67b306d1596361d35",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "physician",
+      "runtime_path": "client/assets/street/physician.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/services-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "cb9ad3531959ae1fc5fdc553fcc5aacfe974c443dffee8e1d6b14c077f63cbfb",
+      "sha256": "ce77a5ccb0d0dfa5977b6d9652aec1c8a81c0d8d761dab493c8c9acd5e423d8c",
+      "dimensions": [
+        375,
+        271
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/services-nine.txt",
+      "prompt_sha256": "bc0e1d399f655f01b1061b28a2bfb6556296fc7d19f289e67b306d1596361d35",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "dentist",
+      "runtime_path": "client/assets/street/dentist.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/services-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "cb9ad3531959ae1fc5fdc553fcc5aacfe974c443dffee8e1d6b14c077f63cbfb",
+      "sha256": "8ed887c7e09409f930619418059ac7cf241095f16a4221ec1641e7502211cb2f",
+      "dimensions": [
+        375,
+        268
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/services-nine.txt",
+      "prompt_sha256": "bc0e1d399f655f01b1061b28a2bfb6556296fc7d19f289e67b306d1596361d35",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "mortuary",
+      "runtime_path": "client/assets/street/mortuary.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/services-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "cb9ad3531959ae1fc5fdc553fcc5aacfe974c443dffee8e1d6b14c077f63cbfb",
+      "sha256": "0e7d3df9899f68c3dcd50842f86162ba454911ff2f12fd44b14264aebddb4ffd",
+      "dimensions": [
+        376,
+        266
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/services-nine.txt",
+      "prompt_sha256": "bc0e1d399f655f01b1061b28a2bfb6556296fc7d19f289e67b306d1596361d35",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "scribalschool",
+      "runtime_path": "client/assets/street/scribalschool.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/services-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "cb9ad3531959ae1fc5fdc553fcc5aacfe974c443dffee8e1d6b14c077f63cbfb",
+      "sha256": "cd4f3f69bad106d4c9d386d8f6433623ecc986ca668f9588b1ca2183108eb1b7",
+      "dimensions": [
+        376,
+        263
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/services-nine.txt",
+      "prompt_sha256": "bc0e1d399f655f01b1061b28a2bfb6556296fc7d19f289e67b306d1596361d35",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "library",
+      "runtime_path": "client/assets/street/library.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/services-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "cb9ad3531959ae1fc5fdc553fcc5aacfe974c443dffee8e1d6b14c077f63cbfb",
+      "sha256": "08cd18c19637dedef22aff781a392e66ceba73b4fd606f902b2e81e1fa2dd3c0",
+      "dimensions": [
+        376,
+        262
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/services-nine.txt",
+      "prompt_sha256": "bc0e1d399f655f01b1061b28a2bfb6556296fc7d19f289e67b306d1596361d35",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "booth",
+      "runtime_path": "client/assets/street/booth.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/services-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "cb9ad3531959ae1fc5fdc553fcc5aacfe974c443dffee8e1d6b14c077f63cbfb",
+      "sha256": "46017b461c33b31b7782e83e67896196061b5a02850978bf89db47178ea0c5bf",
+      "dimensions": [
+        375,
+        268
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/services-nine.txt",
+      "prompt_sha256": "bc0e1d399f655f01b1061b28a2bfb6556296fc7d19f289e67b306d1596361d35",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "jugglerschool",
+      "runtime_path": "client/assets/street/jugglerschool.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/services-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "cb9ad3531959ae1fc5fdc553fcc5aacfe974c443dffee8e1d6b14c077f63cbfb",
+      "sha256": "aec67004e1678916f6fb4809ebd47109d9303162542ad4658b6035ce36b52b1f",
+      "dimensions": [
+        376,
+        265
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/services-nine.txt",
+      "prompt_sha256": "bc0e1d399f655f01b1061b28a2bfb6556296fc7d19f289e67b306d1596361d35",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "police",
+      "runtime_path": "client/assets/street/police.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/services-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "cb9ad3531959ae1fc5fdc553fcc5aacfe974c443dffee8e1d6b14c077f63cbfb",
+      "sha256": "9e894dc46b64669bb4bac80ecbf97ad94830e02e4973e07e2dece94f86b7a098",
+      "dimensions": [
+        375,
+        263
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/services-nine.txt",
+      "prompt_sha256": "bc0e1d399f655f01b1061b28a2bfb6556296fc7d19f289e67b306d1596361d35",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "reedbed",
+      "runtime_path": "client/assets/street/reedbed.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/valley-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "1a124cf1ed1858fd16b655b4a8fdeca384f7fb8df6faebe96126a194334c89a5",
+      "sha256": "6d8214aaeb6adaf2a0448c4122b714dcf23d4a16e223cb1e204b09309f57e2c9",
+      "dimensions": [
+        375,
+        261
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/valley-nine.txt",
+      "prompt_sha256": "7bc619674ec0aab1bfd693cebf92108e7de227c40b5983083d35352d28aab304",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "gazelle",
+      "runtime_path": "client/assets/street/gazelle.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/valley-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "1a124cf1ed1858fd16b655b4a8fdeca384f7fb8df6faebe96126a194334c89a5",
+      "sha256": "a2c5499df56221f86c7b2b8d3473ca7e8bd1d9e637346997858d5770de146749",
+      "dimensions": [
+        320,
+        375
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/valley-nine.txt",
+      "prompt_sha256": "7bc619674ec0aab1bfd693cebf92108e7de227c40b5983083d35352d28aab304",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "sycamore",
+      "runtime_path": "client/assets/street/sycamore.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/valley-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "1a124cf1ed1858fd16b655b4a8fdeca384f7fb8df6faebe96126a194334c89a5",
+      "sha256": "e90453210c4d4466e1ea4e395e4fb3409c9a725502f4d98806f506b3f844add8",
+      "dimensions": [
+        376,
+        270
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/valley-nine.txt",
+      "prompt_sha256": "7bc619674ec0aab1bfd693cebf92108e7de227c40b5983083d35352d28aab304",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "conservatory",
+      "runtime_path": "client/assets/street/conservatory.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/valley-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "1a124cf1ed1858fd16b655b4a8fdeca384f7fb8df6faebe96126a194334c89a5",
+      "sha256": "6750d1b2f1a3fabe481edade999daa82bc895ac2df17a54d14389b62f9e154d8",
+      "dimensions": [
+        376,
+        231
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/valley-nine.txt",
+      "prompt_sha256": "7bc619674ec0aab1bfd693cebf92108e7de227c40b5983083d35352d28aab304",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "danceschool",
+      "runtime_path": "client/assets/street/danceschool.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/valley-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "1a124cf1ed1858fd16b655b4a8fdeca384f7fb8df6faebe96126a194334c89a5",
+      "sha256": "ebfcaf0bbd25c319b58175486b37a361abd9eda4703c2632a2e549e8a856e1ee",
+      "dimensions": [
+        376,
+        234
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/valley-nine.txt",
+      "prompt_sha256": "7bc619674ec0aab1bfd693cebf92108e7de227c40b5983083d35352d28aab304",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "bandstand",
+      "runtime_path": "client/assets/street/bandstand.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/valley-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "1a124cf1ed1858fd16b655b4a8fdeca384f7fb8df6faebe96126a194334c89a5",
+      "sha256": "bd9527a7cd9e0113d1b833b0fb579f5e18d8b99befd57dda666b92615936c9c5",
+      "dimensions": [
+        376,
+        232
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/valley-nine.txt",
+      "prompt_sha256": "7bc619674ec0aab1bfd693cebf92108e7de227c40b5983083d35352d28aab304",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "pavilion",
+      "runtime_path": "client/assets/street/pavilion.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/valley-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "1a124cf1ed1858fd16b655b4a8fdeca384f7fb8df6faebe96126a194334c89a5",
+      "sha256": "3b2a6f1dee0e411e110d9fed426a1a7f7e87f702f780cec47a326ad130ff755f",
+      "dimensions": [
+        376,
+        237
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/valley-nine.txt",
+      "prompt_sha256": "7bc619674ec0aab1bfd693cebf92108e7de227c40b5983083d35352d28aab304",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "senethouse",
+      "runtime_path": "client/assets/street/senethouse.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/valley-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "1a124cf1ed1858fd16b655b4a8fdeca384f7fb8df6faebe96126a194334c89a5",
+      "sha256": "1e28b295635f6ea2d9d5b9679ddb2f45d503992fe5b04e78411f1184dc4eaf38",
+      "dimensions": [
+        375,
+        247
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/valley-nine.txt",
+      "prompt_sha256": "7bc619674ec0aab1bfd693cebf92108e7de227c40b5983083d35352d28aab304",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "wrestling",
+      "runtime_path": "client/assets/street/wrestling.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/valley-nine.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "1a124cf1ed1858fd16b655b4a8fdeca384f7fb8df6faebe96126a194334c89a5",
+      "sha256": "02a28f1b6d4ccb7113c475992f84d04f09ee92aa808143cc535285286d2a3ec6",
+      "dimensions": [
+        375,
+        248
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/valley-nine.txt",
+      "prompt_sha256": "7bc619674ec0aab1bfd693cebf92108e7de227c40b5983083d35352d28aab304",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "festival_square",
+      "runtime_path": "client/assets/street/festival_square.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/monument-trades.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "4876c6fb114dc235e6e5481d7b242adbc25ae3b4191dc5525e317f0e4bc6c186",
+      "sha256": "c91fa6f53f641aaba9b13835ad4887a726541ed4f10b8597675a9972c226bf9d",
+      "dimensions": [
+        376,
+        233
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/monument-trades.txt",
+      "prompt_sha256": "b744fb68de5d43ad7f2bd9c55105d65761d333231d9f04341471e63290c3e183",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "workcamp",
+      "runtime_path": "client/assets/street/workcamp.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/monument-trades.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "4876c6fb114dc235e6e5481d7b242adbc25ae3b4191dc5525e317f0e4bc6c186",
+      "sha256": "612204efa886d492a9ae1f2711dc28225e4aa73ac11345c7f76b52d66eb7fb1d",
+      "dimensions": [
+        376,
+        230
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/monument-trades.txt",
+      "prompt_sha256": "b744fb68de5d43ad7f2bd9c55105d65761d333231d9f04341471e63290c3e183",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "stonemasons",
+      "runtime_path": "client/assets/street/stonemasons.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/monument-trades.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "4876c6fb114dc235e6e5481d7b242adbc25ae3b4191dc5525e317f0e4bc6c186",
+      "sha256": "f83bd6b7345616e4563776ff6e7d4292f00c9d54fc54dd9d7ee68570dc439187",
+      "dimensions": [
+        376,
+        223
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/monument-trades.txt",
+      "prompt_sha256": "b744fb68de5d43ad7f2bd9c55105d65761d333231d9f04341471e63290c3e183",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "carpenters",
+      "runtime_path": "client/assets/street/carpenters.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/monument-trades.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "4876c6fb114dc235e6e5481d7b242adbc25ae3b4191dc5525e317f0e4bc6c186",
+      "sha256": "b441f1346ce0be8d45feca05eba40b93d12f35eaaf453a17ed2bf9421d86ab7d",
+      "dimensions": [
+        375,
+        225
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/monument-trades.txt",
+      "prompt_sha256": "b744fb68de5d43ad7f2bd9c55105d65761d333231d9f04341471e63290c3e183",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "limestonequarry",
+      "runtime_path": "client/assets/street/limestonequarry.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/monument-trades.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "4876c6fb114dc235e6e5481d7b242adbc25ae3b4191dc5525e317f0e4bc6c186",
+      "sha256": "2498cf02c3ce23b0a1b2a2aa6ed21e62afecad79b0ef2b6b6d45ecdffcbdd47c",
+      "dimensions": [
+        375,
+        223
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/monument-trades.txt",
+      "prompt_sha256": "b744fb68de5d43ad7f2bd9c55105d65761d333231d9f04341471e63290c3e183",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "sandstonequarry",
+      "runtime_path": "client/assets/street/sandstonequarry.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/monument-trades.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "4876c6fb114dc235e6e5481d7b242adbc25ae3b4191dc5525e317f0e4bc6c186",
+      "sha256": "2cc508907ff5f16b9de3b877688c4343148dbc4a4da206900684209ebd6ef23c",
+      "dimensions": [
+        376,
+        220
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/monument-trades.txt",
+      "prompt_sha256": "b744fb68de5d43ad7f2bd9c55105d65761d333231d9f04341471e63290c3e183",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "stonequarry",
+      "runtime_path": "client/assets/street/stonequarry.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/monument-trades.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "4876c6fb114dc235e6e5481d7b242adbc25ae3b4191dc5525e317f0e4bc6c186",
+      "sha256": "2e4f43740dccc0afc6d1aa061550fcdf6bca3ae306739bb4e72379dc0b5eba94",
+      "dimensions": [
+        376,
+        229
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/monument-trades.txt",
+      "prompt_sha256": "b744fb68de5d43ad7f2bd9c55105d65761d333231d9f04341471e63290c3e183",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "granitequarry",
+      "runtime_path": "client/assets/street/granitequarry.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/monument-trades.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "4876c6fb114dc235e6e5481d7b242adbc25ae3b4191dc5525e317f0e4bc6c186",
+      "sha256": "e3deb69ce73fad40add1f886fdfd1eb14414260c9e973f9ff04a321d0ab84073",
+      "dimensions": [
+        375,
+        224
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/monument-trades.txt",
+      "prompt_sha256": "b744fb68de5d43ad7f2bd9c55105d65761d333231d9f04341471e63290c3e183",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
+    },
+    {
+      "id": "woodcutter",
+      "runtime_path": "client/assets/street/woodcutter.png",
+      "source_path": "/mnt/holding/project-nile/city-assets/monument-trades.png",
+      "source": "Original built-in image_gen multi-prop pack",
+      "source_sha256": "4876c6fb114dc235e6e5481d7b242adbc25ae3b4191dc5525e317f0e4bc6c186",
+      "sha256": "1411bbede413e8fa2093f4178e56eb8ad5c9b7e29d4d44a69a52b1c10c7134cd",
+      "dimensions": [
+        376,
+        231
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/monument-trades.txt",
+      "prompt_sha256": "b744fb68de5d43ad7f2bd9c55105d65761d333231d9f04341471e63290c3e183",
+      "transparent_background": true,
+      "validation": "Chroma isolation and alpha bounds checked. See pack QC in source archive."
     }
   ],
   "validation_environment": {

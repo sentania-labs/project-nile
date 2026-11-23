@@ -1,0 +1,59 @@
+{
+  "name": "civic-nine",
+  "assets": [
+    [
+      "temple_osiris",
+      "Temple to Osiris",
+      3,
+      252
+    ],
+    [
+      "temple_ra",
+      "Temple to Ra",
+      3,
+      252
+    ],
+    [
+      "temple_ptah",
+      "Temple to Ptah",
+      3,
+      252
+    ],
+    [
+      "temple_seth",
+      "Temple to Seth",
+      3,
+      252
+    ],
+    [
+      "temple_bast",
+      "Temple to Bast",
+      3,
+      252
+    ],
+    [
+      "shrine",
+      "Shrine",
+      1,
+      80
+    ],
+    [
+      "garden",
+      "Garden",
+      1,
+      88
+    ],
+    [
+      "plaza",
+      "Plaza",
+      1,
+      92
+    ],
+    [
+      "roadblock",
+      "Roadblock",
+      1,
+      90
+    ]
+  ]
+}

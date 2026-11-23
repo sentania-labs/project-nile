@@ -1,0 +1,59 @@
+{
+  "name": "services-nine",
+  "assets": [
+    [
+      "apothecary",
+      "Apothecary",
+      1,
+      86
+    ],
+    [
+      "physician",
+      "Physician",
+      2,
+      172
+    ],
+    [
+      "dentist",
+      "Dentist",
+      1,
+      86
+    ],
+    [
+      "mortuary",
+      "Mortuary",
+      2,
+      172
+    ],
+    [
+      "scribalschool",
+      "Scribal school",
+      2,
+      172
+    ],
+    [
+      "library",
+      "Library",
+      3,
+      258
+    ],
+    [
+      "booth",
+      "Booth",
+      2,
+      172
+    ],
+    [
+      "jugglerschool",
+      "Juggler school",
+      2,
+      172
+    ],
+    [
+      "police",
+      "Police station",
+      1,
+      86
+    ]
+  ]
+}

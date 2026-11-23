@@ -2,17 +2,17 @@ extends RefCounted
 ## City menus and overseers. This class reads state; it never advances simulation.
 
 const MiniMap = preload("res://scripts/city_minimap.gd")
-const CATEGORIES := {
-	"Homes": ["hut", "well"],
-	"Food": ["farm", "granary", "bazaar"],
-	"Industry": ["goldmine", "claypit", "brickworks", "storageyard"],
-	"Safety": ["firehouse", "architect"],
-	"Civic": ["taxoffice", "palace"],
-	"Monument": ["mastaba"],
-}
-const LABELS := {"goldmine": "Gold mine", "palace": "Village palace", "hut": "Housing", "well": "Well", "farm": "Grain farm", "granary": "Granary", "bazaar": "Bazaar", "claypit": "Clay pit", "brickworks": "Brickworks", "storageyard": "Storage yard", "firehouse": "Firehouse", "architect": "Architect", "taxoffice": "Tax office", "mastaba": "Mastaba"}
+const GROUPS := ["Homes", "Food", "Industry", "Safety", "Civic", "Monument", "Religion", "Streets", "Health", "Education", "Entertainment", "Military"]
+var groups: Dictionary = {}
+var labels: Dictionary = {}
+var visible_catalog: Array = []
+var build_scroll: ScrollContainer
 const OVERLAYS := {"None": "", "Water": "water", "Food": "food", "Fire risk": "fire", "Collapse risk": "collapse", "Tax coverage": "tax", "Employment": "labor"}
 
+var overseer_controls := preload("res://scripts/overseer_controls.gd").new()
+var storage_controls := preload("res://scripts/storage_controls.gd").new()
+var roadblock := preload("res://scripts/roadblock_controls.gd").new()
+var campaign_ui := preload("res://scripts/campaign_interface.gd").new()
 var game: Node
 var minimap: Control
 var categories: Dictionary = {}
@@ -148,12 +148,15 @@ func setup(owner: Node) -> void:
 	var category_grid := GridContainer.new()
 	category_grid.columns = 3
 	column.add_child(category_grid)
-	for name: String in CATEGORIES:
+	for name: String in GROUPS:
+		groups[name] = []
 		var button: Button = game._button(name, set_category.bind(name))
 		button.toggle_mode = true
 		button.custom_minimum_size = Vector2(56, 25)
 		button.add_theme_font_size_override("font_size", 11)
 		var icon_id := "category_" + name.to_lower()
+		if not game.assets.has(icon_id):
+			icon_id = {"Religion": "temple_ra", "Streets": "roadblock", "Health": "physician", "Education": "library", "Entertainment": "booth"}.get(name, "")
 		if game.assets.has(icon_id):
 			button.text = ""
 			button.icon = game._texture_for(icon_id)
@@ -188,40 +191,10 @@ func setup(owner: Node) -> void:
 	construction_menu.add_theme_stylebox_override("panel", game._style(Color("cba572"), Color("785634"), 2))
 	game.hud.add_child(construction_menu)
 	game.palette.columns = 1
-	construction_menu.add_child(game.palette)
-	for category: String in CATEGORIES:
-		for kind: String in CATEGORIES[category]:
-			var button: Button = game._button("", _choose_building.bind(kind))
-			button.toggle_mode = true
-			button.custom_minimum_size = Vector2(290, 38)
-			button.tooltip_text = LABELS[kind]
-			button.accessibility_name = LABELS[kind]
-			var margin := MarginContainer.new()
-			margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-			margin.add_theme_constant_override("margin_left", 10)
-			margin.add_theme_constant_override("margin_right", 10)
-			margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			button.add_child(margin)
-			var entry := HBoxContainer.new()
-			entry.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			margin.add_child(entry)
-			if game.assets.has(kind) and ResourceLoader.exists(game._asset_path(game.assets[kind].path)):
-				var icon := TextureRect.new()
-				icon.texture = game._texture_for(kind)
-				icon.custom_minimum_size = Vector2(28, 28)
-				icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-				icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-				icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-				entry.add_child(icon)
-			var label: Label = game._label(LABELS[kind], 14, Color("392617"))
-			label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			entry.add_child(label)
-			var price: Label = game._label("", 14, Color("392617"))
-			price.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-			price_labels[kind] = price
-			entry.add_child(price)
-			game.tool_buttons[kind] = button
-			game.palette.add_child(button)
+	build_scroll = ScrollContainer.new()
+	build_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	construction_menu.add_child(build_scroll)
+	build_scroll.add_child(game.palette)
 	set_category("Homes", false)
 	game.tool_buttons.inspect.set_pressed_no_signal(true)
 	build_info = game._label("", 13, Color("35281d"))
@@ -264,14 +237,77 @@ func setup(owner: Node) -> void:
 	game.tool_buttons.road.tooltip_text = "Drag to preview roads. Release to build; right-click or Esc cancels."
 	game.pause_button.tooltip_text = "Space: pause or resume"
 	_build_modals()
+	campaign_ui.setup(self, row)
+	roadblock.setup(self, game)
+
+
+func _add_choice(kind: String, caption: String) -> void:
+	var button: Button = game._button("", _choose_building.bind(kind))
+	button.toggle_mode = true
+	button.custom_minimum_size = Vector2(290, 38)
+	button.tooltip_text = caption
+	button.accessibility_name = caption
+	var margin := MarginContainer.new()
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	margin.add_theme_constant_override("margin_left", 10)
+	margin.add_theme_constant_override("margin_right", 10)
+	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	button.add_child(margin)
+	var entry := HBoxContainer.new()
+	entry.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	margin.add_child(entry)
+	var art := "shrine" if kind.begins_with("shrine_") else kind
+	if game.assets.has(art) and ResourceLoader.exists(game._asset_path(game.assets[art].path)):
+		var icon := TextureRect.new()
+		icon.texture = game._texture_for(art)
+		icon.custom_minimum_size = Vector2(28, 28)
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		entry.add_child(icon)
+	var label: Label = game._label(caption, 14, Color("392617"))
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	entry.add_child(label)
+	var price: Label = game._label("", 14, Color("392617"))
+	price.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	price_labels[kind] = price
+	entry.add_child(price)
+	game.tool_buttons[kind] = button
+	game.palette.add_child(button)
+
+
+func sync_catalog() -> void:
+	var entries: Array = game.state.get("building_catalog", [])
+	if entries == visible_catalog: return
+	visible_catalog = entries
+	for group: String in groups: groups[group] = []
+	for kind: String in price_labels: game.tool_buttons[kind].hide()
+	for entry: Dictionary in entries:
+		var kind := str(entry.kind)
+		if kind == "road": continue
+		var group := str(entry.category)
+		match kind:
+			"hut", "well", "watersupply": group = "Homes"
+			"roadblock", "plaza", "garden": group = "Streets"
+			_:
+				group = {"Services":"Safety", "Government":"Civic", "Labor":"Civic", "Monuments":"Monument", "Housing":"Homes", "Beautification":"Streets"}.get(group,group)
+		if not groups.has(group): continue
+		groups[group].append(kind)
+		labels[kind] = str(entry.label)
+		if not game.tool_buttons.has(kind): _add_choice(kind, str(entry.label))
+		price_labels[kind].text = "%d Db" % int(entry.cost)
+		game.tool_buttons[kind].tooltip_text = "%s · %d Db · %d × %d" % [entry.label, int(entry.cost), int(entry.width), int(entry.height)]
+	for group: String in groups: categories[group].visible = not groups[group].is_empty()
+	set_category(active_category, construction_menu.visible and not groups[active_category].is_empty())
 
 
 func set_category(name: String, show_menu: bool = true) -> void:
 	active_category = name
 	construction_menu.visible = show_menu
 	for key: String in categories: categories[key].set_pressed_no_signal(key == name)
-	for category: String in CATEGORIES:
-		for kind: String in CATEGORIES[category]: game.tool_buttons[kind].visible = category == name
+	for kind: String in price_labels: game.tool_buttons[kind].visible = kind in groups[name]
+	build_scroll.custom_minimum_size = Vector2(302, mini(groups[name].size() * 42, 370))
+	build_scroll.scroll_vertical = 0
 
 
 func _choose_building(kind: String) -> void:
@@ -280,8 +316,8 @@ func _choose_building(kind: String) -> void:
 
 
 func category_for(kind: String) -> String:
-	for category: String in CATEGORIES:
-		if kind in CATEGORIES[category]: return category
+	for category: String in groups:
+		if kind in groups[category]: return category
 	return ""
 
 
@@ -297,7 +333,7 @@ func _game_action(id: int) -> void:
 			game.get_tree().quit()
 
 
-func _modal(title: String, dimensions: Vector2) -> Array:
+func _modal(title: String, dimensions: Vector2, on_close: Callable = Callable()) -> Array:
 	var background := ColorRect.new()
 	background.color = Color(0.08, 0.06, 0.03, 0.72)
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -318,7 +354,7 @@ func _modal(title: String, dimensions: Vector2) -> Array:
 	var label: Label = game._label(title, 23, Color("35281d"))
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	heading.add_child(label)
-	heading.add_child(game._button("Close", background.hide))
+	heading.add_child(game._button("Close", on_close if on_close.is_valid() else background.hide))
 	background.hide()
 	return [background, column]
 
@@ -353,6 +389,8 @@ func _build_modals() -> void:
 	repair_button = game._button("Repair", game._repair_selected)
 	repair_button.visible = false
 	inspection[1].add_child(repair_button)
+	inspection[1].add_child(storage_controls)
+	storage_controls.setup(game)
 	var town := _modal("Found a new town", Vector2(540, 240))
 	new_town_modal = town[0]
 	var text: Label = game._label("Choose an empty riverbank or an established neighborhood. Save your current town first if you want to keep its latest changes.", 15, Color("35281d"))
@@ -364,13 +402,15 @@ func _build_modals() -> void:
 	town[1].add_child(new_town_starter)
 	var overseer := _modal("City overseers", Vector2(680, 500))
 	overseer_modal = overseer[0]
-	var tabs := HBoxContainer.new()
+	var tabs := HFlowContainer.new()
 	overseer[1].add_child(tabs)
-	for topic in ["City", "Food", "Labor", "Treasury", "Safety", "Monument"]:
+	for topic in ["City", "Food", "Labor", "Treasury", "Safety", "Monument", "Trade", "Religion"]:
 		var button: Button = game._button(topic, _choose_overseer.bind(topic))
 		button.add_theme_font_size_override("font_size", 12)
 		overseer_tabs[topic] = button
 		tabs.add_child(button)
+	overseer[1].add_child(overseer_controls)
+	overseer_controls.setup(game)
 	policy_panel = VBoxContainer.new()
 	policy_panel.add_theme_constant_override("separation", 6)
 	overseer[1].add_child(policy_panel)
@@ -460,19 +500,23 @@ func policy_acknowledged(reply: Dictionary) -> void:
 
 
 func dismiss_modal() -> bool:
+	if campaign_ui.panel.visible:
+		campaign_ui.dismiss()
+		return true
 	if construction_menu.visible:
 		construction_menu.hide()
 		return true
-	for modal: Control in [new_town_modal, overseer_modal, completion_modal, inspector_modal, help_modal]:
-		if modal.visible:
+	for modal: Control in [new_town_modal, overseer_modal, completion_modal, inspector_modal, help_modal, roadblock.panel]:
+		if modal != null and modal.visible:
 			modal.hide()
 			return true
 	return false
 
 
 func has_open_modal() -> bool:
-	for modal: Control in [new_town_modal, overseer_modal, completion_modal, inspector_modal, help_modal]:
-		if modal.visible: return true
+	if campaign_ui.panel != null and campaign_ui.panel.visible: return true
+	for modal: Control in [new_town_modal, overseer_modal, completion_modal, inspector_modal, help_modal, roadblock.panel]:
+		if modal != null and modal.visible: return true
 	return false
 
 
@@ -491,7 +535,9 @@ func update_city() -> void:
 		var entry: Dictionary = game._catalog_entry(game.active_tool)
 		build_info.text = "%s · %d Db" % [str(entry.get("label", game.active_tool.capitalize())), int(entry.get("cost", 0))]
 	if game.selected.is_empty(): inspector_modal.hide()
+	roadblock.sync()
 	if inspector_modal.visible:
+		storage_controls.bind(game.selected.get("building", {}))
 		var inspection_panel: Control = inspector_modal.get_child(0)
 		var height := clampf(170.0 + game.detail_label.get_minimum_size().y + (35 if repair_button.visible else 0), 270, 520)
 		inspection_panel.offset_top = -height * 0.5
@@ -505,11 +551,6 @@ func update_city() -> void:
 	for point: Vector2 in [visible_area.position, Vector2(visible_area.end.x, visible_area.position.y), visible_area.end, Vector2(visible_area.position.x, visible_area.end.y)]:
 		corners.append(game._tile_at(inverse * point))
 	minimap.update_city(game.state, corners)
-	for entry: Dictionary in game.state.get("building_catalog", []):
-		if price_labels.has(str(entry.kind)):
-			price_labels[str(entry.kind)].text = "%d Db" % int(entry.get("cost", 0))
-		if game.tool_buttons.has(str(entry.kind)):
-			game.tool_buttons[str(entry.kind)].tooltip_text = "%s · %d debens\n%d × %d tiles" % [str(entry.get("label", entry.kind)), int(entry.get("cost", 0)), int(entry.get("width", 1)), int(entry.get("height", 1))]
 	if overseer_modal.visible: _update_overseer()
 
 
@@ -520,9 +561,22 @@ func show_completion() -> void:
 
 func _update_overseer() -> void:
 	var s: Dictionary = game.state
+	overseer_controls.sync(overseer_topic)
 	policy_panel.visible = overseer_topic == "Treasury"
 	var lines: Array[String] = ["[b]" + overseer_topic + "[/b]", ""]
 	match overseer_topic:
+		"Trade":
+			lines.append("Prices shown per 100 units, purchase / sale.")
+			lines.append("Spent on imports: %d Db     Earned from exports: %d Db" % [int(s.get("import_spent",0)),int(s.get("export_earned",0))])
+			for r: Dictionary in s.get("resource_catalog", []):
+				var imports := int(s.get("resource_imported",{}).get(r.id,0))
+				var exports := int(s.get("resource_exported",{}).get(r.id,0))
+				if imports + exports > 0: lines.append("%s · %d imported · %d exported" % [r.label,imports,exports])
+		"Religion":
+			var moods: Array = s.get("favor", [])
+			for i in moods.size(): lines.append("%s · %d favor" % [["Osiris","Ra","Ptah","Seth","Bast"][i],int(moods[i])])
+			if s.has("festival"): lines.append("A festival for %s is being prepared." % s.festival.god)
+			else: lines.append("Festivals held: %d" % int(s.get("festivals_held",0)))
 		"City":
 			lines.append("Population: %d\nTreasury: %d debens\nGrain: %d\nYear %d · %s" % [int(s.get("population", 0)), int(s.get("treasury", 0)), int(s.get("grain", 0)), int(s.get("year", 1)), str(s.get("season", "Growing"))])
 			lines.append("\nFood in town: %d grain" % int(s.get("grain", 0)))
@@ -535,7 +589,7 @@ func _update_overseer() -> void:
 			lines.append("Available workers: %d\nEmployed: %d\nUnassigned: %d" % [int(s.get("workforce", 0)), int(s.get("employed", 0)), maxi(0, int(s.get("workforce", 0)) - int(s.get("employed", 0)))])
 			for b: Dictionary in s.get("buildings", []):
 				if int(b.get("workers_needed", 0)) > 0:
-					lines.append("%s: %d / %d workers" % [LABELS.get(str(b.kind), str(b.kind).capitalize()), int(b.get("workers", 0)), int(b.get("workers_needed", 0))])
+					lines.append("%s: %d / %d workers" % [labels.get(str(b.kind), str(b.kind).capitalize()), int(b.get("workers", 0)), int(b.get("workers_needed", 0))])
 		"Treasury":
 			lines.append("Treasury: %d debens\nIncome: %d\nExpenses: %d" % [int(s.get("treasury", 0)), int(s.get("income", 0)), int(s.get("expenses", 0))])
 			lines.append("Gold received: %d Db\nGold in transit: %d Db" % [int(s.get("gold_delivered", 0)), int(s.get("gold_in_transit", 0))])
@@ -546,13 +600,13 @@ func _update_overseer() -> void:
 			lines.append("Fires: %d\nCollapses: %d" % [int(s.get("fire_count", 0)), int(s.get("collapse_count", 0))])
 			for b: Dictionary in s.get("buildings", []):
 				if str(b.get("damaged", "")) != "" or int(b.get("fire_risk", 0)) >= 50 or int(b.get("collapse_risk", 0)) >= 50:
-					lines.append("%s (%d, %d): fire %d · collapse %d%s" % [LABELS.get(str(b.kind), str(b.kind).capitalize()), int(b.x), int(b.y), int(b.get("fire_risk", 0)), int(b.get("collapse_risk", 0)), " · needs repair" if str(b.get("damaged", "")) != "" else ""])
+					lines.append("%s (%d, %d): fire %d · collapse %d%s" % [labels.get(str(b.kind), str(b.kind).capitalize()), int(b.x), int(b.y), int(b.get("fire_risk", 0)), int(b.get("collapse_risk", 0)), " · needs repair" if str(b.get("damaged", "")) != "" else ""])
 			lines.append("\nFirehouse and architect patrols protect the roads they can reach. Inspect damaged buildings to repair them.")
 		"Monument":
 			lines.append("Mastaba progress: %d / %d" % [int(s.get("monument_progress", 0)), int(s.get("monument_goal", 64))])
 			for b: Dictionary in s.get("buildings", []):
 				if b.kind in ["claypit", "brickworks", "storageyard", "mastaba"]:
-					lines.append("%s: clay %d · straw %d · bricks %d" % [LABELS.get(str(b.kind), str(b.kind).capitalize()), int(b.get("clay", 0)), int(b.get("straw", 0)), int(b.get("bricks", 0))])
+					lines.append("%s: clay %d · straw %d · bricks %d" % [labels.get(str(b.kind), str(b.kind).capitalize()), int(b.get("clay", 0)), int(b.get("straw", 0)), int(b.get("bricks", 0))])
 				if b.kind == "mastaba":
 					lines.append("Crew: %d on site · %d en route · %d returning" % [int(b.get("crew_on_site", 0)), int(b.get("crew_en_route", 0)), int(b.get("crew_returning", 0))])
 					if not b.get("staging_access", false): lines.append("Workers cannot reach the staging area. Check the road access at the monument.")

@@ -1,0 +1,59 @@
+{
+  "name": "houses-nine",
+  "assets": [
+    [
+      "home_4",
+      "Common Shanty",
+      1,
+      86
+    ],
+    [
+      "home_5",
+      "Rough Cottage",
+      1,
+      86
+    ],
+    [
+      "home_6",
+      "Ordinary Cottage",
+      1,
+      86
+    ],
+    [
+      "home_7",
+      "Modest Homestead",
+      1,
+      86
+    ],
+    [
+      "home_8",
+      "Spacious Homestead",
+      1,
+      86
+    ],
+    [
+      "home_9",
+      "Modest Apartment",
+      1,
+      86
+    ],
+    [
+      "home_10",
+      "Spacious Apartment",
+      1,
+      86
+    ],
+    [
+      "home_11",
+      "Common Residence",
+      2,
+      168
+    ],
+    [
+      "home_12",
+      "Spacious Residence",
+      2,
+      168
+    ]
+  ]
+}

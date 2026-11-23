@@ -47,6 +47,8 @@ func (w *World) spawn(role, stage string, origin, target, source int64, route []
 	return true
 }
 func (w *World) produceAndConsume() {
+	w.produceGoods()
+	w.harvestFigs()
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
 		if b.Kind == "farm" && b.Damaged == "" {
@@ -76,7 +78,12 @@ func (w *World) produceAndConsume() {
 
 // Sellers traverse an entire road component and return, using deterministic DFS.
 // This is a provisional roaming policy, not a recovered Pharaoh junction rule.
-func (w World) patrol(start Point) []Point {
+func (w World) patrol(start Point) []Point { return w.patrolFor(start, "seller") }
+
+func (w World) patrolFor(start Point, role string) []Point {
+	if w.blockedStreet(start, role) {
+		return nil
+	}
 	roads := w.roadSet()
 	visited := map[Point]bool{}
 	route := []Point{start}
@@ -85,7 +92,7 @@ func (w World) patrol(start Point) []Point {
 		visited[p] = true
 		for _, d := range directions {
 			next := Point{p.X + d.X, p.Y + d.Y}
-			if roads[next] && !visited[next] {
+			if roads[next] && !visited[next] && !w.blockedStreet(next, role) {
 				route = append(route, next)
 				walk(next)
 				route = append(route, p)
@@ -139,7 +146,7 @@ func (w *World) dispatch() {
 				if target.Kind != "granary" || target.Workers < target.WorkersNeeded {
 					continue
 				}
-				free := target.StockCapacity - target.Stock - w.reservedSpace(target.ID)
+				free := w.ResourceFreeSpace(target.ID, "grain")
 				if free <= 0 {
 					continue
 				}
@@ -155,7 +162,7 @@ func (w *World) dispatch() {
 			}
 		case "bazaar":
 			if !w.active(b.ID, "buyer") {
-				free := b.StockCapacity - b.Stock - w.reservedSpace(b.ID)
+				free := w.ResourceFreeSpace(b.ID, "grain")
 				if free > 0 {
 					var sourceID int64
 					var best []Point
@@ -164,7 +171,7 @@ func (w *World) dispatch() {
 						if source.Kind != "granary" || source.Workers < source.WorkersNeeded {
 							continue
 						}
-						available := source.Stock - w.reservedStock(source.ID)
+						available := source.Stock - w.reservedResource(source.ID, "grain")
 						if available <= 0 {
 							continue
 						}
@@ -191,9 +198,14 @@ func (w *World) dispatch() {
 		}
 	}
 	w.dispatchMaterials()
+	w.dispatchPerformers()
 	w.dispatchServices()
+	w.dispatchFarmWorkers()
 	w.dispatchBuilders()
 	w.dispatchGold()
+	w.dispatchTrader()
+	w.dispatchGoods()
+	w.dispatchHunters()
 }
 func reverseJourney(walker *Walker, target int64, stage string) {
 	route := slices.Clone(walker.Route)
@@ -207,6 +219,31 @@ func reverseJourney(walker *Walker, target int64, stage string) {
 func (w *World) moveWalkers() {
 	remaining := make([]Walker, 0, len(w.Walkers))
 	for _, walker := range w.Walkers {
+		w.respectRoadblock(&walker)
+		if walker.Role == "trader" {
+			if w.advanceTrader(&walker) {
+				remaining = append(remaining, walker)
+			}
+			continue
+		}
+		if walker.Role == "farmworker" {
+			if w.advanceFarmWorker(&walker) {
+				remaining = append(remaining, walker)
+			}
+			continue
+		}
+		if walker.Role == "hunter" {
+			if w.advanceHunter(&walker) {
+				remaining = append(remaining, walker)
+			}
+			continue
+		}
+		if isGoodsRole(walker.Role) {
+			if w.advanceGoods(&walker) {
+				remaining = append(remaining, walker)
+			}
+			continue
+		}
 		if walker.Role == "builder" {
 			if w.advanceBuilder(&walker) {
 				remaining = append(remaining, walker)
@@ -218,14 +255,14 @@ func (w *World) moveWalkers() {
 			walker.X, walker.Y = p.X, p.Y
 			walker.Next++
 		}
-		if walker.Role == "firefighter" || walker.Role == "architect" || walker.Role == "taxcollector" {
+		if (walker.Role == "firefighter" || walker.Role == "architect" || walker.Role == "taxcollector" || walker.Role == "watercarrier" || walker.Role == "priest" || walker.Role == "entertainer" || slices.Contains(amenities, walker.Role)) && walker.Stage == "patrol" {
 			w.visitService(walker)
 		}
-		if walker.Role == "seller" {
+		if walker.Role == "seller" && walker.Stage == "patrol" {
 			position := Point{walker.X, walker.Y}
 			for i := range w.Buildings {
 				b := &w.Buildings[i]
-				if b.Kind != "hut" || b.Pop == 0 || !b.adjacent(position) {
+				if b.Kind != "hut" || b.Pop == 0 || !b.roadAccess(position) {
 					continue
 				}
 				b.MarketUntil = min(MaxTick, w.Tick+MarketDuration)
@@ -242,6 +279,12 @@ func (w *World) moveWalkers() {
 		}
 		target := w.building(walker.Target)
 		switch walker.Role {
+		case "performer":
+			if school := w.building(walker.Origin); school != nil && target.Damaged == "" {
+				if style := slices.Index(schools, school.Kind); style >= 0 {
+					target.ShowUntil[style] = min(MaxTick, w.Tick+MarketDuration)
+				}
+			}
 		case "immigrant":
 			w.Arrivals++
 			if target.Pop < target.Capacity {

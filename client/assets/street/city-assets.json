@@ -464,5 +464,761 @@
       1.0
     ],
     "label": "Gold delivery"
+  },
+  "temple_osiris": {
+    "id": "temple_osiris",
+    "label": "Temple to Osiris",
+    "path": "temple_osiris.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 252,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "temple_ra": {
+    "id": "temple_ra",
+    "label": "Temple to Ra",
+    "path": "temple_ra.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 252,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "temple_ptah": {
+    "id": "temple_ptah",
+    "label": "Temple to Ptah",
+    "path": "temple_ptah.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 252,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "temple_seth": {
+    "id": "temple_seth",
+    "label": "Temple to Seth",
+    "path": "temple_seth.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 252,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "temple_bast": {
+    "id": "temple_bast",
+    "label": "Temple to Bast",
+    "path": "temple_bast.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 252,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "shrine": {
+    "id": "shrine",
+    "label": "Shrine",
+    "path": "shrine.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 80,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "garden": {
+    "id": "garden",
+    "label": "Garden",
+    "path": "garden.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 88,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "plaza": {
+    "id": "plaza",
+    "label": "Plaza",
+    "path": "plaza.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 92,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "roadblock": {
+    "id": "roadblock",
+    "label": "Roadblock",
+    "path": "roadblock.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 90,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "barleyfarm": {
+    "id": "barleyfarm",
+    "label": "Barley farm",
+    "path": "barleyfarm.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 264,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "flaxfarm": {
+    "id": "flaxfarm",
+    "label": "Flax farm",
+    "path": "flaxfarm.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 264,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "reedgatherer": {
+    "id": "reedgatherer",
+    "label": "Reed gatherer",
+    "path": "reedgatherer.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 175,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "brewery": {
+    "id": "brewery",
+    "label": "Brewery",
+    "path": "brewery.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 175,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "papyrusmaker": {
+    "id": "papyrusmaker",
+    "label": "Papyrus maker",
+    "path": "papyrusmaker.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 175,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "potter": {
+    "id": "potter",
+    "label": "Potter",
+    "path": "potter.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 175,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "weaver": {
+    "id": "weaver",
+    "label": "Weaver",
+    "path": "weaver.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 175,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "huntinglodge": {
+    "id": "huntinglodge",
+    "label": "Hunting lodge",
+    "path": "huntinglodge.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 175,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "watersupply": {
+    "id": "watersupply",
+    "label": "Water supply",
+    "path": "watersupply.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 175,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_4": {
+    "id": "home_4",
+    "label": "Common Shanty",
+    "path": "home_4.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 86,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_5": {
+    "id": "home_5",
+    "label": "Rough Cottage",
+    "path": "home_5.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 86,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_6": {
+    "id": "home_6",
+    "label": "Ordinary Cottage",
+    "path": "home_6.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 86,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_7": {
+    "id": "home_7",
+    "label": "Modest Homestead",
+    "path": "home_7.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 86,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_8": {
+    "id": "home_8",
+    "label": "Spacious Homestead",
+    "path": "home_8.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 86,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_9": {
+    "id": "home_9",
+    "label": "Modest Apartment",
+    "path": "home_9.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 86,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_10": {
+    "id": "home_10",
+    "label": "Spacious Apartment",
+    "path": "home_10.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 86,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_11": {
+    "id": "home_11",
+    "label": "Common Residence",
+    "path": "home_11.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 168,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_12": {
+    "id": "home_12",
+    "label": "Spacious Residence",
+    "path": "home_12.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 168,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "apothecary": {
+    "id": "apothecary",
+    "label": "Apothecary",
+    "path": "apothecary.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 86,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "physician": {
+    "id": "physician",
+    "label": "Physician",
+    "path": "physician.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "dentist": {
+    "id": "dentist",
+    "label": "Dentist",
+    "path": "dentist.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 86,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "mortuary": {
+    "id": "mortuary",
+    "label": "Mortuary",
+    "path": "mortuary.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "scribalschool": {
+    "id": "scribalschool",
+    "label": "Scribal school",
+    "path": "scribalschool.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "library": {
+    "id": "library",
+    "label": "Library",
+    "path": "library.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "booth": {
+    "id": "booth",
+    "label": "Booth",
+    "path": "booth.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "jugglerschool": {
+    "id": "jugglerschool",
+    "label": "Juggler school",
+    "path": "jugglerschool.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "police": {
+    "id": "police",
+    "label": "Police station",
+    "path": "police.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 86,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "reedbed": {
+    "id": "reedbed",
+    "label": "Reeds",
+    "path": "reedbed.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 62,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "gazelle": {
+    "id": "gazelle",
+    "label": "Gazelle",
+    "path": "gazelle.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 36,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "sycamore": {
+    "id": "sycamore",
+    "label": "Sycamore",
+    "path": "sycamore.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 88,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "conservatory": {
+    "id": "conservatory",
+    "label": "Conservatory",
+    "path": "conservatory.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "danceschool": {
+    "id": "danceschool",
+    "label": "Dance school",
+    "path": "danceschool.png",
+    "footprint": [
+      4,
+      4
+    ],
+    "draw_width": 344,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "bandstand": {
+    "id": "bandstand",
+    "label": "Bandstand",
+    "path": "bandstand.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "pavilion": {
+    "id": "pavilion",
+    "label": "Pavilion",
+    "path": "pavilion.png",
+    "footprint": [
+      4,
+      4
+    ],
+    "draw_width": 344,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "senethouse": {
+    "id": "senethouse",
+    "label": "Senet house",
+    "path": "senethouse.png",
+    "footprint": [
+      4,
+      4
+    ],
+    "draw_width": 344,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "wrestling": {
+    "id": "wrestling",
+    "label": "Wrestling",
+    "path": "wrestling.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "festival_square": {
+    "id": "festival_square",
+    "label": "Festival square",
+    "path": "festival_square.png",
+    "footprint": [
+      5,
+      5
+    ],
+    "draw_width": 430,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "workcamp": {
+    "id": "workcamp",
+    "label": "Work camp",
+    "path": "workcamp.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "stonemasons": {
+    "id": "stonemasons",
+    "label": "Stonemasons\u2019 guild",
+    "path": "stonemasons.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "carpenters": {
+    "id": "carpenters",
+    "label": "Carpenters\u2019 guild",
+    "path": "carpenters.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "limestonequarry": {
+    "id": "limestonequarry",
+    "label": "Limestone quarry",
+    "path": "limestonequarry.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "sandstonequarry": {
+    "id": "sandstonequarry",
+    "label": "Sandstone quarry",
+    "path": "sandstonequarry.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "stonequarry": {
+    "id": "stonequarry",
+    "label": "Plain stone quarry",
+    "path": "stonequarry.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "granitequarry": {
+    "id": "granitequarry",
+    "label": "Granite quarry",
+    "path": "granitequarry.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "woodcutter": {
+    "id": "woodcutter",
+    "label": "Woodcutter",
+    "path": "woodcutter.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
   }
 }

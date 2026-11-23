@@ -1,6 +1,9 @@
 package sandbox
 
-import "errors"
+import (
+	"errors"
+	"slices"
+)
 
 func (w World) entry() Point {
 	if w.EntryPoint != nil {
@@ -31,6 +34,9 @@ func (w *World) addKingdomRoad() {
 // scan, but remain an inference pending the original executable experiment.
 // This affects road access, not the independent reach of service walkers.
 func (b Building) roadAccess(p Point) bool {
+	if slices.Contains(venues, b.Kind) && b.contains(p) {
+		return true
+	}
 	if b.Kind == "hut" {
 		return !b.contains(p) && nearBuilding(p, b, HousingRoadReach)
 	}
@@ -74,6 +80,9 @@ func (w *World) BuildRoads(path []Point) error {
 		}
 		if occupied[p] {
 			return errors.New("the road path crosses a building")
+		}
+		if slices.Contains(w.HuntingGrounds, p) {
+			return errors.New("leave the hunting grounds open for wildlife")
 		}
 		roads[p] = true
 		added = append(added, p)

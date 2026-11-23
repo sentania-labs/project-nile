@@ -10,6 +10,9 @@ import (
 	"errors"
 	"fmt"
 	"slices"
+
+	"github.com/sentania-labs/project-nile/internal/campaign"
+	"reflect"
 )
 
 const Size = 32
@@ -17,7 +20,7 @@ const MaxTick int64 = 1<<53 - 1
 const WellReach = 2
 const HousingRoadReach = 2
 const MigrationInterval = 8
-const SnapshotVersion = 6
+const SnapshotVersion = 7
 const YearTicks int64 = 240
 const SeasonOffset int64 = 144
 const ConsumptionInterval int64 = 48
@@ -33,50 +36,61 @@ var Entry = Point{6, 15}
 var directions = []Point{{0, -1}, {1, 0}, {0, 1}, {-1, 0}}
 
 type Building struct {
-	ID                   int64  `json:"id"`
-	Kind                 string `json:"kind"`
-	X                    int    `json:"x"`
-	Y                    int    `json:"y"`
-	Stock                int    `json:"stock"`
-	Pop                  int    `json:"pop"`
-	Tier                 int    `json:"tier"`
-	Water                bool   `json:"water"`
-	Capacity             int    `json:"capacity"`
-	TierName             string `json:"tier_name"`
-	Connected            bool   `json:"connected"`
-	Width                int    `json:"width"`
-	Height               int    `json:"height"`
-	StockCapacity        int    `json:"stock_capacity"`
-	Workers              int    `json:"workers"`
-	WorkersNeeded        int    `json:"workers_needed"`
-	Food                 bool   `json:"food"`
-	Market               bool   `json:"market"`
-	MarketUntil          int64  `json:"market_until"`
-	Work                 int    `json:"work"`
-	WorkCapacity         int    `json:"work_capacity"`
-	Clay                 int    `json:"clay"`
-	Straw                int    `json:"straw"`
-	Bricks               int    `json:"bricks"`
-	Gold                 int    `json:"gold"`
-	GoldCapacity         int    `json:"gold_capacity"`
-	FireRisk             int    `json:"fire_risk"`
-	CollapseRisk         int    `json:"collapse_risk"`
-	Damaged              string `json:"damaged"`
-	FireUntil            int64  `json:"fire_until"`
-	CollapseUntil        int64  `json:"collapse_until"`
-	TaxUntil             int64  `json:"tax_until"`
-	FireCovered          bool   `json:"fire_covered"`
-	CollapseCovered      bool   `json:"collapse_covered"`
-	TaxCovered           bool   `json:"tax_covered"`
-	ConstructionDone     int    `json:"construction_done"`
-	ConstructionRequired int    `json:"construction_required"`
-	Stage                string `json:"stage"`
-	RepairCost           int64  `json:"repair_cost"`
-	CrewOnSite           int    `json:"crew_on_site"`
-	CrewEnRoute          int    `json:"crew_en_route"`
-	CrewReturning        int    `json:"crew_returning"`
-	StagingAccess        bool   `json:"staging_access"`
-	LastTax              int64  `json:"last_tax"`
+	ServiceUntil         [7]int64          `json:"service_until"`
+	DiseaseRisk          int               `json:"disease_risk"`
+	ShowUntil            [3]int64          `json:"show_until"`
+	EntertainmentUntil   [3]int64          `json:"entertainment_until"`
+	GodUntil             [5]int64          `json:"god_until"`
+	Desirability         int               `json:"desirability"`
+	Goods                map[string]int    `json:"goods,omitempty"`
+	StorageOrders        map[string]string `json:"storage_orders,omitempty"`
+	Inventories          map[string]int    `json:"inventories"`
+	ResourceLimits       map[string]int    `json:"resource_limits"`
+	ID                   int64             `json:"id"`
+	Kind                 string            `json:"kind"`
+	X                    int               `json:"x"`
+	Y                    int               `json:"y"`
+	Stock                int               `json:"stock"`
+	Pop                  int               `json:"pop"`
+	Tier                 int               `json:"tier"`
+	Water                bool              `json:"water"`
+	WaterUntil           int64             `json:"water_until"`
+	Capacity             int               `json:"capacity"`
+	TierName             string            `json:"tier_name"`
+	Connected            bool              `json:"connected"`
+	Width                int               `json:"width"`
+	Height               int               `json:"height"`
+	StockCapacity        int               `json:"stock_capacity"`
+	Workers              int               `json:"workers"`
+	WorkersNeeded        int               `json:"workers_needed"`
+	Food                 bool              `json:"food"`
+	Market               bool              `json:"market"`
+	MarketUntil          int64             `json:"market_until"`
+	Work                 int               `json:"work"`
+	WorkCapacity         int               `json:"work_capacity"`
+	Clay                 int               `json:"clay"`
+	Straw                int               `json:"straw"`
+	Bricks               int               `json:"bricks"`
+	Gold                 int               `json:"gold"`
+	GoldCapacity         int               `json:"gold_capacity"`
+	FireRisk             int               `json:"fire_risk"`
+	CollapseRisk         int               `json:"collapse_risk"`
+	Damaged              string            `json:"damaged"`
+	FireUntil            int64             `json:"fire_until"`
+	CollapseUntil        int64             `json:"collapse_until"`
+	TaxUntil             int64             `json:"tax_until"`
+	FireCovered          bool              `json:"fire_covered"`
+	CollapseCovered      bool              `json:"collapse_covered"`
+	TaxCovered           bool              `json:"tax_covered"`
+	ConstructionDone     int               `json:"construction_done"`
+	ConstructionRequired int               `json:"construction_required"`
+	Stage                string            `json:"stage"`
+	RepairCost           int64             `json:"repair_cost"`
+	CrewOnSite           int               `json:"crew_on_site"`
+	CrewEnRoute          int               `json:"crew_en_route"`
+	CrewReturning        int               `json:"crew_returning"`
+	StagingAccess        bool              `json:"staging_access"`
+	LastTax              int64             `json:"last_tax"`
 }
 type Walker struct {
 	ID         int64   `json:"id"`
@@ -95,42 +109,63 @@ type Walker struct {
 	ShiftUntil int64   `json:"shift_until"`
 }
 type World struct {
-	Grassland      []Point    `json:"grassland,omitempty"`
-	OreRock        []Point    `json:"ore_rock,omitempty"`
-	GoldProduced   int64      `json:"gold_produced"`
-	GoldDelivered  int64      `json:"gold_delivered"`
-	LegacyTaxes    bool       `json:"legacy_taxes,omitempty"`
-	EntryPoint     *Point     `json:"entry,omitempty"`
-	ExitPoint      *Point     `json:"exit,omitempty"`
-	KingdomRoad    []Point    `json:"kingdom_road,omitempty"`
-	Tick           int64      `json:"tick"`
-	Roads          []Point    `json:"roads"`
-	Buildings      []Building `json:"buildings"`
-	Walkers        []Walker   `json:"walkers"`
-	NextID         int64      `json:"next_id"`
-	Arrivals       int64      `json:"arrivals"`
-	Version        int        `json:"version"`
-	Departures     int64      `json:"departures"`
-	GrainProduced  int64      `json:"grain_produced"`
-	GrainConsumed  int64      `json:"grain_consumed"`
-	Treasury       int64      `json:"treasury"`
-	Income         int64      `json:"income"`
-	Expenses       int64      `json:"expenses"`
-	LastIncome     int64      `json:"last_income"`
-	LastWages      int64      `json:"last_wages"`
-	BudgetEnabled  bool       `json:"budget_enabled"`
-	HazardsEnabled bool       `json:"hazards_enabled"`
-	FireCount      int        `json:"fire_count"`
-	CollapseCount  int        `json:"collapse_count"`
-	ClayProduced   int64      `json:"clay_produced"`
-	ClayConsumed   int64      `json:"clay_consumed"`
-	StrawProduced  int64      `json:"straw_produced"`
-	StrawConsumed  int64      `json:"straw_consumed"`
-	BricksProduced int64      `json:"bricks_produced"`
-	BricksConsumed int64      `json:"bricks_consumed"`
-	TaxRate        int        `json:"tax_rate"`
-	WageRate       int        `json:"wage_rate"`
-	LaborPriority  string     `json:"labor_priority"`
+	Festival         *Festival              `json:"festival,omitempty"`
+	LastFestival     [5]int64               `json:"last_festival"`
+	FestivalsHeld    int64                  `json:"festivals_held"`
+	TradeOpened      bool                   `json:"trade_opened,omitempty"`
+	TradePolicies    map[string]TradePolicy `json:"trade_policies,omitempty"`
+	ResourceImported map[string]int64       `json:"resource_imported,omitempty"`
+	ResourceExported map[string]int64       `json:"resource_exported,omitempty"`
+	ImportSpent      int64                  `json:"import_spent,omitempty"`
+	ExportEarned     int64                  `json:"export_earned,omitempty"`
+	TradeUsed        map[string]int         `json:"trade_used,omitempty"`
+	TradeYear        int64                  `json:"trade_year,omitempty"`
+	TradeCursor      int                    `json:"trade_cursor,omitempty"`
+	NextTraderTick   int64                  `json:"next_trader_tick,omitempty"`
+	DiseaseDeaths    int64                  `json:"disease_deaths"`
+	Favor            [5]int                 `json:"favor"`
+	RoadFeatures     []RoadFeature          `json:"road_features,omitempty"`
+	Campaign         *campaign.State        `json:"campaign,omitempty"`
+	HuntingGrounds   []Point                `json:"hunting_grounds,omitempty"`
+	GoodsProduced    map[string]int64       `json:"goods_produced,omitempty"`
+	GoodsConsumed    map[string]int64       `json:"goods_consumed,omitempty"`
+	ReedBeds         []Point                `json:"reed_beds,omitempty"`
+	Grassland        []Point                `json:"grassland,omitempty"`
+	OreRock          []Point                `json:"ore_rock,omitempty"`
+	GoldProduced     int64                  `json:"gold_produced"`
+	GoldDelivered    int64                  `json:"gold_delivered"`
+	LegacyTaxes      bool                   `json:"legacy_taxes,omitempty"`
+	EntryPoint       *Point                 `json:"entry,omitempty"`
+	ExitPoint        *Point                 `json:"exit,omitempty"`
+	KingdomRoad      []Point                `json:"kingdom_road,omitempty"`
+	Tick             int64                  `json:"tick"`
+	Roads            []Point                `json:"roads"`
+	Buildings        []Building             `json:"buildings"`
+	Walkers          []Walker               `json:"walkers"`
+	NextID           int64                  `json:"next_id"`
+	Arrivals         int64                  `json:"arrivals"`
+	Version          int                    `json:"version"`
+	Departures       int64                  `json:"departures"`
+	GrainProduced    int64                  `json:"grain_produced"`
+	GrainConsumed    int64                  `json:"grain_consumed"`
+	Treasury         int64                  `json:"treasury"`
+	Income           int64                  `json:"income"`
+	Expenses         int64                  `json:"expenses"`
+	LastIncome       int64                  `json:"last_income"`
+	LastWages        int64                  `json:"last_wages"`
+	BudgetEnabled    bool                   `json:"budget_enabled"`
+	HazardsEnabled   bool                   `json:"hazards_enabled"`
+	FireCount        int                    `json:"fire_count"`
+	CollapseCount    int                    `json:"collapse_count"`
+	ClayProduced     int64                  `json:"clay_produced"`
+	ClayConsumed     int64                  `json:"clay_consumed"`
+	StrawProduced    int64                  `json:"straw_produced"`
+	StrawConsumed    int64                  `json:"straw_consumed"`
+	BricksProduced   int64                  `json:"bricks_produced"`
+	BricksConsumed   int64                  `json:"bricks_consumed"`
+	TaxRate          int                    `json:"tax_rate"`
+	WageRate         int                    `json:"wage_rate"`
+	LaborPriority    string                 `json:"labor_priority"`
 }
 
 // Rendering needs positions and job status, not every persisted route vertex.
@@ -149,62 +184,82 @@ type WalkerView struct {
 	ShiftUntil int64  `json:"shift_until"`
 }
 type View struct {
-	Grassland          []Point        `json:"grassland"`
-	OreRock            []Point        `json:"ore_rock"`
-	Gold               int            `json:"gold"`
-	GoldInTransit      int            `json:"gold_in_transit"`
-	GoldProduced       int64          `json:"gold_produced"`
-	GoldDelivered      int64          `json:"gold_delivered"`
-	TaxIncome          int64          `json:"tax_income"`
-	PalaceActive       bool           `json:"palace_active"`
-	TaxesEnabled       bool           `json:"taxes_enabled"`
-	Tick               int64          `json:"tick"`
-	Roads              []Point        `json:"roads"`
-	Buildings          []Building     `json:"buildings"`
-	Walkers            []WalkerView   `json:"walkers"`
-	Population         int            `json:"population"`
-	Grain              int            `json:"grain"`
-	Entry              Point          `json:"entry"`
-	Exit               *Point         `json:"exit,omitempty"`
-	KingdomRoad        []Point        `json:"kingdom_road"`
-	HousingRoadReach   int            `json:"housing_road_reach"`
-	GrainProduced      int64          `json:"grain_produced"`
-	GrainConsumed      int64          `json:"grain_consumed"`
-	Departures         int64          `json:"departures"`
-	Season             string         `json:"season"`
-	FloodLevel         float64        `json:"flood_level"`
-	Year               int64          `json:"year"`
-	HarvestIn          int64          `json:"harvest_in"`
-	Workforce          int            `json:"workforce"`
-	Employed           int            `json:"employed"`
-	Treasury           int64          `json:"treasury"`
-	Income             int64          `json:"income"`
-	Expenses           int64          `json:"expenses"`
-	LastIncome         int64          `json:"last_income"`
-	LastWages          int64          `json:"last_wages"`
-	FireCount          int            `json:"fire_count"`
-	CollapseCount      int            `json:"collapse_count"`
-	Clay               int            `json:"clay"`
-	Straw              int            `json:"straw"`
-	Bricks             int            `json:"bricks"`
-	ClayProduced       int64          `json:"clay_produced"`
-	ClayConsumed       int64          `json:"clay_consumed"`
-	StrawProduced      int64          `json:"straw_produced"`
-	StrawConsumed      int64          `json:"straw_consumed"`
-	BricksProduced     int64          `json:"bricks_produced"`
-	BricksConsumed     int64          `json:"bricks_consumed"`
-	MonumentProgress   int            `json:"monument_progress"`
-	MonumentGoal       int            `json:"monument_goal"`
-	BuildingCatalog    []CatalogEntry `json:"building_catalog"`
-	TaxRate            int            `json:"tax_rate"`
-	WageRate           int            `json:"wage_rate"`
-	LaborPriority      string         `json:"labor_priority"`
-	PotentialWorkforce int            `json:"potential_workforce"`
-	MigrationInterval  int64          `json:"migration_interval"`
+	Festival           *Festival              `json:"festival,omitempty"`
+	LastFestival       [5]int64               `json:"last_festival"`
+	FestivalsHeld      int64                  `json:"festivals_held"`
+	TradeRoutes        []TradeRouteView       `json:"trade_routes"`
+	TradePolicies      map[string]TradePolicy `json:"trade_policies"`
+	TradePrices        []TradePrice           `json:"trade_prices"`
+	ResourceImported   map[string]int64       `json:"resource_imported"`
+	ResourceExported   map[string]int64       `json:"resource_exported"`
+	ImportSpent        int64                  `json:"import_spent"`
+	ExportEarned       int64                  `json:"export_earned"`
+	DiseaseDeaths      int64                  `json:"disease_deaths"`
+	Favor              [5]int                 `json:"favor"`
+	RoadFeatures       []RoadFeature          `json:"road_features,omitempty"`
+	Campaign           *campaign.View         `json:"campaign,omitempty"`
+	HuntingGrounds     []Point                `json:"hunting_grounds"`
+	ResourceTotals     map[string]int         `json:"resource_totals"`
+	ResourceProduced   map[string]int64       `json:"resource_produced"`
+	ResourceConsumed   map[string]int64       `json:"resource_consumed"`
+	ResourceCatalog    []ResourceInfo         `json:"resource_catalog"`
+	ReedBeds           []Point                `json:"reed_beds"`
+	Grassland          []Point                `json:"grassland"`
+	OreRock            []Point                `json:"ore_rock"`
+	Gold               int                    `json:"gold"`
+	GoldInTransit      int                    `json:"gold_in_transit"`
+	GoldProduced       int64                  `json:"gold_produced"`
+	GoldDelivered      int64                  `json:"gold_delivered"`
+	TaxIncome          int64                  `json:"tax_income"`
+	PalaceActive       bool                   `json:"palace_active"`
+	TaxesEnabled       bool                   `json:"taxes_enabled"`
+	Tick               int64                  `json:"tick"`
+	Roads              []Point                `json:"roads"`
+	Buildings          []Building             `json:"buildings"`
+	Walkers            []WalkerView           `json:"walkers"`
+	Population         int                    `json:"population"`
+	Grain              int                    `json:"grain"`
+	Entry              Point                  `json:"entry"`
+	Exit               *Point                 `json:"exit,omitempty"`
+	KingdomRoad        []Point                `json:"kingdom_road"`
+	HousingRoadReach   int                    `json:"housing_road_reach"`
+	GrainProduced      int64                  `json:"grain_produced"`
+	GrainConsumed      int64                  `json:"grain_consumed"`
+	Departures         int64                  `json:"departures"`
+	Season             string                 `json:"season"`
+	FloodLevel         float64                `json:"flood_level"`
+	Year               int64                  `json:"year"`
+	HarvestIn          int64                  `json:"harvest_in"`
+	Workforce          int                    `json:"workforce"`
+	Employed           int                    `json:"employed"`
+	Treasury           int64                  `json:"treasury"`
+	Income             int64                  `json:"income"`
+	Expenses           int64                  `json:"expenses"`
+	LastIncome         int64                  `json:"last_income"`
+	LastWages          int64                  `json:"last_wages"`
+	FireCount          int                    `json:"fire_count"`
+	CollapseCount      int                    `json:"collapse_count"`
+	Clay               int                    `json:"clay"`
+	Straw              int                    `json:"straw"`
+	Bricks             int                    `json:"bricks"`
+	ClayProduced       int64                  `json:"clay_produced"`
+	ClayConsumed       int64                  `json:"clay_consumed"`
+	StrawProduced      int64                  `json:"straw_produced"`
+	StrawConsumed      int64                  `json:"straw_consumed"`
+	BricksProduced     int64                  `json:"bricks_produced"`
+	BricksConsumed     int64                  `json:"bricks_consumed"`
+	MonumentProgress   int                    `json:"monument_progress"`
+	MonumentGoal       int                    `json:"monument_goal"`
+	BuildingCatalog    []CatalogEntry         `json:"building_catalog"`
+	TaxRate            int                    `json:"tax_rate"`
+	WageRate           int                    `json:"wage_rate"`
+	LaborPriority      string                 `json:"labor_priority"`
+	PotentialWorkforce int                    `json:"potential_workforce"`
+	MigrationInterval  int64                  `json:"migration_interval"`
 }
 
 func neighborhood() World {
-	w := World{Roads: []Point{}, Buildings: []Building{}, Walkers: []Walker{}, NextID: 1, Version: SnapshotVersion, TaxRate: 2, WageRate: 1, LaborPriority: "balanced"}
+	w := World{Favor: neutralFavor(), Roads: []Point{}, Buildings: []Building{}, Walkers: []Walker{}, NextID: 1, Version: SnapshotVersion, TaxRate: 2, WageRate: 1, LaborPriority: "balanced"}
 	for x := 10; x <= 22; x++ {
 		w.Roads = append(w.Roads, Point{x, 10}, Point{x, 20})
 	}
@@ -267,7 +322,7 @@ func stockCapacity(kind string) int {
 	switch kind {
 	case "farm":
 		return 48
-	case "granary":
+	case "granary", "storageyard":
 		return 192
 	case "bazaar":
 		return 48
@@ -374,6 +429,7 @@ func (w World) population() int {
 	return n
 }
 func (w *World) refresh() {
+	scores := w.desirabilityMap()
 	roads := w.roadSet()
 	wells := map[Point]bool{}
 	for _, b := range w.Buildings {
@@ -401,6 +457,7 @@ func (w *World) refresh() {
 		b := &w.Buildings[i]
 		b.Width, b.Height = dimensions(b.Kind)
 		b.StockCapacity = stockCapacity(b.Kind)
+		w.refreshGoods(b)
 		b.WorkersNeeded = requiredWorkers(b.Kind)
 		b.Workers = 0
 		b.RepairCost = max(int64(5), constructionCost(b.Kind)/2)
@@ -430,9 +487,9 @@ func (w *World) refresh() {
 		}
 		b.CrewOnSite, b.CrewEnRoute, b.CrewReturning = 0, 0, 0
 		b.StagingAccess = b.Kind == "mastaba" && b.Connected
-		if b.Kind == "mastaba" {
+		if b.Kind == "mastaba" || b.Kind == "figfarm" {
 			for _, walker := range w.Walkers {
-				if walker.Role == "builder" && walker.Source == b.ID {
+				if (walker.Role == "builder" || walker.Role == "farmworker") && walker.Source == b.ID {
 					switch walker.Stage {
 					case "commute":
 						b.CrewEnRoute++
@@ -444,9 +501,10 @@ func (w *World) refresh() {
 				}
 			}
 		}
-		b.Water = false
-		b.Food = b.Kind == "hut" && b.Stock > 0
+		b.Water = b.Kind == "hut" && b.WaterUntil > w.Tick
+		b.Food = b.Kind == "hut" && (b.Stock > 0 || inventory(*b, "meat") > 0 || inventory(*b, "figs") > 0)
 		b.Market = b.Kind == "hut" && b.MarketUntil > w.Tick
+		previousTier := b.Tier
 		b.Tier, b.Capacity, b.TierName = 0, 0, ""
 		if b.Kind != "hut" {
 			continue
@@ -459,13 +517,10 @@ func (w *World) refresh() {
 				}
 			}
 		}
-		b.Capacity, b.TierName = 5, "Crude Hut"
-		if b.Pop > 0 && b.Water {
-			b.Tier, b.Capacity, b.TierName = 1, 7, "Sturdy Hut"
-			if b.Food && b.Market {
-				b.Tier, b.Capacity, b.TierName = 2, 9, "Meager Shanty"
-			}
+		if valid(b.point()) {
+			b.Desirability = scores[b.Y][b.X]
 		}
+		w.refreshHome(b, previousTier)
 		if b.Damaged != "" {
 			b.Tier = 0
 			b.Capacity = 0
@@ -524,7 +579,7 @@ func (w *World) clear(p Point) error {
 		if b.Pop > 0 {
 			return errors.New("this home has residents")
 		}
-		if b.Stock > 0 || b.Clay > 0 || b.Straw > 0 || b.Bricks > 0 || b.Gold > 0 {
+		if w.hasInventory(b) {
 			return errors.New("this building still contains goods")
 		}
 		for _, walker := range w.Walkers {
@@ -546,7 +601,7 @@ func (w *World) ZoneHousing(a, b Point) error {
 	for y := max(0, min(a.Y, b.Y)); y <= min(Size-1, max(a.Y, b.Y)); y++ {
 		for x := max(6, min(a.X, b.X)); x <= min(Size-1, max(a.X, b.X)); x++ {
 			p := Point{x, y}
-			if !occupied[p] {
+			if !occupied[p] && !slices.Contains(w.HuntingGrounds, p) && !w.offRoadReserved(p) {
 				plots = append(plots, p)
 			}
 		}
@@ -575,11 +630,22 @@ func (w *World) ZoneHousing(a, b Point) error {
 	return nil
 }
 func (w *World) Build(kind string, x, y int) error {
+	if !w.Campaign.Allows(kind) {
+		return errors.New("this building has not opened in the current mission")
+	}
 	p := Point{x, y}
 	if !valid(p) {
 		return errors.New("choose dry land inside the 32 by 32 map")
 	}
+	if kind == "roadblock" || kind == "plaza" {
+		return w.buildRoadFeature(kind, p)
+	}
 	if kind == "clear" {
+		if i := w.roadFeature(p); i >= 0 {
+			w.RoadFeatures = slices.Delete(w.RoadFeatures, i, i+1)
+			w.refresh()
+			return nil
+		}
 		return w.clear(p)
 	}
 	if kind != "road" && !validKind(kind) {
@@ -588,19 +654,44 @@ func (w *World) Build(kind string, x, y int) error {
 	width, height := dimensions(kind)
 	candidate := Building{ID: w.NextID, Kind: kind, X: x, Y: y, Width: width, Height: height}
 	occupied := w.occupied()
+	if err := w.venuePlacement(candidate); err != nil {
+		return err
+	}
+	if slices.Contains(venues, kind) {
+		for _, road := range w.Roads {
+			delete(occupied, road)
+		}
+		for _, old := range w.Buildings {
+			for _, p := range old.tiles() {
+				occupied[p] = true
+			}
+		}
+	}
 	for _, tile := range candidate.tiles() {
 		if !valid(tile) {
 			return errors.New("the entire building must fit on dry land")
 		}
+		if kind != "road" && w.offRoadReserved(tile) {
+			return errors.New("wait until the worker returns before building on this path")
+		}
 		if occupied[tile] {
 			return errors.New("the building footprint overlaps an occupied tile")
 		}
-		if (kind == "farm" || kind == "claypit") && tile.X > 9 {
+		if slices.Contains(w.HuntingGrounds, tile) {
+			return errors.New("leave the hunting grounds open for wildlife")
+		}
+		if (kind == "farm" || kind == "figfarm" || kind == "claypit") && tile.X > 9 {
 			return errors.New("this building must fit in the fertile strip beside the Nile")
 		}
 	}
+	if err := w.goodsPlacement(candidate); err != nil {
+		return err
+	}
 	if err := w.resourcePlacement(candidate); err != nil {
 		return err
+	}
+	if kind == "watersupply" && !w.palaceGroundwater(candidate) {
+		return errors.New("a Water Supply needs groundwater beneath its footprint")
 	}
 	if w.BudgetEnabled && w.Treasury < constructionCost(kind) {
 		return errors.New("not enough treasury for this construction")
@@ -633,15 +724,20 @@ func (w *World) Step(ticks int) error {
 	}
 	for range ticks {
 		w.Tick++
+		w.resetTradeYear()
 		w.moveWalkers()
 		w.refresh()
 		w.produceAndConsume()
 		w.cityTick()
+		w.healthTick()
 		w.refresh()
 		if w.Tick%MigrationInterval == 0 {
 			w.dispatch()
 			w.refresh()
 		}
+		w.religionTick()
+		w.festivalTick()
+		w.campaignTick()
 	}
 	return nil
 }
@@ -657,7 +753,7 @@ func (w World) floodLevel() float64 {
 	return min(float64(phase)/12, 1, float64(48-phase)/24)
 }
 func (w World) View() View {
-	v := View{Tick: w.Tick, Roads: w.Roads, Buildings: w.Buildings, Walkers: []WalkerView{}, Entry: w.entry(), Exit: w.ExitPoint, KingdomRoad: append([]Point{}, w.KingdomRoad...), HousingRoadReach: HousingRoadReach, FloodLevel: w.floodLevel(), Population: w.population(), GrainProduced: w.GrainProduced, GrainConsumed: w.GrainConsumed, Departures: w.Departures, Year: (w.Tick+SeasonOffset)/YearTicks + 1, HarvestIn: (192 - w.phase() + YearTicks) % YearTicks}
+	v := View{Festival: w.Festival, LastFestival: w.LastFestival, FestivalsHeld: w.FestivalsHeld, DiseaseDeaths: w.DiseaseDeaths, Favor: w.Favor, Tick: w.Tick, Roads: w.Roads, Buildings: w.Buildings, Walkers: []WalkerView{}, Entry: w.entry(), Exit: w.ExitPoint, KingdomRoad: append([]Point{}, w.KingdomRoad...), HousingRoadReach: HousingRoadReach, FloodLevel: w.floodLevel(), Population: w.population(), GrainProduced: w.GrainProduced, GrainConsumed: w.GrainConsumed, Departures: w.Departures, Year: (w.Tick+SeasonOffset)/YearTicks + 1, HarvestIn: (192 - w.phase() + YearTicks) % YearTicks}
 	v.Season = "Harvest"
 	if w.phase() < 48 {
 		v.Season = "Inundation"
@@ -670,15 +766,19 @@ func (w World) View() View {
 	}
 	for _, walker := range w.Walkers {
 		v.Walkers = append(v.Walkers, WalkerView{ID: walker.ID, X: walker.X, Y: walker.Y, Cargo: walker.Cargo, Role: walker.Role, Target: walker.Target, Origin: walker.Origin, Source: walker.Source, Stage: walker.Stage, Resource: walker.Resource, ShiftUntil: walker.ShiftUntil})
-		if walker.Resource == "" || walker.Resource == "grain" {
+		if walker.Role != "trader" && (walker.Resource == "" || walker.Resource == "grain") {
 			v.Grain += walker.Cargo
 		}
 	}
 	v.Workforce = w.availableWorkforce()
 	v.PotentialWorkforce = v.Population / 2
 	v.MigrationInterval = w.migrationInterval()
+	v.RoadFeatures = w.RoadFeatures
 	w.cityView(&v)
 	w.miningView(&v)
+	w.campaignView(&v)
+	w.goodsView(&v)
+	w.tradeView(&v)
 	return v
 }
 func (w World) Hash() string {
@@ -690,7 +790,18 @@ func (w *World) upgrade() error {
 	if w.Version == SnapshotVersion {
 		return nil
 	}
+	if w.Version < SnapshotVersion {
+		w.Favor = neutralFavor()
+	}
+	if w.Version == 6 {
+		w.Version = SnapshotVersion
+		w.addGoodsTerrain()
+		w.addHuntingGrounds()
+		w.refresh()
+		return nil
+	}
 	if w.Version >= 0 && w.Version <= 5 {
+		w.addGoodsTerrain()
 		// Terrain is added only to empty candidate tiles. Existing tax flows
 		// continue until a legacy city constructs its first Palace.
 		w.addResourceTerrain()
@@ -739,10 +850,33 @@ func (w *World) upgrade() error {
 	return nil
 }
 func (w World) Validate() error {
+	if err := w.validateRoadFeatures(); err != nil {
+		return err
+	}
+	if err := w.validateCampaign(); err != nil {
+		return err
+	}
+	for _, mood := range w.Favor {
+		if mood < 0 || mood > 100 {
+			return errors.New("invalid divine favor")
+		}
+	}
+	if w.Festival != nil && (slices.Index(gods, w.Festival.God) < 0 || w.Festival.Size < 1 || w.Festival.Size > 3 || w.Festival.Due < 1 || w.Festival.Due > MaxTick) {
+		return errors.New("invalid festival plan")
+	}
+	if w.DiseaseDeaths < 0 || w.DiseaseDeaths > w.Departures || w.FestivalsHeld < 0 {
+		return errors.New("invalid city history")
+	}
 	if w.Version != SnapshotVersion || w.Tick < 0 || w.Tick > MaxTick || w.NextID < 1 || w.NextID > MaxTick || w.Arrivals < 0 || w.Departures < 0 || w.GrainProduced < 0 || w.GrainConsumed < 0 || w.Roads == nil || w.Buildings == nil || w.Walkers == nil {
 		return errors.New("invalid world header")
 	}
 	if err := w.validateMapAccess(); err != nil {
+		return err
+	}
+	if err := w.validateTrade(); err != nil {
+		return err
+	}
+	if err := w.validateGoods(); err != nil {
 		return err
 	}
 	if err := w.validateMining(); err != nil {
@@ -752,6 +886,8 @@ func (w World) Validate() error {
 	for _, p := range w.OreRock {
 		occupied[p] = true
 	}
+	buildingFootprints := map[Point]bool{}
+	venueRoads := w.roadSet()
 	ids := map[int64]bool{}
 	for _, p := range w.Roads {
 		if !valid(p) || occupied[p] {
@@ -765,17 +901,18 @@ func (w World) Validate() error {
 			return errors.New("invalid building")
 		}
 		for _, p := range b.tiles() {
-			if !valid(p) || occupied[p] || ((b.Kind == "farm" || b.Kind == "claypit") && p.X > 9) {
+			if !valid(p) || buildingFootprints[p] || (occupied[p] && !(slices.Contains(venues, b.Kind) && venueRoads[p])) || ((b.Kind == "farm" || b.Kind == "figfarm" || b.Kind == "claypit") && p.X > 9) {
 				return errors.New("invalid building footprint")
 			}
 			occupied[p] = true
+			buildingFootprints[p] = true
 		}
 		ids[b.ID] = true
 	}
 	if int64(w.population()) != w.Arrivals-w.Departures {
 		return errors.New("population does not match arrivals and departures")
 	}
-	if int64(w.View().Grain)+w.GrainConsumed != w.GrainProduced {
+	if int64(w.View().Grain)+w.GrainConsumed+w.ResourceExported["grain"] != w.GrainProduced+w.ResourceImported["grain"] {
 		return errors.New("grain conservation failed")
 	}
 	derived := w
@@ -785,7 +922,7 @@ func (w World) Validate() error {
 		return errors.New("invalid population capacity")
 	}
 	for i := range w.Buildings {
-		if w.Buildings[i] != derived.Buildings[i] {
+		if !reflect.DeepEqual(w.Buildings[i], derived.Buildings[i]) {
 			return errors.New("inconsistent derived building state")
 		}
 	}
@@ -795,15 +932,15 @@ func (w World) Validate() error {
 		if walker.Role != "builder" && walker.ShiftUntil != 0 {
 			return errors.New("invalid shift on a non-builder walker")
 		}
-		if walker.Role != "porter" && walker.Role != "goldcart" && walker.Resource != "" && walker.Resource != "grain" {
+		if walker.Role != "porter" && walker.Role != "goldcart" && walker.Role != "trader" && !isGoodsRole(walker.Role) && walker.Role != "hunter" && walker.Resource != "" && walker.Resource != "grain" {
 			return errors.New("invalid walker resource")
 		}
-		if walker.ID < 1 || walker.ID >= w.NextID || ids[walker.ID] || walker.Cargo < 0 || walker.Cargo > walkerCapacity(walker.Role) || walker.Reserved < 0 || walker.Reserved > 16 || len(walker.Route) == 0 || walker.Next < 1 || walker.Next > len(walker.Route) || walker.Route[walker.Next-1] != (Point{walker.X, walker.Y}) {
+		if walker.ID < 1 || walker.ID >= w.NextID || ids[walker.ID] || walker.Cargo < 0 || walker.Cargo > walkerCapacity(walker.Role) || walker.Reserved < 0 || walker.Reserved > reservationCapacity(walker.Role) || len(walker.Route) == 0 || walker.Next < 1 || walker.Next > len(walker.Route) || walker.Route[walker.Next-1] != (Point{walker.X, walker.Y}) {
 			return errors.New("invalid walker")
 		}
 		ids[walker.ID] = true
 		target := w.building(walker.Target)
-		if target == nil || !target.roadAccess(walker.Route[len(walker.Route)-1]) {
+		if target == nil || (!offRoadOutbound(walker) && !(walker.Role == "trader" && walker.Stage == "leave") && !target.roadAccess(walker.Route[len(walker.Route)-1])) {
 			return errors.New("invalid walker destination")
 		}
 		switch walker.Role {
@@ -844,11 +981,31 @@ func (w World) Validate() error {
 			} else {
 				return errors.New("invalid buyer stage")
 			}
+		case "freight", "goodsbuyer", "goodsseller", "reedharvester":
+			if err := w.validateGoodsWalker(walker, *target); err != nil {
+				return err
+			}
+		case "trader":
+			if err := w.validateTrader(walker, *target); err != nil {
+				return err
+			}
+		case "farmworker":
+			if err := w.validateFarmWorker(walker, *target); err != nil {
+				return err
+			}
+		case "hunter":
+			if err := w.validateHunter(walker, *target); err != nil {
+				return err
+			}
 		case "goldcart":
 			if err := w.validateGoldWalker(walker, *target); err != nil {
 				return err
 			}
-		case "porter", "firefighter", "architect", "taxcollector", "builder":
+		case "performer":
+			if err := w.validatePerformer(walker, *target); err != nil {
+				return err
+			}
+		case "physician", "apothecary", "dentist", "mortuary", "scribalschool", "library", "policestation", "entertainer", "porter", "firefighter", "architect", "taxcollector", "watercarrier", "priest", "builder":
 			if err := w.validateCityWalker(walker, *target); err != nil {
 				return err
 			}
@@ -860,7 +1017,7 @@ func (w World) Validate() error {
 			return errors.New("unknown walker role")
 		}
 		for i, p := range walker.Route {
-			if !roads[p] || (i > 0 && !adjacent(p, walker.Route[i-1])) {
+			if (!offRoadRole(walker.Role) && !roads[p]) || (offRoadRole(walker.Role) && occupied[p] && !roads[p]) || !valid(p) || (i > 0 && !adjacent(p, walker.Route[i-1])) {
 				return fmt.Errorf("invalid route at step %d", i)
 			}
 		}

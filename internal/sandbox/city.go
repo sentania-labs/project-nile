@@ -33,6 +33,15 @@ var buildingCatalog = []CatalogEntry{
 	{"taxoffice", "Tax office", 2, 2, 75, "Government", 2},
 	{"goldmine", "Gold mine", 2, 2, 250, "Industry", 12},
 	{"palace", "Village Palace", 4, 4, 250, "Government", 20},
+	{"huntinglodge", "Hunting Lodge", 2, 2, 25, "Food", 6},
+	{"watersupply", "Water Supply", 2, 2, 50, "Services", 5},
+	{"barleyfarm", "Barley farm", 3, 3, 40, "Food", 10},
+	{"flaxfarm", "Flax farm", 3, 3, 40, "Food", 10},
+	{"reedgatherer", "Reed gatherer", 2, 2, 50, "Industry", 8},
+	{"brewery", "Brewery", 2, 2, 75, "Industry", 12},
+	{"papyrusmaker", "Papyrus maker", 2, 2, 100, "Industry", 12},
+	{"potter", "Potter", 2, 2, 60, "Industry", 12},
+	{"weaver", "Weaver", 2, 2, 80, "Industry", 12},
 }
 
 func catalog(kind string) (CatalogEntry, bool) {
@@ -51,7 +60,7 @@ func (w *World) spend(amount int64) {
 	}
 }
 func NewTown() World {
-	w := World{Version: SnapshotVersion, Roads: []Point{}, Buildings: []Building{}, Walkers: []Walker{}, NextID: 1, Treasury: 2500, BudgetEnabled: true, HazardsEnabled: true, TaxRate: 2, WageRate: 1, LaborPriority: "balanced"}
+	w := World{Favor: neutralFavor(), Version: SnapshotVersion, Roads: []Point{}, Buildings: []Building{}, Walkers: []Walker{}, NextID: 1, Treasury: 2500, BudgetEnabled: true, HazardsEnabled: true, TaxRate: 2, WageRate: 1, LaborPriority: "balanced"}
 	w.addKingdomRoad()
 	w.addResourceTerrain()
 	return w
@@ -89,6 +98,10 @@ func materialCapacity(b Building, resource string) int {
 		if resource == "clay" {
 			return 32
 		}
+	case "potter":
+		if resource == "clay" {
+			return 24
+		}
 	case "brickworks":
 		if resource == "clay" || resource == "straw" {
 			return 24
@@ -121,18 +134,21 @@ func (w World) materialTotal(resource string) int {
 		n += *materialStock(&copy, resource)
 	}
 	for _, walker := range w.Walkers {
-		if walker.Resource == resource {
+		if walker.Role != "trader" && walker.Resource == resource {
 			n += walker.Cargo
 		}
 	}
 	return n
 }
 func materialReceiver(source, target Building, resource string) bool {
-	if source.ID == target.ID || target.Damaged != "" || (target.Workers < target.WorkersNeeded && !(target.Kind == "mastaba" && target.Workers > 0)) {
+	if target.Kind == "storageyard" && !storageAccepts(target, resource) {
+		return false
+	}
+	if source.ID == target.ID || target.Damaged != "" || (target.Workers < target.WorkersNeeded && !((target.Kind == "mastaba" || target.Kind == "potter") && target.Workers > 0)) {
 		return false
 	}
 	if resource == "clay" || resource == "straw" {
-		return target.Kind == "brickworks" || (source.Kind != "storageyard" && target.Kind == "storageyard")
+		return target.Kind == "brickworks" || (resource == "clay" && target.Kind == "potter") || (source.Kind != "storageyard" && target.Kind == "storageyard")
 	}
 	return target.Kind == "mastaba" && target.ConstructionDone < 64 || (source.Kind != "storageyard" && target.Kind == "storageyard")
 }
@@ -146,7 +162,7 @@ func (w *World) dispatchMaterials() {
 			continue
 		}
 		for _, resource := range []string{"bricks", "clay", "straw"} {
-			available := *materialStock(source, resource)
+			available := *materialStock(source, resource) - w.reservedResource(source.ID, resource)
 			if available == 0 {
 				continue
 			}
@@ -161,8 +177,7 @@ func (w *World) dispatchMaterials() {
 				if !materialReceiver(*source, target, resource) {
 					continue
 				}
-				copy := target
-				free := materialCapacity(target, resource) - *materialStock(&copy, resource) - w.materialReserved(target.ID, resource)
+				free := w.ResourceFreeSpace(target.ID, resource)
 				if free <= 0 {
 					continue
 				}
@@ -194,20 +209,42 @@ func (w *World) dispatchServices() {
 			role = "firefighter"
 		case "architect":
 			role = "architect"
+		case "watersupply":
+			role = "watercarrier"
 		case "taxoffice":
 			if !w.taxesEnabled() {
 				continue
 			}
 			role = "taxcollector"
 		default:
-			continue
+			if slices.Contains(amenities, b.Kind) {
+				role = b.Kind
+				break
+			}
+			if slices.Contains(venues, b.Kind) {
+				if !slices.ContainsFunc(b.ShowUntil[:], func(end int64) bool { return end > w.Tick }) {
+					continue
+				}
+				role = "entertainer"
+				break
+			}
+			if !slices.Contains(temples, b.Kind) {
+				continue
+			}
+			role = "priest"
 		}
 		if !b.Connected || b.Damaged != "" || b.Workers < b.WorkersNeeded || w.active(b.ID, role) {
 			continue
 		}
 		entryPath := w.path([]Point{w.entry()}, b)
 		if len(entryPath) > 0 {
-			w.spawn(role, "patrol", b.ID, b.ID, 0, w.patrol(entryPath[len(entryPath)-1]), 0, 0)
+			supply := supplyForService(b.Kind)
+			if supply != "" && inventory(b, supply) == 0 {
+				continue
+			}
+			if w.spawn(role, "patrol", b.ID, b.ID, 0, w.patrolFor(entryPath[len(entryPath)-1], role), 0, 0) && supply != "" {
+				w.ConsumeResource(b.ID, supply, 1)
+			}
 		}
 	}
 }
@@ -220,6 +257,7 @@ func (w *World) visitService(walker Walker) {
 		if !nearBuilding(Point{walker.X, walker.Y}, *b, 2) {
 			continue
 		}
+		w.visitAmenity(walker, b)
 		switch walker.Role {
 		case "firefighter":
 			b.FireUntil = min(MaxTick, w.Tick+128)
@@ -227,6 +265,26 @@ func (w *World) visitService(walker Walker) {
 		case "architect":
 			b.CollapseUntil = min(MaxTick, w.Tick+128)
 			b.CollapseRisk = max(0, b.CollapseRisk-40)
+		case "entertainer":
+			if origin := w.building(walker.Origin); origin != nil && b.Kind == "hut" && b.Pop > 0 {
+				for style, end := range origin.ShowUntil {
+					if end > w.Tick {
+						b.EntertainmentUntil[style] = min(MaxTick, w.Tick+MarketDuration)
+					}
+				}
+			}
+		case "priest":
+			if b.Kind == "hut" && b.Pop > 0 {
+				if origin := w.building(walker.Origin); origin != nil {
+					if index := slices.Index(temples, origin.Kind); index >= 0 {
+						b.GodUntil[index] = min(MaxTick, w.Tick+MarketDuration)
+					}
+				}
+			}
+		case "watercarrier":
+			if b.Kind == "hut" && b.Pop > 0 {
+				b.WaterUntil = min(MaxTick, w.Tick+MarketDuration)
+			}
 		case "taxcollector":
 			if b.Kind == "hut" && b.Pop > 0 {
 				b.TaxUntil = min(MaxTick, w.Tick+128)
@@ -350,7 +408,7 @@ func (w World) validateCity() error {
 	if w.Income < 0 || w.Expenses < 0 || w.LastIncome < 0 || w.LastWages < 0 || w.FireCount < 0 || w.CollapseCount < 0 {
 		return errors.New("invalid city accounts")
 	}
-	if w.BudgetEnabled && w.Treasury != 2500+w.Income-w.Expenses {
+	if w.BudgetEnabled && w.Treasury != w.startingTreasury()+w.Income-w.Expenses {
 		return errors.New("treasury conservation failed")
 	}
 	for _, resource := range []string{"clay", "straw", "bricks"} {
@@ -360,7 +418,7 @@ func (w World) validateCity() error {
 		} else if resource == "bricks" {
 			produced, consumed = w.BricksProduced, w.BricksConsumed
 		}
-		if produced < 0 || consumed < 0 || int64(w.materialTotal(resource))+consumed != produced {
+		if produced < 0 || consumed < 0 || int64(w.materialTotal(resource))+consumed+w.ResourceExported[resource] != produced+w.ResourceImported[resource] {
 			return errors.New("material conservation failed: " + resource)
 		}
 		for _, b := range w.Buildings {
@@ -407,11 +465,25 @@ func (w World) validateCityWalker(walker Walker, target Building) error {
 		}
 		return nil
 	}
-	wantKind := "firehouse"
+	wantKind := ""
+	if slices.Contains(amenities, walker.Role) {
+		wantKind = walker.Role
+	}
+	if walker.Role == "firefighter" {
+		wantKind = "firehouse"
+	}
+	if walker.Role == "entertainer" && slices.Contains(venues, origin.Kind) {
+		wantKind = origin.Kind
+	}
+	if walker.Role == "priest" && slices.Contains(temples, origin.Kind) {
+		wantKind = origin.Kind
+	}
 	if walker.Role == "architect" {
 		wantKind = "architect"
 	} else if walker.Role == "taxcollector" {
 		wantKind = "taxoffice"
+	} else if walker.Role == "watercarrier" {
+		wantKind = "watersupply"
 	}
 	if origin.Kind != wantKind || target.ID != origin.ID || walker.Cargo != 0 || walker.Resource != "" || walker.Source != 0 || (walker.Stage != "patrol" && walker.Stage != "return") || (walker.Stage == "patrol" && walker.Route[0] != walker.Route[len(walker.Route)-1]) {
 		return errors.New("invalid service patrol")
@@ -420,7 +492,7 @@ func (w World) validateCityWalker(walker Walker, target Building) error {
 }
 
 func isPatrol(role string) bool {
-	return role == "seller" || role == "firefighter" || role == "architect" || role == "taxcollector"
+	return slices.Contains(amenities, role) || role == "entertainer" || role == "seller" || role == "goodsseller" || role == "firefighter" || role == "architect" || role == "taxcollector" || role == "watercarrier" || role == "priest"
 }
 func (w *World) clearRoad(index int, p Point) error {
 	candidate := *w
