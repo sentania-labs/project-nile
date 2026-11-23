@@ -23,6 +23,8 @@ var ground: Node2D
 var buildings: Node2D
 var overlay: Node2D
 var hud: Control
+var palette := GridContainer.new()
+var portrait: TextureRect
 var title_label: Label
 var kind_label: Label
 var detail_label: Label
@@ -239,7 +241,10 @@ void fragment() {
 		sprite.offset = -texture.get_size() * Vector2(float(anchor[0]), float(anchor[1]))
 		sprite.position = _iso(rect.end.x, rect.end.y)
 		var draw_width := float(spec.get("draw_width", (rect.size.x + rect.size.y) * tile_width * 0.5))
-		sprite.scale = Vector2.ONE * draw_width / texture.get_width()
+		# Match the painted base edges to the road axes while keeping walls upright.
+		var unit := draw_width / texture.get_width()
+		sprite.transform = Transform2D(Vector2(1, spec.get("ground_shear", 0.0)) * unit,
+				Vector2(0, spec.get("vertical_scale", 1.0)) * unit, sprite.position)
 		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 		buildings.add_child(sprite)
 		item["sprite"] = sprite
@@ -379,9 +384,29 @@ func _build_hud() -> void:
 	sidebar.add_theme_stylebox_override("panel", sidebar_style)
 	hud.add_child(sidebar)
 	var column := VBoxContainer.new()
-	column.add_theme_constant_override("separation", 12)
+	column.add_theme_constant_override("separation", 7)
 	sidebar.add_child(column)
-	column.add_child(_label("INSPECT", 12, Color("72552f")))
+	column.add_child(_label("BUILDINGS", 13, INK))
+	palette.columns = 2
+	column.add_child(palette)
+	for asset_id: String in ["granary", "bazaar", "hut", "house"]:
+		var spec: Dictionary = assets[asset_id]
+		var tile := _button("", _inspect_kind.bind(asset_id))
+		tile.icon = load(_asset_path(spec.path))
+		tile.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+		tile.expand_icon = true
+		tile.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		tile.custom_minimum_size = Vector2(85, 65)
+		tile.tooltip_text = spec.label
+		tile.accessibility_name = spec.label
+		palette.add_child(tile)
+	portrait = TextureRect.new()
+	portrait.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	portrait.custom_minimum_size.y = 106
+	portrait.visible = false
+	column.add_child(portrait)
 	title_label = _label("The riverbank", 21, INK)
 	title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(title_label)
@@ -390,26 +415,24 @@ func _build_hud() -> void:
 	column.add_child(kind_label)
 	var rule := HSeparator.new()
 	column.add_child(rule)
-	detail_label = _label("Select a building to inspect its silhouette and place along the street.", 14, INK)
+	detail_label = _label("Choose a building on the map or in the palette.", 14, INK)
 	detail_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(detail_label)
-	var gap := Control.new()
-	gap.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	column.add_child(gap)
+	column.add_child(HSeparator.new())
 	column.add_child(_label("VIEW", 12, Color("72552f")))
-	neighborhood_button = _button("Neighborhood", func() -> void: _set_view(neighborhood_zoom))
-	column.add_child(neighborhood_button)
-	close_button = _button("Street detail", func() -> void: _set_view(minf(neighborhood_zoom * 1.55, 2.3)))
-	column.add_child(close_button)
+	neighborhood_button = _button("Street", func() -> void: _set_view(neighborhood_zoom))
+	var views := HBoxContainer.new()
+	column.add_child(views)
+	views.add_child(neighborhood_button)
+	close_button = _button("Detail", func() -> void: _set_view(minf(neighborhood_zoom * 1.55, 2.3)))
+	views.add_child(close_button)
 	footprints_button = _button("Footprints", _toggle_footprints)
 	footprints_button.toggle_mode = true
 	column.add_child(footprints_button)
 	var controls := _label("Wheel to zoom\nRight-drag to pan\nF  Footprints     Esc  Clear", 12, Color("735936"))
 	controls.add_theme_constant_override("line_spacing", 5)
 	column.add_child(controls)
-	var status := _label("VISUAL REFERENCE\nSystems are not simulated.", 11, Color("806843"))
-	status.add_theme_constant_override("line_spacing", 4)
-	column.add_child(status)
+
 
 
 func _set_view(zoom_value: float) -> void:
@@ -487,10 +510,26 @@ func _select_at(world_point: Vector2) -> void:
 			if rect.has_point(tile):
 				selected = placements[index]
 				break
+	_refresh_inspector()
+
+
+func _inspect_kind(asset_id: String) -> void:
+	for item: Dictionary in placements:
+		if item.asset == asset_id:
+			selected = item
+			_refresh_inspector()
+			_set_view(minf(neighborhood_zoom * 1.55, 2.3))
+			return
+
+
+func _refresh_inspector() -> void:
+	portrait.visible = not selected.is_empty()
+	if portrait.visible:
+		portrait.texture = selected.sprite.texture
 	if selected.is_empty():
 		title_label.text = "The riverbank"
 		kind_label.text = "An Egyptian neighborhood"
-		detail_label.text = "Select a building to inspect its silhouette and place along the street."
+		detail_label.text = "Choose a building on the map or in the palette."
 	else:
 		var spec: Dictionary = selected.spec
 		title_label.text = str(spec.get("label", spec.get("name", selected.asset.capitalize())))
@@ -572,6 +611,9 @@ func _run_smoke() -> void:
 	get_viewport().push_input(click, true)
 	await get_tree().process_frame
 	if not _smoke_require(not selected.is_empty() and selected.id == target.id, "occupancy selection failed"):
+		return
+	await _smoke_click_button(palette.get_child(1) as Button)
+	if not _smoke_require(selected.get("asset") == "bazaar" and portrait.visible and portrait.texture == selected.sprite.texture, "bazaar palette selection failed"):
 		return
 	await _smoke_click_button(footprints_button)
 	if not _smoke_require(show_footprints and footprints_button.button_pressed, "footprint toggle failed"):
