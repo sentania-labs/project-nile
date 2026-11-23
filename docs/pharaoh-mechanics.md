@@ -21,7 +21,7 @@ are useful secondary indexes; their conclusions remain subject to original evide
 
 | ID | Behavior/evidence | Confidence and open question | Nile tests / deviation |
 |---|---|---|---|
-| H01 | `R/models/Pharaoh_Model_Normal.txt`, `housing-table.json`: 20 tiers, 22 named fields; early capacities 5, 7, 9 | High for extracted data; runtime modifiers unverified | Not implemented / none approved |
+| H01 | `R/models/Pharaoh_Model_Normal.txt`, `housing-table.json`: 20 tiers, 22 named fields; early capacities 5, 7, 9 | High for extracted data; runtime modifiers unverified | Sandbox implements Small Hut (5) and Large Hut (7); higher tiers pending |
 | H02 | `R/pass7/00446be0.c`: current/next tier checks service and inventory requirements | Static control-flow evidence; map all service fields | Not implemented / none approved |
 | H03 | `R/pass7/00445ac0.c`: maintenance before advancement; two failed-check increments precede downgrade | Static evidence; calendar timing unresolved | Not implemented / none approved |
 | S01 | `D/selected2/00474d50.c`: bounded tile scan refreshes eligible field to 0x60 | Exact walker/service identity and elapsed-time meaning unresolved; not evidence for radial municipal coverage | Not implemented / none approved |
@@ -37,8 +37,22 @@ These are manual statements, not newly observed game behavior. No original-game
 playthrough occurred in this kickoff. Prior static extraction must not become
 an unqualified claim of exact mechanical fidelity.
 
-Before the first playable increment, resolve the early housing dependency fields,
+For the food-distribution increment, resolve the remaining early housing dependency fields,
 bazaar delivery quantities and walker lifecycle; attach behavioral fixtures and
 tests to these IDs. Keep confidence, tests and approved deviations current as
 evidence improves. Seasonal farming and historical milestone adaptation follow
 the relevant original model/campaign evidence, not invented modern-city rules.
+
+## First sandbox
+
+The original maintenance pass collects a building type and invokes a map scan
+with distance two (R/pass7/00448440.c). The scan covers inclusive x and y
+bounds and sets a building field for occupied tiles (R/pass7/004703a0.c).
+Identifying the type as a well and the field as well access draws on the
+existing static investigation. Runtime equivalence still needs playthrough
+evidence. A well supplies nearby huts directly. A staffed water supply is
+a separate future building.
+
+Road-connected immigration, movement speed, dispatch cadence and evolution driven
+by water alone are prototype rules. The extracted model includes desirability;
+the sandbox currently exercises only the water dependency and first two capacities.

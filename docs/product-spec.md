@@ -9,7 +9,7 @@ It supersedes the earlier v0.5 PostgreSQL/server/mandatory-Firstmate assumptions
 - Original Pharaoh mechanics and recognizable Egyptian atmosphere, with original art.
 - One contiguous, finite, expandable Nile Valley and one authoritative clock.
 - Local single-player desktop application: Windows x64, macOS arm64, Linux x64.
-- Go preferred, subject to integration evidence; Godot renders and accepts input.
+- Go owns the local simulation; Godot renders and accepts input.
 - SQLite per saved civilization; in-memory simulation; deterministic replay.
 - Pharaoh housing tiers, desirability, labor, physical walkers, roads and roadblocks.
 - No circular municipal coverage substitution, density zoning, unrelated research tree,
@@ -39,14 +39,16 @@ of actual Godot captures and play. The current study does not satisfy this miles
 
 ## Subsequent increments
 
-1. Refine that recognizable Pharaoh neighborhood with player feedback.
-2. Profile chunked 512×512 and 1024×1024 terrain; add two settlements in one world,
-   local service policies and seamless navigation. Off-screen outcomes must match.
-3. Seasonal floodplain production, granaries, docks, boats and physical shipments.
-   Imported food must reach housing through the original local distribution chain.
-4. Integrate the two-settlement slice, controlled service sharing, SQLite save/load,
-   determinism and gameplay/visual/performance acceptance.
-5. Expand original historical progression, industries and civic/religious systems.
+1. Start with a free-build Egyptian settlement. The first playable build covers
+   construction, connected roads, immigration, wells and the first two housing tiers.
+2. Complete the local food loop, service walkers, housing requirements and workforce.
+   Extend local production, inundation, storage, trade, finances, hazards, civic
+   services, religion and monument construction in playable increments.
+3. Match the original building availability and historical advancement as evidence
+   permits. Use updated original art with the recognizable Pharaoh camera,
+   building silhouettes, density and street-level readability.
+4. Once the original sandbox plays well, expand to contiguous territory, separate
+   settlements and physical regional shipments. Profile the larger map at that stage.
 
 Target 60 FPS at 1920×1080 on RTX 4070 laptop-class hardware, also inspect 720p,
 1440p, 3456×2160 and 3440×1440. No population/world-capacity claim is established.

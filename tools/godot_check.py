@@ -42,6 +42,13 @@ def main():
         if "NILE_GODOT_SMOKE_PASS" not in output:
             raise SystemExit("Godot never completed the lifecycle checks")
 
+        env["NILE_SANDBOX_SAVE"] = str(Path(scratch) / "sandbox.nile")
+        env.pop("NILE_SANDBOX_CAPTURE", None)
+        sandbox = [args.godot, "--headless", "--audio-driver", "Dummy", "--path",
+                   "client", "--", "--sandbox-smoke"]
+        if "NILE_SANDBOX_PASS" not in run(sandbox, env):
+            raise SystemExit("Sandbox never completed its gameplay checks")
+
 
 if __name__ == "__main__":
     main()

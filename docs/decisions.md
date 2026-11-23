@@ -8,6 +8,7 @@ Updated November 22, 2026, America/Chicago.
 | Accepted by v0.6 | One continuous world/clock; settlements and future nested districts are administrative areas inside it. Default local services, physical transport, original Pharaoh behavior. |
 | Accepted by v0.6 | Interactive player-directed iterations; optional bounded delegation; no modification of Frontier or paid generation without budget. |
 | Proven for this probe | Linux Godot can drive a bundled Go child over private pipes and restore validated SQLite state after restart/crash. Diagnostic commands never advance from rendered frame time. |
+| Directed by Scott | Keep the Godot, Go and SQLite stack. Reproduce the original game’s buildings, unlocks and gameplay on one sandbox map first, with updated illustrated visuals. Regional features and a dedicated graphics polish pass follow sandbox gameplay. |
 | Proposed next | Adopt that local integration for the first neighborhood after reviewing the evidence; retain native platform packaging as a required validation task. |
 | Proposed next | Road loop/roadblock, 4–8 houses, well, finite-food granary, bazaar buyer/seller and the first three housing tiers. |
 | Rejected by Scott | The kickoff visual study is not an acceptable Pharaoh art direction. Retain it only as a diagnostic for IPC/persistence. Do not extend its primitive geometry into production art. |

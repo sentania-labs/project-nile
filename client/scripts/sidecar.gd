@@ -1,5 +1,5 @@
 extends Node
-## A deliberately small nonblocking transport probe, not a gameplay scheduler.
+## Nonblocking local transport shared by the diagnostic and playable sandbox.
 signal response_received(reply: Dictionary)
 signal failed(reason: String)
 
@@ -9,8 +9,9 @@ var pending := 0
 var next_id := 1
 var deadline := 0
 var stopping := false
+var message_limit := 65536
 
-func start() -> bool:
+func start(mode: String = "") -> bool:
 	var executable := OS.get_environment("NILE_SIM")
 	if executable.is_empty():
 		if OS.has_feature("editor"):
@@ -18,9 +19,13 @@ func start() -> bool:
 		else:
 			executable = OS.get_executable_path().get_base_dir().path_join("nile-sim")
 		if OS.get_name() == "Windows": executable += ".exe"
-	var save_path := OS.get_environment("NILE_SAVE")
-	if save_path.is_empty(): save_path = ProjectSettings.globalize_path("user://kickoff.nile")
-	child = OS.execute_with_pipe(executable, ["--save", save_path], false)
+	var save_path := OS.get_environment("NILE_SANDBOX_SAVE" if mode == "sandbox" else "NILE_SAVE")
+	if save_path.is_empty():
+		save_path = ProjectSettings.globalize_path("user://riverbank.nile" if mode == "sandbox" else "user://kickoff.nile")
+	var arguments := PackedStringArray(["--save", save_path])
+	if mode == "sandbox": arguments.append("--sandbox")
+	message_limit = 2097152 if mode == "sandbox" else 65536
+	child = OS.execute_with_pipe(executable, arguments, false)
 	if child.is_empty():
 		failed.emit("Could not start the local simulation. Run make build first.")
 		return false
@@ -29,10 +34,12 @@ func start() -> bool:
 	stopping = false
 	return true
 
-func request(op: String, ticks: int = 0) -> bool:
+func request(op: String, ticks: int = 0, fields: Dictionary = {}) -> bool:
 	if child.is_empty() or pending != 0 or stopping: return false
 	var message := {"id": next_id, "op": op}
 	if op == "step": message["ticks"] = ticks
+	for key: String in ["kind", "x", "y"]:
+		if fields.has(key): message[key] = fields[key]
 	pending = next_id
 	next_id += 1
 	deadline = Time.get_ticks_msec() + 5000
@@ -52,7 +59,7 @@ func _process(_delta: float) -> void:
 	var diagnostics: FileAccess = child.stderr
 	var errors := diagnostics.get_buffer(4096)
 	if not errors.is_empty(): push_warning(errors.get_string_from_utf8())
-	if incoming.size() > 65536:
+	if incoming.size() > message_limit:
 		_abort("The simulation exceeded the message limit.")
 		return
 	var newline := incoming.find(10)

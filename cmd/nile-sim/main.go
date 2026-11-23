@@ -1,4 +1,4 @@
-// nile-sim is a local IPC/persistence probe. It implements no Pharaoh mechanics.
+// nile-sim hosts the local diagnostic probe or the opt-in street sandbox.
 package main
 
 import (
@@ -79,10 +79,14 @@ func serve(in io.Reader, out io.Writer, store *probe.Store) error {
 }
 
 func run() error {
-	path := flag.String("save", "", "local SQLite diagnostic save path (required)")
+	path := flag.String("save", "", "local SQLite save path (required)")
+	sandboxMode := flag.Bool("sandbox", false, "run the street-building prototype")
 	flag.Parse()
 	if *path == "" || flag.NArg() != 0 {
 		return errors.New("usage: nile-sim --save /local/path/diagnostic.nile")
+	}
+	if *sandboxMode {
+		return runSandbox(*path)
 	}
 	store, err := probe.Open(*path)
 	if err != nil {

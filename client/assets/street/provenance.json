@@ -142,6 +142,38 @@
       "prompt_sha256": "ab0158b35c573ac2429fe2fda7267e44b95dc08940738d4ae913ebf3052d37c9",
       "transparent_background": true,
       "validation": "PNG structure, SHA256, actual Godot import and six rendered captures passed; artistic approval pending"
+    },
+    {
+      "id": "large-hut",
+      "runtime_path": "client/assets/street/large-hut.png",
+      "source_path": "/mnt/holding/project-nile/sandbox-01/large-hut-source.png",
+      "source": "Original built-in image_gen PNG",
+      "sha256": "27677f5cf2c67d7e74ce04d86656896495fd77f36e25cecd7e754e4bbbd488bc",
+      "dimensions": [
+        1312,
+        1199
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/large-hut.txt",
+      "prompt_sha256": "7934bf9fd72d1fd1a7c9acebcb6f7d3f889ede34ecd99494b0d86a7ca9fdc6ec",
+      "transparent_background": true,
+      "validation": "Sandbox candidate; engine import and capture checked by sandbox smoke."
+    },
+    {
+      "id": "well",
+      "runtime_path": "client/assets/street/well.png",
+      "source_path": "/mnt/holding/project-nile/sandbox-01/well-source.png",
+      "source": "Original built-in image_gen PNG",
+      "sha256": "7ea9c2734548fcb668e4d1d59561843c5979e0f97b0cc960595cd2771ee12198",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "prompt": "client/assets/street/prompts/well.txt",
+      "prompt_sha256": "1628ddee09216ee223d9471cde6fc078bb2b6acf32946eb4533a44f235893b23",
+      "transparent_background": true,
+      "validation": "Sandbox candidate; engine import and capture checked by sandbox smoke."
     }
   ],
   "validation_environment": {

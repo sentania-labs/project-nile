@@ -67,10 +67,10 @@ def main():
                 destination.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(name, destination / name.name)
     (output / "README.txt").write_text(
-        "Project Nile illustrated street study, not a game release.\n"
+        "Project Nile: early housing sandbox.\n"
         "Run ./nile on Linux x64. No Godot, Go, SQLite server or network installation needed.\n"
-        "Wheel to zoom, right-drag to pan, click a building to inspect, F for footprints.\n"
-        "Original generated visual candidates. People are static; gameplay systems are not implemented.\n"
+        "Connect housing to the entry road and build a well nearby to support a Large Hut.\n"
+        "Use the in-game save and load controls for this local settlement.\n"
         "For the Go/SQLite diagnostic: ./nile -- --diagnostic\n"
         "Diagnostic saves use your local Godot user-data directory. Restart restores the last explicit save.\n"
         "Godot and dependency notices are in licenses/. No new Project Nile license declared.\n")
