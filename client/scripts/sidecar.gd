@@ -45,8 +45,8 @@ func request(op: String, ticks: int = 0, fields: Dictionary = {}) -> bool:
 	if child.is_empty() or pending != 0 or stopping: return false
 	var message := {"id": next_id, "op": op}
 	if op == "step": message["ticks"] = ticks
-	for key: String in ["kind", "x", "y", "x2", "y2", "speed", "scenario", "tax_rate", "wage_rate", "labor_priority", "tiles"]:
-		if fields.has(key): message[key] = fields[key]
+	for key: String in fields:
+		if key not in ["id", "op", "ticks"]: message[key] = fields[key]
 	pending = next_id
 	next_id += 1
 	deadline = Time.get_ticks_msec() + (20000 if awaiting_first_reply else 5000)
@@ -61,8 +61,10 @@ func _process(_delta: float) -> void:
 	if child.is_empty() or stopping: return
 	# Bounded reads avoid blocking rendering and retain partial JSON lines.
 	var pipe: FileAccess = child.stdio
-	var bytes := pipe.get_buffer(8192)
-	incoming.append_array(bytes)
+	for _chunk in 16:
+		var bytes := pipe.get_buffer(16384)
+		incoming.append_array(bytes)
+		if bytes.size() < 16384: break
 	var diagnostics: FileAccess = child.stderr
 	var errors := diagnostics.get_buffer(4096)
 	if not errors.is_empty():

@@ -30,3 +30,5 @@ extracted UI art in `binary-visuals/pharaoh-d93c8edc2617/`. Also inspected Scott
 original-game thumbnail and [New Era image](https://wolfsgamingblog.com/wp-content/uploads/2023/03/pharaoh_a_new_era-4.jpg).
 These are study references, not assets to redistribute. The next visual proposal
 must be grounded in those references, not a refinement of the rejected blockout.
+
+- The first campaign handoff keeps a completed mission record. Nubt and Thinis use authored Nile maps and the original mission gates. Street access, physical inventory, treasury and populated housing drive objectives. A mission definition alone does not make a mission playable.

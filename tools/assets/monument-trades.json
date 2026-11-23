@@ -1,0 +1,59 @@
+{
+  "name": "monument-trades",
+  "assets": [
+    [
+      "festival_square",
+      "Festival square",
+      5,
+      430
+    ],
+    [
+      "workcamp",
+      "Work camp",
+      2,
+      172
+    ],
+    [
+      "stonemasons",
+      "Stonemasons\u2019 guild",
+      2,
+      172
+    ],
+    [
+      "carpenters",
+      "Carpenters\u2019 guild",
+      2,
+      172
+    ],
+    [
+      "limestonequarry",
+      "Limestone quarry",
+      2,
+      172
+    ],
+    [
+      "sandstonequarry",
+      "Sandstone quarry",
+      2,
+      172
+    ],
+    [
+      "stonequarry",
+      "Plain stone quarry",
+      2,
+      172
+    ],
+    [
+      "granitequarry",
+      "Granite quarry",
+      2,
+      172
+    ],
+    [
+      "woodcutter",
+      "Woodcutter",
+      2,
+      172
+    ]
+  ]
+}

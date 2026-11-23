@@ -1,0 +1,59 @@
+{
+  "name": "trades-nine",
+  "assets": [
+    [
+      "barleyfarm",
+      "Barley farm",
+      3,
+      264
+    ],
+    [
+      "flaxfarm",
+      "Flax farm",
+      3,
+      264
+    ],
+    [
+      "reedgatherer",
+      "Reed gatherer",
+      2,
+      175
+    ],
+    [
+      "brewery",
+      "Brewery",
+      2,
+      175
+    ],
+    [
+      "papyrusmaker",
+      "Papyrus maker",
+      2,
+      175
+    ],
+    [
+      "potter",
+      "Potter",
+      2,
+      175
+    ],
+    [
+      "weaver",
+      "Weaver",
+      2,
+      175
+    ],
+    [
+      "huntinglodge",
+      "Hunting lodge",
+      2,
+      175
+    ],
+    [
+      "watersupply",
+      "Water supply",
+      2,
+      175
+    ]
+  ]
+}

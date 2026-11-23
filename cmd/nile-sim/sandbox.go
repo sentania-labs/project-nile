@@ -14,6 +14,15 @@ import (
 )
 
 type sandboxRequest struct {
+	God           string          `json:"god,omitempty"`
+	FestivalSize  int             `json:"festival_size,omitempty"`
+	Route         string          `json:"route,omitempty"`
+	Mode          string          `json:"mode,omitempty"`
+	Limit         int             `json:"limit,omitempty"`
+	Role          string          `json:"role,omitempty"`
+	Allow         *bool           `json:"allow,omitempty"`
+	Resource      string          `json:"resource,omitempty"`
+	Order         string          `json:"order,omitempty"`
 	Tiles         []sandbox.Point `json:"tiles,omitempty"`
 	TaxRate       *int            `json:"tax_rate,omitempty"`
 	WageRate      *int            `json:"wage_rate,omitempty"`
@@ -28,6 +37,7 @@ type sandboxRequest struct {
 	Ticks         *int            `json:"ticks,omitempty"`
 	Speed         int             `json:"speed,omitempty"`
 	Scenario      string          `json:"scenario,omitempty"`
+	MissionID     *int            `json:"mission_id,omitempty"`
 }
 
 type sandboxResponse struct {
@@ -140,12 +150,43 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 					clock.anchor = received
 					clock.remainder = 0
 				}
+			case "new_campaign", "advance_campaign":
+				if req.MissionID == nil {
+					err = errors.New("mission_id is required")
+				} else {
+					var next sandbox.World
+					if req.Op == "advance_campaign" {
+						next, err = world.AdvanceCampaign(*req.MissionID)
+					} else {
+						next, err = sandbox.NewCampaign(*req.MissionID)
+					}
+					if err == nil {
+						world = next
+						clock.running = false
+						clock.anchor = received
+						clock.remainder = 0
+					}
+				}
 			case "set_policy":
 				if req.TaxRate == nil || req.WageRate == nil {
 					err = errors.New("tax_rate and wage_rate are required")
 				} else {
 					err = world.SetPolicy(*req.TaxRate, *req.WageRate, req.LaborPriority)
 				}
+			case "festival":
+				err = world.PlanFestival(req.God, req.FestivalSize)
+			case "road_permission":
+				if req.Allow == nil {
+					err = errors.New("allow is required")
+				} else {
+					err = world.RoadPermission(sandbox.Point{X: req.X, Y: req.Y}, req.Role, *req.Allow)
+				}
+			case "open_trade":
+				err = world.OpenTrade(req.Route)
+			case "trade_policy":
+				err = world.SetTradePolicy(req.Resource, req.Mode, req.Limit)
+			case "storage_order":
+				err = world.SetStorageOrder(req.X, req.Y, req.Resource, req.Order)
 			case "repair":
 				err = world.Repair(req.X, req.Y)
 			case "zone":

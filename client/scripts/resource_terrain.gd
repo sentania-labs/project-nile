@@ -9,6 +9,7 @@ var deposits: Array[Sprite2D] = []
 
 
 func sync(game: Node, state: Dictionary) -> void:
+	_sync_scenery(game, state)
 	var grass: Array = state.get("grassland", [])
 	var ore: Array = state.get("ore_rock", [])
 	if grass != meadow_tiles:
@@ -70,3 +71,34 @@ func has_grass(origin: Vector2i, size: Vector2i) -> bool:
 		for dy in size.y:
 			if meadow.has(origin + Vector2i(dx, dy)): return true
 	return false
+
+
+var scenery_nodes: Dictionary = {}
+var features: Dictionary = {}
+var wildlife_tiles: Dictionary = {}
+
+
+func _sync_scenery(game: Node, state: Dictionary) -> void:
+	var seen: Dictionary = {}
+	features.clear()
+	wildlife_tiles.clear()
+	for layer: String in ["reed_beds", "hunting_grounds", "road_features"]:
+		for item: Dictionary in state.get(layer, []):
+			var tile := Vector2i(item.x, item.y)
+			var kind := str(item.get("kind", "reedbed" if layer == "reed_beds" else "gazelle"))
+			if layer == "road_features": features[tile] = item
+			if layer == "hunting_grounds": wildlife_tiles[tile] = true
+			var id := "%s/%d/%d" % [kind, tile.x, tile.y]
+			seen[id] = true
+			var sprite: Sprite2D = scenery_nodes.get(id)
+			if sprite == null:
+				sprite = Sprite2D.new()
+				game._skin_sprite(sprite, kind, Vector2.ZERO)
+				game.buildings.add_child(sprite)
+				scenery_nodes[id] = sprite
+			sprite.position = game._front_corner(Rect2(tile, Vector2i.ONE))
+			sprite.visible = layer != "reed_beds" or game._building_at(tile).is_empty()
+	for id: String in scenery_nodes.keys():
+		if not seen.has(id):
+			scenery_nodes[id].free()
+			scenery_nodes.erase(id)

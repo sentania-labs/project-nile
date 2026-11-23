@@ -43,6 +43,7 @@ func _ready() -> void:
 	spacer.custom_minimum_size.y = 18
 	menu.add_child(spacer)
 	var start := _add_choice(menu, "Found a new town", "empty")
+	var campaign := _add_choice(menu, "Begin the Pharaoh campaign", "campaign")
 	_add_choice(menu, "Enter the riverbank village", "village")
 	var restore := _add_choice(menu, "Load saved town", "load")
 	var save_path := OS.get_environment("NILE_SANDBOX_SAVE")
@@ -50,6 +51,15 @@ func _ready() -> void:
 	_add_choice(menu, "Sound and controls", "settings")
 	_add_choice(menu, "Quit", "quit")
 	start.grab_focus()
+	if "--campaign-smoke" in OS.get_cmdline_user_args():
+		await get_tree().process_frame
+		var click := InputEventMouseButton.new()
+		click.button_index = MOUSE_BUTTON_LEFT
+		click.position = campaign.get_global_rect().get_center()
+		click.pressed = true
+		get_viewport().push_input(click, true)
+		click.pressed = false
+		get_viewport().push_input(click, true)
 
 
 func _add_choice(menu: VBoxContainer, caption: String, choice: String) -> Button:

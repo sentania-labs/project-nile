@@ -195,3 +195,11 @@ and matching patch evidence; do not promote them to original data by association
    and a meaningful behavioral fixture agree. Keep unmeasured constants marked
    provisional. Translating mutually exclusive missions into one persistent
    civilization remains a product decision, separate from recovering the graph.
+
+### Housing, temples, entertainment and trade
+
+The Normal housing model supplies the population capacities, desirability thresholds and service requirements through Spacious Apartment. Priests record access separately for each god. A juggler, musician or dancer travels from a staffed school to a suitable venue before that venue sends performers through the neighborhood. The original Normal model supplies building costs and staffing. The service expiration period, show duration and access reach still need original-game timing comparisons. Akhenaten's household entertainment calculation supplies the provisional 96-point service scale.
+
+The storage yard accepts per-good orders. Where a workshop needs a material, a carrier moves it from an operating supplier. Bazaar buyers and sellers handle food and household goods. Regular imports and exports settle at the storage yard when the trader arrives. Prices per 100 units come from the original English retail executable at file offset 0x166cb8. The initial Kingdom Road trade partner, opening fee, dispatch cadence, quotas and partial-load rounding are authored sandbox settings.
+
+Roadblocks filter roaming services by role while destination journeys use the road network. The booth, bandstand and pavilion retain the roads under their footprint. Current venue placement accepts a bend or intersection. Verification of each original orientation mask remains open. The local health model currently uses simplified exposure and mortality. The original Perwadjyt death handler and basic health gate have been traced, while the incidence and spread rates still need verification.

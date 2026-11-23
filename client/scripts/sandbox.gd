@@ -3,6 +3,7 @@ extends "res://scripts/street_study.gd"
 
 const Transport = preload("res://scripts/sidecar.gd")
 const CityInterface = preload("res://scripts/city_interface.gd")
+const CityMotion = preload("res://scripts/city_motion.gd")
 const TICK_SECONDS := 0.2
 
 var sim: Node
@@ -59,6 +60,7 @@ var reset_in_progress := false
 var startup_done := false
 var startup_action := ""
 var startup_choice := "village"
+var motion: RefCounted
 
 
 func _ready() -> void:
@@ -138,13 +140,17 @@ func _ready() -> void:
 	ghost.z_index = 20
 	ghost.visible = false
 	buildings.add_child(ghost)
+	motion = CityMotion.new()
+	motion.setup(self)
 	sim = Transport.new()
 	add_child(sim)
 	sim.response_received.connect(_on_reply)
 	sim.failed.connect(_on_failure)
 	if sim.start("sandbox"):
 		_queue_command("state")
-	if "--gold-smoke" in args:
+	if "--campaign-smoke" in args:
+		preload("res://tests/campaign_smoke.gd").run.call_deferred(self)
+	elif "--gold-smoke" in args:
 		preload("res://tests/mine_smoke.gd").run.call_deferred(self)
 	elif city_smoke_mode:
 		_city_smoke.call_deferred()
@@ -298,15 +304,7 @@ func _process(delta: float) -> void:
 			poll_elapsed = 0.0
 			current_operation = "state"
 			sim.request("state")
-	for id: String in walker_nodes:
-		var sprite := walker_nodes[id] as Sprite2D
-		var target: Vector2 = walker_targets[id]
-		var moving := sprite.position.distance_to(target) > 0.4
-		if moving:
-			sprite.flip_h = target.x < sprite.position.x
-			if sprite.get_meta("actor_asset", "resident") == "resident":
-				sprite.texture = _texture_for("resident_%d" % (int(Time.get_ticks_msec() / 140) % 4))
-		sprite.position = sprite.position.lerp(target, minf(delta * simulation_speed / TICK_SECONDS, 1.0))
+	if motion != null: motion.update(delta)
 	_update_ghost()
 	if city_ui != null: city_ui.update_city()
 
@@ -331,8 +329,13 @@ func _on_reply(reply: Dictionary) -> void:
 	if current_operation in ["resume", "pause"]:
 		pause_button.disabled = false
 	state = reply.get("state", {})
+	city_ui.sync_catalog()
 	_sync_world()
-	stats.text = "Db  %d         Pop  %d         %s   ·   Year %d%s" % [int(state.get("treasury", 0)), int(state.get("population", 0)), str(state.get("season", "Growing")).capitalize(), int(state.get("year", 1)), "   ·   Paused" if paused else ""]
+	var year := "Year %d" % int(state.get("year",1))
+	if state.has("campaign"):
+		var historical := int(state.campaign.start_year) + int(state.tick)/240
+		year = "%d %s" % [absi(historical) if historical < 0 else historical+1, "BC" if historical < 0 else "AD"]
+	stats.text = "Db  %d         Pop  %d         %s   ·   %s%s" % [int(state.get("treasury", 0)), int(state.get("population", 0)), str(state.get("season", "Growing")).capitalize(), year, "   ·   Paused" if paused else ""]
 	if not reply.get("ok", false):
 		status.text = str(reply.get("error", "Command failed"))
 		if current_operation in ["build", "zone", "road"]: _show_placement_error(status.text)
@@ -352,6 +355,7 @@ func _on_reply(reply: Dictionary) -> void:
 		focus = _iso(11, 15) if state.get("buildings", []).is_empty() else _iso(16, 15)
 		_set_view(neighborhood_zoom)
 		status.text = ""
+	city_ui.campaign_ui.refresh(current_operation)
 	if current_operation == "set_policy": city_ui.policy_acknowledged(reply)
 	if not startup_done and reply.get("ok", false):
 		if smoke_mode:
@@ -360,12 +364,15 @@ func _on_reply(reply: Dictionary) -> void:
 			if current_operation == startup_action:
 				startup_done = true
 				startup_action = ""
-				_queue_command("resume")
+				if current_operation != "new_campaign": _queue_command("resume")
 		elif current_operation == "state":
 			if startup_choice == "empty":
 				reset_in_progress = true
 				startup_action = "new_town"
 				_queue_command("new_town", {"scenario": "empty"})
+			elif startup_choice == "campaign":
+				startup_action = "new_campaign"
+				_queue_command("new_campaign", {"mission_id": 0})
 			elif startup_choice == "load":
 				startup_action = "load"
 				_queue_command("load")
@@ -481,11 +488,15 @@ func _sync_world() -> void:
 		var vacant: bool = building.kind == "hut" and int(building.pop) == 0
 		if vacant: vacant_plots.append(cell)
 		var asset_id := str(building.kind)
+		if asset_id=="policestation": asset_id="police"
+		if asset_id.begins_with("shrine_"): asset_id = "shrine"
 		if asset_id == "hut":
 			var tier := clampi(int(building.get("tier", 0)), 0, 2)
 			asset_id = ["hut", "large_hut", "small_shanty"][tier]
 			var variant: String = ["crude_hut", "sturdy_hut", "meager_shanty"][tier] + ("_a" if int(building.id) % 2 == 0 else "_b")
 			if assets.has(variant): asset_id = variant
+			if int(building.get("tier", 0)) >= 3 and assets.has("home_%d" % (int(building.tier) + 1)):
+				asset_id = "home_%d" % (int(building.tier) + 1)
 			if vacant and assets.has("vacant_plot"): asset_id = "vacant_plot"
 		elif asset_id == "mastaba":
 			var stage := str(building.get("stage", "foundation"))
@@ -497,13 +508,13 @@ func _sync_world() -> void:
 		var sprite := building_nodes[id] as Sprite2D
 		sprite.visible = not vacant or asset_id == "vacant_plot"
 		_skin_sprite(sprite, asset_id, _front_corner(rect))
-		if asset_id == "farm":
+		if asset_id in ["farm", "barleyfarm", "flaxfarm"]:
 			if sprite.material == null:
 				var crops := ShaderMaterial.new()
 				crops.shader = preload("res://shaders/grain_field.gdshader")
 				crops.set_shader_parameter("tile_size", Vector2(tile_width, tile_height))
 				sprite.material = crops
-			sprite.material.set_shader_parameter("growth", float(building.get("work", 0)) / 288.0)
+			sprite.material.set_shader_parameter("growth", float(building.get("work", 0)) / maxf(1, float(building.get("work_capacity", 288))))
 			sprite.material.set_shader_parameter("flood_level", flood_level)
 			sprite.material.set_shader_parameter("orientation", view_turns)
 		else:
@@ -545,6 +556,7 @@ func _sync_world() -> void:
 			walker_nodes[id].free()
 			walker_nodes.erase(id)
 			walker_targets.erase(id)
+	if motion != null: motion.sync()
 	overlay.queue_redraw()
 
 
@@ -670,6 +682,11 @@ func _refresh_inspector() -> void:
 				production_bar.value = int(building.get("construction_done", 0))
 			else:
 				detail_label.text += "\n\n" + _tool_guidance(str(building.kind))
+		for resource: Dictionary in state.get("resource_catalog", []):
+			var quantity := int(building.get("inventories", {}).get(resource.id, 0))
+			if quantity > 0 and str(resource.id) not in ["grain", "clay", "straw", "bricks"]:
+				detail_label.text += "\n%s: %d" % [resource.label, quantity]
+		if building.kind == "hut": detail_label.text += "\nDesirability: %d" % int(building.get("desirability", 0))
 		if building.kind != "mastaba":
 			detail_label.text += "\n\nFire risk: %d\nCollapse risk: %d" % [int(building.get("fire_risk", 0)), int(building.get("collapse_risk", 0))]
 		if str(building.get("damaged", "")) != "":
@@ -707,9 +724,11 @@ func _placement_error(cell: Vector2i) -> String:
 		return "Outside the city site"
 	if cell.x < 6: return "This site is in the Nile"
 	if active_tool == "clear":
+		if resources.features.has(cell): return ""
 		for item: Dictionary in state.get("buildings", []):
 			if _building_rect(item).has_point(Vector2(cell)):
 				if int(item.get("pop", 0)) > 0: return "Residents still live here"
+				if not item.get("inventories", {}).is_empty(): return "Stored goods remain here"
 				for resource in ["stock", "clay", "straw", "bricks", "gold"]:
 					if int(item.get(resource, 0)) > 0: return "Stored goods remain here"
 				for job: Dictionary in state.get("walkers", []):
@@ -720,21 +739,33 @@ func _placement_error(cell: Vector2i) -> String:
 		if cell in [Vector2i(int(entry.x), int(entry.y)), Vector2i(int(exit_tile.x), int(exit_tile.y))]:
 			return "The city entrance must stay open"
 		return "" if road_tiles.has(cell) else "Nothing here to clear"
-	if active_tool in ["farm", "claypit"] and cell.x + size.x > 10:
+	if active_tool in ["farm", "claypit", "barleyfarm", "flaxfarm", "figfarm"] and cell.x + size.x > 10:
 		return "Place the whole site on the floodplain"
 	if active_tool == "goldmine" and not resources.near_deposit(cell, size):
 		return "Place the mine beside gold-bearing rock"
+	if active_tool == "watersupply" and not resources.has_grass(cell, size): return "Water carriers need a site above groundwater"
 	if active_tool == "palace":
 		if _has_building_kind("palace"): return "The city already has a palace"
 		if not resources.has_grass(cell, size): return "The palace needs grass beneath its grounds"
 	if int(_catalog_entry(active_tool).get("cost", 0)) > int(state.get("treasury", 0)):
 		return "The treasury cannot afford this site"
+	if active_tool in ["plaza", "roadblock"]:
+		if resources.features.has(cell): return "This road already has a plaza or roadblock"
+		return "" if road_tiles.has(cell) else "Place this on an existing road"
+	var venue := active_tool in ["booth", "bandstand", "pavilion"]
+	var junction := false
 	for y in range(cell.y, cell.y + size.y):
 		for x in range(cell.x, cell.x + size.x):
 			var tile := Vector2i(x, y)
 			if resources.rock.has(tile): return "Rock occupies part of the site"
-			if road_tiles.has(tile): return "A road crosses the site"
+			if resources.wildlife_tiles.has(tile): return "Leave the hunting grounds open"
+			if road_tiles.has(tile):
+				if not venue: return "A road crosses the site"
+				if not _building_at(tile).is_empty(): return "Another building occupies the site"
+				junction = junction or ((road_tiles.has(tile + Vector2i.UP) or road_tiles.has(tile + Vector2i.DOWN)) and (road_tiles.has(tile + Vector2i.LEFT) or road_tiles.has(tile + Vector2i.RIGHT)))
+				continue
 			if blocked_tiles.has(tile): return "Another building occupies the site"
+	if venue and not junction: return "Place the venue over a road bend or intersection"
 	return ""
 
 
@@ -766,10 +797,12 @@ func _update_ghost() -> void:
 	var tile := _tile_at(get_canvas_transform().affine_inverse() * mouse)
 	hover_cell = Vector2i(floori(tile.x), floori(tile.y))
 	hover_valid = _can_place(hover_cell)
-	ghost.visible = active_tool not in ["inspect", "road", "clear", "hut"] and assets.has(active_tool) and over_map
+	var art := "shrine" if active_tool.begins_with("shrine_") else active_tool
+	if art=="policestation": art="police"
+	ghost.visible = active_tool not in ["inspect", "road", "clear", "hut"] and assets.has(art) and over_map
 	if ghost.visible:
 		var rect := _preview_rect()
-		_skin_sprite(ghost, active_tool, _front_corner(rect))
+		_skin_sprite(ghost, art, _front_corner(rect))
 		ghost.modulate = Color(0.75, 1, 0.65, 0.6) if hover_valid else Color(1, 0.35, 0.25, 0.55)
 	overlay.queue_redraw()
 
@@ -902,8 +935,10 @@ func _input(event: InputEvent) -> void:
 		var inspect_click := not right_pointer_moved and _over_map(event.position)
 		_cancel_gesture()
 		if inspect_click:
-			_select_at(get_canvas_transform().affine_inverse() * event.position)
-			city_ui.show_inspector()
+			var at: Vector2 = get_canvas_transform().affine_inverse() * event.position
+			if not city_ui.roadblock.open_at(Vector2i(_tile_at(at).floor())):
+				_select_at(at)
+				city_ui.show_inspector()
 		get_viewport().set_input_as_handled()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 		if painting_roads:
@@ -1017,6 +1052,8 @@ func _smoke_choose_tool(kind: String) -> void:
 	var category: String = city_ui.category_for(kind)
 	if not category.is_empty():
 		await _smoke_click_button(city_ui.categories[category])
+		city_ui.build_scroll.ensure_control_visible(tool_buttons[kind])
+		await get_tree().process_frame
 	await _smoke_click_button(tool_buttons[kind])
 
 
