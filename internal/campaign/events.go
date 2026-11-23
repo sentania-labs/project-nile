@@ -15,6 +15,9 @@ import (
 //go:embed data/base-campaign-events.jsonl
 var eventData []byte
 
+//go:embed data/cleopatra-campaign-events.jsonl
+var expansionEventData []byte
+
 // Selector is the original scenario's fixed value, range, or choice list.
 // A negative Fixed selects the half-open interval [Min, Max). Otherwise
 // nonnegative Min/Max are alternatives to Fixed. See original 0x0043c6b0.
@@ -43,9 +46,12 @@ var eventDefinitions = sync.OnceValue(func() [][]EventDefinition {
 		columns[column.Name] = i
 	}
 	result := make([][]EventDefinition, len(definitions()))
-	scanner := bufio.NewScanner(bytes.NewReader(eventData))
+	scanner := bufio.NewScanner(bytes.NewReader(bytes.Join([][]byte{eventData, expansionEventData}, []byte("\n"))))
 	scanner.Buffer(make([]byte, 4096), 1024*1024)
 	for scanner.Scan() {
+		if len(bytes.TrimSpace(scanner.Bytes())) == 0 {
+			continue
+		}
 		var mission struct {
 			ID      int     `json:"mission_id"`
 			Records [][]int `json:"records"`
@@ -93,22 +99,47 @@ func ResourceID(id int) string {
 	return resourceIDs[id]
 }
 
+// ResourceID keeps the original base-game interpretation for existing callers.
+// Gold adds five commodities before currency and troop request identifiers.
+func ResourceIDForVersion(id, version int) string {
+	if version >= 160 && id >= 31 {
+		extension := [...]string{"oil", "henna", "paint", "lamps", "marble", "debens", "troops"}
+		if id-31 < len(extension) {
+			return extension[id-31]
+		}
+		return ""
+	}
+	return ResourceID(id)
+}
+func (s *State) sourceVersion() int {
+	if s.eventSource != nil {
+		return s.customSourceVersion
+	}
+	m, ok := Definition(s.MissionID)
+	if !ok {
+		return 0
+	}
+	return m.SourceVersion()
+}
+func (s *State) resourceID(id int) string { return ResourceIDForVersion(id, s.sourceVersion()) }
+
 // EventState contains chosen values and dates, so save/reload never rerolls an
 // event. IDs identify instances; SourceID identifies the original template.
 type EventState struct {
-	Chained   bool   `json:"chained,omitempty"`
-	ID        int    `json:"id"`
-	SourceID  int    `json:"source_id"`
-	DueMonth  int64  `json:"due_month"`
-	Item      int    `json:"item"`
-	Amount    int    `json:"amount"`
-	Location  int    `json:"location"`
-	Remaining int    `json:"remaining"`
-	Status    string `json:"status"`
-	Repeated  bool   `json:"repeated"`
+	Retaliation bool   `json:"retaliation,omitempty"`
+	Chained     bool   `json:"chained,omitempty"`
+	ID          int    `json:"id"`
+	SourceID    int    `json:"source_id"`
+	DueMonth    int64  `json:"due_month"`
+	Item        int    `json:"item"`
+	Amount      int    `json:"amount"`
+	Location    int    `json:"location"`
+	Remaining   int    `json:"remaining"`
+	Status      string `json:"status"`
+	Repeated    bool   `json:"repeated"`
 }
 
-type EventEffect struct{ ID, Type, Item, Amount, Location, Subtype, Escorts int }
+type EventEffect struct{ ID, Type, Item, Amount, Location, Subtype, Escorts, SourceVersion int }
 
 func (s *State) eventRandom(n int) int {
 	// Nile's deterministic generator is deliberately independent of Pharaoh's.
@@ -145,7 +176,7 @@ func (s *State) InitEvents() {
 	}
 	s.EventsInitialized, s.Kingdom, s.EventMonth = true, 50, -1
 	s.EventRNG = uint32(s.MissionID+1) * 0x9e3779b9
-	for _, d := range Events(s.MissionID) {
+	for _, d := range s.sourceEvents() {
 		if d.Trigger&1 != 0 {
 			continue
 		}
@@ -165,14 +196,14 @@ func (s *State) addEvent(d EventDefinition, month int64, chained bool) {
 	if chained {
 		due = month + delay
 	}
+	if d.Type == 2 {
+		due += int64(d.Deadline)
+	}
 	s.Events = append(s.Events, EventState{ID: len(s.Events) + 1, SourceID: d.ID, Chained: chained, DueMonth: due, Item: s.selectValue(d.Item), Amount: s.selectValue(d.Amount), Location: s.selectValue(d.Location), Status: "scheduled"})
 }
 
 func (s *State) template(id int) (EventDefinition, bool) {
-	if s.MissionID < 0 || s.MissionID >= len(eventDefinitions()) {
-		return EventDefinition{}, false
-	}
-	for _, d := range eventDefinitions()[s.MissionID] {
+	for _, d := range s.sourceEvents() {
 		if d.ID == id {
 			return d, true
 		}
@@ -180,10 +211,77 @@ func (s *State) template(id int) (EventDefinition, bool) {
 	return EventDefinition{}, false
 }
 
-func (s *State) chain(id int, month int64) {
-	if d, ok := s.template(id); ok {
-		s.addEvent(d, month, true)
+// Original 0x0043d500 guards ordinary outcome links. Invasion arrival
+// directly calls 0x00440080 instead. Selected values follow that routine's
+// compatible location/resource inheritance rather than being rerolled.
+func (s *State) chain(id int, month int64, parent EventState) {
+	d, ok := s.template(id)
+	p, parentOK := s.template(parent.SourceID)
+	if !ok || !parentOK {
+		return
 	}
+	if p.Type != 2 && (d.Trigger&1 == 0 || !parent.Chained && id == parent.SourceID) {
+		return
+	}
+	before := len(s.Events)
+	s.addEvent(d, month, true)
+	if len(s.Events) == before {
+		return
+	}
+	child := &s.Events[before]
+	if cityLocation(p.Type) == cityLocation(d.Type) && acceptsInherited(d.Location, parent.Location) {
+		child.Location = parent.Location
+	}
+	if resourceEvent(p.Type) && resourceEvent(d.Type) && acceptsResourceVersion(d, parent.Item, s.sourceVersion()) && acceptsInherited(d.Item, parent.Item) {
+		child.Item = parent.Item
+	}
+}
+
+// Factual selector/type properties from original tables 0x0056d5d0,
+// 0x0056d5e8, 0x0056d618 and 0x0056d630/690; predicates 0x0043d2c0/3a0.
+func cityLocation(kind int) bool {
+	return kind == 1 || kind >= 6 && kind <= 9 || kind == 13 || kind == 14 || kind >= 17 && kind <= 20 || kind == 23
+}
+func resourceEvent(kind int) bool { return kind == 1 || kind >= 13 && kind <= 16 || kind == 23 }
+func acceptsInherited(v Selector, value int) bool {
+	if v.Fixed < 0 {
+		return value >= v.Min && value <= v.Max
+	}
+	return v.Min < 0 && value == v.Fixed
+}
+func acceptsResource(d EventDefinition, item int) bool { return acceptsResourceVersion(d, item, 0) }
+
+func acceptsResourceVersion(d EventDefinition, item, version int) bool {
+	coin, troops := 31, 32
+	if version >= 160 {
+		coin, troops = 36, 37
+	}
+	maximum := coin
+	if d.Type == 1 || d.Type == 23 {
+		maximum = troops + 1
+	}
+	if item < 1 || item >= maximum {
+		return false
+	}
+	if d.Type == 23 {
+		return item != troops
+	}
+	if d.Type != 1 {
+		return true
+	}
+	switch d.Subtype {
+	case 0, 6:
+		return item != troops
+	case 1, 2:
+		return item == troops
+	case 3:
+		return item <= 8 || item == 15 || item == 17 || item == 19 || item == coin
+	case 4:
+		return slices.Contains([]int{12, 23, 24, 25, 26, 30, coin}, item)
+	case 5:
+		return item <= 8
+	}
+	return false
 }
 
 func (s *State) ChangeKingdom(delta int) { s.Kingdom = max(0, min(100, s.Kingdom+delta)) }
@@ -207,6 +305,25 @@ func (s *State) AdvanceEvents(month int64) []EventEffect {
 				continue
 			}
 			chain := -1
+			// Original0x00439cd0 activates the retaliation template at zero
+			// kingdom standing;0x0043f880 gives it a twelve-month cooldown.
+			if e.Status == "dormant" && d.Trigger&16 != 0 {
+				e.Remaining = max(0, e.Remaining-1)
+				if e.Remaining == 0 && s.Kingdom == 0 {
+					before := len(s.Events)
+					retaliation := d
+					retaliation.Time = Selector{0, -1, -1}
+					s.addEvent(retaliation, s.EventMonth, true)
+					if len(s.Events) > before {
+						s.Events[before].Retaliation = true
+						e.Remaining = 12
+					}
+				}
+			}
+			// 0x0043a110 cancels the warned royal attack after recovery to15.
+			if e.Retaliation && e.Status == "scheduled" && s.Kingdom >= 15 {
+				e.Status = "completed"
+			}
 			switch e.Status {
 			case "scheduled":
 				if e.DueMonth > s.EventMonth {
@@ -234,7 +351,7 @@ func (s *State) AdvanceEvents(month int64) []EventEffect {
 			case "requested", "overdue":
 				e.Remaining--
 				if e.Remaining <= 0 {
-					if e.Item == 32 {
+					if s.resourceID(e.Item) == "troops" {
 						e.Status = "refused"
 						chain = d.Refuse
 					} else if e.Status == "requested" {
@@ -271,7 +388,7 @@ func (s *State) AdvanceEvents(month int64) []EventEffect {
 			}
 			s.Events[i] = e
 			if chain >= 0 {
-				s.chain(chain, s.EventMonth)
+				s.chain(chain, s.EventMonth, e)
 			}
 			if (e.Status == "completed" || e.Status == "refused") && d.Trigger&2 != 0 && !e.Repeated && !e.Chained {
 				s.Events[i].Repeated = true
@@ -289,13 +406,15 @@ func (s *State) AdvanceEvents(month int64) []EventEffect {
 	for _, e := range s.Events {
 		if e.Status == "pending_effect" {
 			d, _ := s.template(e.SourceID)
-			effects = append(effects, EventEffect{e.ID, d.Type, e.Item, e.Amount, e.Location, d.Subtype, max(0, d.Escorts)})
+			effects = append(effects, EventEffect{ID: e.ID, Type: d.Type, Item: e.Item, Amount: e.Amount, Location: e.Location, Subtype: d.Subtype, Escorts: max(0, d.Escorts), SourceVersion: s.sourceVersion()})
 		}
 	}
 	return effects
 }
 
-func (s *State) CompleteEffect(id int) error {
+func (s *State) CompleteEffect(id int) error { return s.FinishEffect(id, true) }
+
+func (s *State) FinishEffect(id int, follow bool) error {
 	if s == nil {
 		return errors.New("no campaign")
 	}
@@ -303,7 +422,9 @@ func (s *State) CompleteEffect(id int) error {
 		if e.ID == id && e.Status == "pending_effect" {
 			s.Events[i].Status = "completed"
 			d, _ := s.template(e.SourceID)
-			s.chain(d.Complete, s.EventMonth)
+			if follow {
+				s.chain(d.Complete, s.EventMonth, e)
+			}
 			return nil
 		}
 	}
@@ -333,14 +454,15 @@ func (s *State) Requests() []Request {
 			continue
 		}
 		quantity := e.Amount
-		if e.Item < 31 {
+		resource := s.resourceID(e.Item)
+		if resource != "debens" && resource != "troops" {
 			quantity *= 100
 		}
 		travel := 0
-		if e.Item == 32 {
+		if s.resourceID(e.Item) == "troops" {
 			travel = s.ArmyTravelMonths(e.ID)
 		}
-		result = append(result, Request{Location: e.Location, TravelMonths: travel, ID: e.ID, Resource: ResourceID(e.Item), Quantity: quantity, Months: e.Remaining, Status: e.Status})
+		result = append(result, Request{Location: e.Location, TravelMonths: travel, ID: e.ID, Resource: resource, Quantity: quantity, Months: e.Remaining, Status: e.Status})
 	}
 	return result
 }
@@ -386,7 +508,7 @@ func (s *State) RefuseRequest(id int) error {
 			s.Events[i].Status = "refused"
 			s.Events[i].Remaining = 0
 			d, _ := s.template(e.SourceID)
-			s.chain(d.Refuse, s.EventMonth)
+			s.chain(d.Refuse, s.EventMonth, e)
 			return nil
 		}
 	}

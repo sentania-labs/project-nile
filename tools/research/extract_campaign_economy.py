@@ -13,12 +13,13 @@ import subprocess
 from extract_campaign import FormatError, KNOWN_HASHES, digest, directory, read, record_chunks
 
 
-def extract(source, decoder):
+def extract(source, decoder, *, language_path=None, expected_hashes=KNOWN_HASHES, directory_entries=50,
+            mission_ids=None, layouts=((147, 175), (149, 175)), object_bytes=76, resource_max=30):
     data = source.read_bytes()
-    if digest(data) != KNOWN_HASHES["MISSION1.PAK"]:
+    if digest(data) != expected_hashes["MISSION1.PAK"]:
         raise FormatError("unverified MISSION1.PAK corpus")
-    language = source.with_name("Pharaoh_Text.eng").read_bytes()
-    if digest(language) != KNOWN_HASHES["Pharaoh_Text.eng"]:
+    language = (language_path or source.with_name("Pharaoh_Text.eng")).read_bytes()
+    if digest(language) != expected_hashes["Pharaoh_Text.eng"]:
         raise FormatError("unverified original city names")
     name_start = 8028 + read(language, "I", 28 + 195 * 8)[0]
     name_end = 8028 + read(language, "I", 28 + 196 * 8)[0]
@@ -34,8 +35,12 @@ def extract(source, decoder):
             raise FormatError("directory decompression length mismatch")
         return payload
     missions = []
-    for mission_id, bounds in enumerate(directory(data)):
-        chunks = record_chunks(data, *bounds)
+    if object_bytes not in (76, 98) or not 30 <= resource_max <= 35:
+        raise FormatError("unsupported economic record variant")
+    for mission_id, bounds in enumerate(directory(data, directory_entries)):
+        if mission_ids is not None and mission_id not in mission_ids:
+            continue
+        chunks = record_chunks(data, *bounds, layouts=layouts)
         chunk = chunks[50]
         if chunk["unpacked_size"] != 6466:
             raise FormatError("unsupported city directory layout")
@@ -43,13 +48,13 @@ def extract(source, decoder):
         if chunks[114]["unpacked_size"] != 2880:
             raise FormatError("unsupported trade quota layout")
         quotas = decode(chunks[114])
-        if chunks[142]["unpacked_size"] != 15200:
+        if chunks[142]["unpacked_size"] != 200*object_bytes:
             raise FormatError("unsupported empire object layout")
         objects = decode(chunks[142])
         if chunks[143]["unpacked_size"] != 16200:
             raise FormatError("unsupported empire route layout")
         routes = decode(chunks[143])
-        own = [i for i in range(200) if objects[i*76] == 1 and objects[i*76+1] and objects[i*76+24] == 0]
+        own = [i for i in range(200) if objects[i*object_bytes] == 1 and objects[i*object_bytes+1] and objects[i*object_bytes+24] == 0]
         if len(own) != 1:
             raise FormatError("expected exactly one original player city")
         cities = []
@@ -65,11 +70,11 @@ def extract(source, decoder):
             object_id = read(row, "h", 86)[0]
             if not 0 <= object_id < 200:
                 raise FormatError("invalid city object reference")
-            obj = objects[object_id*76:(object_id+1)*76]
+            obj = objects[object_id*object_bytes:(object_id+1)*object_bytes]
             if obj[0] != 1 or not obj[1] or obj[25] != row[3] or obj[26] != row[4]:
                 raise FormatError("city and empire object identity disagree")
-            potential_sells = sorted(set(r for r in obj[30:44] if 0 < r <= 30))
-            potential_buys = sorted(set(r for r in obj[52:60] if 0 < r <= 30))
+            potential_sells = sorted(set(r for r in obj[30:44] if 0 < r <= resource_max))
+            potential_buys = sorted(set(r for r in obj[52:60] if 0 < r <= resource_max))
             limits = {str(r): read(quotas, "I", row[4]*144+r*4)[0]*100
                       for r in sorted(set(potential_sells+potential_buys))}
             travel_months = 0

@@ -1,6 +1,9 @@
 package campaign
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestAllBaseMissionGoalsAreIndependentAndDisabledRatingsAreIgnored(t *testing.T) {
 	for id := 0; id < 38; id++ {
@@ -52,5 +55,23 @@ func TestCompletedHistoryCannotSkipAnOriginalMission(t *testing.T) {
 	s.Completed = []int{Nubt, Thinis}
 	if err := s.Validate(0); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestLaterMissionGuidanceUsesItsOwnVictoryObjectives(t *testing.T) {
+	for _, id := range []int{Timna, 6, 37} {
+		s, err := NewScenario(id)
+		if err != nil {
+			t.Fatal(err)
+		}
+		v := s.View(Observation{})
+		if strings.Contains(v.Guidance, "Shanties") || strings.Contains(v.Guidance, "150 residents") || !strings.Contains(v.Guidance, "prosperity rating") {
+			t.Fatalf("mission%d inherited tutorial guidance: %s", id, v.Guidance)
+		}
+		for _, goal := range v.Objectives {
+			if goal.ID == "meat" {
+				t.Fatal("later mission inherited Nubt meat gate")
+			}
+		}
 	}
 }
