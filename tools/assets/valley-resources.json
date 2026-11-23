@@ -1,0 +1,14 @@
+{
+  "name": "valley-resources",
+  "assets": [
+    ["gemstonemine", "Gemstone mine", 2, 172],
+    ["jeweler", "Jeweler", 2, 172],
+    ["courthouse", "Courthouse", 3, 258],
+    ["woodland", "Sycamore woodland", 1, 106],
+    ["quarryrock", "Quarry rock", 1, 100],
+    ["personalresidence", "Personal residence", 3, 258],
+    ["waterlift", "Water lift", 2, 172],
+    ["ferry", "Ferry landing", 2, 172],
+    ["bridge", "River crossing", 1, 86]
+  ]
+}

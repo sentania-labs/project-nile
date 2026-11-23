@@ -1114,10 +1114,10 @@
     "label": "Work camp",
     "path": "workcamp.png",
     "footprint": [
-      2,
-      2
+      3,
+      3
     ],
-    "draw_width": 172,
+    "draw_width": 258,
     "anchor": [
       0.5,
       1.0
@@ -1220,5 +1220,537 @@
       0.5,
       1.0
     ]
+  },
+  "coppermine": {
+    "id": "coppermine",
+    "path": "coppermine.png",
+    "label": "Copper Mine",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 192,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "weaponsmith": {
+    "id": "weaponsmith",
+    "path": "weaponsmith.png",
+    "label": "Weaponsmith",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 192,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "recruiter": {
+    "id": "recruiter",
+    "path": "recruiter.png",
+    "label": "Recruiter",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 288,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "fort": {
+    "id": "fort",
+    "path": "fort.png",
+    "label": "Infantry Fort",
+    "footprint": [
+      7,
+      4
+    ],
+    "draw_width": 528,
+    "anchor": [
+      0.644,
+      1.0
+    ]
+  },
+  "home_12b": {
+    "id": "home_12b",
+    "label": "Spacious Residence",
+    "path": "home_12b.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_13": {
+    "id": "home_13",
+    "label": "Elegant Residence",
+    "path": "home_13.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_14": {
+    "id": "home_14",
+    "label": "Fancy Residence",
+    "path": "home_14.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_15": {
+    "id": "home_15",
+    "label": "Common Manor",
+    "path": "home_15.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_16": {
+    "id": "home_16",
+    "label": "Spacious Manor",
+    "path": "home_16.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_17": {
+    "id": "home_17",
+    "label": "Elegant Manor",
+    "path": "home_17.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_18": {
+    "id": "home_18",
+    "label": "Stately Manor",
+    "path": "home_18.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_19": {
+    "id": "home_19",
+    "label": "Modest Estate",
+    "path": "home_19.png",
+    "footprint": [
+      4,
+      4
+    ],
+    "draw_width": 344,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "home_20": {
+    "id": "home_20",
+    "label": "Palatial Estate",
+    "path": "home_20.png",
+    "footprint": [
+      4,
+      4
+    ],
+    "draw_width": 344,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "figfarm": {
+    "id": "figfarm",
+    "label": "Fig farm",
+    "path": "figfarm.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "pomegranatefarm": {
+    "id": "pomegranatefarm",
+    "label": "Pomegranate farm",
+    "path": "pomegranatefarm.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "chickpeafarm": {
+    "id": "chickpeafarm",
+    "label": "Chickpea farm",
+    "path": "chickpeafarm.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "lettucefarm": {
+    "id": "lettucefarm",
+    "label": "Lettuce farm",
+    "path": "lettucefarm.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "datefarm": {
+    "id": "datefarm",
+    "label": "Date orchard",
+    "path": "datefarm.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "cattleranch": {
+    "id": "cattleranch",
+    "label": "Cattle ranch",
+    "path": "cattleranch.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "fishingwharf": {
+    "id": "fishingwharf",
+    "label": "Fishing wharf",
+    "path": "fishingwharf.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "fowler": {
+    "id": "fowler",
+    "label": "Fowler",
+    "path": "fowler.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "ostrichranch": {
+    "id": "ostrichranch",
+    "label": "Ostrich ranch",
+    "path": "ostrichranch.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "gemstonemine": {
+    "id": "gemstonemine",
+    "label": "Gemstone mine",
+    "path": "gemstonemine.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "jeweler": {
+    "id": "jeweler",
+    "label": "Jeweler",
+    "path": "jeweler.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "courthouse": {
+    "id": "courthouse",
+    "label": "Courthouse",
+    "path": "courthouse.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "woodland": {
+    "id": "woodland",
+    "label": "Sycamore woodland",
+    "path": "woodland.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 106,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "quarryrock": {
+    "id": "quarryrock",
+    "label": "Quarry rock",
+    "path": "quarryrock.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 100,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "personalresidence": {
+    "id": "personalresidence",
+    "label": "Personal residence",
+    "path": "personalresidence.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "waterlift": {
+    "id": "waterlift",
+    "label": "Water lift",
+    "path": "waterlift.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "ferry": {
+    "id": "ferry",
+    "label": "Ferry landing",
+    "path": "ferry.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "bridge": {
+    "id": "bridge",
+    "label": "River crossing",
+    "path": "bridge.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 86,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "shipwright": {
+    "id": "shipwright",
+    "path": "shipwright.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 288.0,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Shipwright"
+  },
+  "dock": {
+    "id": "dock",
+    "path": "dock.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 288.0,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Dock"
+  },
+  "transportwharf": {
+    "id": "transportwharf",
+    "path": "transportwharf.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 192.0,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Transportwharf"
+  },
+  "warshipwharf": {
+    "id": "warshipwharf",
+    "path": "warshipwharf.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 288.0,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Warshipwharf"
+  },
+  "fishingboat": {
+    "id": "fishingboat",
+    "path": "fishingboat.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 110,
+    "anchor": [
+      0.5,
+      0.84
+    ],
+    "label": "Fishingboat"
+  },
+  "merchantship": {
+    "id": "merchantship",
+    "path": "merchantship.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 200,
+    "anchor": [
+      0.5,
+      0.84
+    ],
+    "label": "Merchantship"
+  },
+  "warship": {
+    "id": "warship",
+    "path": "warship.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 220,
+    "anchor": [
+      0.5,
+      0.84
+    ],
+    "label": "Warship"
   }
 }

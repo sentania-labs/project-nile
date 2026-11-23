@@ -49,6 +49,8 @@ func refresh(operation: String) -> void:
 		won_shown = false
 		briefing = operation in ["new_campaign", "advance_campaign"]
 		if briefing: show_objectives()
+	if panel.visible and operation in ["dispatch_request", "refuse_request"]:
+		show_objectives()
 	if mission.won and not won_shown:
 		won_shown = true
 		briefing = false
@@ -68,6 +70,19 @@ func show_objectives() -> void:
 		lines.append("Your city has met its objectives." if mission.won else str(mission.guidance))
 	for objective: Dictionary in mission.objectives:
 		lines.append("%s   %d / %d" % [objective.label, int(objective.current), int(objective.target)])
+	var requests = mission.get("requests")
+	for request: Dictionary in (requests if requests is Array else []):
+		if not str(request.status) in ["requested", "overdue", "dispatched", "dispatched_late"]: continue
+		var cargo := "%d %s" % [int(request.quantity), str(request.resource).capitalize()]
+		if str(request.status).begins_with("dispatched"):
+			lines.append("On its way to Pharaoh: " + cargo)
+			continue
+		lines.append("Pharaoh requests %s. %d in stock. %d months remain." % [cargo, int(request.available), maxi(0, int(request.months))])
+		var row := HBoxContainer.new()
+		decisions.add_child(row)
+		var dispatch: Button = game._button("Dispatch " + cargo, _respond.bind("dispatch_request", int(request.id)))
+		dispatch.disabled = not request.can_dispatch
+		row.add_child(dispatch)
 	body.text = "\n\n".join(lines)
 	if mission.won:
 		for next: Dictionary in mission.next_missions:
@@ -75,6 +90,10 @@ func show_objectives() -> void:
 				decisions.add_child(game._button("Continue to " + str(next.name), _advance.bind(int(next.id))))
 	decisions.add_child(game._button("Begin settlement" if briefing else "Return to city", dismiss))
 	panel.show()
+
+
+func _respond(operation: String, id: int) -> void:
+	game._queue_command(operation, {"request_id": id})
 
 
 func _advance(id: int) -> void:

@@ -203,3 +203,39 @@ The Normal housing model supplies the population capacities, desirability thresh
 The storage yard accepts per-good orders. Where a workshop needs a material, a carrier moves it from an operating supplier. Bazaar buyers and sellers handle food and household goods. Regular imports and exports settle at the storage yard when the trader arrives. Prices per 100 units come from the original English retail executable at file offset 0x166cb8. The initial Kingdom Road trade partner, opening fee, dispatch cadence, quotas and partial-load rounding are authored sandbox settings.
 
 Roadblocks filter roaming services by role while destination journeys use the road network. The booth, bandstand and pavilion retain the roads under their footprint. Current venue placement accepts a bend or intersection. Verification of each original orientation mask remains open. The local health model currently uses simplified exposure and mortality. The original Perwadjyt death handler and basic health gate have been traced, while the incidence and spread rates still need verification.
+
+### Small stepped pyramid, original measurement
+
+The original English retail executable (fingerprint above), Normal difficulty,
+custom Steps map, places an **8×8** small stepped pyramid at **zero placement
+cost**. Its foreman reports **240 blocks of plain stone, 60 sledge loads**;
+the first course requires **32 blocks, eight loads**. The independent read-only
+constant inspection agrees: sixteen 2×2 parts, six base courses of 32 blocks and
+six upper courses of eight blocks. No limestone facing is needed. The original
+patch readme specifies paired masons: four blocks fill two sections. Runtime
+inventory uses 100 units per block, so Nile's requirement is 24,000 units.
+
+Primary locators: `pass3/004d5a00.c` (foreman counters), `004d7810.c` (course
+advancement), executable data at VA `0x588f04` (120 two-block sections) and
+`0x5781ac` (part heights); carpenter dispatch at `0x453c40` requires 400 timber
+units before dispatch. The ramp table at `0x586b28`, count at `0x533e58`, contains
+six small-pyramid ramp jobs. The actual foreman capture is retained privately at
+`/mnt/holding/project-nile/monument-original-20261123/43-phase-probe-foreman.png`.
+The phase-only probe was made after a full record snapshot, and restored; the
+material counters were not edited. No original code or artwork is distributed.
+
+`monuments.go` and `monument_haul.go` implement this second buildable monument.
+Work Camp crews prepare the foundation; paired guild masons install each
+four-block delivery; carpenters build access ramps; camp-origin sledges collect
+reserved stone from storage and retain their complete round-trip routes. All
+materials are physically accounted for, including interrupted journeys and saves.
+`monuments_test.go` covers staging, workers, all 240 blocks and in-flight replay.
+The Godot playthrough is `client/tests/capture_pyramid.py`.
+
+Preparation effort, worker assignment, persistent carpenter deployment, road-only
+hauling and work cadence remain **provisional aggregation**. The four-load timber
+supply is measured per original carpenter dispatch; it is not yet a verified
+original total for an entire pyramid. Nile currently uses one supplied carpenter
+for the six ramps. The masonry amount and footprint are verified; the complete
+original scheduling and off-road construction paths are not claimed. Larger
+pyramids and the Sphinx are not yet buildable.

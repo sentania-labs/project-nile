@@ -8,7 +8,12 @@ type ResourceInfo struct {
 	Unit  string `json:"unit"`
 }
 
+var foodKinds = []string{"grain", "meat", "figs", "pomegranates", "lettuce", "chickpeas", "beef", "fish"}
+var bazaarGoods = []string{"grain", "meat", "figs", "pomegranates", "lettuce", "chickpeas", "beef", "fish", "pottery", "beer", "linen", "jewelry"}
 var resourceCatalog = []ResourceInfo{
+	{"chariots", "Chariots", "units"},
+	{"pomegranates", "Pomegranates", "units"}, {"lettuce", "Lettuce", "units"}, {"chickpeas", "Chickpeas", "units"}, {"beef", "Beef", "units"}, {"fish", "Fish", "units"},
+	{"gems", "Gemstones", "units"}, {"copper", "Copper", "units"}, {"weapons", "Weapons", "units"},
 	{"stone", "Plain stone", "units"}, {"timber", "Timber", "units"}, {"limestone", "Limestone", "units"}, {"granite", "Granite", "units"}, {"sandstone", "Sandstone", "units"},
 	{"grain", "Grain", "units"}, {"meat", "Game meat", "units"}, {"figs", "Figs", "units"}, {"barley", "Barley", "units"}, {"beer", "Beer", "units"},
 	{"reeds", "Reeds", "units"}, {"papyrus", "Papyrus", "units"}, {"clay", "Clay", "units"}, {"pottery", "Pottery", "units"},
@@ -64,11 +69,47 @@ func resourceLimit(b Building, r string) int {
 	if !validResource(r) {
 		return 0
 	}
+	if extracted[b.Kind] == r || b.Kind == "woodcutter" && r == "timber" {
+		return 400
+	}
+	if b.Kind == "dock" {
+		return 1200
+	}
+	if b.Kind == "shipwright" && r == "timber" {
+		return 800
+	}
+	if b.Kind == "fishingwharf" && r == "fish" {
+		return 400
+	}
+	if n := monumentResourceCapacity(b, r); n > 0 {
+		return n
+	}
 	if r == supplyForService(b.Kind) {
 		return 200
 	}
+	if r == campCrops[b.Kind] {
+		return 400
+	}
+	if b.Kind == "cattleranch" && r == "straw" {
+		return 32
+	}
+	if r == "grain" && b.AgricultureVersion > 0 {
+		switch b.Kind {
+		case "farm":
+			return 400
+		case "granary":
+			return 1600
+		case "storageyard":
+			return 800
+		case "bazaar":
+			return 400
+		case "hut":
+			return 32 * b.lotSide() * b.lotSide()
+		}
+		return 0
+	}
 	if r == "grain" {
-		return stockCapacity(b.Kind)
+		return stockCapacity(b.Kind) * b.lotSide() * b.lotSide()
 	}
 	if r == "clay" || r == "straw" || r == "bricks" {
 		if b.Kind == "potter" && r == "clay" {
@@ -79,6 +120,14 @@ func resourceLimit(b Building, r string) int {
 	switch b.Kind {
 	case "storageyard":
 		return 800
+	case "recruiter":
+		if r == "weapons" || r == "chariots" {
+			return 400
+		}
+	case "coppermine":
+		if r == "copper" {
+			return 400
+		}
 	case "huntinglodge":
 		if r == "meat" {
 			return 400
@@ -96,7 +145,7 @@ func resourceLimit(b Building, r string) int {
 		}
 	case "hut":
 		if foodResource(r) || householdGood(r) {
-			return 32
+			return 32 * b.lotSide() * b.lotSide()
 		}
 	case "figfarm":
 		if r == "figs" {
@@ -125,7 +174,14 @@ func resourceLimit(b Building, r string) int {
 	}
 	return 0
 }
-func foodResource(r string) bool { return r == "grain" || r == "meat" || r == "figs" }
+func foodResource(r string) bool {
+	for _, kind := range foodKinds {
+		if r == kind {
+			return true
+		}
+	}
+	return false
+}
 func householdGood(r string) bool {
 	return r == "pottery" || r == "beer" || r == "linen" || r == "jewelry"
 }
@@ -138,12 +194,20 @@ func (w World) ResourceAmount(id int64, r string) int {
 }
 func (w World) HouseGoods(id int64, r string) int { return w.ResourceAmount(id, r) }
 func (w World) incomingResource(id int64, r string) int {
-	n := 0
+	n := w.boatIncoming(id, r)
 	for _, a := range w.Walkers {
 		if a.Resource != r {
 			continue
 		}
 		switch a.Role {
+		case "builder":
+			if a.Source == id || a.Origin == id {
+				n += a.Cargo
+			}
+		case "stonehauler":
+			if a.Site == id {
+				n += a.Cargo + a.Reserved
+			}
 		case "trader":
 			if a.Stage == "import" && a.Target == id {
 				n += a.Cargo
@@ -160,7 +224,7 @@ func (w World) incomingResource(id int64, r string) int {
 			if a.Origin == id {
 				n += a.Cargo
 			}
-		case "hunter", "reedharvester":
+		case "hunter", "reedharvester", "lumberjack":
 			if a.Origin == id {
 				n += max(a.Cargo, a.Reserved)
 			}
@@ -175,9 +239,9 @@ func (w World) incomingResource(id int64, r string) int {
 	return n
 }
 func (w World) reservedResource(id int64, r string) int {
-	n := 0
+	n := w.boatReserved(id, r)
 	for _, a := range w.Walkers {
-		if ((a.Role == "goodsbuyer" && a.Stage == "fetch") || (a.Role == "trader" && a.Stage == "export")) && a.Source == id && a.Resource == r {
+		if ((a.Role == "stonehauler" && a.Stage == "collect") || (a.Role == "goodsbuyer" && a.Stage == "fetch") || (a.Role == "trader" && a.Stage == "export")) && a.Source == id && a.Resource == r {
 			n += a.Reserved
 		}
 	}
@@ -329,7 +393,7 @@ func (w World) goodsView(v *View) {
 				n += a.Cargo
 			}
 		}
-		v.ResourceTotals[r.ID] = n
+		v.ResourceTotals[r.ID] = n + w.boatInventory(r.ID)
 		v.ResourceProduced[r.ID], v.ResourceConsumed[r.ID] = w.resourceCounters(r.ID)
 	}
 }
@@ -387,7 +451,7 @@ func (w World) validateGoods() error {
 			continue
 		}
 		p, c := w.resourceCounters(r.ID)
-		if p+w.ResourceImported[r.ID] != c+int64(totals[r.ID])+w.ResourceExported[r.ID] {
+		if p+w.ResourceImported[r.ID] != c+int64(totals[r.ID]+w.boatInventory(r.ID))+w.ResourceExported[r.ID]+w.RequestSent[r.ID] {
 			return errors.New("resource conservation failed: " + r.ID)
 		}
 	}

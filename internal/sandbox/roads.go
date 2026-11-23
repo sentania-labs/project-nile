@@ -34,6 +34,9 @@ func (w *World) addKingdomRoad() {
 // scan, but remain an inference pending the original executable experiment.
 // This affects road access, not the independent reach of service walkers.
 func (b Building) roadAccess(p Point) bool {
+	if isPyramid(b.Kind) {
+		return p == monumentStaging(b)
+	}
 	if slices.Contains(venues, b.Kind) && b.contains(p) {
 		return true
 	}
@@ -63,13 +66,13 @@ func (w World) accessTiles(b Building) []Point {
 // BuildRoads commits a complete mouse-drag path once, after validation. Existing
 // road and repeated path tiles cost nothing; invalid paths never partly build.
 func (w *World) BuildRoads(path []Point) error {
-	if len(path) == 0 || len(path) > Size*Size {
+	if len(path) == 0 || len(path) > w.mapSize()*w.mapSize() {
 		return errors.New("a road path must contain 1..1024 tiles")
 	}
 	occupied, roads := w.occupied(), w.roadSet()
 	added := make([]Point, 0, len(path))
 	for i, p := range path {
-		if !valid(p) {
+		if !w.walkable(p) {
 			return errors.New("roads must stay on dry land inside the map")
 		}
 		if i > 0 && p != path[i-1] && !adjacent(p, path[i-1]) {
@@ -108,21 +111,21 @@ func (w *World) BuildRoads(path []Point) error {
 
 func (w World) validateMapAccess() error {
 	roads := w.roadSet()
-	if !valid(w.entry()) || !roads[w.entry()] {
+	if !w.buildable(w.entry()) || !roads[w.entry()] {
 		return errors.New("invalid city arrival road")
 	}
-	if w.ExitPoint != nil && (!valid(*w.ExitPoint) || !roads[*w.ExitPoint]) {
+	if w.ExitPoint != nil && (!w.buildable(*w.ExitPoint) || !roads[*w.ExitPoint]) {
 		return errors.New("invalid city exit road")
 	}
 	if len(w.KingdomRoad) == 0 {
 		return nil
 	}
-	if len(w.KingdomRoad) > Size*Size || w.ExitPoint == nil || w.KingdomRoad[0] != w.entry() || w.KingdomRoad[len(w.KingdomRoad)-1] != *w.ExitPoint {
+	if len(w.KingdomRoad) > w.mapSize()*w.mapSize() || w.ExitPoint == nil || w.KingdomRoad[0] != w.entry() || w.KingdomRoad[len(w.KingdomRoad)-1] != *w.ExitPoint {
 		return errors.New("invalid Kingdom Road endpoints")
 	}
 	seen := map[Point]bool{}
 	for i, p := range w.KingdomRoad {
-		if !valid(p) || seen[p] || (i > 0 && !adjacent(p, w.KingdomRoad[i-1])) {
+		if !w.buildable(p) || seen[p] || (i > 0 && !adjacent(p, w.KingdomRoad[i-1])) {
 			return errors.New("invalid Kingdom Road route")
 		}
 		seen[p] = true

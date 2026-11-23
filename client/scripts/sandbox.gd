@@ -4,6 +4,7 @@ extends "res://scripts/street_study.gd"
 const Transport = preload("res://scripts/sidecar.gd")
 const CityInterface = preload("res://scripts/city_interface.gd")
 const CityMotion = preload("res://scripts/city_motion.gd")
+var pyramid_view = preload("res://scripts/pyramid_view.gd").new()
 const TICK_SECONDS := 0.2
 
 var sim: Node
@@ -34,6 +35,8 @@ var ghost: Sprite2D
 var road_nodes: Array[Node] = []
 var placement_notice: Label
 var notice_timer: Timer
+var geography := preload("res://scripts/city_geography.gd").new()
+var saves := preload("res://scripts/save_browser.gd").new()
 var road_signature := ""
 var building_nodes: Dictionary = {}
 var walker_nodes: Dictionary = {}
@@ -90,6 +93,7 @@ func _ready() -> void:
 	var city_assets: Variant = _read_json(ASSET_ROOT + "city-assets.json")
 	if city_assets is Dictionary:
 		for asset_id: String in city_assets: assets[asset_id] = city_assets[asset_id]
+	pyramid_view.setup(self)
 	assets["bazaar"]["footprint"] = [2, 2]
 	assets["bazaar"]["draw_width"] = 190
 	assets["granary"]["anchor"] = [0.6244, 0.9051]
@@ -117,6 +121,7 @@ func _ready() -> void:
 		water_region[2] / atlas_size.x, water_region[3] / atlas_size.y))
 	river_material.set_shader_parameter("tile_size", Vector2(tile_width, tile_height))
 	river.material = river_material
+	geography.setup(self)
 	buildings.y_sort_enabled = true
 	for at: Vector2 in [Vector2(7, 5), Vector2(8.2, 7), Vector2(7.2, 9.5), Vector2(8, 12), Vector2(7.5, 19.2), Vector2(8.5, 24), Vector2(6.8, 26.5), Vector2(7.6, 29), Vector2(25, 9), Vector2(26, 12), Vector2(24, 26)]:
 		var palm := Sprite2D.new()
@@ -161,6 +166,7 @@ func _ready() -> void:
 func _build_hud() -> void:
 	city_ui = CityInterface.new()
 	city_ui.setup(self)
+	saves.setup(self)
 
 
 func _button(text: String, callback: Callable) -> Button:
@@ -204,7 +210,9 @@ func _new_town(scenario: String) -> void:
 	painting_roads = false
 	_set_tool("inspect")
 	_queue_command("pause")
-	_queue_command("new_town", {"scenario": scenario})
+	var fields := {"scenario":scenario}
+	if not smoke_mode and OS.get_environment("NILE_SANDBOX_SAVE").is_empty(): fields.path=saves.new_path("Nile city")
+	_queue_command("new_town", fields)
 	if not smoke_mode: _queue_command("resume")
 
 
@@ -221,8 +229,8 @@ func _turn_city(step: int) -> void:
 	var center_tile := _tile_at(get_canvas_transform().affine_inverse() * center_screen)
 	var focus_tile := _tile_at(focus)
 	var vertices := {}
-	for polygon: Polygon2D in ground.get_children():
-		if polygon in road_nodes: continue
+	for polygon in ground.get_children():
+		if not polygon is Polygon2D or polygon in road_nodes: continue
 		var tiles := PackedVector2Array()
 		for vertex: Vector2 in polygon.polygon:
 			tiles.append(_tile_at(vertex))
@@ -304,6 +312,7 @@ func _process(delta: float) -> void:
 			poll_elapsed = 0.0
 			current_operation = "state"
 			sim.request("state")
+	saves.update(delta)
 	if motion != null: motion.update(delta)
 	_update_ghost()
 	if city_ui != null: city_ui.update_city()
@@ -320,6 +329,7 @@ func _on_reply(reply: Dictionary) -> void:
 	speed_button.disabled = false
 	for button: Button in tool_buttons.values(): button.disabled = false
 	last_reply = reply
+	saves.received(current_operation,reply)
 	replies += 1
 	paused = not bool(reply.get("running", false))
 	simulation_speed = int(reply.get("speed", 1))
@@ -334,14 +344,15 @@ func _on_reply(reply: Dictionary) -> void:
 	var year := "Year %d" % int(state.get("year",1))
 	if state.has("campaign"):
 		var historical := int(state.campaign.start_year) + int(state.tick)/240
-		year = "%d %s" % [absi(historical) if historical < 0 else historical+1, "BC" if historical < 0 else "AD"]
+		var month: String = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][(int(state.tick)%240)/20]
+		year = "%s %d %s" % [month, absi(historical) if historical < 0 else historical+1, "BC" if historical < 0 else "AD"]
 	stats.text = "Db  %d         Pop  %d         %s   ·   %s%s" % [int(state.get("treasury", 0)), int(state.get("population", 0)), str(state.get("season", "Growing")).capitalize(), year, "   ·   Paused" if paused else ""]
 	if not reply.get("ok", false):
 		status.text = str(reply.get("error", "Command failed"))
 		if current_operation in ["build", "zone", "road"]: _show_placement_error(status.text)
-	elif current_operation == "save":
+	elif current_operation in ["save","save_as"]:
 		status.text = "Settlement saved."
-	elif current_operation == "load":
+	elif current_operation in ["load","load_from","load_manual","load_previous"]:
 		reset_in_progress = false
 		status.text = "Saved settlement restored."
 	elif current_operation in ["build", "road", "zone"]:
@@ -352,7 +363,7 @@ func _on_reply(reply: Dictionary) -> void:
 		reset_in_progress = false
 		monument_announced = false
 		city_ui.completion_modal.hide()
-		focus = _iso(11, 15) if state.get("buildings", []).is_empty() else _iso(16, 15)
+		focus = _iso(geography.bank_at(15)+5, 15) if state.get("buildings", []).is_empty() else _iso(16, 15)
 		_set_view(neighborhood_zoom)
 		status.text = ""
 	city_ui.campaign_ui.refresh(current_operation)
@@ -366,10 +377,10 @@ func _on_reply(reply: Dictionary) -> void:
 				startup_action = ""
 				if current_operation != "new_campaign": _queue_command("resume")
 		elif current_operation == "state":
-			if startup_choice == "empty":
+			if startup_choice in ["empty","valley"]:
 				reset_in_progress = true
 				startup_action = "new_town"
-				_queue_command("new_town", {"scenario": "empty"})
+				_queue_command("new_town", {"scenario": startup_choice})
 			elif startup_choice == "campaign":
 				startup_action = "new_campaign"
 				_queue_command("new_campaign", {"mission_id": 0})
@@ -381,7 +392,10 @@ func _on_reply(reply: Dictionary) -> void:
 				_queue_command("resume")
 	_refresh_inspector()
 	var goal := int(state.get("monument_goal", 64))
-	if goal > 0 and int(state.get("monument_progress", 0)) >= goal and not monument_announced and not reset_in_progress:
+	var all_monuments_complete := goal > 0
+	for b: Dictionary in state.get("buildings", []):
+		if int(b.get("construction_required",0))>0 and str(b.get("stage",""))!="complete": all_monuments_complete=false
+	if all_monuments_complete and not monument_announced and not reset_in_progress:
 		monument_announced = true
 		city_ui.show_completion()
 
@@ -449,6 +463,7 @@ func _building_rect(data: Dictionary) -> Rect2:
 
 
 func _sync_world() -> void:
+	geography.sync(self,state)
 	resources.sync(self, state)
 	var flood_level := float(state.get("flood_level", 0.0))
 	river_material.set_shader_parameter("flood_level", flood_level)
@@ -470,6 +485,7 @@ func _sync_world() -> void:
 			_add_terrain_polygon("road", _footprint(Rect2(Vector2(cell), Vector2.ONE)), 3, Vector2(cell), edges)
 			road_nodes.append(ground.get_child(ground.get_child_count() - 1))
 	blocked_tiles = resources.rock.duplicate()
+	blocked_tiles.merge(resources.obstacles)
 	vacant_plots.clear()
 	for tile: Dictionary in roads:
 		blocked_tiles[Vector2i(int(tile.x), int(tile.y))] = true
@@ -488,7 +504,7 @@ func _sync_world() -> void:
 		var vacant: bool = building.kind == "hut" and int(building.pop) == 0
 		if vacant: vacant_plots.append(cell)
 		var asset_id := str(building.kind)
-		if asset_id=="policestation": asset_id="police"
+		asset_id={"policestation":"police","residence":"personalresidence","shipbridge":"bridge"}.get(asset_id,asset_id)
 		if asset_id.begins_with("shrine_"): asset_id = "shrine"
 		if asset_id == "hut":
 			var tier := clampi(int(building.get("tier", 0)), 0, 2)
@@ -529,7 +545,8 @@ func _sync_world() -> void:
 			building_nodes[id].free()
 			building_nodes.erase(id)
 	for palm: Node2D in landscape_nodes:
-		palm.visible = not blocked_tiles.has(palm.get_meta("tile"))
+		var palm_tile: Vector2i = palm.get_meta("tile")
+		palm.visible = palm_tile.x>=geography.bank_at(palm_tile.y)+1 and not blocked_tiles.has(palm_tile)
 	placements.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		var ad: float = a.sprite.position.y
 		var bd: float = b.sprite.position.y
@@ -557,6 +574,7 @@ func _sync_world() -> void:
 			walker_nodes.erase(id)
 			walker_targets.erase(id)
 	if motion != null: motion.sync()
+	pyramid_view.sync()
 	overlay.queue_redraw()
 
 
@@ -666,9 +684,13 @@ func _refresh_inspector() -> void:
 				detail_label.text += "\nGold ready for collection: %d Db" % int(building.get("gold", 0))
 			if building.kind == "palace":
 				detail_label.text += "\nGold received: %d Db" % int(state.get("gold_delivered", 0))
+			if not str(building.get("farm_type","")).is_empty():
+				detail_label.text += "\n%s · fertility %d%% · %s" % [str(building.farm_type).capitalize(),int(building.get("fertility",0)),"Irrigated" if building.get("irrigated",false) else "Unirrigated"]
 			if building.kind in ["claypit", "brickworks", "storageyard", "mastaba"]:
 				detail_label.text += "\nClay: %d\nStraw: %d\nBricks: %d" % [int(building.get("clay", 0)), int(building.get("straw", 0)), int(building.get("bricks", 0))]
-			if building.kind == "mastaba":
+			if not str(building.get("monument_family", "")).is_empty():
+				pyramid_view.inspect(building)
+			elif building.kind == "mastaba":
 				kind_label.text = str(building.get("stage", "foundation")).capitalize()
 				detail_label.text += "\nCompleted: %d / %d\nCrew on site: %d\nCrew en route: %d\nReturning home: %d" % [int(building.get("construction_done", 0)), int(building.get("construction_required", 64)), int(building.get("crew_on_site", 0)), int(building.get("crew_en_route", 0)), int(building.get("crew_returning", 0))]
 				if not building.get("staging_access", false):
@@ -687,7 +709,7 @@ func _refresh_inspector() -> void:
 			if quantity > 0 and str(resource.id) not in ["grain", "clay", "straw", "bricks"]:
 				detail_label.text += "\n%s: %d" % [resource.label, quantity]
 		if building.kind == "hut": detail_label.text += "\nDesirability: %d" % int(building.get("desirability", 0))
-		if building.kind != "mastaba":
+		if building.kind != "mastaba" and str(building.get("monument_family", "")).is_empty():
 			detail_label.text += "\n\nFire risk: %d\nCollapse risk: %d" % [int(building.get("fire_risk", 0)), int(building.get("collapse_risk", 0))]
 		if str(building.get("damaged", "")) != "":
 			kind_label.text = "Damaged by " + str(building.damaged)
@@ -720,10 +742,21 @@ func _can_place(cell: Vector2i) -> bool:
 
 func _placement_error(cell: Vector2i) -> String:
 	var size := _building_size(active_tool)
-	if cell.y < 0 or cell.x < 0 or cell.x + size.x > 32 or cell.y + size.y > 32:
+	if cell.y < 0 or cell.x < 0 or cell.x + size.x > map_width or cell.y + size.y > map_height:
 		return "Outside the city site"
-	if cell.x < 6: return "This site is in the Nile"
+	if active_tool in ["bridge","shipbridge"]:
+		var west := int(geography.west_at(cell.y))
+		var east := int(geography.bank_at(cell.y))
+		if west==0 or cell.x not in [west-1,west,east-1,east]: return "Start the crossing at either riverbank"
+		return "" if not resources.spans.has(Vector2i(west,cell.y)) else "A bridge already crosses here"
+	if active_tool=="clear" and resources.spans.has(cell): return ""
+	var coastal: bool=active_tool in ["shipwright","fishingwharf","dock","transportwharf","warshipwharf"]
+	for y in range(cell.y,cell.y+size.y):
+		if coastal:
+			if cell.x != geography.bank_at(y)-1: return "Place the pier across a straight shore, with its first column over water"
+		elif cell.x<0 or geography.water_at(cell.x,y) or geography.water_at(cell.x+size.x-1,y) or (cell.x<geography.west_at(y) and cell.x+size.x>geography.bank_at(y)): return "This site is in the Nile"
 	if active_tool == "clear":
+		if resources.canals.has(cell): return ""
 		if resources.features.has(cell): return ""
 		for item: Dictionary in state.get("buildings", []):
 			if _building_rect(item).has_point(Vector2(cell)):
@@ -739,9 +772,17 @@ func _placement_error(cell: Vector2i) -> String:
 		if cell in [Vector2i(int(entry.x), int(entry.y)), Vector2i(int(exit_tile.x), int(exit_tile.y))]:
 			return "The city entrance must stay open"
 		return "" if road_tiles.has(cell) else "Nothing here to clear"
-	if active_tool in ["farm", "claypit", "barleyfarm", "flaxfarm", "figfarm"] and cell.x + size.x > 10:
-		return "Place the whole site on the floodplain"
-	if active_tool == "goldmine" and not resources.near_deposit(cell, size):
+	if active_tool in ["farm", "claypit", "barleyfarm", "flaxfarm", "figfarm", "pomegranatefarm", "lettucefarm", "chickpeafarm"]:
+		var all_meadow := int(state.get("agriculture_version",0))>0 and active_tool!="claypit"
+		var all_flood := true
+		for y in range(cell.y,cell.y+size.y):
+			for x in range(cell.x,cell.x+size.x):
+				var flood := not geography.water_at(x,y) and x>=geography.west_at(y)-4 and x<geography.bank_at(y)+4
+				all_flood = all_flood and flood
+				all_meadow = all_meadow and not flood and resources.meadow.has(Vector2i(x,y))
+		if not all_flood and not all_meadow: return "Place the whole site on one patch of fertile land"
+	if active_tool.ends_with("quarry") and not resources.near_deposit(cell,size,true): return "Place the quarry beside exposed stone"
+	if active_tool in ["goldmine","gemstonemine","coppermine"] and not resources.near_deposit(cell, size):
 		return "Place the mine beside gold-bearing rock"
 	if active_tool == "watersupply" and not resources.has_grass(cell, size): return "Water carriers need a site above groundwater"
 	if active_tool == "palace":
@@ -757,7 +798,8 @@ func _placement_error(cell: Vector2i) -> String:
 	for y in range(cell.y, cell.y + size.y):
 		for x in range(cell.x, cell.x + size.x):
 			var tile := Vector2i(x, y)
-			if resources.rock.has(tile): return "Rock occupies part of the site"
+			if active_tool not in ["road","irrigationditch"] and resources.canals.has(tile): return "An irrigation ditch crosses the site"
+			if resources.rock.has(tile) or resources.obstacles.has(tile): return "Rock occupies part of the site"
 			if resources.wildlife_tiles.has(tile): return "Leave the hunting grounds open"
 			if road_tiles.has(tile):
 				if not venue: return "A road crosses the site"
@@ -766,7 +808,7 @@ func _placement_error(cell: Vector2i) -> String:
 				continue
 			if blocked_tiles.has(tile): return "Another building occupies the site"
 	if venue and not junction: return "Place the venue over a road bend or intersection"
-	return ""
+	return pyramid_view.placement_error(cell, active_tool)
 
 
 func _show_placement_error(reason: String) -> void:
@@ -798,12 +840,13 @@ func _update_ghost() -> void:
 	hover_cell = Vector2i(floori(tile.x), floori(tile.y))
 	hover_valid = _can_place(hover_cell)
 	var art := "shrine" if active_tool.begins_with("shrine_") else active_tool
-	if art=="policestation": art="police"
+	art={"policestation":"police","residence":"personalresidence","shipbridge":"bridge"}.get(art,art)
 	ghost.visible = active_tool not in ["inspect", "road", "clear", "hut"] and assets.has(art) and over_map
 	if ghost.visible:
 		var rect := _preview_rect()
 		_skin_sprite(ghost, art, _front_corner(rect))
 		ghost.modulate = Color(0.75, 1, 0.65, 0.6) if hover_valid else Color(1, 0.35, 0.25, 0.55)
+	pyramid_view.preview()
 	overlay.queue_redraw()
 
 
@@ -857,9 +900,9 @@ func _draw_overlay() -> void:
 			overlay.draw_string(ThemeDB.fallback_font, label_at, price, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("35281d"))
 		return
 	if zoning:
-		for y in range(maxi(0, mini(zone_start.y, hover_cell.y)), mini(31, maxi(zone_start.y, hover_cell.y)) + 1):
-			for x in range(maxi(6, mini(zone_start.x, hover_cell.x)), mini(31, maxi(zone_start.x, hover_cell.x)) + 1):
-				if not blocked_tiles.has(Vector2i(x, y)):
+		for y in range(maxi(0, mini(zone_start.y, hover_cell.y)), mini(map_height-1, maxi(zone_start.y, hover_cell.y)) + 1):
+			for x in range(maxi(0, mini(zone_start.x, hover_cell.x)), mini(map_width-1, maxi(zone_start.x, hover_cell.x)) + 1):
+				if not geography.water_at(x,y) and not blocked_tiles.has(Vector2i(x, y)):
 					overlay.draw_colored_polygon(_footprint(Rect2(x+0.04, y+0.04, 0.92, 0.92)), Color(0.58, 0.85, 0.35, 0.55))
 		return
 	var points := _footprint(_preview_rect())
@@ -892,14 +935,14 @@ func _preview_road_to(cell: Vector2i) -> void:
 func _road_preview_cost() -> int:
 	var count := 0
 	for cell: Vector2i in road_preview:
-		if not road_tiles.has(cell): count += 1
-	return count * int(_catalog_entry("road").get("cost", 2))
+		if not (resources.canals.has(cell) if active_tool=="irrigationditch" else road_tiles.has(cell)): count += 1
+	return count * int(_catalog_entry("irrigationditch" if active_tool=="irrigationditch" else "road").get("cost", 2))
 
 
 func _road_preview_valid() -> bool:
 	if road_preview.is_empty() or _road_preview_cost() > int(state.get("treasury", 0)): return false
 	for cell: Vector2i in road_preview:
-		if cell.x < 6 or cell.x >= 32 or cell.y < 0 or cell.y >= 32: return false
+		if cell.x<0 or geography.water_at(cell.x,cell.y) or cell.x >= map_width or cell.y < 0 or cell.y >= map_height: return false
 		if blocked_tiles.has(cell) and not road_tiles.has(cell): return false
 	return true
 
@@ -947,7 +990,7 @@ func _input(event: InputEvent) -> void:
 				if _road_preview_valid():
 					var tiles: Array[Dictionary] = []
 					for cell: Vector2i in road_preview: tiles.append({"x": cell.x, "y": cell.y})
-					_queue_command("road", {"tiles": tiles})
+					_queue_command("canal" if active_tool=="irrigationditch" else "road", {"tiles": tiles})
 				else: status.text = "Road cannot be built here."
 			_cancel_gesture()
 			get_viewport().set_input_as_handled()
@@ -1003,7 +1046,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if active_tool == "hut":
 			zoning = true
 			zone_start = cell
-		elif active_tool == "road":
+		elif active_tool in ["road","irrigationditch"]:
 			painting_roads = true
 			road_view = get_canvas_transform()
 			road_start = cell
@@ -1386,7 +1429,7 @@ func _city_smoke() -> void:
 	await _smoke_popup_item(city_ui.overlay_picker, 0)
 	await _smoke_click_button(city_ui.overseers_button)
 	await _smoke_click_button(city_ui.overseer_tabs.Monument)
-	if not _smoke_require(city_ui.overseer_modal.visible and "Mastaba progress" in city_ui.overseer_text.text, "monument overseer failed"): return
+	if not _smoke_require(city_ui.overseer_modal.visible and "Monument rating:" in city_ui.overseer_text.text, "monument overseer failed"): return
 	await _smoke_click_button(city_ui.overseer_tabs.Treasury)
 	await _smoke_edit_rate(city_ui.tax_rate, 6)
 	await _smoke_edit_rate(city_ui.wage_rate, 0)

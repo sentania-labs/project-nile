@@ -48,10 +48,11 @@ func (w *World) spawn(role, stage string, origin, target, source int64, route []
 }
 func (w *World) produceAndConsume() {
 	w.produceGoods()
-	w.harvestFigs()
+	w.harvestCampCrops()
+	w.produceMeadowCrops()
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
-		if b.Kind == "farm" && b.Damaged == "" {
+		if b.Kind == "farm" && b.Damaged == "" && w.AgricultureVersion == 0 {
 			if w.phase() == 0 {
 				b.Work = 0
 			}
@@ -84,6 +85,9 @@ func (w World) patrolFor(start Point, role string) []Point {
 	if w.blockedStreet(start, role) {
 		return nil
 	}
+	if w.MapExtent > Size {
+		return w.neighborhoodPatrol(start, role)
+	}
 	roads := w.roadSet()
 	visited := map[Point]bool{}
 	route := []Point{start}
@@ -103,32 +107,7 @@ func (w World) patrolFor(start Point, role string) []Point {
 	return route
 }
 func (w *World) dispatch() {
-	// Migration has one party in flight. Other walkers do not block recruitment.
-	hasMigrant := false
-	for _, walker := range w.Walkers {
-		if walker.Role == "immigrant" {
-			hasMigrant = true
-			break
-		}
-	}
-	if !hasMigrant && !(w.BudgetEnabled && w.WageRate == 0) && w.Tick%w.migrationInterval() == 0 {
-		// Fill new connected plots before adding residents to established homes.
-		// This is an explicit prototype policy, not a recovered Pharaoh rule.
-		for pass := 0; pass < 2 && !hasMigrant; pass++ {
-			for _, b := range w.Buildings {
-				if (pass == 0 && b.Pop != 0) || (pass == 1 && b.Pop == 0) {
-					continue
-				}
-				if b.Kind == "hut" && b.Connected && b.Pop < b.Capacity {
-					route := w.path([]Point{w.entry()}, b)
-					if w.spawn("immigrant", "travel", 0, b.ID, 0, route, 0, 0) {
-						hasMigrant = true
-						break
-					}
-				}
-			}
-		}
-	}
+	w.dispatchMigrants()
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
 		if !b.Connected || b.Damaged != "" || b.Workers < b.WorkersNeeded {
@@ -136,6 +115,9 @@ func (w *World) dispatch() {
 		}
 		switch b.Kind {
 		case "farm":
+			if w.AgricultureVersion > 0 {
+				continue
+			}
 			if b.Stock == 0 || w.active(b.ID, "cart") {
 				continue
 			}
@@ -161,6 +143,9 @@ func (w *World) dispatch() {
 				b.Stock -= amount
 			}
 		case "bazaar":
+			if w.AgricultureVersion > 0 {
+				continue
+			}
 			if !w.active(b.ID, "buyer") {
 				free := w.ResourceFreeSpace(b.ID, "grain")
 				if free > 0 {
@@ -220,6 +205,12 @@ func (w *World) moveWalkers() {
 	remaining := make([]Walker, 0, len(w.Walkers))
 	for _, walker := range w.Walkers {
 		w.respectRoadblock(&walker)
+		if walker.Role == "stonehauler" {
+			if w.advanceStoneHauler(&walker) {
+				remaining = append(remaining, walker)
+			}
+			continue
+		}
 		if walker.Role == "trader" {
 			if w.advanceTrader(&walker) {
 				remaining = append(remaining, walker)
@@ -273,12 +264,17 @@ func (w *World) moveWalkers() {
 				walker.Cargo -= amount
 			}
 		}
+		if walker.Role == "robber" && w.interceptRobber(walker) {
+			continue
+		}
 		if walker.Next < len(walker.Route) {
 			remaining = append(remaining, walker)
 			continue
 		}
 		target := w.building(walker.Target)
 		switch walker.Role {
+		case "robber":
+			w.rob(target)
 		case "performer":
 			if school := w.building(walker.Origin); school != nil && target.Damaged == "" {
 				if style := slices.Index(schools, school.Kind); style >= 0 {
@@ -286,12 +282,7 @@ func (w *World) moveWalkers() {
 				}
 			}
 		case "immigrant":
-			w.Arrivals++
-			if target.Pop < target.Capacity {
-				target.Pop++
-			} else {
-				w.Departures++
-			}
+			w.arriveMigrants(walker, target)
 		case "goldcart":
 			if w.arriveGold(&walker, target) {
 				remaining = append(remaining, walker)

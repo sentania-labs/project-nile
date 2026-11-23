@@ -1,0 +1,7506 @@
+{
+  "schema_version": 1,
+  "source_sha256": "42fc2104f66bf7a5b23dada1830a40bbe4ef0582d8d9c1cf3de4f6e5bc725b19",
+  "decoder": {
+    "source": "https://github.com/madler/zlib/tree/v1.3.1/contrib/blast",
+    "purpose": "PKWARE DCL container decompression only"
+  },
+  "evidence": {
+    "resource_flags": "Original 0x00437810 reads active type0 city sells flags for local resources; 0x00437640 reads type1/3/5 partner sells flags for imports.",
+    "layout": "Descriptor50, 61 records of106bytes; original city base0x006f0c78 and resource base0x006f0ca2 corroborate the public format.",
+    "quotas": "Descriptor114, 20 routes x36resources x4bytes; stored loads converted to100-unit loads. Original0x0043b880 indexes route*36+resource at0x006e92e8.",
+    "names": "Only geographic city names from original English group195; no briefings or prose.",
+    "limits": "No map coordinates, routes, images, original prose or executable code. Travel distances and god bonuses remain separate mechanics."
+  },
+  "missions": [
+    {
+      "id": 0,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 0,
+          "name_id_raw": 33,
+          "name": "Nubt",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            8
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 91637,
+        "stored_bytes": 67,
+        "decoded_sha256": "4b1abf3dbfa26fa3d00b0de41c81bb36d7dcdbf5dcbafecea0a3d76e29f9846a"
+      }
+    },
+    {
+      "id": 1,
+      "cities": [
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 10,
+          "name": "Djedu",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 36,
+          "type_raw": 4,
+          "name_id_raw": 35,
+          "name": "Perwadjyt",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 5,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 40,
+          "type_raw": 4,
+          "name_id_raw": 39,
+          "name": "Rowarty",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 48,
+          "type_raw": 0,
+          "name_id_raw": 47,
+          "name": "Thinis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            29
+          ],
+          "sells": [
+            8
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 398464,
+        "stored_bytes": 455,
+        "decoded_sha256": "f315febf48b2cfa49d9a645692919b3dcf7b9772340eebb0f0ab091fdd16c491"
+      }
+    },
+    {
+      "id": 2,
+      "cities": [
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 10,
+          "name": "Djedu",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 36,
+          "type_raw": 0,
+          "name_id_raw": 35,
+          "name": "Perwadjyt",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            6,
+            11
+          ],
+          "cost_to_open": 5,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 40,
+          "type_raw": 4,
+          "name_id_raw": 39,
+          "name": "Rowarty",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 708540,
+        "stored_bytes": 455,
+        "decoded_sha256": "40b6423af12f6ffd39db82fc7506fa2cfa30694c78290084b9d643fb8b647a7d"
+      }
+    },
+    {
+      "id": 3,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 0,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            23
+          ],
+          "sells": [
+            1,
+            11,
+            14
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 4,
+          "name_id_raw": 35,
+          "name": "Perwadjyt",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 5,
+          "sea_trade": false,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 1016659,
+        "stored_bytes": 103,
+        "decoded_sha256": "8f126a627863965d50bda95eae258839621a477ee1b3288038f394f7ee95c6b2"
+      }
+    },
+    {
+      "id": 4,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 0,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            4,
+            11,
+            14,
+            22
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 2,
+          "type_raw": 4,
+          "name_id_raw": 33,
+          "name": "Nubt",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 450,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 3,
+          "name_id_raw": 35,
+          "name": "Perwadjyt",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            6,
+            11,
+            12,
+            13,
+            22
+          ],
+          "cost_to_open": 300,
+          "sea_trade": false,
+          "annual_limits": {
+            "6": 4000,
+            "11": 2500,
+            "12": 4000,
+            "13": 4000,
+            "22": 4000
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 47,
+          "name": "Thinis",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 550,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 3,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            23
+          ],
+          "sells": [
+            11,
+            13,
+            15
+          ],
+          "cost_to_open": 550,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "13": 1500,
+            "15": 2500,
+            "23": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 1327184,
+        "stored_bytes": 143,
+        "decoded_sha256": "38ea594095a66b2827f7e94c89f7812cd2b821462233e022f9e0802d2b1419b7"
+      }
+    },
+    {
+      "id": 5,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 2,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 460,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 2,
+          "type_raw": 3,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            23
+          ],
+          "sells": [
+            11,
+            13,
+            15,
+            16,
+            17
+          ],
+          "cost_to_open": 1020,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 1500,
+            "13": 2500,
+            "15": 1500,
+            "16": 1500,
+            "17": 1500,
+            "23": 1500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 3,
+          "name_id_raw": 33,
+          "name": "Nubt",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            8
+          ],
+          "cost_to_open": 850,
+          "sea_trade": false,
+          "annual_limits": {
+            "8": 4000
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 35,
+          "name": "Perwadjyt",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 5,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 3,
+          "name_id_raw": 47,
+          "name": "Thinis",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            29
+          ],
+          "sells": [
+            4,
+            13,
+            15
+          ],
+          "cost_to_open": 800,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 1500,
+            "13": 1500,
+            "15": 1500,
+            "29": 4000
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 0,
+          "name_id_raw": 48,
+          "name": "Timna",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            7,
+            15,
+            17,
+            23
+          ],
+          "sells": [
+            8,
+            10,
+            11,
+            13,
+            18,
+            29
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 1640905,
+        "stored_bytes": 153,
+        "decoded_sha256": "4fc7772c38d442ba5b4ee3255d8fd1a2ad2b9d93f1c5f79e6df42364c7cb00fa"
+      }
+    },
+    {
+      "id": 6,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 4,
+          "name_id_raw": 1,
+          "name": "Abedju",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 2,
+          "type_raw": 0,
+          "name_id_raw": 4,
+          "name": "Behdet",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            12,
+            17,
+            18,
+            19,
+            20
+          ],
+          "sells": [
+            4,
+            7,
+            11,
+            14,
+            22
+          ],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 5,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [
+            18,
+            19
+          ],
+          "sells": [
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 1000,
+          "sea_trade": true,
+          "annual_limits": {
+            "18": 2500,
+            "19": 2500,
+            "20": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 1,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            4,
+            13,
+            23
+          ],
+          "cost_to_open": 750,
+          "sea_trade": true,
+          "annual_limits": {
+            "3": 2500,
+            "4": 2500,
+            "12": 2500,
+            "13": 2500,
+            "14": 2500,
+            "15": 2500,
+            "19": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 3,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            23
+          ],
+          "sells": [
+            13,
+            15,
+            16,
+            17
+          ],
+          "cost_to_open": 300,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 2500,
+            "15": 2500,
+            "16": 2500,
+            "17": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 4,
+          "name_id_raw": 33,
+          "name": "Nubt",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 3,
+          "name_id_raw": 35,
+          "name": "Perwadjyt",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            6,
+            11,
+            12,
+            13,
+            22
+          ],
+          "cost_to_open": 1000,
+          "sea_trade": true,
+          "annual_limits": {
+            "6": 2500,
+            "11": 2500,
+            "12": 4000,
+            "13": 2500,
+            "22": 2500
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 4,
+          "name_id_raw": 47,
+          "name": "Thinis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 48,
+          "name": "Timna",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            7,
+            15,
+            17,
+            23
+          ],
+          "sells": [
+            10,
+            11,
+            13,
+            29
+          ],
+          "cost_to_open": 750,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "10": 2500,
+            "11": 2500,
+            "13": 2500,
+            "15": 2500,
+            "17": 2500,
+            "23": 2500,
+            "29": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 1949515,
+        "stored_bytes": 209,
+        "decoded_sha256": "56d363849307f14538ed0c692dfd086f040c389480043776f3b1895088cfe9e1"
+      }
+    },
+    {
+      "id": 7,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 0,
+          "name_id_raw": 1,
+          "name": "Abedju",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            8,
+            11,
+            12,
+            20,
+            23,
+            25,
+            26,
+            30
+          ],
+          "sells": [
+            7,
+            14,
+            16,
+            22
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 2,
+          "type_raw": 3,
+          "name_id_raw": 4,
+          "name": "Behdet",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            12,
+            17,
+            18,
+            19,
+            20
+          ],
+          "sells": [
+            7,
+            11,
+            13,
+            15,
+            22,
+            23,
+            26
+          ],
+          "cost_to_open": 400,
+          "sea_trade": true,
+          "annual_limits": {
+            "7": 2500,
+            "11": 4000,
+            "12": 2500,
+            "13": 2500,
+            "15": 2500,
+            "17": 4000,
+            "18": 2500,
+            "19": 2500,
+            "20": 2500,
+            "22": 2500,
+            "23": 2500,
+            "26": 2500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 5,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [
+            18,
+            19
+          ],
+          "sells": [
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 1000,
+          "sea_trade": true,
+          "annual_limits": {
+            "18": 2500,
+            "19": 2500,
+            "20": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 1,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            4,
+            13,
+            23
+          ],
+          "cost_to_open": 700,
+          "sea_trade": false,
+          "annual_limits": {
+            "3": 2500,
+            "4": 2500,
+            "12": 2500,
+            "13": 2500,
+            "14": 2500,
+            "15": 2500,
+            "19": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 4,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 3,
+          "name_id_raw": 33,
+          "name": "Nubt",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            8,
+            9,
+            11,
+            12
+          ],
+          "cost_to_open": 270,
+          "sea_trade": true,
+          "annual_limits": {
+            "8": 2500,
+            "9": 4000,
+            "11": 4000,
+            "12": 4000
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 3,
+          "name_id_raw": 35,
+          "name": "Perwadjyt",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            6,
+            9,
+            11,
+            12,
+            13,
+            22
+          ],
+          "cost_to_open": 900,
+          "sea_trade": true,
+          "annual_limits": {
+            "6": 2500,
+            "9": 4000,
+            "11": 4000,
+            "12": 4000,
+            "13": 2500,
+            "22": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 4,
+          "name_id_raw": 47,
+          "name": "Thinis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 3,
+          "name_id_raw": 48,
+          "name": "Timna",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            7,
+            15,
+            17,
+            23
+          ],
+          "sells": [
+            10,
+            11,
+            13,
+            29
+          ],
+          "cost_to_open": 900,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "10": 2500,
+            "11": 4000,
+            "13": 2500,
+            "15": 2500,
+            "17": 2500,
+            "23": 2500,
+            "29": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 2263981,
+        "stored_bytes": 222,
+        "decoded_sha256": "71a80f870d99ab71a22f345f79690ade49208e1f2426b99ce1b806a2963e6b1d"
+      }
+    },
+    {
+      "id": 8,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 1,
+          "name": "Abedju",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            8,
+            11,
+            12,
+            20,
+            23,
+            25,
+            26,
+            30
+          ],
+          "sells": [
+            7,
+            14,
+            15,
+            17,
+            24
+          ],
+          "cost_to_open": 500,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "8": 2500,
+            "11": 2500,
+            "12": 2500,
+            "14": 2500,
+            "15": 2500,
+            "17": 2500,
+            "20": 2500,
+            "23": 2500,
+            "24": 2500,
+            "25": 2500,
+            "26": 0,
+            "30": 2500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 3,
+          "name_id_raw": 4,
+          "name": "Behdet",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            12,
+            17,
+            18,
+            19,
+            20
+          ],
+          "sells": [
+            7,
+            11,
+            13,
+            15,
+            22,
+            23,
+            26
+          ],
+          "cost_to_open": 400,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "11": 2500,
+            "12": 2500,
+            "13": 2500,
+            "15": 2500,
+            "17": 2500,
+            "18": 2500,
+            "19": 2500,
+            "20": 2500,
+            "22": 2500,
+            "23": 2500,
+            "26": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 5,
+          "name_id_raw": 23,
+          "name": "Kerma",
+          "route_id": 9,
+          "initially_open": false,
+          "buys": [
+            17,
+            19
+          ],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 450,
+          "sea_trade": false,
+          "annual_limits": {
+            "17": 2500,
+            "19": 1500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 1,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            4,
+            13,
+            23
+          ],
+          "cost_to_open": 1100,
+          "sea_trade": false,
+          "annual_limits": {
+            "3": 2500,
+            "4": 2500,
+            "12": 2500,
+            "13": 2500,
+            "14": 2500,
+            "15": 2500,
+            "19": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 4,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 4,
+          "name_id_raw": 33,
+          "name": "Nubt",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 0,
+          "name_id_raw": 43,
+          "name": "Selima Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            15,
+            17,
+            23,
+            29
+          ],
+          "sells": [
+            8,
+            20
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 3,
+          "name_id_raw": 48,
+          "name": "Timna",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            7,
+            15,
+            17,
+            23
+          ],
+          "sells": [
+            10,
+            11,
+            13,
+            29
+          ],
+          "cost_to_open": 1650,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "10": 2500,
+            "11": 2500,
+            "13": 2500,
+            "15": 2500,
+            "17": 2500,
+            "23": 2500,
+            "29": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 2573465,
+        "stored_bytes": 226,
+        "decoded_sha256": "3a02a52ad4c36991ce51802d12625d5ab2dc927a240a409003a10866684967b8"
+      }
+    },
+    {
+      "id": 9,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 0,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            22,
+            23
+          ],
+          "sells": [
+            1,
+            3,
+            4,
+            14,
+            16,
+            18,
+            26,
+            30
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 2,
+          "type_raw": 3,
+          "name_id_raw": 1,
+          "name": "Abedju",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [
+            8,
+            11,
+            12,
+            20,
+            23,
+            26,
+            30
+          ],
+          "sells": [
+            7,
+            14,
+            15,
+            17,
+            24
+          ],
+          "cost_to_open": 600,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "8": 2500,
+            "11": 2500,
+            "12": 2500,
+            "14": 2500,
+            "15": 2500,
+            "17": 2500,
+            "20": 2500,
+            "23": 2500,
+            "24": 2500,
+            "26": 2500,
+            "30": 2500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 3,
+          "name_id_raw": 4,
+          "name": "Behdet",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            12,
+            17,
+            18,
+            19,
+            20
+          ],
+          "sells": [
+            7,
+            11,
+            13,
+            15,
+            22,
+            23,
+            26
+          ],
+          "cost_to_open": 250,
+          "sea_trade": true,
+          "annual_limits": {
+            "7": 2500,
+            "11": 2500,
+            "12": 2500,
+            "13": 2500,
+            "15": 2500,
+            "17": 2500,
+            "18": 2500,
+            "19": 2500,
+            "20": 2500,
+            "22": 2500,
+            "23": 2500,
+            "26": 2500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 1,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            4,
+            13,
+            23
+          ],
+          "cost_to_open": 1100,
+          "sea_trade": true,
+          "annual_limits": {
+            "3": 2500,
+            "4": 2500,
+            "12": 2500,
+            "13": 2500,
+            "14": 2500,
+            "15": 2500,
+            "19": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 4,
+          "name_id_raw": 33,
+          "name": "Nubt",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 48,
+          "name": "Timna",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            7,
+            15,
+            17,
+            23
+          ],
+          "sells": [
+            10,
+            11,
+            13,
+            29
+          ],
+          "cost_to_open": 1450,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "10": 2500,
+            "11": 2500,
+            "13": 2500,
+            "15": 2500,
+            "17": 2500,
+            "23": 2500,
+            "29": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 2890130,
+        "stored_bytes": 215,
+        "decoded_sha256": "b6b05fe45a711a1ce5984f5688f92deb9dd428b0fd33f0ec917b52ffe845581d"
+      }
+    },
+    {
+      "id": 10,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            22,
+            23
+          ],
+          "sells": [
+            1,
+            9,
+            16,
+            17,
+            18,
+            26,
+            30
+          ],
+          "cost_to_open": 500,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 2500,
+            "9": 4000,
+            "11": 2500,
+            "13": 2500,
+            "16": 2500,
+            "17": 4000,
+            "18": 2500,
+            "22": 2500,
+            "23": 2500,
+            "26": 1500,
+            "30": 2500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 3,
+          "name_id_raw": 1,
+          "name": "Abedju",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [
+            8,
+            11,
+            12,
+            20,
+            23,
+            25,
+            26,
+            30
+          ],
+          "sells": [
+            7,
+            14,
+            15,
+            17,
+            24
+          ],
+          "cost_to_open": 350,
+          "sea_trade": true,
+          "annual_limits": {
+            "7": 2500,
+            "8": 1500,
+            "11": 1500,
+            "12": 1500,
+            "14": 2500,
+            "15": 1500,
+            "17": 4000,
+            "20": 1500,
+            "23": 2500,
+            "24": 2500,
+            "25": 1500,
+            "26": 2500,
+            "30": 1500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 3,
+          "name_id_raw": 4,
+          "name": "Behdet",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [
+            12,
+            17,
+            18,
+            19,
+            20
+          ],
+          "sells": [
+            7,
+            11,
+            13,
+            15,
+            22,
+            23,
+            26
+          ],
+          "cost_to_open": 400,
+          "sea_trade": true,
+          "annual_limits": {
+            "7": 2500,
+            "11": 2500,
+            "12": 4000,
+            "13": 2500,
+            "15": 2500,
+            "17": 2500,
+            "18": 2500,
+            "19": 4000,
+            "20": 2500,
+            "22": 1500,
+            "23": 2500,
+            "26": 4000
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 5,
+          "name_id_raw": 23,
+          "name": "Kerma",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            17,
+            19
+          ],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 780,
+          "sea_trade": true,
+          "annual_limits": {
+            "17": 4000,
+            "19": 4000
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 1,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            13,
+            23
+          ],
+          "cost_to_open": 150,
+          "sea_trade": false,
+          "annual_limits": {
+            "3": 2500,
+            "12": 2500,
+            "13": 4000,
+            "14": 4000,
+            "15": 1500,
+            "19": 4000,
+            "23": 2500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 4,
+          "name_id_raw": 33,
+          "name": "Nubt",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 0,
+          "name_id_raw": 40,
+          "name": "Saqqara",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            11,
+            12,
+            13,
+            20,
+            22,
+            23,
+            25
+          ],
+          "sells": [
+            5,
+            8,
+            24
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 43,
+          "name": "Selima Oasis",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            15,
+            17,
+            23,
+            29
+          ],
+          "sells": [
+            19,
+            20
+          ],
+          "cost_to_open": 645,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "13": 2500,
+            "15": 2500,
+            "17": 1500,
+            "19": 4000,
+            "20": 1500,
+            "23": 2500,
+            "29": 4000
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 3210744,
+        "stored_bytes": 235,
+        "decoded_sha256": "beddb7a666fd5f7d703471484ed8a349c37148844d44fb9ac3d10c545889b95a"
+      }
+    },
+    {
+      "id": 11,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            13,
+            23
+          ],
+          "sells": [
+            1,
+            9,
+            16,
+            17,
+            18
+          ],
+          "cost_to_open": 540,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 1500,
+            "9": 1500,
+            "13": 2500,
+            "16": 1500,
+            "17": 2500,
+            "18": 1500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 3,
+          "name_id_raw": 4,
+          "name": "Behdet",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [
+            12,
+            17,
+            18,
+            19
+          ],
+          "sells": [
+            7,
+            11,
+            13,
+            15,
+            22,
+            23
+          ],
+          "cost_to_open": 500,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 4000,
+            "11": 2500,
+            "12": 1500,
+            "13": 1500,
+            "15": 1500,
+            "17": 1500,
+            "18": 2500,
+            "19": 1500,
+            "22": 2500,
+            "23": 1500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 1,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            12,
+            15,
+            18,
+            19
+          ],
+          "sells": [
+            4,
+            13,
+            23
+          ],
+          "cost_to_open": 350,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 4000,
+            "12": 1500,
+            "13": 2500,
+            "15": 1500,
+            "18": 2500,
+            "19": 1500,
+            "23": 1500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 3,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [
+            23
+          ],
+          "sells": [
+            13,
+            15,
+            16,
+            17
+          ],
+          "cost_to_open": 400,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 1500,
+            "15": 1500,
+            "16": 2500,
+            "17": 1500,
+            "23": 1500
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 4,
+          "name_id_raw": 40,
+          "name": "Saqqara",
+          "route_id": 8,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 43,
+          "name": "Selima Oasis",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            13,
+            15,
+            17,
+            23,
+            29
+          ],
+          "sells": [
+            19,
+            20
+          ],
+          "cost_to_open": 1100,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 1500,
+            "15": 1500,
+            "17": 1500,
+            "19": 1500,
+            "20": 2500,
+            "23": 1500,
+            "29": 4000
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 0,
+          "name_id_raw": 44,
+          "name": "Serabit Khadim",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            1,
+            11
+          ],
+          "sells": [
+            8,
+            18,
+            29
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 3521518,
+        "stored_bytes": 210,
+        "decoded_sha256": "64f0717e3ad8cc79b04d8323e3511572d0b6b08ad400e644ea76647126110ea9"
+      }
+    },
+    {
+      "id": 12,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            22,
+            23
+          ],
+          "sells": [
+            1,
+            9,
+            16,
+            17,
+            18,
+            26,
+            30
+          ],
+          "cost_to_open": 1050,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "9": 2500,
+            "11": 2500,
+            "13": 2500,
+            "16": 2500,
+            "17": 2500,
+            "18": 2500,
+            "22": 2500,
+            "23": 2500,
+            "26": 2500,
+            "30": 2500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 3,
+          "name_id_raw": 4,
+          "name": "Behdet",
+          "route_id": 9,
+          "initially_open": false,
+          "buys": [
+            12,
+            17,
+            18,
+            19,
+            20
+          ],
+          "sells": [
+            7,
+            11,
+            13,
+            15,
+            22,
+            23,
+            26
+          ],
+          "cost_to_open": 700,
+          "sea_trade": true,
+          "annual_limits": {
+            "7": 2500,
+            "11": 2500,
+            "12": 2500,
+            "13": 2500,
+            "15": 2500,
+            "17": 2500,
+            "18": 2500,
+            "19": 2500,
+            "20": 2500,
+            "22": 2500,
+            "23": 2500,
+            "26": 2500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 0,
+          "name_id_raw": 28,
+          "name": "Meidum",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            14,
+            15,
+            17,
+            25
+          ],
+          "sells": [
+            1,
+            11,
+            20,
+            22,
+            24
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 2,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 3,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [
+            23
+          ],
+          "sells": [
+            13,
+            15,
+            16,
+            17
+          ],
+          "cost_to_open": 650,
+          "sea_trade": true,
+          "annual_limits": {
+            "13": 2500,
+            "15": 2500,
+            "16": 2500,
+            "17": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 40,
+          "name": "Saqqara",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [
+            11,
+            12,
+            13,
+            20,
+            22,
+            23,
+            25
+          ],
+          "sells": [
+            19,
+            24
+          ],
+          "cost_to_open": 200,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "12": 2500,
+            "13": 2500,
+            "19": 2500,
+            "20": 2500,
+            "22": 2500,
+            "23": 2500,
+            "24": 2500,
+            "25": 2500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 3,
+          "name_id_raw": 44,
+          "name": "Serabit Khadim",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            1,
+            11
+          ],
+          "sells": [
+            18,
+            19,
+            29
+          ],
+          "cost_to_open": 350,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 2500,
+            "11": 2500,
+            "18": 2500,
+            "19": 2500,
+            "29": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 3842818,
+        "stored_bytes": 225,
+        "decoded_sha256": "9ac9e4b5c22f87470c696e5301bc25f97d916a5fa707e9608c5c6b64e8e4a3b7"
+      }
+    },
+    {
+      "id": 13,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            13,
+            23
+          ],
+          "sells": [
+            1,
+            9,
+            16,
+            17,
+            18,
+            26
+          ],
+          "cost_to_open": 600,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 2500,
+            "9": 2500,
+            "13": 2500,
+            "16": 1500,
+            "17": 2500,
+            "18": 1500,
+            "23": 2500,
+            "26": 1500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 4,
+          "name_id_raw": 4,
+          "name": "Behdet",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 0,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            20,
+            26,
+            29
+          ],
+          "sells": [
+            4,
+            8,
+            14,
+            25
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 4,
+          "name_id_raw": 8,
+          "name": "Dahshur",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 5,
+          "name_id_raw": 12,
+          "name": "Enkomi",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [
+            15
+          ],
+          "sells": [
+            5,
+            7,
+            29
+          ],
+          "cost_to_open": 1580,
+          "sea_trade": true,
+          "annual_limits": {
+            "5": 1500,
+            "7": 1500,
+            "15": 2500,
+            "29": 1500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 28,
+          "name": "Meidum",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            14,
+            15,
+            17
+          ],
+          "sells": [
+            1,
+            11,
+            13,
+            20,
+            22,
+            23
+          ],
+          "cost_to_open": 900,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "11": 2500,
+            "13": 1500,
+            "14": 1500,
+            "15": 4000,
+            "17": 2500,
+            "20": 1500,
+            "22": 2500,
+            "23": 1500
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 1,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            12,
+            14,
+            15
+          ],
+          "sells": [
+            4,
+            13,
+            23
+          ],
+          "cost_to_open": 800,
+          "sea_trade": true,
+          "annual_limits": {
+            "4": 2500,
+            "12": 1500,
+            "13": 2500,
+            "14": 1500,
+            "15": 2500,
+            "23": 4000
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 4,
+          "name_id_raw": 40,
+          "name": "Saqqara",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 13,
+          "type_raw": 3,
+          "name_id_raw": 43,
+          "name": "Selima Oasis",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            13,
+            15,
+            17,
+            23,
+            29
+          ],
+          "sells": [
+            19,
+            20
+          ],
+          "cost_to_open": 300,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 1500,
+            "15": 1500,
+            "17": 1500,
+            "19": 1500,
+            "20": 2500,
+            "23": 1500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 14,
+          "type_raw": 3,
+          "name_id_raw": 44,
+          "name": "Serabit Khadim",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            18,
+            19,
+            29
+          ],
+          "cost_to_open": 1250,
+          "sea_trade": false,
+          "annual_limits": {
+            "18": 2500,
+            "19": 1500,
+            "29": 1500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 4152863,
+        "stored_bytes": 259,
+        "decoded_sha256": "eddd751de899f19dae40f3514206521c2158cacff3d9e4820e573b8bb060716e"
+      }
+    },
+    {
+      "id": 14,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            13,
+            23
+          ],
+          "sells": [
+            1,
+            16,
+            17,
+            18,
+            26
+          ],
+          "cost_to_open": 650,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 1500,
+            "13": 1500,
+            "16": 2500,
+            "17": 1500,
+            "18": 2500,
+            "23": 2500,
+            "26": 2500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 4,
+          "name_id_raw": 2,
+          "name": "Bahariya Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 4,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 0,
+          "name_id_raw": 8,
+          "name": "Dahshur",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            12,
+            18,
+            25,
+            26
+          ],
+          "sells": [
+            1,
+            14,
+            25
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 28,
+          "name": "Meidum",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            14,
+            15,
+            17,
+            25
+          ],
+          "sells": [
+            1,
+            11,
+            20,
+            22,
+            23,
+            24
+          ],
+          "cost_to_open": 300,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "11": 2500,
+            "14": 1500,
+            "15": 1500,
+            "17": 2500,
+            "20": 1500,
+            "22": 2500,
+            "23": 1500,
+            "24": 4000,
+            "25": 4000
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 2,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 4,
+          "name_id_raw": 40,
+          "name": "Saqqara",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 13,
+          "type_raw": 3,
+          "name_id_raw": 43,
+          "name": "Selima Oasis",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            13,
+            15,
+            17,
+            23,
+            29
+          ],
+          "sells": [
+            19,
+            20
+          ],
+          "cost_to_open": 900,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 1500,
+            "15": 1500,
+            "17": 1500,
+            "19": 1500,
+            "20": 4000,
+            "23": 1500,
+            "29": 1500
+          }
+        },
+        {
+          "id": 14,
+          "type_raw": 3,
+          "name_id_raw": 44,
+          "name": "Serabit Khadim",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            1
+          ],
+          "sells": [
+            18,
+            19,
+            29
+          ],
+          "cost_to_open": 800,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 2500,
+            "18": 2500,
+            "19": 1500,
+            "29": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 4466273,
+        "stored_bytes": 234,
+        "decoded_sha256": "d0bf03f43e017a47c1718cf2ab650370474a606a8207ee31a00fa1889a8d3b40"
+      }
+    },
+    {
+      "id": 15,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            11,
+            12,
+            13,
+            23
+          ],
+          "sells": [
+            1,
+            16,
+            17,
+            18
+          ],
+          "cost_to_open": 900,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "11": 1500,
+            "12": 2500,
+            "13": 2500,
+            "16": 1500,
+            "17": 1500,
+            "18": 2500,
+            "23": 1500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 4,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 4,
+          "type_raw": 5,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            18,
+            19
+          ],
+          "sells": [
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 1200,
+          "sea_trade": true,
+          "annual_limits": {
+            "18": 1500,
+            "19": 1500,
+            "20": 4000,
+            "29": 1500
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 0,
+          "name_id_raw": 8,
+          "name": "Dahshur",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            12,
+            18,
+            25,
+            26
+          ],
+          "sells": [
+            1,
+            14,
+            25
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 28,
+          "name": "Meidum",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            14,
+            15,
+            17,
+            25
+          ],
+          "sells": [
+            1,
+            11,
+            13,
+            20,
+            22,
+            23,
+            24
+          ],
+          "cost_to_open": 300,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 1500,
+            "11": 2500,
+            "13": 2500,
+            "14": 4000,
+            "15": 2500,
+            "17": 1500,
+            "20": 1500,
+            "22": 1500,
+            "23": 1500,
+            "24": 4000,
+            "25": 4000
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 2,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 4,
+          "name_id_raw": 40,
+          "name": "Saqqara",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 13,
+          "type_raw": 3,
+          "name_id_raw": 43,
+          "name": "Selima Oasis",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            13,
+            15,
+            17,
+            23,
+            29
+          ],
+          "sells": [
+            19,
+            20
+          ],
+          "cost_to_open": 1500,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 2500,
+            "15": 1500,
+            "17": 1500,
+            "19": 2500,
+            "20": 1500,
+            "23": 1500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 14,
+          "type_raw": 3,
+          "name_id_raw": 44,
+          "name": "Serabit Khadim",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [
+            1
+          ],
+          "sells": [
+            18,
+            19,
+            29
+          ],
+          "cost_to_open": 600,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 2500,
+            "18": 1500,
+            "19": 1500,
+            "29": 1500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 4780431,
+        "stored_bytes": 246,
+        "decoded_sha256": "5e003df31becc9c775ece91b4402f043a8dc978a7be083f0278a61f10a1ebb02"
+      }
+    },
+    {
+      "id": 16,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 4,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 390,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 2,
+          "type_raw": 4,
+          "name_id_raw": 2,
+          "name": "Bahariya Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 3,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            20,
+            26,
+            29
+          ],
+          "sells": [
+            14,
+            15
+          ],
+          "cost_to_open": 480,
+          "sea_trade": false,
+          "annual_limits": {
+            "14": 2500,
+            "15": 2500,
+            "20": 2500,
+            "26": 4000,
+            "29": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 5,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 10,
+          "initially_open": false,
+          "buys": [
+            18
+          ],
+          "sells": [
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 1400,
+          "sea_trade": true,
+          "annual_limits": {
+            "18": 2500,
+            "19": 2500,
+            "20": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 3,
+          "name_id_raw": 8,
+          "name": "Dahshur",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [
+            12,
+            18,
+            24,
+            26
+          ],
+          "sells": [
+            9,
+            14,
+            15,
+            25
+          ],
+          "cost_to_open": 620,
+          "sea_trade": true,
+          "annual_limits": {
+            "9": 4000,
+            "12": 2500,
+            "14": 2500,
+            "15": 2500,
+            "18": 2500,
+            "24": 2500,
+            "25": 2500,
+            "26": 2500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 0,
+          "name_id_raw": 20,
+          "name": "Iunet",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            9
+          ],
+          "sells": [
+            2,
+            7,
+            11,
+            25,
+            26,
+            29
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 5,
+          "name_id_raw": 23,
+          "name": "Kerma",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            17,
+            19
+          ],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 870,
+          "sea_trade": true,
+          "annual_limits": {
+            "17": 2500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 2,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 700,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 4,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 8,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 40,
+          "name": "Saqqara",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 3,
+          "name_id_raw": 43,
+          "name": "Selima Oasis",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            15,
+            17,
+            23,
+            29
+          ],
+          "sells": [
+            19,
+            20
+          ],
+          "cost_to_open": 820,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "13": 2500,
+            "15": 2500,
+            "17": 2500,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500,
+            "29": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 5094707,
+        "stored_bytes": 232,
+        "decoded_sha256": "4261ebedcefe426f4ad784defbc390f6e22d863225d61fa8e73137bdd13060c6"
+      }
+    },
+    {
+      "id": 17,
+      "cities": [
+        {
+          "id": 2,
+          "type_raw": 4,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 4,
+          "type_raw": 3,
+          "name_id_raw": 8,
+          "name": "Dahshur",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            12,
+            18,
+            25,
+            26
+          ],
+          "sells": [
+            9,
+            14,
+            15,
+            24
+          ],
+          "cost_to_open": 200,
+          "sea_trade": true,
+          "annual_limits": {
+            "9": 4000,
+            "12": 2500,
+            "14": 2500,
+            "15": 2500,
+            "18": 0,
+            "24": 2500,
+            "25": 2500,
+            "26": 0
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 3,
+          "name_id_raw": 20,
+          "name": "Iunet",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            9
+          ],
+          "sells": [
+            2,
+            11,
+            13,
+            25,
+            26,
+            29
+          ],
+          "cost_to_open": 1500,
+          "sea_trade": true,
+          "annual_limits": {
+            "2": 2500,
+            "9": 0,
+            "11": 2500,
+            "13": 2500,
+            "25": 2500,
+            "26": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 3,
+          "name_id_raw": 28,
+          "name": "Meidum",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            14,
+            15,
+            17,
+            25
+          ],
+          "sells": [
+            1,
+            11,
+            13,
+            20,
+            22,
+            23,
+            24
+          ],
+          "cost_to_open": 450,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 2500,
+            "11": 2500,
+            "13": 2500,
+            "14": 2500,
+            "15": 2500,
+            "17": 2500,
+            "20": 2500,
+            "22": 2500,
+            "23": 2500,
+            "24": 2500,
+            "25": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 2,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 4,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 11,
+          "type_raw": 0,
+          "name_id_raw": 34,
+          "name": "On",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            15,
+            17,
+            18,
+            19,
+            20,
+            26
+          ],
+          "sells": [
+            1,
+            2,
+            8,
+            11,
+            16,
+            22,
+            25,
+            30
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 3,
+          "name_id_raw": 40,
+          "name": "Saqqara",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            11,
+            12,
+            13,
+            20,
+            22,
+            23,
+            25
+          ],
+          "sells": [
+            19,
+            24
+          ],
+          "cost_to_open": 400,
+          "sea_trade": true,
+          "annual_limits": {
+            "11": 2500,
+            "12": 2500,
+            "13": 2500,
+            "19": 2500,
+            "20": 2500,
+            "22": 2500,
+            "23": 2500,
+            "24": 2500,
+            "25": 2500
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 4,
+          "name_id_raw": 43,
+          "name": "Selima Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 5410433,
+        "stored_bytes": 234,
+        "decoded_sha256": "6e34534cceab87426c80b3dc7ee113c3312ca1fdb7ed043c8fa2039390a18179"
+      }
+    },
+    {
+      "id": 18,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 4,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 2,
+          "type_raw": 5,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            18,
+            19
+          ],
+          "sells": [
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 1250,
+          "sea_trade": true,
+          "annual_limits": {
+            "18": 1500,
+            "19": 1500,
+            "20": 4000,
+            "29": 2500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 4,
+          "name_id_raw": 8,
+          "name": "Dahshur",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 100,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 20,
+          "name": "Iunet",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 700,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 2,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 19,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 4,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 3,
+          "name_id_raw": 34,
+          "name": "On",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            15,
+            17,
+            18,
+            19,
+            20,
+            26
+          ],
+          "sells": [
+            2,
+            11,
+            22,
+            25
+          ],
+          "cost_to_open": 500,
+          "sea_trade": true,
+          "annual_limits": {
+            "2": 2500,
+            "11": 4000,
+            "15": 1500,
+            "17": 1500,
+            "18": 2500,
+            "19": 1500,
+            "20": 2500,
+            "22": 2500,
+            "25": 4000,
+            "26": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 0,
+          "name_id_raw": 38,
+          "name": "Rostja",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            25
+          ],
+          "sells": [
+            8,
+            18,
+            24
+          ],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 4,
+          "name_id_raw": 40,
+          "name": "Saqqara",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 2,
+          "name": "Bahariya Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 5729075,
+        "stored_bytes": 194,
+        "decoded_sha256": "b889fc13c29005dfe92fd5045087ac1d6e102c8a92f8c2ad9d01020ed124362f"
+      }
+    },
+    {
+      "id": 19,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            22,
+            23
+          ],
+          "sells": [
+            1,
+            9,
+            16,
+            17,
+            18,
+            26,
+            30
+          ],
+          "cost_to_open": 800,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 2500,
+            "9": 1500,
+            "11": 2500,
+            "13": 1500,
+            "16": 2500,
+            "17": 1500,
+            "18": 1500,
+            "22": 2500,
+            "23": 1500,
+            "26": 4000,
+            "30": 4000
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 0,
+          "name_id_raw": 2,
+          "name": "Bahariya Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            8,
+            20
+          ],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 4,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 4,
+          "name_id_raw": 8,
+          "name": "Dahshur",
+          "route_id": 17,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 290,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 4,
+          "name_id_raw": 11,
+          "name": "Dunqul Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 4,
+          "name_id_raw": 16,
+          "name": "Henen-nesw",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 3,
+          "name_id_raw": 20,
+          "name": "Iunet",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            9
+          ],
+          "sells": [
+            2,
+            11,
+            13,
+            25,
+            26,
+            29
+          ],
+          "cost_to_open": 600,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 2500,
+            "9": 1500,
+            "11": 2500,
+            "13": 1500,
+            "25": 4000,
+            "26": 4000,
+            "29": 4000
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 4,
+          "name_id_raw": 24,
+          "name": "Kharga Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 2,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 19,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 3,
+          "name_id_raw": 34,
+          "name": "On",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            15,
+            17,
+            18,
+            19,
+            20,
+            26
+          ],
+          "sells": [
+            2,
+            11,
+            22,
+            25
+          ],
+          "cost_to_open": 400,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 1500,
+            "11": 2500,
+            "15": 4000,
+            "17": 2500,
+            "18": 1500,
+            "19": 1500,
+            "20": 2500,
+            "22": 4000,
+            "25": 2500,
+            "26": 2500
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 4,
+          "name_id_raw": 40,
+          "name": "Saqqara",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 14,
+          "type_raw": 3,
+          "name_id_raw": 44,
+          "name": "Serabit Khadim",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            1,
+            11
+          ],
+          "sells": [
+            18,
+            19,
+            29
+          ],
+          "cost_to_open": 950,
+          "sea_trade": false,
+          "annual_limits": {
+            "1": 4000,
+            "11": 4000,
+            "18": 2500,
+            "19": 1500,
+            "29": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 6043185,
+        "stored_bytes": 236,
+        "decoded_sha256": "df7d22da3bbc13d5f96d1255ecd7ff02a5e27be09384817380b56a1737953390"
+      }
+    },
+    {
+      "id": 20,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 4,
+          "name_id_raw": 1,
+          "name": "Abedju",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 800,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 2,
+          "type_raw": 4,
+          "name_id_raw": 2,
+          "name": "Bahariya Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 4,
+          "name_id_raw": 4,
+          "name": "Behdet",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1200,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 4,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 4,
+          "name_id_raw": 8,
+          "name": "Dahshur",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 400,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 0,
+          "name_id_raw": 10,
+          "name": "Djedu",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            15,
+            17,
+            24,
+            25,
+            30
+          ],
+          "sells": [
+            1,
+            2,
+            7,
+            8,
+            20,
+            22
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 3,
+          "name_id_raw": 11,
+          "name": "Dunqul Oasis",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            15,
+            22,
+            23
+          ],
+          "sells": [
+            8,
+            18,
+            20,
+            26,
+            30
+          ],
+          "cost_to_open": 1300,
+          "sea_trade": false,
+          "annual_limits": {
+            "8": 1500,
+            "11": 1500,
+            "13": 1500,
+            "15": 2500,
+            "18": 1500,
+            "20": 2500,
+            "22": 1500,
+            "23": 2500,
+            "26": 2500,
+            "30": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 4,
+          "name_id_raw": 16,
+          "name": "Henen-nesw",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 4,
+          "name_id_raw": 20,
+          "name": "Iunet",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1000,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 24,
+          "name": "Kharga Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 2,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 19,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 13,
+          "type_raw": 4,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 14,
+          "type_raw": 3,
+          "name_id_raw": 34,
+          "name": "On",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            15,
+            17,
+            18,
+            19,
+            20,
+            26
+          ],
+          "sells": [
+            2,
+            11,
+            22,
+            25
+          ],
+          "cost_to_open": 300,
+          "sea_trade": true,
+          "annual_limits": {
+            "2": 1500,
+            "11": 1500,
+            "15": 1500,
+            "17": 1500,
+            "18": 1500,
+            "19": 1500,
+            "20": 1500,
+            "22": 1500,
+            "25": 1500,
+            "26": 1500
+          }
+        },
+        {
+          "id": 15,
+          "type_raw": 4,
+          "name_id_raw": 40,
+          "name": "Saqqara",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 300,
+          "sea_trade": false,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 6357449,
+        "stored_bytes": 243,
+        "decoded_sha256": "39ab8d7e2997a2f4f60995fc52acc6da6420585de975440609d3550b8bbfb27d"
+      }
+    },
+    {
+      "id": 21,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 4,
+          "name_id_raw": 2,
+          "name": "Bahariya Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 2,
+          "type_raw": 3,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [
+            20,
+            26,
+            29
+          ],
+          "sells": [
+            14,
+            15
+          ],
+          "cost_to_open": 200,
+          "sea_trade": false,
+          "annual_limits": {
+            "14": 2500,
+            "15": 2500,
+            "20": 2500,
+            "26": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 5,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            18,
+            19
+          ],
+          "sells": [
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 1500,
+          "sea_trade": false,
+          "annual_limits": {
+            "18": 2500,
+            "19": 2500,
+            "20": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 10,
+          "name": "Djedu",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1070,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 0,
+          "name_id_raw": 11,
+          "name": "Dunqul Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            15,
+            22,
+            23
+          ],
+          "sells": [
+            8,
+            18,
+            20,
+            26,
+            30
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 3,
+          "name_id_raw": 16,
+          "name": "Henen-nesw",
+          "route_id": 10,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            6,
+            11,
+            15,
+            16
+          ],
+          "cost_to_open": 805,
+          "sea_trade": false,
+          "annual_limits": {
+            "6": 2500,
+            "11": 2500,
+            "15": 2500,
+            "16": 2500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 4,
+          "name_id_raw": 20,
+          "name": "Iunet",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 370,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 5,
+          "name_id_raw": 23,
+          "name": "Kerma",
+          "route_id": 8,
+          "initially_open": false,
+          "buys": [
+            17,
+            19
+          ],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 375,
+          "sea_trade": false,
+          "annual_limits": {
+            "17": 2500,
+            "19": 2500
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 1,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            4,
+            13,
+            23
+          ],
+          "cost_to_open": 870,
+          "sea_trade": false,
+          "annual_limits": {
+            "3": 2500,
+            "4": 2500,
+            "12": 2500,
+            "13": 2500,
+            "14": 2500,
+            "15": 2500,
+            "19": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 9,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 260,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 3,
+          "name_id_raw": 34,
+          "name": "On",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            15,
+            17,
+            18,
+            19,
+            20,
+            26
+          ],
+          "sells": [
+            2,
+            11,
+            22,
+            25
+          ],
+          "cost_to_open": 960,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 2500,
+            "11": 2500,
+            "15": 0,
+            "17": 0,
+            "18": 0,
+            "19": 0,
+            "20": 0,
+            "22": 2500,
+            "25": 2500,
+            "26": 0
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 4,
+          "name_id_raw": 40,
+          "name": "Saqqara",
+          "route_id": 11,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 975,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 14,
+          "type_raw": 5,
+          "name_id_raw": 43,
+          "name": "Selima Oasis",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            15,
+            17,
+            23,
+            29
+          ],
+          "sells": [
+            19,
+            20
+          ],
+          "cost_to_open": 375,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "13": 2500,
+            "15": 2500,
+            "17": 2500,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500,
+            "29": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 6684586,
+        "stored_bytes": 290,
+        "decoded_sha256": "e9e728bb1cfbf710f96b1029918a29a20b075a282594b49c81246fa2a9c8c368"
+      }
+    },
+    {
+      "id": 22,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 4,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 0,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            2,
+            17,
+            19,
+            23,
+            26
+          ],
+          "sells": [
+            1,
+            8,
+            11,
+            14,
+            20
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 10,
+          "name": "Djedu",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 4,
+          "name_id_raw": 11,
+          "name": "Dunqul Oasis",
+          "route_id": 11,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 650,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 4,
+          "name_id_raw": 16,
+          "name": "Henen-nesw",
+          "route_id": 10,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 4,
+          "name_id_raw": 20,
+          "name": "Iunet",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 4,
+          "name_id_raw": 24,
+          "name": "Kharga Oasis",
+          "route_id": 12,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 2,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 3,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 9,
+          "initially_open": false,
+          "buys": [
+            23
+          ],
+          "sells": [
+            13,
+            15,
+            16,
+            17
+          ],
+          "cost_to_open": 600,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 2500,
+            "15": 2500,
+            "16": 2500,
+            "17": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 3,
+          "name_id_raw": 34,
+          "name": "On",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            15,
+            17,
+            18,
+            19,
+            20,
+            26
+          ],
+          "sells": [
+            2,
+            11,
+            22,
+            25
+          ],
+          "cost_to_open": 1070,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 2500,
+            "11": 2500,
+            "15": 1500,
+            "17": 0,
+            "18": 0,
+            "19": 0,
+            "20": 1500,
+            "22": 4000,
+            "25": 2500,
+            "26": 0
+          }
+        },
+        {
+          "id": 12,
+          "type_raw": 3,
+          "name_id_raw": 40,
+          "name": "Saqqara",
+          "route_id": 8,
+          "initially_open": false,
+          "buys": [
+            11,
+            12,
+            13,
+            20,
+            22,
+            23,
+            25
+          ],
+          "sells": [
+            19,
+            24
+          ],
+          "cost_to_open": 1250,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 4000,
+            "12": 2500,
+            "13": 4000,
+            "19": 4000,
+            "20": 2500,
+            "22": 2500,
+            "23": 1500,
+            "24": 2500,
+            "25": 2500
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 5,
+          "name_id_raw": 43,
+          "name": "Selima Oasis",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            15,
+            17,
+            23,
+            29
+          ],
+          "sells": [
+            19,
+            20
+          ],
+          "cost_to_open": 645,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "13": 1500,
+            "15": 4000,
+            "17": 2500,
+            "19": 1500,
+            "20": 2500,
+            "23": 4000,
+            "29": 4000
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 7009918,
+        "stored_bytes": 242,
+        "decoded_sha256": "ed99a6fe11014434bebcb17da9d7f7b3d345320fbecfb6428feac2b5d0e5f31a"
+      }
+    },
+    {
+      "id": 23,
+      "cities": [
+        {
+          "id": 2,
+          "type_raw": 3,
+          "name_id_raw": 11,
+          "name": "Dunqul Oasis",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            15,
+            22,
+            23
+          ],
+          "sells": [
+            8,
+            18,
+            20,
+            26,
+            30
+          ],
+          "cost_to_open": 475,
+          "sea_trade": false,
+          "annual_limits": {
+            "8": 1500,
+            "11": 2500,
+            "13": 4000,
+            "15": 2500,
+            "18": 2500,
+            "20": 2500,
+            "22": 2500,
+            "23": 2500,
+            "26": 2500,
+            "30": 2500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 3,
+          "name_id_raw": 16,
+          "name": "Henen-nesw",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            6,
+            11,
+            15,
+            16
+          ],
+          "cost_to_open": 580,
+          "sea_trade": true,
+          "annual_limits": {
+            "6": 4000,
+            "11": 4000,
+            "15": 2500,
+            "16": 2500
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 4,
+          "name_id_raw": 23,
+          "name": "Kerma",
+          "route_id": 10,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 4,
+          "name_id_raw": 24,
+          "name": "Kharga Oasis",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 3,
+          "name_id_raw": 25,
+          "name": "Khmun",
+          "route_id": 9,
+          "initially_open": false,
+          "buys": [
+            13,
+            20,
+            23
+          ],
+          "sells": [
+            17,
+            24
+          ],
+          "cost_to_open": 180,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 4000,
+            "17": 2500,
+            "20": 1500,
+            "23": 2500,
+            "24": 2500
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            4,
+            13,
+            23
+          ],
+          "cost_to_open": 840,
+          "sea_trade": true,
+          "annual_limits": {
+            "3": 2500,
+            "4": 4000,
+            "12": 4000,
+            "13": 2500,
+            "14": 4000,
+            "15": 2500,
+            "19": 4000,
+            "23": 2500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [
+            23
+          ],
+          "sells": [
+            13,
+            15,
+            16,
+            17
+          ],
+          "cost_to_open": 280,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 2500,
+            "15": 2500,
+            "16": 2500,
+            "17": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 3,
+          "name_id_raw": 41,
+          "name": "Sauty",
+          "route_id": 8,
+          "initially_open": false,
+          "buys": [
+            4
+          ],
+          "sells": [
+            5
+          ],
+          "cost_to_open": 140,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 2500,
+            "5": 2500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 0,
+          "name_id_raw": 47,
+          "name": "Thinis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            29
+          ],
+          "sells": [
+            4,
+            8,
+            11,
+            13,
+            14,
+            15,
+            24
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 3,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            11,
+            13,
+            24,
+            25,
+            26,
+            29
+          ],
+          "cost_to_open": 240,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 4000,
+            "13": 2500,
+            "24": 1500,
+            "25": 1500,
+            "26": 1500,
+            "29": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 7353345,
+        "stored_bytes": 248,
+        "decoded_sha256": "d5e24f5d32233a77fda1098e3c92c26cb7135da7c2b178008794d3fef4ee905d"
+      }
+    },
+    {
+      "id": 24,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            2,
+            17,
+            19,
+            23,
+            26
+          ],
+          "sells": [
+            12,
+            20
+          ],
+          "cost_to_open": 800,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 2500,
+            "12": 2500,
+            "17": 2500,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500,
+            "26": 0
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 3,
+          "name_id_raw": 25,
+          "name": "Khmun",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [
+            13,
+            20,
+            23
+          ],
+          "sells": [
+            17,
+            24
+          ],
+          "cost_to_open": 700,
+          "sea_trade": true,
+          "annual_limits": {
+            "13": 2500,
+            "17": 2500,
+            "20": 2500,
+            "23": 2500,
+            "24": 2500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            13,
+            23
+          ],
+          "cost_to_open": 1250,
+          "sea_trade": true,
+          "annual_limits": {
+            "3": 2500,
+            "12": 2500,
+            "13": 2500,
+            "14": 2500,
+            "15": 2500,
+            "19": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 4,
+          "name_id_raw": 32,
+          "name": "Nekhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 4,
+          "name_id_raw": 41,
+          "name": "Sauty",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 47,
+          "name": "Thinis",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            29
+          ],
+          "sells": [
+            4,
+            13,
+            15
+          ],
+          "cost_to_open": 375,
+          "sea_trade": false,
+          "annual_limits": {
+            "4": 0,
+            "13": 1500,
+            "15": 4000,
+            "29": 1500
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 0,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            1,
+            6,
+            7,
+            11,
+            24,
+            25,
+            26,
+            29
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 11,
+          "type_raw": 3,
+          "name_id_raw": 11,
+          "name": "Dunqul Oasis",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            15,
+            22,
+            23
+          ],
+          "sells": [
+            18,
+            20,
+            26,
+            30
+          ],
+          "cost_to_open": 400,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "13": 2500,
+            "15": 2500,
+            "18": 2500,
+            "20": 2500,
+            "22": 2500,
+            "23": 2500,
+            "26": 4000,
+            "30": 4000
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 7683648,
+        "stored_bytes": 228,
+        "decoded_sha256": "b4aea749944132741d5d1e9146b35b375f1eb88e209729785095ce68a06398e7"
+      }
+    },
+    {
+      "id": 25,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [
+            20,
+            26,
+            29
+          ],
+          "sells": [
+            14,
+            15
+          ],
+          "cost_to_open": 520,
+          "sea_trade": true,
+          "annual_limits": {
+            "14": 4000,
+            "15": 2500,
+            "20": 2500,
+            "26": 1500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 4,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1000,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 11,
+          "name": "Dunqul Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 0,
+          "name_id_raw": 22,
+          "name": "Kebet",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            6,
+            7,
+            11,
+            16,
+            18,
+            26,
+            29
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 24,
+          "name": "Kharga Oasis",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            7
+          ],
+          "sells": [
+            14,
+            20
+          ],
+          "cost_to_open": 700,
+          "sea_trade": false,
+          "annual_limits": {
+            "7": 2500,
+            "14": 1500,
+            "20": 2500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 650,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 4,
+          "name_id_raw": 47,
+          "name": "Thinis",
+          "route_id": 9,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 13,
+          "type_raw": 1,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 1,
+          "initially_open": true,
+          "buys": [
+            6
+          ],
+          "sells": [
+            11,
+            13,
+            24,
+            25,
+            26,
+            29
+          ],
+          "cost_to_open": 300,
+          "sea_trade": false,
+          "annual_limits": {
+            "6": 1500,
+            "11": 1500,
+            "13": 1500,
+            "24": 1500,
+            "25": 1500,
+            "26": 2500,
+            "29": 1500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 8017038,
+        "stored_bytes": 234,
+        "decoded_sha256": "a6487dc3b8a3d9365a61374df795a35c417dcce6d4f137c7f63ec592249d7f21"
+      }
+    },
+    {
+      "id": 26,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 4,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 3,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            2,
+            17,
+            19,
+            23,
+            26
+          ],
+          "sells": [
+            12,
+            20
+          ],
+          "cost_to_open": 400,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 2500,
+            "12": 2500,
+            "17": 1500,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500,
+            "26": 0
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 11,
+          "name": "Dunqul Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 4,
+          "name_id_raw": 16,
+          "name": "Henen-nesw",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 4,
+          "name_id_raw": 22,
+          "name": "Kebet",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            4,
+            13,
+            23
+          ],
+          "cost_to_open": 400,
+          "sea_trade": true,
+          "annual_limits": {
+            "3": 2500,
+            "4": 2500,
+            "12": 2500,
+            "13": 2500,
+            "14": 2500,
+            "15": 2500,
+            "19": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 0,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            12,
+            25,
+            26
+          ],
+          "sells": [
+            5,
+            6,
+            14,
+            16,
+            24
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 1,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            11,
+            13,
+            17,
+            24,
+            25,
+            26,
+            29
+          ],
+          "cost_to_open": 600,
+          "sea_trade": true,
+          "annual_limits": {
+            "11": 2500,
+            "13": 2500,
+            "17": 0,
+            "24": 2500,
+            "25": 2500,
+            "26": 2500,
+            "29": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 8341255,
+        "stored_bytes": 199,
+        "decoded_sha256": "fdf3a7c32f2dd18e5f39a5c2c8a57571219eeeb788ba3d9aa49ded40a0ed6849"
+      }
+    },
+    {
+      "id": 27,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 5,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [
+            20,
+            26,
+            29
+          ],
+          "sells": [
+            14,
+            15
+          ],
+          "cost_to_open": 850,
+          "sea_trade": true,
+          "annual_limits": {
+            "14": 4000,
+            "15": 1500,
+            "20": 2500,
+            "26": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 5,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            18,
+            19
+          ],
+          "sells": [
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 900,
+          "sea_trade": false,
+          "annual_limits": {
+            "18": 4000,
+            "19": 4000,
+            "20": 4000,
+            "29": 1500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 3,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 9,
+          "initially_open": false,
+          "buys": [
+            2,
+            17,
+            19,
+            23,
+            26
+          ],
+          "sells": [
+            12,
+            20
+          ],
+          "cost_to_open": 1250,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 4000,
+            "12": 1500,
+            "17": 4000,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500,
+            "26": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 0,
+          "name_id_raw": 19,
+          "name": "Itjtawy",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            15
+          ],
+          "sells": [
+            1,
+            2,
+            3,
+            5,
+            11,
+            16,
+            22,
+            25
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            5,
+            13,
+            23
+          ],
+          "cost_to_open": 300,
+          "sea_trade": false,
+          "annual_limits": {
+            "3": 2500,
+            "5": 0,
+            "12": 2500,
+            "13": 2500,
+            "14": 2500,
+            "15": 2500,
+            "19": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 3,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [
+            12,
+            25,
+            26
+          ],
+          "sells": [
+            24
+          ],
+          "cost_to_open": 350,
+          "sea_trade": false,
+          "annual_limits": {
+            "12": 2500,
+            "24": 2500,
+            "25": 1500,
+            "26": 1500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 4,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 850,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 4,
+          "name_id_raw": 22,
+          "name": "Kebet",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 8682110,
+        "stored_bytes": 217,
+        "decoded_sha256": "ab51dde47479866f93c2258ff9e7f955079365c5bbacabda7fa86ff873ab0fc0"
+      }
+    },
+    {
+      "id": 28,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [
+            20,
+            26,
+            29
+          ],
+          "sells": [
+            14,
+            15
+          ],
+          "cost_to_open": 100,
+          "sea_trade": true,
+          "annual_limits": {
+            "14": 2500,
+            "15": 2500,
+            "20": 2500,
+            "26": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 3,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 9,
+          "initially_open": false,
+          "buys": [
+            2,
+            17,
+            19,
+            23,
+            26
+          ],
+          "sells": [
+            12,
+            20
+          ],
+          "cost_to_open": 685,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 2500,
+            "12": 2500,
+            "17": 2500,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500,
+            "26": 1500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 3,
+          "name_id_raw": 13,
+          "name": "Farafra Oasis",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            11,
+            20
+          ],
+          "cost_to_open": 815,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "20": 2500
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 0,
+          "name_id_raw": 18,
+          "name": "Iken",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            10,
+            20,
+            29
+          ],
+          "sells": [
+            6,
+            8,
+            14,
+            16
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 3,
+          "name_id_raw": 22,
+          "name": "Kebet",
+          "route_id": 10,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            11,
+            13,
+            26,
+            29
+          ],
+          "cost_to_open": 675,
+          "sea_trade": true,
+          "annual_limits": {
+            "11": 1500,
+            "13": 1500,
+            "26": 4000,
+            "29": 1500
+          }
+        },
+        {
+          "id": 8,
+          "type_raw": 4,
+          "name_id_raw": 24,
+          "name": "Kharga Oasis",
+          "route_id": 11,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            4,
+            13,
+            23
+          ],
+          "cost_to_open": 1335,
+          "sea_trade": true,
+          "annual_limits": {
+            "3": 2500,
+            "4": 2500,
+            "12": 2500,
+            "13": 2500,
+            "14": 2500,
+            "15": 2500,
+            "19": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 4,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 42,
+          "name": "Sawu",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 890,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 4,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 8,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 570,
+          "sea_trade": true,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 9024022,
+        "stored_bytes": 237,
+        "decoded_sha256": "9c5ebeb4b70dc5329b9efb1f26a80aee4c46ca45e2f8979e6b4c62d2d6fed0c4"
+      }
+    },
+    {
+      "id": 29,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 4,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 900,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 3,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 9,
+          "initially_open": false,
+          "buys": [
+            2,
+            17,
+            19,
+            23,
+            26
+          ],
+          "sells": [
+            9,
+            20
+          ],
+          "cost_to_open": 725,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 2500,
+            "9": 4000,
+            "17": 2500,
+            "19": 2500,
+            "20": 2500,
+            "23": 4000,
+            "26": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 18,
+          "name": "Iken",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1000,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 3,
+          "name_id_raw": 19,
+          "name": "Itjtawy",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            15
+          ],
+          "sells": [
+            2,
+            9,
+            13,
+            16,
+            23
+          ],
+          "cost_to_open": 600,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 2500,
+            "9": 4000,
+            "13": 2500,
+            "15": 2500,
+            "16": 4000,
+            "23": 2500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 4,
+          "name_id_raw": 22,
+          "name": "Kebet",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 4,
+          "name_id_raw": 24,
+          "name": "Kharga Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 10,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            4,
+            13,
+            22
+          ],
+          "cost_to_open": 700,
+          "sea_trade": true,
+          "annual_limits": {
+            "3": 2500,
+            "4": 2500,
+            "12": 2500,
+            "13": 1500,
+            "14": 1500,
+            "15": 2500,
+            "19": 1500,
+            "22": 4000
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 3,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [
+            12,
+            25,
+            26
+          ],
+          "sells": [
+            24
+          ],
+          "cost_to_open": 430,
+          "sea_trade": false,
+          "annual_limits": {
+            "12": 2500,
+            "24": 2500,
+            "25": 2500,
+            "26": 2500
+          }
+        },
+        {
+          "id": 12,
+          "type_raw": 5,
+          "name_id_raw": 36,
+          "name": "Pwenet",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 660,
+          "sea_trade": true,
+          "annual_limits": {
+            "19": 2500
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 0,
+          "name_id_raw": 42,
+          "name": "Sawu",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            4,
+            7,
+            11,
+            26,
+            29
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 14,
+          "type_raw": 3,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 8,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            11,
+            13,
+            24,
+            25,
+            26,
+            29
+          ],
+          "cost_to_open": 300,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "13": 2500,
+            "24": 2500,
+            "25": 2500,
+            "26": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 15,
+          "type_raw": 3,
+          "name_id_raw": 11,
+          "name": "Dunqul Oasis",
+          "route_id": 14,
+          "initially_open": false,
+          "buys": [
+            13,
+            15,
+            23
+          ],
+          "sells": [
+            8,
+            18,
+            20,
+            26,
+            30
+          ],
+          "cost_to_open": 500,
+          "sea_trade": false,
+          "annual_limits": {
+            "8": 2500,
+            "13": 2500,
+            "15": 2500,
+            "18": 2500,
+            "20": 2500,
+            "23": 2500,
+            "26": 2500,
+            "30": 4000
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 9349900,
+        "stored_bytes": 274,
+        "decoded_sha256": "3ec7a1a426cb3f32adc3738a231a16fa73e4a1aab7a263c1e08d369a763eaba9"
+      }
+    },
+    {
+      "id": 30,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 6,
+          "name": "Buhen",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [
+            20,
+            26,
+            29
+          ],
+          "sells": [
+            14,
+            15
+          ],
+          "cost_to_open": 150,
+          "sea_trade": true,
+          "annual_limits": {
+            "14": 2500,
+            "15": 2500,
+            "20": 2500,
+            "26": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 5,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            18,
+            19
+          ],
+          "sells": [
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 1000,
+          "sea_trade": true,
+          "annual_limits": {
+            "18": 2500,
+            "19": 2500,
+            "20": 0,
+            "29": 1500
+          }
+        },
+        {
+          "id": 3,
+          "type_raw": 3,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            2,
+            17,
+            19,
+            23,
+            26
+          ],
+          "sells": [
+            12,
+            20
+          ],
+          "cost_to_open": 500,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 1500,
+            "12": 1500,
+            "17": 1500,
+            "19": 1500,
+            "20": 1500,
+            "23": 1500,
+            "26": 1500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 0,
+          "name_id_raw": 15,
+          "name": "Heh",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            10,
+            13,
+            15,
+            17,
+            20,
+            23,
+            29
+          ],
+          "sells": [
+            4,
+            5,
+            18,
+            19
+          ],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 4,
+          "name_id_raw": 18,
+          "name": "Iken",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 6,
+          "type_raw": 4,
+          "name_id_raw": 19,
+          "name": "Itjtawy",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1400,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 4,
+          "name_id_raw": 22,
+          "name": "Kebet",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 4,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 15,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1000,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 4,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 9,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 5,
+          "name_id_raw": 36,
+          "name": "Pwenet",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 500,
+          "sea_trade": false,
+          "annual_limits": {
+            "19": 1500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 42,
+          "name": "Sawu",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1250,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 4,
+          "name_id_raw": 49,
+          "name": "Toshka",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 13,
+          "type_raw": 4,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 8,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 9669153,
+        "stored_bytes": 235,
+        "decoded_sha256": "1ff4d8c6a16d73dd0746983cfd98c70dcdb3fe2d7c00935af7af712aad29eff0"
+      }
+    },
+    {
+      "id": 31,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 0,
+          "name_id_raw": 5,
+          "name": "Bubastis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            15,
+            19,
+            26
+          ],
+          "sells": [
+            1,
+            2,
+            7,
+            8,
+            11,
+            16,
+            20,
+            22
+          ],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 4,
+          "type_raw": 3,
+          "name_id_raw": 15,
+          "name": "Heh",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [
+            10,
+            13,
+            15,
+            17,
+            20,
+            23,
+            29
+          ],
+          "sells": [
+            18,
+            19
+          ],
+          "cost_to_open": 1750,
+          "sea_trade": true,
+          "annual_limits": {
+            "10": 4000,
+            "13": 2500,
+            "15": 0,
+            "17": 2500,
+            "18": 1500,
+            "19": 1500,
+            "20": 4000,
+            "23": 2500,
+            "29": 0
+          }
+        },
+        {
+          "id": 5,
+          "type_raw": 3,
+          "name_id_raw": 18,
+          "name": "Iken",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [
+            10,
+            20,
+            29
+          ],
+          "sells": [
+            15
+          ],
+          "cost_to_open": 1750,
+          "sea_trade": true,
+          "annual_limits": {
+            "10": 2500,
+            "15": 4000,
+            "20": 4000,
+            "29": 0
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 4,
+          "name_id_raw": 19,
+          "name": "Itjtawy",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 4,
+          "name_id_raw": 22,
+          "name": "Kebet",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 4,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 19,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 4,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 11,
+          "type_raw": 5,
+          "name_id_raw": 36,
+          "name": "Pwenet",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 1500,
+          "sea_trade": false,
+          "annual_limits": {
+            "19": 1500
+          }
+        },
+        {
+          "id": 12,
+          "type_raw": 3,
+          "name_id_raw": 42,
+          "name": "Sawu",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            13,
+            26,
+            29
+          ],
+          "cost_to_open": 500,
+          "sea_trade": false,
+          "annual_limits": {
+            "13": 0,
+            "26": 1500,
+            "29": 1500
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 4,
+          "name_id_raw": 49,
+          "name": "Toshka",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 14,
+          "type_raw": 3,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            11,
+            13,
+            24,
+            25,
+            26,
+            29
+          ],
+          "cost_to_open": 800,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 0,
+            "13": 0,
+            "24": 0,
+            "25": 0,
+            "26": 1500,
+            "29": 1500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 9988815,
+        "stored_bytes": 239,
+        "decoded_sha256": "eaa998ee86ad6a5de34601099ac70b8ccb79a397e24581cc519c45a74ed46925"
+      }
+    },
+    {
+      "id": 32,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 4,
+          "name_id_raw": 5,
+          "name": "Bubastis",
+          "route_id": 9,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 500,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 4,
+          "name_id_raw": 15,
+          "name": "Heh",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 18,
+          "name": "Iken",
+          "route_id": 8,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 3,
+          "name_id_raw": 19,
+          "name": "Itjtawy",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            15
+          ],
+          "sells": [
+            2,
+            9,
+            13,
+            17,
+            23,
+            25
+          ],
+          "cost_to_open": 450,
+          "sea_trade": true,
+          "annual_limits": {
+            "2": 0,
+            "9": 4000,
+            "13": 2500,
+            "15": 4000,
+            "17": 2500,
+            "23": 2500,
+            "25": 2500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 0,
+          "name_id_raw": 25,
+          "name": "Khmun",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            13,
+            20,
+            23
+          ],
+          "sells": [
+            4,
+            14,
+            16,
+            24
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 8,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 19,
+          "initially_open": false,
+          "buys": [
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            13,
+            23
+          ],
+          "cost_to_open": 400,
+          "sea_trade": false,
+          "annual_limits": {
+            "12": 1500,
+            "13": 2500,
+            "14": 2500,
+            "15": 4000,
+            "19": 1500,
+            "23": 1500
+          }
+        },
+        {
+          "id": 9,
+          "type_raw": 4,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 5,
+          "name_id_raw": 36,
+          "name": "Pwenet",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 1250,
+          "sea_trade": false,
+          "annual_limits": {
+            "19": 2500
+          }
+        },
+        {
+          "id": 12,
+          "type_raw": 4,
+          "name_id_raw": 42,
+          "name": "Sawu",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 13,
+          "type_raw": 5,
+          "name_id_raw": 46,
+          "name": "Sharuhen",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            11,
+            14,
+            29
+          ],
+          "cost_to_open": 500,
+          "sea_trade": false,
+          "annual_limits": {
+            "11": 2500,
+            "14": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 14,
+          "type_raw": 5,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 1250,
+          "sea_trade": true,
+          "annual_limits": {
+            "19": 2500,
+            "20": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 15,
+          "type_raw": 4,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 10308060,
+        "stored_bytes": 243,
+        "decoded_sha256": "ca1773c2dcc0a9e70954b3647f0a581c1a48512d5bdecf09c32a07148b37dcd4"
+      }
+    },
+    {
+      "id": 33,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 5,
+          "name": "Bubastis",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            15,
+            19,
+            26
+          ],
+          "sells": [
+            2,
+            13,
+            17,
+            20,
+            23
+          ],
+          "cost_to_open": 450,
+          "sea_trade": true,
+          "annual_limits": {
+            "2": 1500,
+            "13": 0,
+            "15": 2500,
+            "17": 0,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500,
+            "26": 0
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 4,
+          "name_id_raw": 15,
+          "name": "Heh",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 4,
+          "name_id_raw": 18,
+          "name": "Iken",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 4,
+          "type_raw": 3,
+          "name_id_raw": 19,
+          "name": "Itjtawy",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            15
+          ],
+          "sells": [
+            2,
+            9,
+            12,
+            13,
+            17,
+            23
+          ],
+          "cost_to_open": 425,
+          "sea_trade": true,
+          "annual_limits": {
+            "2": 2500,
+            "9": 1500,
+            "12": 2500,
+            "13": 0,
+            "15": 2500,
+            "17": 0,
+            "23": 2500
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            4,
+            13,
+            23
+          ],
+          "cost_to_open": 350,
+          "sea_trade": true,
+          "annual_limits": {
+            "3": 0,
+            "4": 2500,
+            "12": 2500,
+            "13": 0,
+            "14": 1500,
+            "15": 1500,
+            "19": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 7,
+          "type_raw": 3,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            12,
+            25,
+            26
+          ],
+          "sells": [
+            14,
+            15,
+            24
+          ],
+          "cost_to_open": 150,
+          "sea_trade": false,
+          "annual_limits": {
+            "12": 2500,
+            "14": 1500,
+            "15": 2500,
+            "24": 2500,
+            "25": 2500,
+            "26": 0
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 0,
+          "name_id_raw": 41,
+          "name": "Sauty",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            5,
+            11,
+            16,
+            18,
+            24,
+            25
+          ],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 4,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 8,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 10624628,
+        "stored_bytes": 227,
+        "decoded_sha256": "7c91b483885b9315e366e6928b4bb901a89c1d602b4fb34427f689af68e2cb90"
+      }
+    },
+    {
+      "id": 34,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 2,
+          "initially_open": true,
+          "buys": [
+            11,
+            13,
+            22,
+            23
+          ],
+          "sells": [
+            1,
+            9,
+            16,
+            17,
+            18,
+            26,
+            30
+          ],
+          "cost_to_open": 1600,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 4000,
+            "9": 2500,
+            "11": 2500,
+            "13": 2500,
+            "16": 4000,
+            "17": 2500,
+            "18": 1500,
+            "22": 2500,
+            "23": 1500,
+            "26": 4000,
+            "30": 4000
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 0,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            18,
+            19
+          ],
+          "sells": [
+            7,
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 4,
+          "name_id_raw": 19,
+          "name": "Itjtawy",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 4,
+          "name_id_raw": 25,
+          "name": "Khmun",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 4,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 4,
+          "name_id_raw": 39,
+          "name": "Rowarty",
+          "route_id": 10,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 500,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 4,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 10961647,
+        "stored_bytes": 230,
+        "decoded_sha256": "59e341b83db8fb924da77871c01e6afd32ac961ec46fb60accc9b8edd609468f"
+      }
+    },
+    {
+      "id": 35,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 9,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            22,
+            23
+          ],
+          "sells": [
+            9,
+            16,
+            17,
+            18,
+            26,
+            30
+          ],
+          "cost_to_open": 200,
+          "sea_trade": false,
+          "annual_limits": {
+            "9": 1500,
+            "11": 1500,
+            "13": 1500,
+            "16": 2500,
+            "17": 1500,
+            "18": 1500,
+            "22": 1500,
+            "23": 2500,
+            "26": 1500,
+            "30": 1500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 0,
+          "name_id_raw": 3,
+          "name": "Baki",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            6,
+            8,
+            11,
+            18,
+            29,
+            30
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 3,
+          "name_id_raw": 19,
+          "name": "Itjtawy",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            15
+          ],
+          "sells": [
+            2,
+            9,
+            13,
+            17,
+            23
+          ],
+          "cost_to_open": 1015,
+          "sea_trade": true,
+          "annual_limits": {
+            "2": 2500,
+            "9": 4000,
+            "13": 2500,
+            "15": 2500,
+            "17": 2500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 10,
+          "type_raw": 3,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 10,
+          "initially_open": false,
+          "buys": [
+            3,
+            12,
+            14,
+            15,
+            19
+          ],
+          "sells": [
+            4,
+            13,
+            22,
+            23
+          ],
+          "cost_to_open": 1085,
+          "sea_trade": true,
+          "annual_limits": {
+            "3": 2500,
+            "4": 2500,
+            "12": 2500,
+            "13": 2500,
+            "14": 2500,
+            "15": 2500,
+            "19": 2500,
+            "22": 1500,
+            "23": 2500
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 860,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 12,
+          "type_raw": 5,
+          "name_id_raw": 36,
+          "name": "Pwenet",
+          "route_id": 8,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            19
+          ],
+          "cost_to_open": 300,
+          "sea_trade": false,
+          "annual_limits": {
+            "19": 2500
+          }
+        },
+        {
+          "id": 13,
+          "type_raw": 5,
+          "name_id_raw": 37,
+          "name": "Qadesh",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [
+            17,
+            23
+          ],
+          "sells": [
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 1845,
+          "sea_trade": true,
+          "annual_limits": {
+            "17": 2500,
+            "19": 2500,
+            "20": 2500,
+            "23": 2500,
+            "29": 2500
+          }
+        },
+        {
+          "id": 14,
+          "type_raw": 3,
+          "name_id_raw": 39,
+          "name": "Rowarty",
+          "route_id": 5,
+          "initially_open": false,
+          "buys": [
+            18,
+            29,
+            30
+          ],
+          "sells": [
+            12,
+            13,
+            14,
+            15,
+            17,
+            23
+          ],
+          "cost_to_open": 1230,
+          "sea_trade": true,
+          "annual_limits": {
+            "12": 2500,
+            "13": 2500,
+            "14": 4000,
+            "15": 1500,
+            "17": 2500,
+            "18": 2500,
+            "23": 2500,
+            "29": 2500,
+            "30": 2500
+          }
+        },
+        {
+          "id": 16,
+          "type_raw": 3,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            11,
+            13,
+            24,
+            25,
+            26,
+            29
+          ],
+          "cost_to_open": 325,
+          "sea_trade": true,
+          "annual_limits": {
+            "11": 2500,
+            "13": 2500,
+            "24": 2500,
+            "25": 2500,
+            "26": 2500,
+            "29": 2500
+          }
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 11298726,
+        "stored_bytes": 296,
+        "decoded_sha256": "dc8b0f96d26b85d1959252cac1914001f6326f208d7bffab410b1d5aa7be98df"
+      }
+    },
+    {
+      "id": 36,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 3,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [
+            11,
+            13,
+            22,
+            23
+          ],
+          "sells": [
+            1,
+            9,
+            16,
+            17,
+            18,
+            26,
+            30
+          ],
+          "cost_to_open": 1100,
+          "sea_trade": true,
+          "annual_limits": {
+            "1": 1500,
+            "9": 1500,
+            "11": 1500,
+            "13": 1500,
+            "16": 1500,
+            "17": 1500,
+            "18": 1500,
+            "22": 1500,
+            "23": 1500,
+            "26": 1500,
+            "30": 2500
+          }
+        },
+        {
+          "id": 2,
+          "type_raw": 4,
+          "name_id_raw": 2,
+          "name": "Bahariya Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 3,
+          "name_id_raw": 7,
+          "name": "Byblos",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [
+            18,
+            19
+          ],
+          "sells": [
+            19,
+            20,
+            29
+          ],
+          "cost_to_open": 550,
+          "sea_trade": true,
+          "annual_limits": {
+            "18": 1500,
+            "19": 1500,
+            "20": 2500,
+            "29": 4000
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 4,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 5,
+          "type_raw": 4,
+          "name_id_raw": 13,
+          "name": "Farafra Oasis",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 3,
+          "name_id_raw": 19,
+          "name": "Itjtawy",
+          "route_id": 8,
+          "initially_open": false,
+          "buys": [
+            15
+          ],
+          "sells": [
+            2,
+            13,
+            17,
+            23,
+            25
+          ],
+          "cost_to_open": 175,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 1500,
+            "13": 2500,
+            "15": 1500,
+            "17": 1500,
+            "23": 2500,
+            "25": 4000
+          }
+        },
+        {
+          "id": 11,
+          "type_raw": 4,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 14,
+          "type_raw": 0,
+          "name_id_raw": 39,
+          "name": "Rowarty",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [
+            18,
+            29,
+            30
+          ],
+          "sells": [
+            1,
+            2,
+            3,
+            11,
+            14,
+            16,
+            20,
+            22
+          ],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 15,
+          "type_raw": 4,
+          "name_id_raw": 50,
+          "name": "Tyre",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 0,
+          "sea_trade": true,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 11640760,
+        "stored_bytes": 235,
+        "decoded_sha256": "0462226c49bd4c69b0e59f8d00802a8278b407f26fef4c0da718f87d7dc5a6c1"
+      }
+    },
+    {
+      "id": 37,
+      "cities": [
+        {
+          "id": 1,
+          "type_raw": 4,
+          "name_id_raw": 0,
+          "name": "Abu",
+          "route_id": 2,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 1000,
+          "sea_trade": true,
+          "annual_limits": {}
+        },
+        {
+          "id": 3,
+          "type_raw": 5,
+          "name_id_raw": 3,
+          "name": "Baki",
+          "route_id": 1,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            18,
+            29,
+            30
+          ],
+          "cost_to_open": 1000,
+          "sea_trade": false,
+          "annual_limits": {
+            "18": 1500,
+            "29": 1500,
+            "30": 2500
+          }
+        },
+        {
+          "id": 4,
+          "type_raw": 5,
+          "name_id_raw": 9,
+          "name": "Dakhla Oasis",
+          "route_id": 6,
+          "initially_open": false,
+          "buys": [
+            2,
+            17,
+            19,
+            23,
+            26
+          ],
+          "sells": [
+            12,
+            20
+          ],
+          "cost_to_open": 650,
+          "sea_trade": false,
+          "annual_limits": {
+            "2": 0,
+            "12": 2500,
+            "17": 1500,
+            "19": 2500,
+            "20": 0,
+            "23": 2500,
+            "26": 0
+          }
+        },
+        {
+          "id": 6,
+          "type_raw": 0,
+          "name_id_raw": 17,
+          "name": "Hetepsenusret",
+          "route_id": 0,
+          "initially_open": false,
+          "buys": [],
+          "sells": [
+            1,
+            7,
+            8,
+            11,
+            20,
+            22
+          ],
+          "cost_to_open": 0,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 7,
+          "type_raw": 4,
+          "name_id_raw": 19,
+          "name": "Itjtawy",
+          "route_id": 7,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 400,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 9,
+          "type_raw": 4,
+          "name_id_raw": 29,
+          "name": "Men-nefer",
+          "route_id": 8,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 300,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 10,
+          "type_raw": 4,
+          "name_id_raw": 30,
+          "name": "Menat Khufu",
+          "route_id": 9,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 600,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 14,
+          "type_raw": 4,
+          "name_id_raw": 39,
+          "name": "Rowarty",
+          "route_id": 3,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 275,
+          "sea_trade": false,
+          "annual_limits": {}
+        },
+        {
+          "id": 16,
+          "type_raw": 4,
+          "name_id_raw": 51,
+          "name": "Waset",
+          "route_id": 4,
+          "initially_open": false,
+          "buys": [],
+          "sells": [],
+          "cost_to_open": 750,
+          "sea_trade": true,
+          "annual_limits": {}
+        }
+      ],
+      "source_chunk": {
+        "descriptor": 50,
+        "offset": 11980348,
+        "stored_bytes": 254,
+        "decoded_sha256": "bc85511c296728ef772c06d70c4664dd8725dd43d0d6c07f4692723e83fafa4b"
+      }
+    }
+  ]
+}

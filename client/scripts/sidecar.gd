@@ -9,7 +9,7 @@ var pending := 0
 var next_id := 1
 var deadline := 0
 var stopping := false
-var message_limit := 65536
+var sandbox_transport := false
 var last_diagnostic := ""
 var awaiting_first_reply := true
 
@@ -22,11 +22,13 @@ func start(mode: String = "") -> bool:
 			executable = OS.get_executable_path().get_base_dir().path_join("nile-sim")
 		if OS.get_name() == "Windows": executable += ".exe"
 	var save_path := OS.get_environment("NILE_SANDBOX_SAVE" if mode == "sandbox" else "NILE_SAVE")
+	if save_path.is_empty() and mode=="sandbox" and get_tree().root.has_meta("nile_save_path"):
+		save_path=str(get_tree().root.get_meta("nile_save_path"))
 	if save_path.is_empty():
 		save_path = ProjectSettings.globalize_path("user://riverbank.nile" if mode == "sandbox" else "user://kickoff.nile")
 	var arguments := PackedStringArray(["--save", save_path])
 	if mode == "sandbox": arguments.append("--sandbox")
-	message_limit = 2097152 if mode == "sandbox" else 65536
+	sandbox_transport = mode == "sandbox"
 	last_diagnostic = ""
 	awaiting_first_reply = true
 	if not FileAccess.file_exists(executable):
@@ -61,19 +63,21 @@ func _process(_delta: float) -> void:
 	if child.is_empty() or stopping: return
 	# Bounded reads avoid blocking rendering and retain partial JSON lines.
 	var pipe: FileAccess = child.stdio
-	for _chunk in 16:
+	var search_from := incoming.size()
+	for _chunk in 32:
 		var bytes := pipe.get_buffer(16384)
+		if bytes.is_empty(): break
 		incoming.append_array(bytes)
-		if bytes.size() < 16384: break
+		deadline = Time.get_ticks_msec()+20000
 	var diagnostics: FileAccess = child.stderr
 	var errors := diagnostics.get_buffer(4096)
 	if not errors.is_empty():
 		last_diagnostic = errors.get_string_from_utf8().strip_edges().left(512)
 		push_warning(last_diagnostic)
-	if incoming.size() > message_limit:
+	if not sandbox_transport and incoming.size() > 65536:
 		_abort("The simulation exceeded the message limit.")
 		return
-	var newline := incoming.find(10)
+	var newline := incoming.find(10,search_from)
 	while newline >= 0:
 		var line := incoming.slice(0, newline).get_string_from_utf8()
 		incoming = incoming.slice(newline + 1)
@@ -85,7 +89,7 @@ func _process(_delta: float) -> void:
 		awaiting_first_reply = false
 		response_received.emit(parsed)
 		newline = incoming.find(10)
-	if pending != 0 and Time.get_ticks_msec() > deadline:
+	if pending != 0 and (awaiting_first_reply or not sandbox_transport) and Time.get_ticks_msec() > deadline:
 		_abort("The simulation stopped responding. Restart to recover the last save.")
 	elif not child.is_empty() and not OS.is_process_running(child.pid):
 		child.pid = -1 # Already reaped; avoid querying the same dead PID again.

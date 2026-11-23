@@ -13,19 +13,34 @@ const GoldLoad = 100
 const GoldWork = 576 // 48 ticks with all 12 employees.
 
 func workCapacity(kind string) int {
+	if extracted[kind] != "" || kind == "jeweler" {
+		return 576
+	}
+	if campCrops[kind] != "" {
+		return FigSeasonWork
+	}
 	switch kind {
+	case "shipwright":
+		return 800
 	case "farm":
 		return 288
+	case "coppermine":
+		return 480
+	case "recruiter":
+		return 160
 	case "goldmine":
 		return GoldWork
 	case "barleyfarm", "flaxfarm", "figfarm":
 		return 1440
-	case "brewery", "potter", "weaver", "papyrusmaker":
+	case "chariotmaker", "cattleranch", "weaponsmith", "brewery", "potter", "weaver", "papyrusmaker":
 		return 576
 	}
 	return 0
 }
 func walkerCapacity(role string) int {
+	if role == "stonehauler" || role == "builder" {
+		return 400
+	}
 	if role == "trader" || role == "goldcart" || isGoodsRole(role) || role == "hunter" {
 		return GoldLoad
 	}
@@ -155,6 +170,7 @@ func (w *World) arriveGold(walker *Walker, target *Building) bool {
 }
 func (w World) miningView(v *View) {
 	v.Grassland = append([]Point{}, w.Grassland...)
+	v.WestBanks, v.Woodland, v.QuarryRock = w.WestBanks, w.Woodland, w.QuarryRock
 	v.OreRock = append([]Point{}, w.OreRock...)
 	v.GoldProduced, v.GoldDelivered = w.GoldProduced, w.GoldDelivered
 	v.TaxIncome = w.Income - w.GoldDelivered - w.ExportEarned
@@ -173,14 +189,14 @@ func (w World) miningView(v *View) {
 func (w World) validateMining() error {
 	ore := map[Point]bool{}
 	for _, p := range w.OreRock {
-		if !valid(p) || ore[p] {
+		if !w.buildable(p) || ore[p] {
 			return errors.New("invalid ore terrain")
 		}
 		ore[p] = true
 	}
 	grass := map[Point]bool{}
 	for _, p := range w.Grassland {
-		if !valid(p) || grass[p] || ore[p] {
+		if !w.buildable(p) || grass[p] || ore[p] {
 			return errors.New("invalid grassland terrain")
 		}
 		grass[p] = true

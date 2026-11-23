@@ -7,13 +7,21 @@ import (
 	"errors"
 	"io"
 	"os"
+	"path/filepath"
 	"runtime"
+	"strings"
 	"time"
 
 	"github.com/sentania-labs/project-nile/internal/sandbox"
 )
 
 type sandboxRequest struct {
+	Rank          *int            `json:"rank,omitempty"`
+	Amount        int64           `json:"amount,omitempty"`
+	RequestID     *int            `json:"request_id,omitempty"`
+	BoatID        int64           `json:"boat_id,omitempty"`
+	Path          string          `json:"path,omitempty"`
+	FortID        int64           `json:"fort_id,omitempty"`
 	God           string          `json:"god,omitempty"`
 	FestivalSize  int             `json:"festival_size,omitempty"`
 	Route         string          `json:"route,omitempty"`
@@ -41,13 +49,14 @@ type sandboxRequest struct {
 }
 
 type sandboxResponse struct {
-	ID      int64        `json:"id"`
-	OK      bool         `json:"ok"`
-	Error   string       `json:"error,omitempty"`
-	State   sandbox.View `json:"state"`
-	Hash    string       `json:"hash"`
-	Running bool         `json:"running"`
-	Speed   int          `json:"speed"`
+	SavePath string       `json:"save_path,omitempty"`
+	ID       int64        `json:"id"`
+	OK       bool         `json:"ok"`
+	Error    string       `json:"error,omitempty"`
+	State    sandbox.View `json:"state"`
+	Hash     string       `json:"hash"`
+	Running  bool         `json:"running"`
+	Speed    int          `json:"speed"`
 }
 
 const sandboxTickPeriod = 200 * time.Millisecond
@@ -100,6 +109,12 @@ func serveSandbox(in io.Reader, out io.Writer, store *sandbox.Store) error {
 }
 
 func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, now func() time.Time) error {
+	original := store
+	defer func() {
+		if store != original {
+			store.Close()
+		}
+	}()
 	world := sandbox.Initial()
 	clock := sandboxClock{speed: 1} // Manual steps and tests start paused.
 	scan := bufio.NewScanner(in)
@@ -139,10 +154,26 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 					clock.speed = req.Speed
 				}
 			case "new_town":
-				if req.Scenario != "" && req.Scenario != "empty" && req.Scenario != "starter" {
-					err = errors.New("scenario must be empty or starter")
+				if req.Scenario != "" && req.Scenario != "empty" && req.Scenario != "starter" && req.Scenario != "valley" {
+					err = errors.New("scenario must be empty, valley or starter")
 				} else {
+					if req.Path != "" {
+						if !strings.EqualFold(filepath.Ext(req.Path), ".nile") {
+							err = errors.New("select a .nile save file")
+							break
+						}
+						slot, e := sandbox.OpenNew(req.Path)
+						if e != nil {
+							err = e
+							break
+						}
+						store.Close()
+						store = slot
+					}
 					world = sandbox.NewTown()
+					if req.Scenario == "valley" {
+						world = sandbox.NewValley()
+					}
 					if req.Scenario == "starter" {
 						world = sandbox.Initial()
 					}
@@ -167,6 +198,24 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 						clock.remainder = 0
 					}
 				}
+			case "dispatch_burial":
+				err = world.DispatchBurial(req.Resource, req.Limit)
+			case "dispatch_request", "refuse_request":
+				if req.RequestID == nil {
+					err = errors.New("request_id is required")
+				} else if req.Op == "dispatch_request" {
+					err = world.DispatchCampaignRequest(*req.RequestID)
+				} else {
+					err = world.RefuseCampaignRequest(*req.RequestID)
+				}
+			case "set_salary":
+				if req.Rank == nil {
+					err = errors.New("rank is required")
+				} else {
+					err = world.SetSalary(*req.Rank)
+				}
+			case "donate":
+				err = world.DonateSavings(req.Amount)
 			case "set_policy":
 				if req.TaxRate == nil || req.WageRate == nil {
 					err = errors.New("tax_rate and wage_rate are required")
@@ -181,6 +230,12 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 				} else {
 					err = world.RoadPermission(sandbox.Point{X: req.X, Y: req.Y}, req.Role, *req.Allow)
 				}
+			case "naval_order":
+				err = world.NavalOrder(req.BoatID, req.Order, sandbox.Point{X: req.X, Y: req.Y})
+			case "military_order":
+				err = world.MilitaryOrder(req.FortID, req.Order, sandbox.Point{X: req.X, Y: req.Y})
+			case "test_invasion":
+				err = world.TestInvasion()
 			case "open_trade":
 				err = world.OpenTrade(req.Route)
 			case "trade_policy":
@@ -191,6 +246,8 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 				err = world.Repair(req.X, req.Y)
 			case "zone":
 				err = world.ZoneHousing(sandbox.Point{X: req.X, Y: req.Y}, sandbox.Point{X: req.X2, Y: req.Y2})
+			case "canal":
+				err = world.BuildCanals(req.Tiles)
 			case "road":
 				err = world.BuildRoads(req.Tiles)
 			case "build":
@@ -205,11 +262,62 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 					ticks = *req.Ticks
 				}
 				err = world.Step(ticks)
+			case "save_as", "load_from":
+				var target *sandbox.Store
+				path, pathErr := filepath.Abs(req.Path)
+				if pathErr != nil || req.Path == "" || !strings.EqualFold(filepath.Ext(path), ".nile") {
+					err = errors.New("select a .nile save file")
+					break
+				}
+				if req.Op == "load_from" {
+					if _, e := os.Stat(path); e != nil {
+						err = e
+						break
+					}
+				}
+				target = store
+				if !store.Matches(path) {
+					target, err = sandbox.Open(path)
+					if err != nil {
+						break
+					}
+				}
+				var restored sandbox.World
+				if req.Op == "save_as" {
+					err = target.Save(world)
+				} else {
+					restored, err = target.Load()
+				}
+				if err != nil {
+					if target != store {
+						target.Close()
+					}
+					break
+				}
+				if target != store {
+					store.Close()
+					store = target
+				}
+				if req.Op == "load_from" {
+					world = restored
+					clock.running = false
+					clock.remainder = 0
+					clock.anchor = received
+				}
+			case "autosave":
+				err = store.Autosave(world)
 			case "save":
 				err = store.Save(world)
-			case "load":
+			case "load", "load_manual", "load_previous":
 				var restored sandbox.World
-				restored, err = store.Load()
+				switch req.Op {
+				case "load_manual":
+					restored, err = store.LastManual()
+				case "load_previous":
+					restored, err = store.PreviousManual()
+				default:
+					restored, err = store.Load()
+				}
 				if err == nil {
 					world = restored
 					clock.anchor = received
@@ -221,7 +329,7 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 				err = errors.New("unknown operation")
 			}
 		}
-		resp := sandboxResponse{ID: req.ID, OK: err == nil, State: world.View(), Hash: world.Hash(), Running: clock.running, Speed: clock.speed}
+		resp := sandboxResponse{SavePath: store.Path, ID: req.ID, OK: err == nil, State: world.View(), Hash: world.Hash(), Running: clock.running, Speed: clock.speed}
 		if err != nil {
 			resp.Error = err.Error()
 		}

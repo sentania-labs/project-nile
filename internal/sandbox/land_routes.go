@@ -3,12 +3,15 @@ package sandbox
 import "slices"
 
 func offRoadRole(role string) bool {
-	return role == "hunter" || role == "reedharvester" || role == "farmworker"
+	return role == "hunter" || role == "reedharvester" || role == "lumberjack" || role == "farmworker"
 }
 func offRoadOutbound(a Walker) bool {
-	return a.Role == "hunter" && a.Stage == "hunt" || a.Role == "reedharvester" && a.Stage == "gather"
+	return a.Role == "hunter" && a.Stage == "hunt" || (a.Role == "reedharvester" || a.Role == "lumberjack") && a.Stage == "gather"
 }
 func reservationCapacity(role string) int {
+	if role == "stonehauler" {
+		return 400
+	}
 	if isGoodsRole(role) || role == "hunter" || role == "trader" {
 		return 100
 	}
@@ -21,14 +24,14 @@ func (w World) landPath(starts, destinations []Point) []Point {
 	}
 	targets := map[Point]bool{}
 	for _, p := range destinations {
-		if valid(p) && !blocked[p] {
+		if w.walkable(p) && !blocked[p] {
 			targets[p] = true
 		}
 	}
 	queue := []Point{}
 	previous := map[Point]Point{}
 	for _, p := range starts {
-		if valid(p) && !blocked[p] {
+		if w.walkable(p) && !blocked[p] {
 			if _, ok := previous[p]; !ok {
 				previous[p] = p
 				queue = append(queue, p)
@@ -48,7 +51,7 @@ func (w World) landPath(starts, destinations []Point) []Point {
 		}
 		for _, d := range directions {
 			q := Point{p.X + d.X, p.Y + d.Y}
-			if _, seen := previous[q]; !seen && valid(q) && !blocked[q] {
+			if _, seen := previous[q]; !seen && w.walkable(q) && !blocked[q] {
 				previous[q] = p
 				queue = append(queue, q)
 			}
@@ -57,6 +60,9 @@ func (w World) landPath(starts, destinations []Point) []Point {
 	return nil
 }
 func (w World) offRoadReserved(p Point) bool {
+	if w.militaryReserved(p) {
+		return true
+	}
 	for _, a := range w.Walkers {
 		if offRoadRole(a.Role) && slices.Contains(a.Route, p) {
 			return true

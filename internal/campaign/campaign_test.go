@@ -84,3 +84,49 @@ func TestCampaignFactsKeepDistinctBranchesAndRepeatedNames(t *testing.T) {
 		t.Fatal("caller mutated shared campaign definitions")
 	}
 }
+
+func TestThinisUsesLifetimeGoldAndBastFavor(t *testing.T) {
+	s, _ := New(Thinis)
+	s.Observe(Observation{GoldDelivered: 499, BastFavor: 100})
+	if s.ReligionOpened || s.EntertainmentOpened {
+		t.Fatal("favor cannot bypass gold delivery")
+	}
+	s.Observe(Observation{GoldDelivered: 500, BastFavor: 39})
+	if !s.ReligionOpened || s.EntertainmentOpened {
+		t.Fatal("Bast must reach 40 after religion opens")
+	}
+	s.Observe(Observation{BastFavor: 40})
+	if !s.EntertainmentOpened {
+		t.Fatal("latched religion gate was lost")
+	}
+}
+
+func TestPerwadjytRequiresBothPopulationAndHousing(t *testing.T) {
+	s, _ := New(Perwadjyt)
+	if !s.Allows("figfarm") || !s.Allows("workcamp") || s.Allows("huntinglodge") || s.Allows("potter") || s.Allows("physician") {
+		t.Fatal("incorrect initial Perwadjyt buildings")
+	}
+	s.Observe(Observation{Tick: 1, EligibleFigs: 799, StoredPottery: 199, QualifyingHomes: 10, Population: 599})
+	if s.IndustryOpened || s.BeautificationOpened || s.Won {
+		t.Fatal("an unmet original threshold was bypassed")
+	}
+	s.Observe(Observation{Tick: 2, EligibleFigs: 800, StoredPottery: 200, DiseaseDeaths: 1, QualifyingHomes: 9, Population: 600})
+	if !s.IndustryOpened || !s.BeautificationOpened || !s.HealthOpened || s.Won {
+		t.Fatal("gates or combined victory criteria are wrong")
+	}
+	s.Observe(Observation{Tick: 3, QualifyingHomes: 10, Population: 600})
+	if !s.Won || s.VictoryTick != 3 {
+		t.Fatal("both original goals should win")
+	}
+	if next, err := s.Next(Nekhen); err != nil || next.MissionID != Nekhen {
+		t.Fatal("the verified Nekhen successor must be available")
+	}
+	data, _ := json.Marshal(s)
+	var restored State
+	if err := json.Unmarshal(data, &restored); err != nil {
+		t.Fatal(err)
+	}
+	if restored.Validate(3) != nil || !restored.HealthOpened || !restored.IndustryOpened || !restored.BeautificationOpened {
+		t.Fatal("tutorial unlocks did not persist")
+	}
+}

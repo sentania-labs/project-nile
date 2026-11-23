@@ -77,6 +77,9 @@ func (w World) validatePerformer(a Walker, target Building) error {
 
 func entertainmentScore(b Building, tick int64) int {
 	score := 0
+	if b.ServiceUntil[7] > tick {
+		score += int(min(MarketDuration, b.ServiceUntil[7]-tick) * 96 * 10 / MarketDuration / 25)
+	}
 	for i, divider := range []int64{50, 40, 30} {
 		remaining := min(MarketDuration, max(int64(0), b.EntertainmentUntil[i]-tick))
 		score += int(remaining * 96 * 10 / MarketDuration / divider)

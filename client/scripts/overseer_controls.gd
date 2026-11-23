@@ -2,6 +2,9 @@ extends VBoxContainer
 
 var game: Node
 var topic := ""
+var route_pick := OptionButton.new()
+var route_key := ""
+var route_info := Label.new()
 var route_button: Button
 var pick := OptionButton.new()
 var mode := OptionButton.new()
@@ -12,8 +15,12 @@ var selection_key := ""
 
 func setup(owner: Node) -> void:
 	game = owner
-	route_button = game._button("", func() -> void: game._queue_command("open_trade", {"route":"kingdom_road"}))
+	add_child(route_pick)
+	route_pick.item_selected.connect(func(_idx: int) -> void: sync(topic))
+	route_button = game._button("", func() -> void: game._queue_command("open_trade", {"route":str(route_pick.get_selected_metadata())}))
 	add_child(route_button)
+	route_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	add_child(route_info)
 	var row := HBoxContainer.new()
 	add_child(row)
 	row.add_child(pick)
@@ -67,7 +74,26 @@ func sync(next_topic: String) -> void:
 		for item: String in (["Off", "Import to", "Export above"] if topic == "Trade" else ["Common", "Large", "Lavish"]): mode.add_item(item)
 		_set_selection()
 	var routes: Array = state.get("trade_routes", [])
-	var route: Dictionary = routes[0] if not routes.is_empty() else {}
+	var partner_ids := PackedStringArray()
+	for partner: Dictionary in routes: partner_ids.append(str(partner.id))
+	var next_key := ",".join(partner_ids)
+	if next_key!=route_key:
+		route_key=next_key
+		route_pick.clear()
+		for partner: Dictionary in routes:
+			route_pick.add_item(str(partner.name))
+			route_pick.set_item_metadata(route_pick.item_count-1,partner.id)
+	route_pick.visible = topic=="Trade" and not routes.is_empty()
+	var route: Dictionary = routes[route_pick.selected] if route_pick.selected>=0 and route_pick.selected<routes.size() else {}
+	route_info.visible = topic=="Trade" and route.has("limits")
+	if route_info.visible:
+		var entries := PackedStringArray()
+		for side in ["imports","exports"]:
+			var allowed := PackedStringArray()
+			for r: String in route.get(side,[]):
+				allowed.append("%s %d" % [r,int(route.limits.get(r,0))])
+			if not allowed.is_empty(): entries.append("%s per year · %s" % ["Buy" if side=="imports" else "Sell",", ".join(allowed)])
+		route_info.text="\n".join(entries)
 	route_button.visible = topic == "Trade" and route.get("available", false) and not route.get("open",false)
 	route_button.text = "Open %s · %d Db" % [route.get("name","trade route"), int(route.get("open_cost",0))]
 	limit.visible = topic == "Trade"

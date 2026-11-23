@@ -34,6 +34,11 @@ EVENT_COLUMNS = (
     ("parameter_raw", "i", 82), ("on_too_late_action_raw", "h", 86),
     ("on_defeat_action_raw", "h", 88), ("sender_faction_raw", "b", 90),
     ("subtype_raw", "b", 100), ("city_id_raw", "b", 101),
+    ("time_fixed_raw", "h", 26),
+    ("location_value_raw", "h", 32), ("location_fixed_raw", "h", 34),
+    ("location_min_raw", "h", 36), ("location_max_raw", "h", 38),
+    ("months_remaining_raw", "h", 50), ("state_raw", "h", 52),
+    ("active_raw", "B", 54), ("can_comply_raw", "B", 55),
 )
 EVENT_TYPE_INTERPRETATIONS = {
     0: "none", 1: "request", 2: "invasion", 6: "sea_trade_problem", 7: "land_trade_problem",

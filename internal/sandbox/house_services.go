@@ -2,7 +2,7 @@ package sandbox
 
 import "slices"
 
-var amenities = []string{"apothecary", "physician", "dentist", "mortuary", "scribalschool", "library", "policestation"}
+var amenities = []string{"apothecary", "physician", "dentist", "mortuary", "scribalschool", "library", "policestation", "senethouse", "courthouse"}
 
 func init() {
 	buildingCatalog = append(buildingCatalog,
@@ -12,11 +12,14 @@ func init() {
 		CatalogEntry{"mortuary", "Mortuary", 2, 2, 100, "Health", 8},
 		CatalogEntry{"scribalschool", "Scribal school", 2, 2, 150, "Education", 10},
 		CatalogEntry{"library", "Library", 3, 3, 450, "Education", 30},
+		CatalogEntry{"senethouse", "Senet house", 4, 4, 1500, "Entertainment", 25},
 		CatalogEntry{"policestation", "Police station", 1, 1, 30, "Services", 6})
 }
 
 func supplyForService(kind string) string {
 	switch kind {
+	case "senethouse":
+		return "beer"
 	case "scribalschool", "library":
 		return "papyrus"
 	case "mortuary":
@@ -27,11 +30,13 @@ func supplyForService(kind string) string {
 
 func serviceGroup(role string) string {
 	switch role {
+	case "senethouse":
+		return "entertainer"
 	case "physician", "apothecary", "dentist", "mortuary":
 		return "doctor"
 	case "scribalschool", "library":
 		return "teacher"
-	case "policestation":
+	case "policestation", "courthouse":
 		return "policeman"
 	case "goodsseller":
 		return "seller"
@@ -45,6 +50,9 @@ func (w *World) visitAmenity(a Walker, b *Building) {
 	i := slices.Index(amenities, a.Role)
 	if i >= 0 && b.Kind == "hut" && b.Pop > 0 {
 		b.ServiceUntil[i] = min(MaxTick, w.Tick+MarketDuration)
+		if a.Role == "courthouse" || a.Role == "policestation" {
+			b.CrimeRisk = max(0, b.CrimeRisk-5)
+		}
 	}
 }
 

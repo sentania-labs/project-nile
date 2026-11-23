@@ -18,6 +18,7 @@ const StateVersion = 1
 const Nubt = 0
 const Thinis = 1
 const Perwadjyt = 2
+const Nekhen = 3
 const FoodPopulation = 150
 const WaterMeat = 400
 
@@ -31,9 +32,20 @@ type Mission struct {
 	Name          string               `json:"name"`
 	Period        string               `json:"period"`
 	StartYear     int                  `json:"start_year_signed"`
+	RescueFunds   int64                `json:"rescue_loan_raw"`
 	InitialFunds  int64                `json:"initial_funds"`
 	Goals         map[string]Criterion `json:"goals"`
 	NextMissionID []int                `json:"next_mission_ids"`
+	Map           MapSize              `json:"map"`
+	KnownGods     [5]int               `json:"gods_known_raw"`
+	MonumentCodes [3]int               `json:"monument_codes_raw"`
+	BurialGoods   map[string]int       `json:"burial_requirements_raw"`
+	EditorFlags   [47]int              `json:"editor_allow_flags_raw"`
+}
+
+type MapSize struct {
+	Width  int `json:"width_tiles"`
+	Height int `json:"height_tiles"`
 }
 
 var definitions = sync.OnceValue(func() []Mission {
@@ -60,36 +72,53 @@ func Definition(id int) (Mission, bool) {
 	for name, criterion := range original.Goals {
 		result.Goals[name] = criterion
 	}
+	result.BurialGoods = make(map[string]int, len(original.BurialGoods))
+	for resource, quantity := range original.BurialGoods {
+		result.BurialGoods[resource] = quantity
+	}
 	return result, true
 }
 
 // State is included in the world's SQLite snapshot. Unlocks survive later
 // population/stock losses, and an achieved victory remains achieved.
 type State struct {
-	Version              int   `json:"version"`
-	MissionID            int   `json:"mission_id"`
-	FoodUnlocked         bool  `json:"food_unlocked"`
-	WaterUnlocked        bool  `json:"water_unlocked"`
-	FireUnlocked         bool  `json:"fire_unlocked"`
-	ArchitectOpened      bool  `json:"architect_opened"`
-	ReligionOpened       bool  `json:"religion_opened"`
-	EntertainmentOpened  bool  `json:"entertainment_opened"`
-	HealthOpened         bool  `json:"health_opened"`
-	IndustryOpened       bool  `json:"industry_opened"`
-	BeautificationOpened bool  `json:"beautification_opened"`
-	Completed            []int `json:"completed,omitempty"`
-	Won                  bool  `json:"won"`
-	VictoryTick          int64 `json:"victory_tick"`
+	FinanceOpened        bool         `json:"finance_opened,omitempty"`
+	EventsInitialized    bool         `json:"events_initialized,omitempty"`
+	Events               []EventState `json:"events,omitempty"`
+	EventRNG             uint32       `json:"event_rng,omitempty"`
+	EventMonth           int64        `json:"event_month,omitempty"`
+	Kingdom              int          `json:"kingdom,omitempty"`
+	RescueReceived       int64        `json:"rescue_received"`
+	Version              int          `json:"version"`
+	MissionID            int          `json:"mission_id"`
+	FoodUnlocked         bool         `json:"food_unlocked"`
+	WaterUnlocked        bool         `json:"water_unlocked"`
+	FireUnlocked         bool         `json:"fire_unlocked"`
+	ArchitectOpened      bool         `json:"architect_opened"`
+	ReligionOpened       bool         `json:"religion_opened"`
+	EntertainmentOpened  bool         `json:"entertainment_opened"`
+	HealthOpened         bool         `json:"health_opened"`
+	IndustryOpened       bool         `json:"industry_opened"`
+	BeautificationOpened bool         `json:"beautification_opened"`
+	Completed            []int        `json:"completed,omitempty"`
+	Won                  bool         `json:"won"`
+	VictoryTick          int64        `json:"victory_tick"`
 }
 
 // Observation uses actual connected/staffed stocks, not lifetime production.
 // QualifyingHomes counts occupied houses at or above the scenario housing tier.
 type Observation struct {
+	Culture          int
+	Prosperity       int
+	Monuments        int
+	Kingdom          int
+	BurialComplete   bool
 	Tick             int64
 	Population       int
 	EligibleMeat     int
 	EligibleFigs     int
 	StoredPottery    int
+	StoredBeer       int
 	DiseaseDeaths    int64
 	QualifyingHomes  int
 	FireCount        int
@@ -101,20 +130,20 @@ type Observation struct {
 }
 
 func New(id int) (*State, error) {
-	if id != Nubt && id != Thinis {
+	if id != Nubt && id != Thinis && id != Perwadjyt && id != Nekhen {
 		return nil, errors.New("this campaign mission is not playable yet")
 	}
 	s := &State{Version: StateVersion, MissionID: id}
 	if id >= Thinis {
 		s.FoodUnlocked, s.WaterUnlocked, s.FireUnlocked, s.ArchitectOpened = true, true, true, true
 	}
-	if id == Perwadjyt {
+	if id >= Perwadjyt {
 		s.ReligionOpened, s.EntertainmentOpened = true, true
 	}
 	return s, nil
 }
 
-// Observe applies only original-supported Nubt gates. In particular it does not
+// Observe applies original-supported early tutorial gates. It does not
 // import additional victory prerequisites from a modern reconstruction script.
 func (s *State) Observe(o Observation) {
 	if s == nil {
@@ -135,9 +164,11 @@ func (s *State) Observe(o Observation) {
 		s.IndustryOpened = s.IndustryOpened || o.EligibleFigs >= 800
 		s.BeautificationOpened = s.BeautificationOpened || o.StoredPottery >= 200
 	}
+	if s.MissionID == Nekhen {
+		s.FinanceOpened = s.FinanceOpened || o.StoredBeer >= 300
+	}
 	mission, _ := Definition(s.MissionID)
-	population := mission.Goals["population"]
-	if !s.Won && o.QualifyingHomes >= mission.Goals["housing_count"].Value && (population.Enabled == 0 || o.Population >= population.Value) {
+	if !s.Won && mission.GoalsMet(o.Progress()) {
 		s.Won = true
 		s.VictoryTick = o.Tick
 	}
@@ -146,6 +177,13 @@ func (s *State) Observe(o Observation) {
 func (s *State) Allows(kind string) bool {
 	if s == nil {
 		return true
+	}
+	if s.MissionID >= Nekhen {
+		m, _ := Definition(s.MissionID)
+		if s.MissionID == Nekhen && (kind == "courthouse" || kind == "residence") {
+			return s.FinanceOpened
+		}
+		return m.BaseAllows(kind)
 	}
 	switch kind {
 	case "road", "hut", "clear":
@@ -186,11 +224,15 @@ func (s *State) Validate(tick int64) error {
 	if s == nil {
 		return nil
 	}
-	if s.Version != StateVersion || s.MissionID < Nubt || s.MissionID > Perwadjyt || s.VictoryTick < 0 || s.VictoryTick > tick {
+	if s.Version != StateVersion || s.MissionID < Nubt || s.MissionID > Nekhen || s.VictoryTick < 0 || s.VictoryTick > tick {
 		return errors.New("invalid campaign state")
 	}
 	if (s.WaterUnlocked && !s.FoodUnlocked) || (!s.Won && s.VictoryTick != 0) {
 		return errors.New("inconsistent campaign milestones")
+	}
+	mission, _ := Definition(s.MissionID)
+	if s.RescueReceived != 0 && s.RescueReceived != mission.RescueFunds {
+		return errors.New("invalid campaign rescue loan")
 	}
 	if s.EntertainmentOpened && !s.ReligionOpened {
 		return errors.New("entertainment opened before religion")
@@ -199,8 +241,16 @@ func (s *State) Validate(tick int64) error {
 		if id < 0 || id >= s.MissionID || (i > 0 && s.Completed[i-1] >= id) {
 			return errors.New("invalid completed campaign history")
 		}
+		previous, _ := Definition(id)
+		next := s.MissionID
+		if i+1 < len(s.Completed) {
+			next = s.Completed[i+1]
+		}
+		if !slices.Contains(previous.NextMissionID, next) {
+			return errors.New("completed campaign history does not follow original branches")
+		}
 	}
-	return nil
+	return s.validateEvents()
 }
 
 type Objective struct {
@@ -218,6 +268,9 @@ type NextMission struct {
 }
 
 type View struct {
+	Requests         []Request     `json:"requests"`
+	Kingdom          int           `json:"kingdom"`
+	RescueReceived   int64         `json:"rescue_received"`
 	MissionID        int           `json:"mission_id"`
 	Name             string        `json:"name"`
 	StartYear        int           `json:"start_year"`
@@ -236,30 +289,27 @@ func (s *State) View(o Observation) *View {
 		return nil
 	}
 	mission, _ := Definition(s.MissionID)
-	v := &View{MissionID: s.MissionID, Name: mission.Name, StartYear: mission.StartYear,
+	v := &View{RescueReceived: s.RescueReceived, MissionID: s.MissionID, Name: mission.Name, StartYear: mission.StartYear,
+		Requests: s.Requests(), Kingdom: s.Kingdom,
 		Won: s.Won, VictoryTick: s.VictoryTick, AllowedBuildings: []string{}, NextMissions: []NextMission{},
 		Objectives: []Objective{{ID: "housing", Label: "Occupied Meager Shanties or better", Current: o.QualifyingHomes,
 			Target: mission.Goals["housing_count"].Value, Complete: o.QualifyingHomes >= mission.Goals["housing_count"].Value}}}
 	v.Completed = append([]int{}, s.Completed...)
-	if s.MissionID == Thinis {
-		v.Objectives[0].Label = "Occupied Ordinary Cottages or better"
-	}
-	if s.MissionID == Perwadjyt {
-		v.Objectives[0].Label = "Occupied Modest Homesteads or better"
-		v.Objectives = append(v.Objectives, Objective{"population", "Residents", o.Population, mission.Goals["population"].Value, o.Population >= mission.Goals["population"].Value})
-	}
-	for _, kind := range []string{"road", "hut", "huntinglodge", "granary", "bazaar", "watersupply", "firehouse", "architect", "goldmine", "palace", "policestation", "temple_bast", "shrine_bast", "festival_square", "booth", "jugglerschool", "figfarm", "workcamp", "temple_osiris", "shrine_osiris", "claypit", "potter", "storageyard", "apothecary", "physician", "garden", "plaza", "roadblock"} {
+	v.Objectives = mission.Objectives(o.Progress())
+	for _, kind := range buildingKinds() {
 		if s.Allows(kind) {
 			v.AllowedBuildings = append(v.AllowedBuildings, kind)
 		}
 	}
 	for _, id := range mission.NextMissionID {
 		next, _ := Definition(id)
-		v.NextMissions = append(v.NextMissions, NextMission{ID: id, Name: next.Name, Playable: id == Thinis})
+		v.NextMissions = append(v.NextMissions, NextMission{ID: id, Name: next.Name, Playable: id == Thinis || id == Perwadjyt || id == Nekhen})
 	}
 	switch {
 	case s.Won:
 		v.Stage, v.Guidance = "victory", mission.Name+" has reached its goals. You can continue tending this city or advance to the next available mission."
+	case s.MissionID == Nekhen:
+		v.Stage, v.Guidance = "apartments", "Grow grain and barley, manufacture pottery and beer, and supply physicians and musicians to ten Modest Apartments. Establish a city of 1,000 residents."
 	case s.MissionID == Perwadjyt && !s.IndustryOpened:
 		v.Stage, v.Guidance = "floodplain", "Build Fig Farms on the floodplain and staff Work Camps. Store 800 figs in staffed granaries to open pottery production."
 		v.Objectives = append(v.Objectives, Objective{"figs", "Figs in connected granaries with at least half staffing", o.EligibleFigs, 800, false})
