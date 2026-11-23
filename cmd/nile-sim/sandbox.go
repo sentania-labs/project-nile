@@ -14,19 +14,20 @@ import (
 )
 
 type sandboxRequest struct {
-	TaxRate       *int   `json:"tax_rate,omitempty"`
-	WageRate      *int   `json:"wage_rate,omitempty"`
-	LaborPriority string `json:"labor_priority,omitempty"`
-	ID            int64  `json:"id"`
-	Op            string `json:"op"`
-	Kind          string `json:"kind,omitempty"`
-	X             int    `json:"x,omitempty"`
-	Y             int    `json:"y,omitempty"`
-	X2            int    `json:"x2,omitempty"`
-	Y2            int    `json:"y2,omitempty"`
-	Ticks         *int   `json:"ticks,omitempty"`
-	Speed         int    `json:"speed,omitempty"`
-	Scenario      string `json:"scenario,omitempty"`
+	Tiles         []sandbox.Point `json:"tiles,omitempty"`
+	TaxRate       *int            `json:"tax_rate,omitempty"`
+	WageRate      *int            `json:"wage_rate,omitempty"`
+	LaborPriority string          `json:"labor_priority,omitempty"`
+	ID            int64           `json:"id"`
+	Op            string          `json:"op"`
+	Kind          string          `json:"kind,omitempty"`
+	X             int             `json:"x,omitempty"`
+	Y             int             `json:"y,omitempty"`
+	X2            int             `json:"x2,omitempty"`
+	Y2            int             `json:"y2,omitempty"`
+	Ticks         *int            `json:"ticks,omitempty"`
+	Speed         int             `json:"speed,omitempty"`
+	Scenario      string          `json:"scenario,omitempty"`
 }
 
 type sandboxResponse struct {
@@ -149,6 +150,8 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 				err = world.Repair(req.X, req.Y)
 			case "zone":
 				err = world.ZoneHousing(sandbox.Point{X: req.X, Y: req.Y}, sandbox.Point{X: req.X2, Y: req.Y2})
+			case "road":
+				err = world.BuildRoads(req.Tiles)
 			case "build":
 				err = world.Build(req.Kind, req.X, req.Y)
 			case "step":

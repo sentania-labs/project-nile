@@ -8,7 +8,7 @@ var opening := false
 
 func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
-		if argument in ["--diagnostic", "--smoke", "--study", "--street-smoke", "--city-smoke", "--sandbox-smoke"]:
+		if argument in ["--diagnostic", "--smoke", "--study", "--street-smoke", "--gold-smoke", "--city-smoke", "--sandbox-smoke"]:
 			get_tree().change_scene_to_file.call_deferred(SANDBOX)
 			return
 	get_window().title = "Project Nile"
@@ -47,6 +47,7 @@ func _ready() -> void:
 	var restore := _add_choice(menu, "Load saved town", "load")
 	var save_path := OS.get_environment("NILE_SANDBOX_SAVE")
 	restore.disabled = not FileAccess.file_exists("user://riverbank.nile" if save_path.is_empty() else save_path)
+	_add_choice(menu, "Sound and controls", "settings")
 	_add_choice(menu, "Quit", "quit")
 	start.grab_focus()
 
@@ -79,6 +80,10 @@ func _choose(choice: String) -> void:
 	if opening:
 		return
 	opening = true
+	if choice == "settings":
+		opening = false
+		CitySettings.open_settings()
+		return
 	if choice == "quit":
 		get_tree().quit()
 		return

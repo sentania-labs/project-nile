@@ -153,7 +153,7 @@ func TestPlacementErrorsPreserveWorld(t *testing.T) {
 	for _, test := range []struct {
 		kind string
 		x, y int
-	}{{"hut", 5, 15}, {"well", 32, 0}, {"road", 6, -1}, {"hut", 10, 10}, {"well", 14, 21}, {"palace", 15, 22}} {
+	}{{"hut", 5, 15}, {"well", 32, 0}, {"road", 6, -1}, {"hut", 10, 10}, {"well", 14, 21}, {"unsupported", 15, 22}} {
 		before := w.Hash()
 		if w.Build(test.kind, test.x, test.y) == nil || w.Hash() != before {
 			t.Fatalf("invalid placement mutated world: %+v", test)

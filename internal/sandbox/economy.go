@@ -113,7 +113,7 @@ func (w *World) dispatch() {
 					continue
 				}
 				if b.Kind == "hut" && b.Connected && b.Pop < b.Capacity {
-					route := w.path([]Point{Entry}, b)
+					route := w.path([]Point{w.entry()}, b)
 					if w.spawn("immigrant", "travel", 0, b.ID, 0, route, 0, 0) {
 						hasMigrant = true
 						break
@@ -179,7 +179,7 @@ func (w *World) dispatch() {
 				}
 			}
 			if b.Stock > 0 && !w.active(b.ID, "seller") {
-				entryPath := w.path([]Point{Entry}, *b)
+				entryPath := w.path([]Point{w.entry()}, *b)
 				if len(entryPath) > 0 {
 					route := w.patrol(entryPath[len(entryPath)-1])
 					amount := min(32, b.Stock)
@@ -193,6 +193,7 @@ func (w *World) dispatch() {
 	w.dispatchMaterials()
 	w.dispatchServices()
 	w.dispatchBuilders()
+	w.dispatchGold()
 }
 func reverseJourney(walker *Walker, target int64, stage string) {
 	route := slices.Clone(walker.Route)
@@ -247,6 +248,10 @@ func (w *World) moveWalkers() {
 				target.Pop++
 			} else {
 				w.Departures++
+			}
+		case "goldcart":
+			if w.arriveGold(&walker, target) {
+				remaining = append(remaining, walker)
 			}
 		case "cart":
 			if walker.Stage == "deliver" {

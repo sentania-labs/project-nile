@@ -26,6 +26,7 @@ def main():
     # Active SQLite lives on the local filesystem, never in the NFS artifact path.
     with tempfile.TemporaryDirectory(prefix="nile-godot-", dir="/tmp") as scratch:
         env = os.environ.copy()
+        env["XDG_DATA_HOME"] = str(Path(scratch) / "userdata")
         env["NILE_SIM"] = str(ROOT / "bin/nile-sim")
         env["NILE_SAVE"] = str(Path(scratch) / "probe.nile")
         env.pop("NILE_CAPTURE_DIR", None)
@@ -42,6 +43,10 @@ def main():
         if "NILE_GODOT_SMOKE_PASS" not in output:
             raise SystemExit("Godot never completed the lifecycle checks")
 
+        camera = [args.godot, "--headless", "--path", "client", "--script", str(ROOT / "tools/camera_check.gd")]
+        if "NILE_CAMERA_PASS" not in run(camera, env):
+            raise SystemExit("Camera controls failed through live game input")
+
         env["NILE_SANDBOX_SAVE"] = str(Path(scratch) / "sandbox.nile")
         env.pop("NILE_SANDBOX_CAPTURE", None)
         sandbox = [args.godot, "--headless", "--audio-driver", "Dummy", "--path",
@@ -51,6 +56,8 @@ def main():
 
         env["NILE_SANDBOX_SAVE"] = str(Path(scratch) / "city.nile")
         env.pop("NILE_CITY_CAPTURE", None)
+        if "NILE_GOLD_PASS" not in run([*sandbox[:-1], "--gold-smoke"], env):
+            raise SystemExit("Gold delivery and in-flight replay did not complete")
         city = [*sandbox[:-1], "--city-smoke"]
         if "NILE_CITY_PASS" not in run(city, env):
             raise SystemExit("City never completed its monument and save/load checks")

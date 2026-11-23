@@ -28,6 +28,12 @@ func _draw() -> void:
 	draw_rect(Rect2(_point(Vector2.ZERO), _point(Vector2(6, 32)) - _point(Vector2.ZERO)), Color("467e8c"))
 	draw_rect(Rect2(_point(Vector2(6, 0)), _point(Vector2(10, 32)) - _point(Vector2(6, 0))), Color("7c8551"))
 	var cell := (size - Vector2(8, 8)) / 32.0
+	for tile: Dictionary in snapshot.get("grassland", []):
+		draw_rect(Rect2(_point(Vector2(tile.x, tile.y)), cell), Color("8c9966"))
+	var bank := 6.0 + 4.0 * float(snapshot.get("flood_level", 0.0))
+	draw_rect(Rect2(_point(Vector2.ZERO), _point(Vector2(bank, 32)) - _point(Vector2.ZERO)), Color("467e8c"))
+	for tile: Dictionary in snapshot.get("ore_rock", []):
+		draw_rect(Rect2(_point(Vector2(tile.x, tile.y)), cell), Color("8d7958"))
 	for road: Dictionary in snapshot.get("roads", []):
 		draw_rect(Rect2(_point(Vector2(float(road.x), float(road.y))), cell), Color("ead8a5"))
 	for building: Dictionary in snapshot.get("buildings", []):

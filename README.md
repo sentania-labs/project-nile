@@ -1,6 +1,6 @@
 # Project Nile
 
-Build a town from its Nile entry road, or expand the starter village. Zone
+Build a town along its overland Kingdom Road, or expand the starter village. Zone
 housing, connect homes to wells and a bazaar, and keep grain moving through
 the granary. Staff a firehouse and an architect’s post to protect the town.
 Use the city overlays and overseers to inspect labor, risk and tax coverage.
@@ -9,7 +9,14 @@ To build a small mastaba, connect a clay pit and grain farm to a brickworks.
 The farm supplies straw at harvest. Porters carry materials along roads, and
 bricklayers need road access to the monument. The sandbox tracks each
 delivery, construction progress and money spent. Save and Load preserve the
-town and active jobs.
+town and active jobs. On grassland, a staffed village palace can receive taxes
+and gold delivered from a mine beside a metallic outcrop. The treasury credits
+gold when its cart arrives. Floodwater spreads across the fields and recedes
+before growth resumes.
+
+Drag to preview a road and release to pay and build. Right-click a building
+to inspect it. File handles saves, and Options lets you adjust the original
+soundtrack or remap pan, zoom and rotation. Q/E turn the map by default.
 
 The first three housing capacities are 5, 7 and 9. Desirability, higher
 housing tiers and the campaign remain open. Farm yields, staffing, hazard

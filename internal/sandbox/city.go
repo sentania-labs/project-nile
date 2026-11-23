@@ -31,6 +31,8 @@ var buildingCatalog = []CatalogEntry{
 	{"firehouse", "Firehouse", 1, 1, 30, "Services", 1},
 	{"architect", "Architect's post", 1, 1, 30, "Services", 1},
 	{"taxoffice", "Tax office", 2, 2, 75, "Government", 2},
+	{"goldmine", "Gold mine", 2, 2, 250, "Industry", 12},
+	{"palace", "Village Palace", 4, 4, 250, "Government", 20},
 }
 
 func catalog(kind string) (CatalogEntry, bool) {
@@ -49,7 +51,10 @@ func (w *World) spend(amount int64) {
 	}
 }
 func NewTown() World {
-	return World{Version: SnapshotVersion, Roads: []Point{Entry}, Buildings: []Building{}, Walkers: []Walker{}, NextID: 1, Treasury: 2500, BudgetEnabled: true, HazardsEnabled: true, TaxRate: 2, WageRate: 1, LaborPriority: "balanced"}
+	w := World{Version: SnapshotVersion, Roads: []Point{}, Buildings: []Building{}, Walkers: []Walker{}, NextID: 1, Treasury: 2500, BudgetEnabled: true, HazardsEnabled: true, TaxRate: 2, WageRate: 1, LaborPriority: "balanced"}
+	w.addKingdomRoad()
+	w.addResourceTerrain()
+	return w
 }
 func monumentStage(done int) string {
 	switch {
@@ -123,7 +128,7 @@ func (w World) materialTotal(resource string) int {
 	return n
 }
 func materialReceiver(source, target Building, resource string) bool {
-	if source.ID == target.ID || target.Damaged != "" || target.Workers < target.WorkersNeeded {
+	if source.ID == target.ID || target.Damaged != "" || (target.Workers < target.WorkersNeeded && !(target.Kind == "mastaba" && target.Workers > 0)) {
 		return false
 	}
 	if resource == "clay" || resource == "straw" {
@@ -190,6 +195,9 @@ func (w *World) dispatchServices() {
 		case "architect":
 			role = "architect"
 		case "taxoffice":
+			if !w.taxesEnabled() {
+				continue
+			}
 			role = "taxcollector"
 		default:
 			continue
@@ -197,7 +205,7 @@ func (w *World) dispatchServices() {
 		if !b.Connected || b.Damaged != "" || b.Workers < b.WorkersNeeded || w.active(b.ID, role) {
 			continue
 		}
-		entryPath := w.path([]Point{Entry}, b)
+		entryPath := w.path([]Point{w.entry()}, b)
 		if len(entryPath) > 0 {
 			w.spawn(role, "patrol", b.ID, b.ID, 0, w.patrol(entryPath[len(entryPath)-1]), 0, 0)
 		}
@@ -227,6 +235,7 @@ func (w *World) visitService(walker Walker) {
 	}
 }
 func (w *World) cityTick() {
+	w.mineGold()
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
 		if b.Damaged != "" {
@@ -255,7 +264,7 @@ func (w *World) cityTick() {
 			w.BricksConsumed++
 		}
 		if w.HazardsEnabled && b.Kind != "well" && !(b.Kind == "hut" && b.Pop == 0) {
-			if b.Kind != "mastaba" && w.Tick%16 == b.ID%16 && b.FireUntil <= w.Tick {
+			if b.Kind != "mastaba" && b.Kind != "goldmine" && w.Tick%16 == b.ID%16 && b.FireUntil <= w.Tick {
 				b.FireRisk = min(100, b.FireRisk+1)
 			}
 			if w.Tick%24 == b.ID%24 && b.CollapseUntil <= w.Tick {
@@ -275,7 +284,7 @@ func (w *World) cityTick() {
 		for i := range w.Buildings {
 			b := &w.Buildings[i]
 			b.LastTax = 0
-			if b.Kind == "hut" && b.TaxUntil > w.Tick {
+			if b.Kind == "hut" && b.TaxUntil > w.Tick && w.taxesEnabled() {
 				b.LastTax = int64(b.Pop * w.TaxRate)
 				w.LastIncome += b.LastTax
 			}

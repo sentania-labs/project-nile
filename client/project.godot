@@ -4,6 +4,9 @@ config_version=5
 config/name="Project Nile · Kickoff study"
 run/main_scene="res://scenes/title.tscn"
 
+[autoload]
+CitySettings="*res://scripts/city_settings.gd"
+
 [display]
 window/size/viewport_width=1600
 window/size/viewport_height=900

@@ -19,17 +19,27 @@ var zoning := false
 var zone_start := Vector2i.ZERO
 var blocked_tiles: Dictionary = {}
 var vacant_plots: Array[Vector2i] = []
+var road_view := Transform2D.IDENTITY
 var painting_roads := false
-var last_painted := Vector2i(-100, -100)
+var road_start := Vector2i.ZERO
+var road_preview: Array[Vector2i] = []
+var road_tiles: Dictionary = {}
+var right_press_position := Vector2.ZERO
+var right_pointer_down := false
+var right_pointer_moved := false
 var hover_cell := Vector2i(-100, -100)
 var hover_valid := false
 var ghost: Sprite2D
 var road_nodes: Array[Node] = []
+var placement_notice: Label
+var notice_timer: Timer
 var road_signature := ""
 var building_nodes: Dictionary = {}
 var walker_nodes: Dictionary = {}
 var walker_targets: Dictionary = {}
 var walker_data: Dictionary = {}
+var resources := preload("res://scripts/resource_terrain.gd").new()
+var river_material := ShaderMaterial.new()
 var landscape_nodes: Array[Node2D] = []
 var texture_cache: Dictionary = {}
 var tool_buttons: Dictionary = {}
@@ -64,7 +74,7 @@ func _ready() -> void:
 	get_tree().auto_accept_quit = false
 	get_window().title = "Project Nile · Riverbank settlement"
 	city_smoke_mode = "--city-smoke" in args
-	smoke_mode = "--sandbox-smoke" in args or city_smoke_mode
+	smoke_mode = "--sandbox-smoke" in args or "--gold-smoke" in args or city_smoke_mode
 	startup_choice = str(get_tree().root.get_meta("nile_start_choice", "village"))
 	get_tree().root.remove_meta("nile_start_choice")
 	if not _load_data():
@@ -80,6 +90,9 @@ func _ready() -> void:
 		for asset_id: String in city_assets: assets[asset_id] = city_assets[asset_id]
 	assets["bazaar"]["footprint"] = [2, 2]
 	assets["bazaar"]["draw_width"] = 190
+	assets["granary"]["anchor"] = [0.6244, 0.9051]
+	assets["granary"]["ground_shear"] = 0.2122
+	assets["granary"]["vertical_scale"] = 1.0932
 	for frame in range(4):
 		var spec: Dictionary = assets.resident.duplicate(true)
 		spec.region = [frame * 543, 0, 543, 724]
@@ -87,12 +100,21 @@ func _ready() -> void:
 	layout = {"roads": [], "terrain_polygons": [
 		{"kind": "silt", "points": [[-64, -64], [10, -64], [9.5, 2], [10.8, 9], [9.5, 17], [10.2, 25], [9.5, 34], [10, 96], [-64, 96]]},
 		{"kind": "grass", "points": [[-64, -64], [8, -64], [8.8, 3], [8, 8], [9, 13], [8.1, 19], [9, 25], [8.4, 32], [8, 96], [-64, 96]]},
-		{"kind": "water", "points": [[-64, -64], [6, -64], [6, 96], [-64, 96]]}]}
+		{"kind": "water", "points": [[-64, -64], [10.3, -64], [10.3, 96], [-64, 96]]}]}
 	placements.clear()
 	focus = _iso(16, 15)
 	neighborhood_zoom = 1.1
 	RenderingServer.set_default_clear_color(Color("c8b181"))
 	_build_world()
+	var river := ground.get_child(-1) as Polygon2D
+	river_material.shader = preload("res://shaders/river.gdshader")
+	var water_region: Array = terrain.water.region
+	var atlas_size := river.texture.get_size()
+	river_material.set_shader_parameter("atlas_region", Vector4(
+		water_region[0] / atlas_size.x, water_region[1] / atlas_size.y,
+		water_region[2] / atlas_size.x, water_region[3] / atlas_size.y))
+	river_material.set_shader_parameter("tile_size", Vector2(tile_width, tile_height))
+	river.material = river_material
 	buildings.y_sort_enabled = true
 	for at: Vector2 in [Vector2(7, 5), Vector2(8.2, 7), Vector2(7.2, 9.5), Vector2(8, 12), Vector2(7.5, 19.2), Vector2(8.5, 24), Vector2(6.8, 26.5), Vector2(7.6, 29), Vector2(25, 9), Vector2(26, 12), Vector2(24, 26)]:
 		var palm := Sprite2D.new()
@@ -101,6 +123,15 @@ func _ready() -> void:
 		buildings.add_child(palm)
 		landscape_nodes.append(palm)
 	_build_hud()
+	placement_notice = _label("", 15, Color("392617"))
+	placement_notice.add_theme_stylebox_override("normal", _style(Color("f0d8a9"), Color("79542e"), 1))
+	placement_notice.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hud.add_child(placement_notice)
+	placement_notice.hide()
+	notice_timer = Timer.new()
+	notice_timer.one_shot = true
+	notice_timer.timeout.connect(placement_notice.hide)
+	add_child(notice_timer)
 	_set_view(neighborhood_zoom)
 	ghost = Sprite2D.new()
 	ghost.name = "PlacementGhost"
@@ -113,7 +144,9 @@ func _ready() -> void:
 	sim.failed.connect(_on_failure)
 	if sim.start("sandbox"):
 		_queue_command("state")
-	if city_smoke_mode:
+	if "--gold-smoke" in args:
+		preload("res://tests/mine_smoke.gd").run.call_deferred(self)
+	elif city_smoke_mode:
 		_city_smoke.call_deferred()
 	elif smoke_mode:
 		_sandbox_smoke.call_deferred()
@@ -144,6 +177,8 @@ func _button(text: String, callback: Callable) -> Button:
 		button.add_theme_stylebox_override(state_name, style)
 	button.add_theme_stylebox_override("focus", _style(Color.TRANSPARENT, Color("8b4023"), 2))
 	button.pressed.connect(callback)
+	button.pressed.connect(func() -> void:
+		if not _modal_open(): button.release_focus())
 	return button
 
 
@@ -172,6 +207,44 @@ func _repair_selected() -> void:
 		_queue_command("repair", {"x": int(selected.building.x), "y": int(selected.building.y)})
 
 
+func _turn_city(step: int) -> void:
+	_cancel_gesture()
+	# Reproject ground vertices while keeping painted facades upright and the
+	# same geographic point in the middle of the playable viewport.
+	var center_screen := (get_viewport_rect().size - Vector2(PANEL_WIDTH, -RIBBON_HEIGHT)) / 2
+	var center_tile := _tile_at(get_canvas_transform().affine_inverse() * center_screen)
+	var focus_tile := _tile_at(focus)
+	var vertices := {}
+	for polygon: Polygon2D in ground.get_children():
+		if polygon in road_nodes: continue
+		var tiles := PackedVector2Array()
+		for vertex: Vector2 in polygon.polygon:
+			tiles.append(_tile_at(vertex))
+		vertices[polygon] = tiles
+	var palm_tiles := PackedVector2Array()
+	for palm: Node2D in landscape_nodes: palm_tiles.append(_tile_at(palm.position))
+	view_turns = posmod(view_turns + step, 4)
+	for polygon: Polygon2D in vertices:
+		var points := PackedVector2Array()
+		for tile: Vector2 in vertices[polygon]: points.append(_iso(tile.x, tile.y))
+		polygon.polygon = points
+		if polygon.material != river_material and polygon.material.get_shader_parameter("boundary_count") != null:
+			var boundary := points.duplicate()
+			boundary.resize(128)
+			polygon.material.set_shader_parameter("boundary_points", boundary)
+	for index in landscape_nodes.size():
+		var tile := palm_tiles[index]
+		landscape_nodes[index].position = _iso(tile.x, tile.y)
+	road_signature = ""
+	_sync_world()
+	for id: String in walker_nodes: walker_nodes[id].position = walker_targets[id]
+	focus = _iso(focus_tile.x, focus_tile.y)
+	var center_offset := (center_screen - get_viewport_rect().size / 2) / camera.zoom
+	camera.position = _iso(center_tile.x, center_tile.y) - center_offset
+	camera.force_update_scroll()
+	_update_ghost()
+
+
 func _navigate_minimap(tile: Vector2) -> void:
 	focus = _iso(tile.x, tile.y)
 	_set_view(camera.zoom.x)
@@ -189,6 +262,7 @@ func _catalog_entry(kind: String) -> Dictionary:
 
 
 func _load_save() -> void:
+	_cancel_gesture()
 	if sim.child.is_empty():
 		stats.text = "Starting local settlement…"
 		if not sim.start("sandbox"): return
@@ -241,7 +315,7 @@ func _on_reply(reply: Dictionary) -> void:
 	if stats.text in ["Starting local settlement…", "Settlement stopped"]:
 		city_ui.policy_apply.disabled = false
 	if stats.text == "Starting local settlement…":
-		status.text = "Settlement ready."
+		status.text = ""
 	status.tooltip_text = ""
 	load_button.text = "Load"
 	save_button.disabled = false
@@ -258,16 +332,17 @@ func _on_reply(reply: Dictionary) -> void:
 		pause_button.disabled = false
 	state = reply.get("state", {})
 	_sync_world()
-	stats.text = "%d debens   ·   Population %d   ·   Grain %d   ·   %s, year %d%s" % [int(state.get("treasury", 0)), int(state.get("population", 0)), int(state.get("grain", 0)), str(state.get("season", "Growing")).capitalize(), int(state.get("year", 1)), "   ·   Paused" if paused else ""]
+	stats.text = "Db  %d         Pop  %d         %s   ·   Year %d%s" % [int(state.get("treasury", 0)), int(state.get("population", 0)), str(state.get("season", "Growing")).capitalize(), int(state.get("year", 1)), "   ·   Paused" if paused else ""]
 	if not reply.get("ok", false):
 		status.text = str(reply.get("error", "Command failed"))
+		if current_operation in ["build", "zone", "road"]: _show_placement_error(status.text)
 	elif current_operation == "save":
 		status.text = "Settlement saved."
 	elif current_operation == "load":
 		reset_in_progress = false
 		status.text = "Saved settlement restored."
-	elif current_operation == "build":
-		status.text = "Placed. Choose Inspect to see details."
+	elif current_operation in ["build", "road", "zone"]:
+		status.text = ""
 	elif current_operation == "repair":
 		status.text = "Building repaired. Keep a patrol nearby to protect it."
 	elif current_operation == "new_town":
@@ -276,7 +351,7 @@ func _on_reply(reply: Dictionary) -> void:
 		city_ui.completion_modal.hide()
 		focus = _iso(11, 15) if state.get("buildings", []).is_empty() else _iso(16, 15)
 		_set_view(neighborhood_zoom)
-		status.text = "A new town awaits. Begin with roads, housing and water."
+		status.text = ""
 	if current_operation == "set_policy": city_ui.policy_acknowledged(reply)
 	if not startup_done and reply.get("ok", false):
 		if smoke_mode:
@@ -367,7 +442,13 @@ func _building_rect(data: Dictionary) -> Rect2:
 
 
 func _sync_world() -> void:
+	resources.sync(self, state)
+	var flood_level := float(state.get("flood_level", 0.0))
+	river_material.set_shader_parameter("flood_level", flood_level)
+	river_material.set_shader_parameter("orientation", view_turns)
 	var roads: Array = state.get("roads", [])
+	road_tiles.clear()
+	for tile: Dictionary in roads: road_tiles[Vector2i(int(tile.x), int(tile.y))] = true
 	var signature := JSON.stringify(roads)
 	if signature != road_signature:
 		road_signature = signature
@@ -381,7 +462,7 @@ func _sync_world() -> void:
 			var edges := Vector4(float(not cells.has(cell + Vector2i.LEFT)), float(not cells.has(cell + Vector2i.RIGHT)), float(not cells.has(cell + Vector2i.UP)), float(not cells.has(cell + Vector2i.DOWN)))
 			_add_terrain_polygon("road", _footprint(Rect2(Vector2(cell), Vector2.ONE)), 3, Vector2(cell), edges)
 			road_nodes.append(ground.get_child(ground.get_child_count() - 1))
-	blocked_tiles.clear()
+	blocked_tiles = resources.rock.duplicate()
 	vacant_plots.clear()
 	for tile: Dictionary in roads:
 		blocked_tiles[Vector2i(int(tile.x), int(tile.y))] = true
@@ -415,7 +496,18 @@ func _sync_world() -> void:
 			building_nodes[id] = new_sprite
 		var sprite := building_nodes[id] as Sprite2D
 		sprite.visible = not vacant or asset_id == "vacant_plot"
-		_skin_sprite(sprite, asset_id, _iso(rect.end.x, rect.end.y))
+		_skin_sprite(sprite, asset_id, _front_corner(rect))
+		if asset_id == "farm":
+			if sprite.material == null:
+				var crops := ShaderMaterial.new()
+				crops.shader = preload("res://shaders/grain_field.gdshader")
+				crops.set_shader_parameter("tile_size", Vector2(tile_width, tile_height))
+				sprite.material = crops
+			sprite.material.set_shader_parameter("growth", float(building.get("work", 0)) / 288.0)
+			sprite.material.set_shader_parameter("flood_level", flood_level)
+			sprite.material.set_shader_parameter("orientation", view_turns)
+		else:
+			sprite.material = null
 		sprite.modulate = Color(0.4, 0.32, 0.27) if str(building.get("damaged", "")) != "" else Color.WHITE
 		var item := {"id": id, "asset": asset_id, "spec": assets[asset_id], "rect": rect, "sprite": sprite, "building": building}
 		placements.append(item)
@@ -428,8 +520,8 @@ func _sync_world() -> void:
 	for palm: Node2D in landscape_nodes:
 		palm.visible = not blocked_tiles.has(palm.get_meta("tile"))
 	placements.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
-		var ad: float = a.rect.end.x + a.rect.end.y
-		var bd: float = b.rect.end.x + b.rect.end.y
+		var ad: float = a.sprite.position.y
+		var bd: float = b.sprite.position.y
 		return str(a.id) < str(b.id) if is_equal_approx(ad, bd) else ad < bd)
 	seen.clear()
 	walker_data.clear()
@@ -459,7 +551,8 @@ func _sync_world() -> void:
 func _walker_asset(walker: Dictionary) -> String:
 	var role := str(walker.get("role", "immigrant"))
 	var result := "resident"
-	if role == "cart": result = "cart"
+	if role == "goldcart": result = "gold_sledge"
+	elif role == "cart": result = "cart"
 	elif role == "porter": result = {"clay": "clay_cart", "straw": "straw_cart", "bricks": "brick_sledge"}.get(str(walker.get("resource", "")), "cart")
 	elif role in ["firefighter", "architect", "taxcollector", "builder"]:
 		result = {"firefighter": "fire_marshal", "architect": "city_architect", "taxcollector": "tax_collector", "builder": "builder"}[role]
@@ -497,38 +590,19 @@ func _refresh_inspector() -> void:
 		if int(catalog.get("cost", 0)) > int(state.get("treasury", 0)):
 			detail_label.text += "\n\nThe city needs more debens before this can be built."
 	elif selected.is_empty():
-		var fed_homes := 0
-		for home: Dictionary in state.get("buildings", []):
-			if home.kind == "hut" and int(home.pop) > 0 and bool(home.get("food", false)):
-				fed_homes += 1
-		title_label.text = "Build a lasting city"
-		kind_label.text = "%d homes supplied with food" % fed_homes
-		if state.get("buildings", []).is_empty():
-			title_label.text = "Found your town"
-			kind_label.text = "%d debens in the treasury" % int(state.get("treasury", 0))
-			detail_label.text = "Lay a road inland from the river entry, mark housing plots beside it, and build a well. Families bring workers for farms and city services."
-		elif _has_building_kind("mastaba"):
-			var progress := int(state.get("monument_progress", 0))
-			var goal := int(state.get("monument_goal", 64))
-			title_label.text = "Mastaba complete" if progress >= goal else "The mastaba rises"
-			kind_label.text = "%d / %d construction completed" % [progress, goal]
-			detail_label.text = "Supply clay and farm straw to brickworks. Porters bring bricks to the site, and builders turn each delivery into the monument. Keep homes fed and protected."
-		elif int(state.get("grain_produced", 0)) == 0:
-			detail_label.text = "The first harvest is near. Watch the farm cart carry grain to the granary, then follow the bazaar's buyers and sellers."
-		else:
-			detail_label.text = "Protect your neighborhoods with firehouse and architect patrols. Collect taxes, produce clay and bricks, and raise a mastaba for your city."
-		if not state.get("buildings", []).is_empty():
-			detail_label.text += "\n\nCity stores\nGrain %d · Clay %d\nStraw %d · Bricks %d\n\nLabor\n%d of %d workers employed" % [int(state.get("grain", 0)), int(state.get("clay", 0)), int(state.get("straw", 0)), int(state.get("bricks", 0)), int(state.get("employed", 0)), int(state.get("workforce", 0))]
+		title_label.text = ""
+		kind_label.text = ""
+		detail_label.text = ""
 	elif selected.has("walker"):
 		var walker: Dictionary = selected.walker
 		var role := str(walker.get("role", "immigrant"))
-		title_label.text = {"immigrant": "Arriving resident", "cart": "Grain cart", "buyer": "Bazaar buyer", "seller": "Bazaar seller", "porter": "Material porter", "firefighter": "Firehouse patrol", "architect": "Architect", "taxcollector": "Tax collector", "builder": "Monument builder"}.get(role, role.capitalize())
+		title_label.text = {"immigrant": "Arriving resident", "goldcart": "Palace gold cart", "cart": "Grain cart", "buyer": "Bazaar buyer", "seller": "Bazaar seller", "porter": "Material porter", "firefighter": "Firehouse patrol", "architect": "Architect", "taxcollector": "Tax collector", "builder": "Monument builder"}.get(role, role.capitalize())
 		var resource := str(walker.get("resource", ""))
 		if resource.is_empty(): resource = "grain"
 		kind_label.text = "%d %s in transit" % [int(walker.get("cargo", 0)), resource] if int(walker.get("cargo", 0)) > 0 else "Following the city's roads"
 		if role == "builder":
 			kind_label.text = {"commute": "Travelling to the staging area", "work": "Working at the monument", "return": "Returning home"}.get(str(walker.get("stage", "")), "Monument construction crew")
-		detail_label.text = {"immigrant": "Following connected roads to a home with room.", "cart": "Hauling the farm's harvest to a granary.", "buyer": "Collecting stored grain and carrying it back to the bazaar.", "seller": "Walking local roads and delivering food to nearby homes.", "porter": "Moving physical materials between workshops, storage and the monument.", "firefighter": "Inspecting buildings beside the patrol route to reduce fire risk.", "architect": "Checking structures beside the road to prevent collapse.", "taxcollector": "Visiting households to collect the city's taxes.", "builder": "Walking between home and the monument staging area for a construction shift."}.get(role, "Following the road network.")
+		detail_label.text = {"immigrant": "Following connected roads to a home with room.", "goldcart": "Delivering gold directly to the village palace.", "cart": "Hauling the farm's harvest to a granary.", "buyer": "Collecting stored grain and carrying it back to the bazaar.", "seller": "Walking local roads and delivering food to nearby homes.", "porter": "Moving physical materials between workshops, storage and the monument.", "firefighter": "Inspecting buildings beside the patrol route to reduce fire risk.", "architect": "Checking structures beside the road to prevent collapse.", "taxcollector": "Visiting households to collect the city's taxes.", "builder": "Walking between home and the monument staging area for a construction shift."}.get(role, "Following the road network.")
 	else:
 		var building: Dictionary = selected.building
 		if building.kind == "well":
@@ -576,6 +650,10 @@ func _refresh_inspector() -> void:
 			title_label.text = str(catalog.get("label", str(building.kind).capitalize()))
 			kind_label.text = "%d / %d workers" % [int(building.get("workers", 0)), int(building.get("workers_needed", 0))]
 			detail_label.text = "Road: %s" % ("connected" if building.get("connected", false) else "not connected")
+			if building.kind == "goldmine":
+				detail_label.text += "\nGold ready for collection: %d Db" % int(building.get("gold", 0))
+			if building.kind == "palace":
+				detail_label.text += "\nGold received: %d Db" % int(state.get("gold_delivered", 0))
 			if building.kind in ["claypit", "brickworks", "storageyard", "mastaba"]:
 				detail_label.text += "\nClay: %d\nStraw: %d\nBricks: %d" % [int(building.get("clay", 0)), int(building.get("straw", 0)), int(building.get("bricks", 0))]
 			if building.kind == "mastaba":
@@ -604,41 +682,70 @@ func _refresh_inspector() -> void:
 
 func _set_tool(tool: String) -> void:
 	if sim != null and sim.child.is_empty(): return
-	zoning = false
+	_cancel_gesture()
 	active_tool = tool
 	if tool != "inspect": selected = {}
-	painting_roads = false
+	city_ui.construction_menu.hide()
 	for key: String in tool_buttons:
 		tool_buttons[key].set_pressed_no_signal(key == tool)
-	status.text = _tool_guidance(tool)
+	status.text = ""
 	_update_ghost()
 	_refresh_inspector()
 
 
 func _tool_guidance(tool: String) -> String:
-	return {"inspect": "Inspect buildings or follow a walker.", "road": "Drag across empty land to lay roads.", "hut": "Drag to mark housing plots beside a road.", "well": "Place a well near housing.", "farm": "Place a 3×3 farm on the dark floodplain beside a road.", "granary": "Store harvests for bazaar buyers beside a connected road.", "bazaar": "Sellers distribute food along the roads serving your homes.", "claypit": "Extract clay from the floodplain. Porters carry it to brickworks.", "brickworks": "Combine delivered clay and farm straw into bricks.", "storageyard": "Hold clay, straw and bricks for the city's workshops and builders.", "firehouse": "Patrol connected streets to reduce fire risk.", "architect": "Inspect structures along connected roads to prevent collapse.", "taxoffice": "Send tax collectors through the streets to reach households.", "mastaba": "Supply bricks and workers to complete the monument in stages.", "clear": "Remove empty structures or roads. Residents and goods are protected."}.get(tool, "Place beside a connected road.")
+	return {"inspect": "Inspect buildings or follow a walker.", "road": "Drag across empty land to lay roads.", "hut": "Drag to mark housing plots beside a road.", "well": "Place a well near housing.", "farm": "Place a 3×3 farm on the dark floodplain beside a road.", "granary": "Store harvests for bazaar buyers beside a connected road.", "bazaar": "Sellers distribute food along the roads serving your homes.", "goldmine": "Build beside gold-bearing rock and connect the mine to your palace by road.", "palace": "Place one village palace on grassland to receive gold and administer taxes.", "claypit": "Extract clay from the floodplain. Porters carry it to brickworks.", "brickworks": "Combine delivered clay and farm straw into bricks.", "storageyard": "Hold clay, straw and bricks for the city's workshops and builders.", "firehouse": "Patrol connected streets to reduce fire risk.", "architect": "Inspect structures along connected roads to prevent collapse.", "taxoffice": "Send tax collectors through the streets to reach households.", "mastaba": "Supply bricks and workers to complete the monument in stages.", "clear": "Remove empty structures or roads. Residents and goods are protected."}.get(tool, "Place beside a connected road.")
 
 
 func _can_place(cell: Vector2i) -> bool:
-	if cell.x < 6 or cell.x >= 32 or cell.y < 0 or cell.y >= 32:
-		return false
+	return _placement_error(cell).is_empty()
+
+
+func _placement_error(cell: Vector2i) -> String:
+	var size := _building_size(active_tool)
+	if cell.y < 0 or cell.x < 0 or cell.x + size.x > 32 or cell.y + size.y > 32:
+		return "Outside the city site"
+	if cell.x < 6: return "This site is in the Nile"
 	if active_tool == "clear":
 		for item: Dictionary in state.get("buildings", []):
 			if _building_rect(item).has_point(Vector2(cell)):
-				return int(item.get("pop", 0)) == 0 and int(item.get("stock", 0)) == 0
-		return blocked_tiles.has(cell) and cell != Vector2i(6, 15)
-	var size := _building_size(active_tool)
-	if cell.x + size.x > 32 or cell.y + size.y > 32:
-		return false
+				if int(item.get("pop", 0)) > 0: return "Residents still live here"
+				for resource in ["stock", "clay", "straw", "bricks", "gold"]:
+					if int(item.get(resource, 0)) > 0: return "Stored goods remain here"
+				for job: Dictionary in state.get("walkers", []):
+					if item.id in [job.target, job.origin, job.source]: return "A worker is still using this building"
+				return ""
+		var entry: Dictionary = state.get("entry", {"x": 6, "y": 15})
+		var exit_tile: Dictionary = state.get("exit", entry)
+		if cell in [Vector2i(int(entry.x), int(entry.y)), Vector2i(int(exit_tile.x), int(exit_tile.y))]:
+			return "The city entrance must stay open"
+		return "" if road_tiles.has(cell) else "Nothing here to clear"
 	if active_tool in ["farm", "claypit"] and cell.x + size.x > 10:
-		return false
+		return "Place the whole site on the floodplain"
+	if active_tool == "goldmine" and not resources.near_deposit(cell, size):
+		return "Place the mine beside gold-bearing rock"
+	if active_tool == "palace":
+		if _has_building_kind("palace"): return "The city already has a palace"
+		if not resources.has_grass(cell, size): return "The palace needs grass beneath its grounds"
 	if int(_catalog_entry(active_tool).get("cost", 0)) > int(state.get("treasury", 0)):
-		return false
+		return "The treasury cannot afford this site"
 	for y in range(cell.y, cell.y + size.y):
 		for x in range(cell.x, cell.x + size.x):
-			if blocked_tiles.has(Vector2i(x, y)):
-				return false
-	return true
+			var tile := Vector2i(x, y)
+			if resources.rock.has(tile): return "Rock occupies part of the site"
+			if road_tiles.has(tile): return "A road crosses the site"
+			if blocked_tiles.has(tile): return "Another building occupies the site"
+	return ""
+
+
+func _show_placement_error(reason: String) -> void:
+	placement_notice.text = reason
+	placement_notice.reset_size()
+	var mouse := get_viewport().get_mouse_position()
+	var bounds := get_viewport_rect().size - placement_notice.size - Vector2(PANEL_WIDTH + 4, 4)
+	placement_notice.position = (mouse + Vector2(14, 16)).clamp(Vector2(4, RIBBON_HEIGHT), bounds)
+	placement_notice.show()
+	notice_timer.start(2.2)
 
 
 func _preview_rect() -> Rect2:
@@ -653,15 +760,16 @@ func _preview_rect() -> Rect2:
 func _update_ghost() -> void:
 	if ghost == null:
 		return
+	if painting_roads and not road_view.is_equal_approx(get_canvas_transform()): _cancel_gesture()
 	var mouse := get_viewport().get_mouse_position()
-	var over_map := mouse.x < get_viewport_rect().size.x - PANEL_WIDTH and mouse.y > RIBBON_HEIGHT
+	var over_map := _over_map(mouse)
 	var tile := _tile_at(get_canvas_transform().affine_inverse() * mouse)
 	hover_cell = Vector2i(floori(tile.x), floori(tile.y))
 	hover_valid = _can_place(hover_cell)
 	ghost.visible = active_tool not in ["inspect", "road", "clear", "hut"] and assets.has(active_tool) and over_map
 	if ghost.visible:
 		var rect := _preview_rect()
-		_skin_sprite(ghost, active_tool, _iso(rect.end.x, rect.end.y))
+		_skin_sprite(ghost, active_tool, _front_corner(rect))
 		ghost.modulate = Color(0.75, 1, 0.65, 0.6) if hover_valid else Color(1, 0.35, 0.25, 0.55)
 	overlay.queue_redraw()
 
@@ -672,7 +780,7 @@ func _draw_overlay() -> void:
 		var at := _iso(float(entry.x) + 0.5, float(entry.y) + 0.5)
 		overlay.draw_circle(at, 12, Color("f2d078"), false, 2, true)
 		overlay.draw_line(at + Vector2(0, -12), at + Vector2(0, -39), Color("664824"), 2, true)
-		overlay.draw_string(ThemeDB.fallback_font, at + Vector2(10, -40), "Entry road", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("35281d"))
+		overlay.draw_string(ThemeDB.fallback_font, at + Vector2(10, -40), "Kingdom Road" if not state.get("kingdom_road", []).is_empty() else "Entry road", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("35281d"))
 	if not active_overlay.is_empty():
 		for item: Dictionary in placements:
 			var data: Dictionary = item.building
@@ -700,6 +808,21 @@ func _draw_overlay() -> void:
 	var mouse := get_viewport().get_mouse_position()
 	if mouse.x >= get_viewport_rect().size.x - PANEL_WIDTH or mouse.y < RIBBON_HEIGHT:
 		return
+	if painting_roads:
+		var valid := _road_preview_valid()
+		for cell: Vector2i in road_preview:
+			if road_tiles.has(cell): continue
+			var road := _footprint(Rect2(Vector2(cell), Vector2.ONE))
+			overlay.draw_colored_polygon(road, Color(0.94, 0.79, 0.48, 0.65) if valid else Color(0.8, 0.2, 0.12, 0.55))
+			road.append(road[0])
+			overlay.draw_polyline(road, Color("f1d19a") if valid else Color("ce4930"), 1.5, true)
+		if not road_preview.is_empty():
+			var label_at := _iso(road_preview.back().x + 0.5, road_preview.back().y + 0.5) + Vector2(16, -32)
+			var price := "%d Db" % _road_preview_cost() if valid else "Cannot build here"
+			var text_size := ThemeDB.fallback_font.get_string_size(price, HORIZONTAL_ALIGNMENT_LEFT, -1, 16)
+			overlay.draw_rect(Rect2(label_at - Vector2(5, 18), text_size + Vector2(10, 5)), Color("ead4a8"))
+			overlay.draw_string(ThemeDB.fallback_font, label_at, price, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color("35281d"))
+		return
 	if zoning:
 		for y in range(maxi(0, mini(zone_start.y, hover_cell.y)), mini(31, maxi(zone_start.y, hover_cell.y)) + 1):
 			for x in range(maxi(6, mini(zone_start.x, hover_cell.x)), mini(31, maxi(zone_start.x, hover_cell.x)) + 1):
@@ -713,38 +836,103 @@ func _draw_overlay() -> void:
 
 
 func _place_cell(cell: Vector2i) -> void:
-	if not _can_place(cell):
+	var reason := _placement_error(cell)
+	if not reason.is_empty():
+		_show_placement_error(reason)
 		return
+	placement_notice.hide()
 	_queue_command("build", {"kind": active_tool, "x": cell.x, "y": cell.y})
 
 
-func _paint_to(cell: Vector2i) -> void:
-	if last_painted.x == -100:
-		_place_cell(cell)
-	else:
-		var cursor := last_painted
-		while cursor.x != cell.x:
-			cursor.x += signi(cell.x - cursor.x)
-			_place_cell(cursor)
-		while cursor.y != cell.y:
-			cursor.y += signi(cell.y - cursor.y)
-			_place_cell(cursor)
-	last_painted = cell
+func _preview_road_to(cell: Vector2i) -> void:
+	road_preview.assign([road_start])
+	var cursor := road_start
+	while cursor.x != cell.x and road_preview.size() < 128:
+		cursor.x += signi(cell.x - cursor.x)
+		road_preview.append(cursor)
+	while cursor.y != cell.y and road_preview.size() < 128:
+		cursor.y += signi(cell.y - cursor.y)
+		road_preview.append(cursor)
+	overlay.queue_redraw()
+
+
+func _road_preview_cost() -> int:
+	var count := 0
+	for cell: Vector2i in road_preview:
+		if not road_tiles.has(cell): count += 1
+	return count * int(_catalog_entry("road").get("cost", 2))
+
+
+func _road_preview_valid() -> bool:
+	if road_preview.is_empty() or _road_preview_cost() > int(state.get("treasury", 0)): return false
+	for cell: Vector2i in road_preview:
+		if cell.x < 6 or cell.x >= 32 or cell.y < 0 or cell.y >= 32: return false
+		if blocked_tiles.has(cell) and not road_tiles.has(cell): return false
+	return true
+
+
+func _cancel_gesture() -> void:
+	zoning = false
+	painting_roads = false
+	road_preview.clear()
+	right_pointer_down = false
+	right_pointer_moved = false
+	dragging = false
+	if overlay != null: overlay.queue_redraw()
+
+
+func _modal_open() -> bool:
+	var settings := get_node_or_null("/root/CitySettings")
+	return (city_ui != null and city_ui.has_open_modal()) or (settings != null and settings.is_open())
+
+
+func _over_map(point: Vector2) -> bool:
+	return get_viewport_rect().has_point(point) and point.x < get_viewport_rect().size.x - PANEL_WIDTH and point.y > RIBBON_HEIGHT and not _modal_open() and not city_ui.construction_menu.visible
 
 
 func _input(event: InputEvent) -> void:
-	super._input(event)
+	if _modal_open():
+		_cancel_gesture()
+		var settings := get_node_or_null("/root/CitySettings")
+		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT and (settings == null or not settings.is_open()):
+			city_ui.dismiss_modal()
+			get_viewport().set_input_as_handled()
+		return
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and not event.pressed and right_pointer_down:
+		var inspect_click := not right_pointer_moved and _over_map(event.position)
+		_cancel_gesture()
+		if inspect_click:
+			_select_at(get_canvas_transform().affine_inverse() * event.position)
+			city_ui.show_inspector()
+		get_viewport().set_input_as_handled()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
-		painting_roads = false
+		if painting_roads:
+			if _over_map(event.position) and road_view.is_equal_approx(get_canvas_transform()):
+				_preview_road_to(Vector2i(_tile_at(get_canvas_transform().affine_inverse() * event.position).floor()))
+				if _road_preview_valid():
+					var tiles: Array[Dictionary] = []
+					for cell: Vector2i in road_preview: tiles.append({"x": cell.x, "y": cell.y})
+					_queue_command("road", {"tiles": tiles})
+				else: status.text = "Road cannot be built here."
+			_cancel_gesture()
+			get_viewport().set_input_as_handled()
 		if zoning:
 			zoning = false
-			if get_viewport_rect().has_point(event.position) and event.position.x < get_viewport_rect().size.x - PANEL_WIDTH and event.position.y > RIBBON_HEIGHT:
+			if _over_map(event.position):
 				var end := Vector2i(_tile_at(get_canvas_transform().affine_inverse() * event.position).floor())
 				_queue_command("zone", {"x": zone_start.x, "y": zone_start.y, "x2": end.x, "y2": end.y})
 			get_viewport().set_input_as_handled()
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	var settings := get_node_or_null("/root/CitySettings")
+	if settings != null and settings.is_open(): return
+	if _modal_open():
+		if (event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE) or (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT):
+			city_ui.dismiss_modal()
+			get_viewport().set_input_as_handled()
+		return
+	if settings != null and settings.handle_camera_key(self, event): return
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_ESCAPE and city_ui != null and city_ui.dismiss_modal():
 			return
@@ -756,6 +944,24 @@ func _unhandled_input(event: InputEvent) -> void:
 			selected = {}
 			_refresh_inspector()
 			return
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
+		if event.pressed:
+			if active_tool != "inspect" or painting_roads or zoning or city_ui.construction_menu.visible:
+				_set_tool("inspect")
+			elif _over_map(event.position):
+				right_pointer_down = true
+				right_pointer_moved = false
+				right_press_position = event.position
+		get_viewport().set_input_as_handled()
+		return
+	if event is InputEventMouseMotion and right_pointer_down:
+		right_pointer_moved = right_pointer_moved or event.position.distance_to(right_press_position) > 4.0
+		if right_pointer_moved:
+			dragging = true
+			camera.position -= event.relative / camera.zoom
+			_clamp_camera()
+			camera.force_update_scroll()
+		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and active_tool != "inspect":
 		var tile := _tile_at(get_canvas_transform().affine_inverse() * event.position)
 		var cell := Vector2i(floori(tile.x), floori(tile.y))
@@ -764,23 +970,23 @@ func _unhandled_input(event: InputEvent) -> void:
 			zone_start = cell
 		elif active_tool == "road":
 			painting_roads = true
-			last_painted = Vector2i(-100, -100)
-			_paint_to(cell)
+			road_view = get_canvas_transform()
+			road_start = cell
+			_preview_road_to(cell)
 		else:
 			_place_cell(cell)
 		get_viewport().set_input_as_handled()
 		return
 	if event is InputEventMouseMotion and painting_roads:
 		var tile := _tile_at(get_canvas_transform().affine_inverse() * event.position)
-		_paint_to(Vector2i(floori(tile.x), floori(tile.y)))
+		_preview_road_to(Vector2i(floori(tile.x), floori(tile.y)))
 		return
 	super._unhandled_input(event)
 
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
-		zoning = false
-		painting_roads = false
+		_cancel_gesture()
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		if sim != null:
 			sim.stop()
@@ -853,11 +1059,79 @@ func _record_economy(roles: Dictionary, stocks: Dictionary) -> bool:
 	return _smoke_require(int(state.get("grain", 0)) + int(state.get("grain_consumed", 0)) == int(state.get("grain_produced", 0)), "grain was created or lost outside production/consumption")
 
 
+func _smoke_road_gesture() -> bool:
+	var initial_roads: Array = state.roads.duplicate(true)
+	var initial_treasury := int(state.treasury)
+	await _smoke_choose_tool("road")
+	await _click_cell(Vector2i(12, 12), false)
+	var motion := InputEventMouseMotion.new()
+	motion.position = get_canvas_transform() * _iso(14.5, 12.5)
+	get_viewport().push_input(motion, true)
+	await get_tree().process_frame
+	if not _smoke_require(await _wait_idle() and road_preview.size() == 3 and state.roads == initial_roads and int(state.treasury) == initial_treasury, "road preview changed the city before release"): return false
+	var capture_path := OS.get_environment("NILE_SANDBOX_CAPTURE")
+	if not capture_path.is_empty() and DisplayServer.get_name() != "headless":
+		DirAccess.make_dir_recursive_absolute(capture_path.get_base_dir())
+		get_window().size = Vector2i(1920, 1080)
+		if not await _save_capture(capture_path.get_base_dir(), "road-preview.png", Vector2i(1920, 1080)): return false
+	var cancel := InputEventMouseButton.new()
+	cancel.button_index = MOUSE_BUTTON_RIGHT
+	cancel.position = motion.position
+	cancel.pressed = true
+	get_viewport().push_input(cancel, true)
+	await get_tree().process_frame
+	cancel.pressed = false
+	get_viewport().push_input(cancel, true)
+	var release := InputEventMouseButton.new()
+	release.button_index = MOUSE_BUTTON_LEFT
+	release.position = motion.position
+	get_viewport().push_input(release, true)
+	await get_tree().process_frame
+	if not _smoke_require(await _wait_idle() and road_preview.is_empty() and active_tool == "inspect" and state.roads == initial_roads and int(state.treasury) == initial_treasury, "right-click did not cancel road spending"): return false
+	await _smoke_choose_tool("road")
+	await _click_cell(Vector2i(12, 12), false)
+	var escape := InputEventKey.new()
+	escape.keycode = KEY_ESCAPE
+	escape.pressed = true
+	get_viewport().push_input(escape, true)
+	get_viewport().push_input(release, true)
+	await get_tree().process_frame
+	if not _smoke_require(await _wait_idle() and road_preview.is_empty() and state.roads == initial_roads, "Escape did not cancel road placement"): return false
+	await _drag_cells("road", Vector2i(12, 12), Vector2i(14, 12))
+	if not _smoke_require(await _wait_idle() and state.roads.size() == initial_roads.size() + 3 and int(state.treasury) == initial_treasury - 3 * int(_catalog_entry("road").cost), "road release did not commit exact construction cost"): return false
+	var paid := int(state.treasury)
+	await _drag_cells("road", Vector2i(12, 12), Vector2i(14, 12))
+	if not _smoke_require(await _wait_idle() and int(state.treasury) == paid, "existing roads were charged again"): return false
+	await _smoke_choose_tool("clear")
+	for x in range(12, 15):
+		await _click_cell(Vector2i(x, 12))
+		if not _smoke_require(await _wait_idle(), "preview test road cleanup failed"): return false
+	await _smoke_choose_tool("inspect")
+	var inspect := InputEventMouseButton.new()
+	inspect.button_index = MOUSE_BUTTON_RIGHT
+	inspect.position = get_canvas_transform() * _iso(14.5, 23.5)
+	inspect.pressed = true
+	get_viewport().push_input(inspect, true)
+	await get_tree().process_frame
+	inspect.pressed = false
+	get_viewport().push_input(inspect, true)
+	await get_tree().process_frame
+	if not _smoke_require(city_ui.inspector_modal.visible and selected.has("building") and selected.building.kind == "well", "right-click inspection did not open the well"): return false
+	if not capture_path.is_empty() and DisplayServer.get_name() != "headless":
+		if not await _save_capture(capture_path.get_base_dir(), "inspection.png", Vector2i(1920, 1080)): return false
+	inspect.pressed = true
+	get_viewport().push_input(inspect, true)
+	await get_tree().process_frame
+	if not _smoke_require(not city_ui.inspector_modal.visible, "right-click did not close inspection"): return false
+	return true
+
+
 func _sandbox_smoke() -> void:
 	await get_tree().process_frame
 	if not _smoke_require(await _wait_idle(), "sandbox initial state failed"):
 		return
 	_set_view(0.9)
+	if not await _smoke_road_gesture(): return
 	# Place and clear every economic building through the actual palette and map.
 	# Test footprints inside the current view without taking starter jobs away.
 	for entry: Array in [["farm", Vector2i(7, 6), Vector2i(3, 3)], ["granary", Vector2i(12, 12), Vector2i(4, 4)], ["bazaar", Vector2i(18, 12), Vector2i(2, 2)]]:
@@ -985,7 +1259,7 @@ func _sandbox_smoke() -> void:
 		get_window().size = Vector2i(1920, 1080)
 		if not await _save_capture(capture.get_base_dir(), capture.get_file(), Vector2i(1920, 1080)):
 			return
-	print("NILE_SANDBOX_PASS road-drag zoning footprints harvest cart granary buyer bazaar seller food evolution conservation speed sqlite-active-jobs")
+	print("NILE_SANDBOX_PASS road-preview release-cost cancel right-inspection road-drag zoning footprints harvest cart granary buyer bazaar seller food evolution conservation speed sqlite-active-jobs")
 	sim.stop()
 	get_tree().quit(0)
 
@@ -1049,16 +1323,16 @@ func _city_smoke() -> void:
 	await _smoke_popup_item(city_ui.game_menu, 0)
 	if not _smoke_require(city_ui.new_town_modal.visible, "Game menu did not open New Town"): return
 	await _smoke_click_button(city_ui.new_town_empty)
-	if not _smoke_require(await _wait_idle() and state.buildings.is_empty() and state.roads.size() == 1 and int(state.treasury) == 2500, "New Town did not create an empty funded riverbank"): return
+	if not _smoke_require(await _wait_idle() and state.buildings.is_empty() and state.roads.size() == 32 and int(state.treasury) == 2500, "New Town did not create a funded Kingdom Road map"): return
 	focus = _iso(18, 14)
 	_set_view(0.7)
-	for road: Array in [[Vector2i(6, 15), Vector2i(10, 15)], [Vector2i(10, 10), Vector2i(22, 10)], [Vector2i(10, 20), Vector2i(22, 20)], [Vector2i(10, 10), Vector2i(10, 20)], [Vector2i(22, 10), Vector2i(22, 20)]]:
+	for road: Array in [[Vector2i(10, 10), Vector2i(22, 10)], [Vector2i(10, 20), Vector2i(22, 20)], [Vector2i(10, 10), Vector2i(10, 20)], [Vector2i(22, 10), Vector2i(22, 20)]]:
 		await _drag_cells("road", road[0], road[1])
 		if not _smoke_require(await _wait_idle(), "city road construction failed"): return
 	for row: Array in [[Vector2i(14, 21), Vector2i(15, 21)], [Vector2i(19, 21), Vector2i(20, 21)]]:
 		await _drag_cells("hut", row[0], row[1])
 		if not _smoke_require(await _wait_idle(), "city housing zone failed"): return
-	for entry: Array in [["well", 14, 23], ["well", 20, 23], ["farm", 7, 10], ["granary", 14, 6], ["bazaar", 19, 8], ["firehouse", 12, 9], ["architect", 21, 9], ["taxoffice", 11, 17], ["claypit", 6, 5], ["brickworks", 24, 12], ["storageyard", 25, 6], ["mastaba", 24, 17]]:
+	for entry: Array in [["well", 14, 23], ["well", 20, 23], ["farm", 7, 10], ["granary", 14, 6], ["bazaar", 19, 8], ["firehouse", 12, 9], ["architect", 21, 9], ["taxoffice", 11, 17], ["palace", 11, 24], ["claypit", 6, 5], ["brickworks", 24, 12], ["storageyard", 25, 6], ["mastaba", 24, 17]]:
 		await _smoke_choose_tool(str(entry[0]))
 		await _click_cell(Vector2i(int(entry[1]), int(entry[2])))
 		if not _smoke_require(await _wait_idle() and not _building_at(Vector2i(int(entry[1]), int(entry[2]))).is_empty(), "city placement failed: " + str(entry[0])): return

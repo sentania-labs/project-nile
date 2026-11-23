@@ -51,7 +51,7 @@ func TestFoodCutoffDevolvesAndAccountsForPopulation(t *testing.T) {
 	}
 	cut := false
 	for range 200 {
-		if err := w.Build("clear", 7, 15); err == nil {
+		if err := w.Build("clear", 10, 1); err == nil {
 			cut = true
 			break
 		}
@@ -152,6 +152,8 @@ func TestLoadsLegacyStreetSnapshot(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	original.addResourceTerrain()
+	original.LegacyTaxes = true
 	original.enableCity()
 	if loaded.Hash() != original.Hash() {
 		t.Fatal("legacy migration changed simulated state")

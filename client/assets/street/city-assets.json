@@ -6,10 +6,10 @@
       3,
       3
     ],
-    "draw_width": 282,
+    "draw_width": 256,
     "anchor": [
       0.5,
-      0.97
+      1.02
     ],
     "label": "Surveyed foundations"
   },
@@ -20,10 +20,10 @@
       3,
       3
     ],
-    "draw_width": 282,
+    "draw_width": 252,
     "anchor": [
       0.5,
-      0.97
+      1.055
     ],
     "label": "Mastaba masonry"
   },
@@ -34,12 +34,14 @@
       3,
       3
     ],
-    "draw_width": 282,
+    "draw_width": 270,
     "anchor": [
-      0.5,
-      0.97
+      0.48,
+      1.105
     ],
-    "label": "Small Mastaba"
+    "label": "Small Mastaba",
+    "ground_shear": 0.227,
+    "vertical_scale": 1.1
   },
   "firehouse": {
     "id": "firehouse",
@@ -51,7 +53,7 @@
     "draw_width": 94,
     "anchor": [
       0.5,
-      0.97
+      1.015
     ],
     "label": "Firehouse"
   },
@@ -65,7 +67,7 @@
     "draw_width": 94,
     "anchor": [
       0.5,
-      0.97
+      1.015
     ],
     "label": "Architect\u2019s Post"
   },
@@ -76,10 +78,10 @@
       2,
       2
     ],
-    "draw_width": 188,
+    "draw_width": 180,
     "anchor": [
       0.5,
-      0.97
+      1.12
     ],
     "label": "Tax Collector"
   },
@@ -90,12 +92,14 @@
       2,
       2
     ],
-    "draw_width": 188,
+    "draw_width": 174,
     "anchor": [
-      0.5,
-      0.97
+      0.4575,
+      1.012
     ],
-    "label": "Clay Pit"
+    "label": "Clay Pit",
+    "ground_shear": -0.016,
+    "vertical_scale": 1.293
   },
   "brickworks": {
     "id": "brickworks",
@@ -107,7 +111,7 @@
     "draw_width": 188,
     "anchor": [
       0.5,
-      0.97
+      0.995
     ],
     "label": "Brickworks"
   },
@@ -118,10 +122,10 @@
       3,
       3
     ],
-    "draw_width": 282,
+    "draw_width": 190,
     "anchor": [
       0.5,
-      0.97
+      1.114
     ],
     "label": "Storage Yard"
   },
@@ -331,7 +335,7 @@
     "draw_width": 85,
     "anchor": [
       0.5,
-      0.97
+      1.015
     ],
     "label": "Crude Hut"
   },
@@ -345,7 +349,7 @@
     "draw_width": 85,
     "anchor": [
       0.5,
-      0.97
+      1.015
     ],
     "label": "Sturdy Hut"
   },
@@ -359,7 +363,7 @@
     "draw_width": 85,
     "anchor": [
       0.5,
-      0.97
+      1.015
     ],
     "label": "Meager Shanty"
   },
@@ -373,7 +377,7 @@
     "draw_width": 85,
     "anchor": [
       0.5,
-      0.97
+      1.015
     ],
     "label": "Crude Hut"
   },
@@ -387,7 +391,7 @@
     "draw_width": 85,
     "anchor": [
       0.5,
-      0.97
+      1.015
     ],
     "label": "Sturdy Hut"
   },
@@ -401,8 +405,64 @@
     "draw_width": 85,
     "anchor": [
       0.5,
-      0.97
+      1.015
     ],
     "label": "Meager Shanty"
+  },
+  "goldmine": {
+    "id": "goldmine",
+    "path": "goldmine.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 181,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Gold mine"
+  },
+  "palace": {
+    "id": "palace",
+    "path": "palace.png",
+    "footprint": [
+      4,
+      4
+    ],
+    "draw_width": 365,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Village palace"
+  },
+  "gold_outcrop": {
+    "id": "gold_outcrop",
+    "path": "gold_outcrop.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 88,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Gold-bearing rock"
+  },
+  "gold_sledge": {
+    "id": "gold_sledge",
+    "path": "gold_sledge.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 55,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Gold delivery"
   }
 }
