@@ -42,9 +42,6 @@ func (w World) refreshEstate(b *Building, previous, score, health int) {
 			gods++
 		}
 	}
-	if gods == 0 && b.ShrineAccess {
-		gods = 1
-	}
 	for _, i := range []int{4, 5} {
 		if b.ServiceUntil[i] > w.Tick {
 			education++

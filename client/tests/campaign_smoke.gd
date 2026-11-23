@@ -37,6 +37,19 @@ static func run(game: Node) -> void:
 		if not game._smoke_require(await game._wait_idle(),"Mission simulation failed"): return
 	if not game._smoke_require(game.state.campaign.won and ui.panel.visible and game.state.resource_produced.meat > 0, "Nubt did not reach victory"): return
 	if not archive.is_empty(): await game._save_capture(archive,"nubt-victory.png",Vector2i(1920,1080))
+	# Undo or load can revisit an earlier state in this same mission.
+	ui.panel.hide()
+	game.state.campaign.won = false
+	ui.refresh("undo")
+	game.state.campaign.won = true
+	ui.refresh("step")
+	await game.get_tree().process_frame
+	await game.get_tree().process_frame
+	if not game._smoke_require(ui.panel.visible and ui.won_shown,"A second victory in the same city did not reopen its decision"): return
+	var overlay := preload("res://scripts/service_overlays.gd")
+	var juggler := {"kind":"hut","entertainment_until":[128,0,0]}
+	var senet := {"kind":"hut","service_until":[0,0,0,0,0,0,0,128]}
+	if not game._smoke_require(is_equal_approx(overlay.value(juggler,"entertainment",0),19.0/113.0) and is_equal_approx(overlay.value(senet,"entertainment",0),38.0/113.0),"Entertainment overlay lost household weights"): return
 	var victory_tick := int(game.state.campaign.victory_tick)
 	if ui.decisions.get_child_count() > 1:
 		await game._smoke_click_button(ui.decisions.get_child(0))

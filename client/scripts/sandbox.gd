@@ -59,6 +59,7 @@ var stats: Label
 var status: Label
 var production_bar: ProgressBar
 var city_ui: RefCounted
+const ServiceOverlays := preload("res://scripts/service_overlays.gd")
 var active_overlay := ""
 var city_smoke_mode := false
 var monument_announced := false
@@ -272,7 +273,9 @@ func _navigate_minimap(tile: Vector2) -> void:
 
 func _set_overlay(kind: String) -> void:
 	active_overlay = kind
-	if city_ui!=null and city_ui.overlay_picker!=null: city_ui.overlay_picker.select(city_ui.OVERLAYS.values().find(kind))
+	if city_ui!=null and city_ui.overlay_picker!=null: city_ui.select_overlay(kind)
+	for item: Dictionary in placements:
+		item.sprite.modulate.a=ServiceOverlays.opacity(item.building.kind,kind)
 	overlay.queue_redraw()
 
 
@@ -559,7 +562,8 @@ func _sync_world() -> void:
 			sprite.material.set_shader_parameter("orientation", view_turns)
 		else:
 			sprite.material = null
-		sprite.modulate = Color(0.4, 0.32, 0.27) if str(building.get("damaged", "")) != "" else Color.WHITE
+		sprite.modulate.a = ServiceOverlays.opacity(building.kind,active_overlay)
+		sprite.self_modulate = Color(0.4, 0.32, 0.27) if str(building.get("damaged", "")) != "" else Color.WHITE
 		var item := {"id": id, "asset": asset_id, "spec": assets[asset_id], "rect": rect, "sprite": sprite, "building": building}
 		placements.append(item)
 		if id == selected_id:
@@ -910,22 +914,7 @@ func _draw_overlay() -> void:
 		overlay.draw_string(ThemeDB.fallback_font, at + Vector2(10, -40), "Kingdom Road" if not state.get("kingdom_road", []).is_empty() else "Entry road", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("35281d"))
 	if not active_overlay.is_empty():
 		for item: Dictionary in placements:
-			var data: Dictionary = item.building
-			if active_overlay in ["water", "food", "tax","malaria","disease"] and data.kind != "hut": continue
-			if active_overlay == "labor" and int(data.get("workers_needed", 0)) == 0: continue
-			var need := 0.0
-			match active_overlay:
-				"water": need = 0.0 if data.get("water", false) else 1.0
-				"food": need = 0.0 if data.get("food", false) else 1.0
-				"tax": need = 0.0 if data.get("tax_covered", false) else 1.0
-				"malaria": need=float(data.get("malaria_risk",0))/100.0
-				"disease": need=float(data.get("disease_risk",0))/100.0
-				"fire": need = float(data.get("fire_risk", 0)) / 100.0
-				"collapse": need = float(data.get("collapse_risk", 0)) / 100.0
-				"labor": need = 1.0 - float(data.get("workers", 0)) / maxf(1, float(data.get("workers_needed", 1)))
-			var color := Color("6bab42").lerp(Color("d14b2b"), clampf(need, 0, 1))
-			color.a = 0.4
-			overlay.draw_colored_polygon(_footprint(item.rect), color)
+			ServiceOverlays.paint(self,item,active_overlay)
 	for cell in vacant_plots:
 		var lot := _footprint(Rect2(Vector2(cell) + Vector2(0.08, 0.08), Vector2(0.84, 0.84)))
 		overlay.draw_colored_polygon(lot, Color(0.43, 0.28, 0.13, 0.24))

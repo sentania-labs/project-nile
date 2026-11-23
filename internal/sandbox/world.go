@@ -20,7 +20,7 @@ const MaxTick int64 = 1<<53 - 1
 const WellReach = 2
 const HousingRoadReach = 2
 const MigrationInterval = 8
-const SnapshotVersion = 9
+const SnapshotVersion = 10
 const YearTicks int64 = 240
 const SeasonOffset int64 = 144
 const ConsumptionInterval int64 = 48
@@ -676,9 +676,7 @@ func (w *World) refresh() {
 		if w.buildable(b.point()) {
 			b.Desirability = scores[b.point()]
 		}
-		b.ShrineAccess = slices.ContainsFunc(w.Buildings, func(other Building) bool {
-			return slices.Contains(shrines, other.Kind) && other.Damaged == "" && nearBuilding(other.point(), *b, 3)
-		})
+		b.ShrineAccess = false // Older saves recorded proximity as household religion.
 		w.refreshHome(b, previousTier)
 		if b.Tier < 10 {
 			b.Capacity *= b.lotSide() * b.lotSide()
@@ -1059,7 +1057,7 @@ func (w *World) upgrade() error {
 	if w.Version >= 0 && w.Version < SnapshotVersion && w.MilitaryVersion == 0 {
 		w.MilitaryVersion = 1
 	}
-	if w.Version == 7 || w.Version == 8 {
+	if w.Version == 7 || w.Version == 8 || w.Version == 9 {
 		if err := w.validateCliffs(); err != nil {
 			return err
 		}
