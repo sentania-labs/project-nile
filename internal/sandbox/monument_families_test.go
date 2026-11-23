@@ -24,6 +24,9 @@ func TestMonumentOriginalFamilyQuantities(t *testing.T) {
 				total[p.Resource] += p.Stone
 			}
 			width, height := dimensions(c.kind)
+			if monumentStaging(Building{Kind: c.kind, Width: width, Height: height}) != (Point{2, height}) {
+				t.Fatal("staging disagrees with original part-offset table")
+			}
 			if width != c.side || height != c.side || total["stone"] != c.stone || total["bricks"] != c.bricks || total["limestone"] != c.limestone {
 				t.Fatalf("dimensions%d,%d materials%v", width, height, total)
 			}
@@ -110,6 +113,9 @@ func TestSphinxUsesGuildCarvingAndTimberWithoutStoneOrCamps(t *testing.T) {
 		if e := w.Build("road", x, 30); e != nil {
 			t.Fatal(e)
 		}
+	}
+	if dir := os.Getenv("NILE_MONUMENT_FAMILIES_DIR"); dir != "" {
+		saveMonumentFixture(t, w, dir, "sphinx-prepared.nile")
 	}
 	id = addGoodsBuilding(t, &w, "sphinx", 11, 24)
 	if dir := os.Getenv("NILE_MONUMENT_FAMILIES_DIR"); dir != "" {

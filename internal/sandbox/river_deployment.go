@@ -3,6 +3,9 @@ package sandbox
 import "errors"
 
 type KingdomDeployment struct {
+	Mode       string  `json:"mode,omitempty"`
+	Landing    *Point  `json:"landing,omitempty"`
+	Boarding   *Point  `json:"boarding,omitempty"`
 	RequestID  int     `json:"request_id"`
 	TargetCity int     `json:"target_city"`
 	Strength   int     `json:"strength"`
@@ -40,7 +43,7 @@ func (w *World) boat(id int64) *Boat {
 }
 func (w World) deployedFort(id int64) bool {
 	for _, d := range w.Deployments {
-		if d.FortID == id && d.Status != "returned" && d.Status != "cancelled" {
+		if d.FortID == id && !closedDeployment(d) {
 			return true
 		}
 	}
@@ -48,7 +51,7 @@ func (w World) deployedFort(id int64) bool {
 }
 func (w World) aboard(id int64) bool {
 	for _, d := range w.Deployments {
-		if d.Status == "outbound" || d.Status == "awaits_outcome" || d.Status == "returning" {
+		if d.Mode != "land" && (d.Status == "outbound" || d.Status == "awaits_outcome" || d.Status == "awaits_return" || d.Status == "returning") {
 			for _, n := range d.Troops {
 				if n == id {
 					return true
@@ -61,7 +64,7 @@ func (w World) aboard(id int64) bool {
 
 // Strength is an actual troop count, 1..16. Campaign code owns mission eligibility
 // and the historical outcome. This transport layer never invents a victory.
-func (w *World) StartKingdomDeployment(requestID, targetCity, strength int) error {
+func (w *World) StartKingdomDeployment(requestID, targetCity, strength int, selectedFort ...int64) error {
 	if requestID < 1 || targetCity < 0 || strength < 1 || strength > CompanyLimit || w.deployment(requestID) != nil {
 		return errors.New("invalid or duplicate kingdom deployment")
 	}
@@ -82,6 +85,9 @@ func (w *World) StartKingdomDeployment(requestID, targetCity, strength int) erro
 		return errors.New("transport wharf has no boarding road")
 	}
 	for _, company := range w.Companies {
+		if len(selectedFort) > 0 && company.FortID != selectedFort[0] {
+			continue
+		}
 		if company.Order != "return" || company.Stationed < strength || w.deployedFort(company.FortID) {
 			continue
 		}
@@ -132,6 +138,9 @@ func (w *World) syncPassengers(a Boat, d *KingdomDeployment) {
 }
 func (w *World) advanceDeploymentBoat(a *Boat) bool {
 	d := w.deployment(a.DeploymentID)
+	if d.Landing != nil {
+		return w.advanceLocalTransport(a, d)
+	}
 	if d.Status == "boarding" {
 		arrived := true
 		live := []int64{}
@@ -222,7 +231,7 @@ func (w *World) advanceDeploymentBoat(a *Boat) bool {
 // ship then physically sails home; troops disembark and walk back to their fort.
 func (w *World) CompleteKingdomDeployment(requestID, survivors int, defeated bool) error {
 	d := w.deployment(requestID)
-	if d == nil || d.Status != "awaits_outcome" || survivors < 0 || survivors > len(d.Troops) {
+	if d == nil || (d.Status != "awaits_outcome" && d.Status != "awaits_return") || survivors < 0 || survivors > len(d.Troops) {
 		return errors.New("invalid kingdom deployment result")
 	}
 	a := w.boat(d.BoatID)
@@ -261,10 +270,22 @@ func (w World) validateDeployments() error {
 			return errors.New("invalid deployment ledger")
 		}
 		requests[d.RequestID] = true
-		if d.Status == "returned" || d.Status == "cancelled" {
+		if closedDeployment(d) {
 			continue
 		}
-		if d.Status != "boarding" && d.Status != "outbound" && d.Status != "awaits_outcome" && d.Status != "returning" {
+		for _, id := range d.Troops {
+			if passengers[id] {
+				return errors.New("soldier assigned to two deployments")
+			}
+			passengers[id] = true
+		}
+		if d.Mode == "land" {
+			if err := w.validateLandDeployment(d); err != nil {
+				return err
+			}
+			continue
+		}
+		if d.Status != "boarding" && d.Status != "outbound" && d.Status != "awaits_outcome" && d.Status != "awaits_return" && d.Status != "returning" {
 			return errors.New("invalid deployment status")
 		}
 		var vessel *Boat
@@ -276,11 +297,12 @@ func (w World) validateDeployments() error {
 		if vessel == nil || vessel.Kind != "transportship" || vessel.DeploymentID != d.RequestID || w.building(d.FortID) == nil {
 			return errors.New("deployment lost its company or vessel")
 		}
-		for _, id := range d.Troops {
-			if passengers[id] {
-				return errors.New("soldier assigned to two transports")
+		if d.Landing != nil {
+			if d.Boarding == nil || !w.freeShore(*d.Landing) || !w.freeShore(*d.Boarding) || (d.Status != "boarding" && d.Status != "outbound") {
+				return errors.New("invalid local transport landing")
 			}
-			passengers[id] = true
+		}
+		for _, id := range d.Troops {
 			var troop *Troop
 			for i := range w.Troops {
 				if w.Troops[i].ID == id {

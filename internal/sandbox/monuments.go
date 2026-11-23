@@ -13,15 +13,18 @@ const StoneSledge = 400
 const CarpenterSupply = 400
 
 type monumentPhase struct {
+	Supplies              map[string]int
 	Name, Guild, Resource string
 	Stone, Timber, Effort int
 	WorkOnly              bool
 }
 type monumentPlan struct {
-	Phases  []monumentPhase
-	Family  string
-	Size    int
-	Complex bool
+	Phases          []monumentPhase
+	Family          string
+	Size            int
+	Complex         bool
+	UpfrontResource string
+	UpfrontAmount   int
 }
 
 // Constants are independently transcribed numerical facts. Original foreman
@@ -70,7 +73,7 @@ func pyramidPlan(family string, size int, complex bool) monumentPlan {
 func facedPyramidPlan(p monumentPlan, family string, size int) monumentPlan {
 	side := 4 + 2*size
 	// Each square ring has a different height. Core uses h+1 six-course
-	// levels; facing is a final level over every section. Brick levels use
+	// levels; facing is a final level over every section. Bent levels use
 	// the original compressed (three-course) heights.
 	coreSections := [5]int{120, 336, 720, 1320, 2184}[size]
 	facingSections := side * side * 6
@@ -107,7 +110,7 @@ func smallSteppedPlan() monumentPlan {
 			p.Phases[i].Name = fmt.Sprintf("course %d", (i-3)/2+1)
 		}
 	}
-	// Exact original small plan: six32-block then six8-block courses.
+	// Exact original small plan: six 32-block then six 8-block courses.
 	p.Phases = p.Phases[:3]
 	for course := 1; course <= 12; course++ {
 		stone := 3200
@@ -210,7 +213,27 @@ func monumentRequirement(kind string) int {
 	}
 	return total
 }
-func monumentStaging(b Building) Point { return Point{b.X + max(0, b.Width/2-2), b.Y + b.Height} }
+func monumentStaging(b Building) Point {
+	// Earlier pyramids retained their crew entrance in every snapshot. Keep
+	// those roads and active sledge journeys connected after restoring one.
+	switch monumentPlans[b.Kind].Family {
+	case "pyramid", "stepped", "bent", "brick":
+		legacy := Point{b.X + max(0, b.Width/2-2), b.Y + b.Height}
+		if b.Height > 0 && b.MonumentStaging == legacy {
+			return legacy
+		}
+	}
+	if isRoyalTomb(b.Kind) {
+		return Point{b.X + b.Width/2, b.Y + b.Height}
+	}
+	if b.Kind == "sphinx" {
+		return Point{b.X + b.Width/2 - 2, b.Y + b.Height}
+	}
+	if b.Kind == "smallmastaba" {
+		return Point{b.X, b.Y + b.Height}
+	}
+	return Point{b.X + 2, b.Y + b.Height}
+}
 func currentMonumentPhase(b Building) (monumentPhase, bool) {
 	p, ok := monumentPlans[b.Kind]
 	if !ok || b.MonumentPhase < 0 || b.MonumentPhase >= len(p.Phases) {
@@ -240,7 +263,12 @@ func monumentResourceCapacity(b Building, r string) int {
 	}
 	if isPyramid(b.Kind) {
 		required := 0
-		for _, p := range monumentPlans[b.Kind].Phases {
+		plan := monumentPlans[b.Kind]
+		if r == plan.UpfrontResource {
+			required = plan.UpfrontAmount
+		}
+		for _, p := range plan.Phases {
+			required += p.Supplies[r]
 			if p.Resource == r {
 				required += p.Stone
 			}
@@ -250,7 +278,11 @@ func monumentResourceCapacity(b Building, r string) int {
 		}
 		// Keep space for cargo already reserved while a phase advances. Incoming
 		// reservations cap dispatch, so a later material cannot fill this staging.
-		return min(StoneSledge, max(0, required-b.MonumentMaterials[r]))
+		capacity := StoneSledge
+		if monumentPlans[b.Kind].Family == "mastaba" && r == "bricks" {
+			capacity = 800
+		}
+		return min(capacity, max(0, required-b.MonumentMaterials[r]))
 	}
 	return 0
 }
@@ -260,7 +292,13 @@ func monumentRefresh(b *Building) {
 	if plan, ok := monumentPlans[b.Kind]; ok {
 		b.MonumentFamily = plan.Family
 		b.MonumentRequiredMaterials = map[string]int{}
+		if plan.UpfrontAmount > 0 {
+			b.MonumentRequiredMaterials[plan.UpfrontResource] = plan.UpfrontAmount
+		}
 		for _, p := range plan.Phases {
+			for r, n := range p.Supplies {
+				b.MonumentRequiredMaterials[r] += n
+			}
 			if p.Resource != "" {
 				b.MonumentRequiredMaterials[p.Resource] += p.Stone
 			}
@@ -320,10 +358,14 @@ func (w *World) constructMonument(b *Building) {
 		return
 	}
 	crew := w.monumentCrew(*b, phase.Guild)
-	if crew == 0 || (phase.Guild == "stonemasons" || phase.Guild == "bricklayers") && crew < 2 {
+	if crew == 0 || (!carvedMonument(b.Kind) && !phase.WorkOnly && (phase.Guild == "stonemasons" || phase.Guild == "bricklayers") && crew < 2) {
 		return
 	}
-	if phase.Stone > 0 && inventory(*b, phase.Resource) < StoneSledge {
+	batch := min(StoneSledge, phaseStoneStart(*b)+phase.Stone-b.ConstructionDone)
+	if phase.Stone > 0 && inventory(*b, phase.Resource) < batch {
+		return
+	}
+	if !suppliesReady(*b, phase.Supplies) {
 		return
 	}
 	if phase.Timber > 0 && inventory(*b, "timber") < phase.Timber {
@@ -347,6 +389,9 @@ func (w *World) constructMonument(b *Building) {
 	}
 	if phase.Timber > 0 {
 		b.MonumentMaterials["timber"] += w.ConsumeResource(b.ID, "timber", phase.Timber)
+	}
+	for r, n := range phase.Supplies {
+		b.MonumentMaterials[r] += w.ConsumeResource(b.ID, r, n)
 	}
 	if phase.WorkOnly {
 		b.ConstructionDone++
@@ -381,7 +426,13 @@ func validateMonument(b Building) error {
 	if b.ConstructionDone < start || b.ConstructionDone > limit {
 		return errors.New("invalid monument progress")
 	}
+	if active && ((p.Stone == 0 && b.ConstructionDone != start) || (p.Stone > 0 && ((b.ConstructionDone-start)%StoneSledge != 0 || b.ConstructionDone >= limit))) {
+		return errors.New("invalid monument section progress")
+	}
 	expected := map[string]int{}
+	if plan.UpfrontAmount > 0 {
+		expected[plan.UpfrontResource] = plan.UpfrontAmount
+	}
 	for i, p := range plan.Phases {
 		if i >= b.MonumentPhase {
 			break
@@ -390,17 +441,20 @@ func validateMonument(b Building) error {
 			expected[p.Resource] += p.Stone
 		}
 		expected["timber"] += p.Timber
+		for r, n := range p.Supplies {
+			expected[r] += n
+		}
 	}
 	if active && p.Stone > 0 {
 		expected[p.Resource] += b.ConstructionDone - start
 	}
-	for _, r := range []string{"stone", "bricks", "limestone", "timber"} {
+	for _, r := range []string{"stone", "bricks", "limestone", "timber", "granite", "sandstone", "lamps", "clay", "paint"} {
 		if b.MonumentMaterials[r] != expected[r] {
 			return fmt.Errorf("invalid monument %s accounting", r)
 		}
 	}
 	for r, n := range b.MonumentMaterials {
-		if n < 0 || (r != "stone" && r != "bricks" && r != "limestone" && r != "timber") {
+		if n < 0 || (r != "stone" && r != "bricks" && r != "limestone" && r != "timber" && r != "granite" && r != "sandstone" && r != "lamps" && r != "clay" && r != "paint") {
 			return errors.New("unknown monument material")
 		}
 	}

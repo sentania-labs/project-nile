@@ -13,7 +13,7 @@ func init() {
 }
 
 func (w World) hasResidence() bool {
-	return slices.ContainsFunc(w.Buildings, func(b Building) bool { return b.Kind == "residence" && b.Damaged == "" })
+	return slices.ContainsFunc(w.Buildings, func(b Building) bool { return isResidence(b.Kind) && b.Damaged == "" })
 }
 func (w *World) SetSalary(rank int) error {
 	if rank < 0 || rank >= len(salaryByRank) || !w.hasResidence() {
@@ -29,6 +29,7 @@ func (w *World) DonateSavings(amount int64) error {
 	w.Savings -= amount
 	w.Treasury += amount
 	w.Income += amount
+	w.Household.Donated += amount
 	return nil
 }
 func (w *World) paySalary() {
@@ -41,7 +42,7 @@ func (w *World) paySalary() {
 	w.Savings += n
 }
 func crimeTarget(b Building) bool {
-	return b.Kind == "palace" || b.Kind == "taxoffice" || b.Kind == "courthouse" || b.Kind == "residence"
+	return isPalace(b.Kind) || b.Kind == "taxoffice" || b.Kind == "courthouse" || isResidence(b.Kind)
 }
 func (w World) sentiment() int {
 	n, pop := 0, 0
@@ -86,6 +87,11 @@ func (w *World) justiceTick() {
 	}
 	unemployment := 100 * max(0, workforce-employed) / max(1, workforce)
 	var origin int64
+	complex := w.templeComplex()
+	wage := 30 + w.WageRate - w.prevailingWage()
+	if wage < 30 && hasTempleBenefit(complex, "complex_ra", 2) {
+		wage = min(30, wage+4)
+	}
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
 		if b.Kind != "hut" || b.Pop == 0 {
@@ -102,7 +108,10 @@ func (w *World) justiceTick() {
 			}
 			continue
 		}
-		change := taxSentiment[w.TaxRate] + wageSentiment(w.WageRate)
+		change := taxSentiment[w.TaxRate] + wageSentiment(wage)
+		if hasTempleBenefit(complex, "complex_bast", 2) {
+			change += 2
+		}
 		if unemployment > 25 {
 			change -= 3
 		} else if unemployment > 15 {
@@ -117,7 +126,11 @@ func (w *World) justiceTick() {
 		}
 		b.Happiness = min(100, max(0, b.Happiness+change))
 		if b.Happiness < 30 && b.ServiceUntil[6] <= w.Tick && b.ServiceUntil[8] <= w.Tick {
-			b.CrimeRisk = min(100, b.CrimeRisk+10)
+			risk := 10
+			if hasTempleBenefit(complex, "complex_ra", 1) {
+				risk = 5
+			}
+			b.CrimeRisk = min(100, b.CrimeRisk+risk)
 		} else {
 			b.CrimeRisk = max(0, b.CrimeRisk-10)
 		}
@@ -132,7 +145,7 @@ func (w *World) justiceTick() {
 	var route []Point
 	var target int64
 	for _, b := range w.Buildings {
-		if !crimeTarget(b) || !b.Connected || b.Damaged != "" || b.Kind == "residence" && w.Savings == 0 || b.Kind != "residence" && w.Treasury <= 0 {
+		if !crimeTarget(b) || !b.Connected || b.Damaged != "" || isResidence(b.Kind) && w.Savings == 0 || !isResidence(b.Kind) && w.Treasury <= 0 {
 			continue
 		}
 		path := w.path(w.accessTiles(*home), b)
@@ -158,7 +171,7 @@ func (w *World) rob(target *Building) {
 	if target.Damaged != "" {
 		return
 	}
-	if target.Kind == "residence" {
+	if isResidence(target.Kind) {
 		n := w.Savings * 9 / 100
 		w.Savings -= n
 		w.Stolen += n

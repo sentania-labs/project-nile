@@ -20,10 +20,10 @@ func run() -> void:
 	event.keycode = KEY_Q
 	settings._settings_input(event)
 	check(settings.notice.text.contains("Already assigned"), "duplicate key accepted")
-	event.keycode = KEY_R
+	event.keycode = KEY_T
 	settings._settings_input(event)
 	var disk := ConfigFile.new()
-	check(disk.load(settings.SAVE_PATH) == OK and disk.get_value("camera", "Rotate right") == KEY_R, "binding not saved")
+	check(disk.load(settings.SAVE_PATH) == OK and disk.get_value("camera", "Rotate right") == KEY_T, "binding not saved")
 	settings.settings_window.hide()
 	change_scene_to_file("res://scenes/sandbox.tscn")
 	await scene_changed

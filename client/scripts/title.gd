@@ -5,6 +5,11 @@ const GOLD := Color("#ebca85")
 const INK := Color("#301e13")
 const Saves = preload("res://scripts/save_browser.gd")
 var opening := false
+var main_menu: VBoxContainer
+var chooser: PanelContainer
+var choices: ItemList
+var mission_start: Button
+var chooser_return: Button
 
 
 func _ready() -> void:
@@ -22,6 +27,7 @@ func _ready() -> void:
 	painting.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 	var menu := VBoxContainer.new()
+	main_menu=menu
 	menu.add_theme_constant_override("separation", 12)
 	add_child(menu)
 	menu.anchor_left = 0.085
@@ -48,6 +54,7 @@ func _ready() -> void:
 	_add_choice(menu, "Enter the riverbank village", "village")
 	var restore := _add_choice(menu, "Load saved town", "load")
 	restore.disabled = not FileAccess.file_exists(Saves.last_path())
+	chooser_return=_add_choice(menu, "Choose a mission", "missions")
 	_add_choice(menu, "Sound and controls", "settings")
 	_add_choice(menu, "Quit", "quit")
 	start.grab_focus()
@@ -89,6 +96,21 @@ func _add_choice(menu: VBoxContainer, caption: String, choice: String) -> Button
 func _choose(choice: String) -> void:
 	if opening:
 		return
+	if choice=="missions":
+		_choose_mission()
+		return
+	if choice=="back":
+		chooser.hide()
+		main_menu.show()
+		chooser_return.grab_focus()
+		return
+	if choice=="selected":
+		var selected:=choices.get_selected_items()
+		if selected.is_empty(): return
+		get_tree().root.set_meta("nile_mission_id",int(choices.get_item_metadata(selected[0])))
+		choice="campaign"
+	elif choice=="campaign":
+		get_tree().root.set_meta("nile_mission_id",0)
 	opening = true
 	if choice == "settings":
 		opening = false
@@ -100,3 +122,56 @@ func _choose(choice: String) -> void:
 	get_tree().root.set_meta("nile_save_path", Saves.last_path() if choice=="load" else Saves.new_path("Pharaoh campaign" if choice=="campaign" else "Nile city"))
 	get_tree().root.set_meta("nile_start_choice", choice)
 	get_tree().change_scene_to_file.call_deferred(SANDBOX)
+
+func _choose_mission() -> void:
+	if not is_instance_valid(chooser):
+		chooser=PanelContainer.new()
+		add_child(chooser)
+		chooser.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+		chooser.offset_left=-250
+		chooser.offset_right=250
+		chooser.offset_top=-222
+		chooser.offset_bottom=222
+		var stone:=StyleBoxFlat.new()
+		stone.bg_color=Color("cda46b")
+		stone.border_color=INK
+		stone.set_border_width_all(4)
+		stone.content_margin_left=20
+		stone.content_margin_right=20
+		stone.content_margin_top=14
+		stone.content_margin_bottom=14
+		chooser.add_theme_stylebox_override("panel",stone)
+		var column:=VBoxContainer.new()
+		chooser.add_child(column)
+		var heading:=Label.new()
+		heading.text="Choose a mission"
+		heading.add_theme_color_override("font_color",INK)
+		heading.add_theme_font_size_override("font_size",26)
+		column.add_child(heading)
+		choices=ItemList.new()
+		choices.add_theme_font_size_override("font_size",19)
+		choices.size_flags_vertical=Control.SIZE_EXPAND_FILL
+		column.add_child(choices)
+		choices.item_activated.connect(func(_index: int): _choose("selected"))
+		var output: Array=[]
+		var executable:=preload("res://scripts/sidecar.gd").executable_path()
+		if FileAccess.file_exists(executable) and OS.execute(executable,["--missions"],output)==0:
+			var catalog=JSON.parse_string("".join(output))
+			if catalog is Array:
+				for mission: Dictionary in catalog:
+					var index:=choices.add_item("%s     %s BC" % [mission.name,absi(int(mission.year))])
+					choices.set_item_metadata(index,int(mission.id))
+					choices.set_item_tooltip(index,str(mission.period))
+		mission_start=_add_choice(column,"Enter settlement","selected")
+		mission_start.disabled=choices.item_count==0
+		if choices.item_count>0: choices.select(0)
+		else: heading.text="The mission list could not be loaded"
+		_add_choice(column,"Back","back")
+	main_menu.hide()
+	chooser.show()
+	choices.grab_focus()
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel") and is_instance_valid(chooser) and chooser.visible:
+		_choose("back")
+		get_viewport().set_input_as_handled()

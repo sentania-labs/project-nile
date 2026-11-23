@@ -12,6 +12,12 @@ import (
 // corroborates400 timber per military ship; work, fishing and visit cadence
 // below remain compressed prototype rules.
 type Boat struct {
+	Hull         int     `json:"hull,omitempty"`
+	CrewFatigue  int     `json:"crew_fatigue,omitempty"`
+	Order        string  `json:"order,omitempty"`
+	Soldiers     int     `json:"soldiers,omitempty"`
+	InvasionID   int     `json:"invasion_id,omitempty"`
+	Landing      Point   `json:"landing,omitempty"`
 	Partner      string  `json:"partner,omitempty"`
 	DeploymentID int     `json:"deployment_id,omitempty"`
 	ID           int64   `json:"id"`
@@ -29,14 +35,20 @@ type Boat struct {
 	WaitUntil    int64   `json:"wait_until,omitempty"`
 }
 type BoatView struct {
-	ID       int64  `json:"id"`
-	Kind     string `json:"kind"`
-	Home     int64  `json:"home"`
-	X        int    `json:"x"`
-	Y        int    `json:"y"`
-	Stage    string `json:"stage"`
-	Resource string `json:"resource"`
-	Cargo    int    `json:"cargo"`
+	FerryLane   int    `json:"ferry_lane,omitempty"`
+	HullMax     int    `json:"hull_max"`
+	Hull        int    `json:"hull"`
+	CrewFatigue int    `json:"crew_fatigue"`
+	Soldiers    int    `json:"soldiers"`
+	Order       string `json:"order"`
+	ID          int64  `json:"id"`
+	Kind        string `json:"kind"`
+	Home        int64  `json:"home"`
+	X           int    `json:"x"`
+	Y           int    `json:"y"`
+	Stage       string `json:"stage"`
+	Resource    string `json:"resource"`
+	Cargo       int    `json:"cargo"`
 }
 
 func init() {
@@ -48,7 +60,7 @@ func init() {
 		CatalogEntry{"warshipwharf", "Warship Wharf", 3, 3, 600, "Military", 15})
 }
 func coastal(kind string) bool {
-	return slices.Contains([]string{"shipwright", "fishingwharf", "dock", "transportwharf", "warshipwharf"}, kind)
+	return slices.Contains([]string{"shipwright", "fishingwharf", "dock", "transportwharf", "warshipwharf", "ferry"}, kind)
 }
 func (w World) water(p Point) bool {
 	return w.navigableWater(p)
@@ -57,9 +69,10 @@ func (w World) coastalPlacement(b Building) error {
 	if !coastal(b.Kind) {
 		return nil
 	}
+	west := w.westPier(b)
 	for y := b.Y; y < b.Y+b.Height; y++ {
-		if y < 0 || y >= w.mapSize() || b.X != w.bank(y)-1 {
-			return errors.New("place the pier across a straight riverbank, with its first column over water")
+		if y < 0 || y >= w.mapSize() || (!west && b.X != w.bank(y)-1) || (west && b.X+b.Width-1 != w.westBank(y)) {
+			return errors.New("place the pier across a straight riverbank with its outer column over water")
 		}
 	}
 	if !w.water(w.berth(b)) {
@@ -68,9 +81,17 @@ func (w World) coastalPlacement(b Building) error {
 	return nil
 }
 func (w World) buildingTileValid(b Building, p Point) bool {
-	return w.buildable(p) || (monumentWaterTile(b, p) && w.navigableWater(p)) || (coastal(b.Kind) && p.X == b.X && w.water(p))
+	return w.buildable(p) || (isRoyalTomb(b.Kind) && w.cliff(p)) || (monumentWaterTile(b, p) && w.navigableWater(p)) || (coastal(b.Kind) && (p.X == b.X || p.X == b.X+b.Width-1) && w.water(p))
 }
-func (w World) berth(b Building) Point { return Point{b.X - 1, b.Y + b.Height/2} }
+func (w World) westPier(b Building) bool {
+	return w.westBank(b.Y) > 0 && b.X+b.Width-1 == w.westBank(b.Y)
+}
+func (w World) berth(b Building) Point {
+	if w.westPier(b) {
+		return Point{b.X + b.Width, b.Y + b.Height/2}
+	}
+	return Point{b.X - 1, b.Y + b.Height/2}
+}
 func (w World) waterPath(start, end Point) []Point {
 	blocked := w.waterObstacles()
 	if !w.water(start) || !w.water(end) || blocked[start] || blocked[end] {
@@ -124,6 +145,11 @@ func (w World) riverBuildingInUse(id int64) bool {
 	return false
 }
 func (w World) riverReserved(p Point) bool {
+	for _, f := range w.Ferries {
+		if slices.Contains(f.Route, p) {
+			return true
+		}
+	}
 	for _, a := range w.Boats {
 		if slices.Contains(a.Route, p) {
 			return true
@@ -214,8 +240,13 @@ func (w *World) boatJourney(a *Boat, target Point, stage string) bool {
 func (w *World) riverTick() {
 	w.buildShips()
 	w.dispatchMerchantShip()
+	stopped := w.navalFight()
 	remaining := make([]Boat, 0, len(w.Boats))
 	for _, a := range w.Boats {
+		if stopped[a.ID] || a.CrewFatigue >= 95 || a.CrewFatigue >= 70 && w.Tick%2 == 0 {
+			remaining = append(remaining, a)
+			continue
+		}
 		if a.DeploymentID != 0 {
 			w.advanceDeploymentBoat(&a)
 			remaining = append(remaining, a)
@@ -236,8 +267,23 @@ func (w *World) riverTick() {
 			}
 			continue
 		}
+		if enemyBoat(a) {
+			if a.Stage == "invader_leave" {
+				w.Naval.Escaped++
+				continue
+			}
+			w.landEnemy(&a)
+			remaining = append(remaining, a)
+			continue
+		}
 		home := w.building(a.Home)
 		switch a.Stage {
+		case "repair":
+			w.arriveRepair(&a)
+		case "combat":
+			a.Stage = "hold"
+			a.Route = []Point{{a.X, a.Y}}
+			a.Next = 1
 		case "commission", "return":
 			if a.Cargo > 0 {
 				n := w.DepositResource(a.Home, a.Resource, a.Cargo)
@@ -259,6 +305,10 @@ func (w *World) riverTick() {
 			key := fishKey(Point{a.X, a.Y})
 			if w.Tick >= a.WaitUntil && w.FishingReady[key] <= w.Tick {
 				a.Resource = "fish"
+				if w.Tick < w.CityEvents.BloodUntil {
+					a.WaitUntil = w.CityEvents.BloodUntil
+					break
+				}
 				a.Cargo = w.RecordResourceProduction("fish", 100)
 				a.Reserved = 0
 				if w.FishingReady == nil {
@@ -296,8 +346,28 @@ func (w *World) NavalOrder(id int64, order string, p Point) error {
 		if a.Kind != "transportship" && a.Kind != "warship" {
 			return errors.New("select a military ship")
 		}
-		if order != "hold" && order != "return" {
-			return errors.New("naval order must be hold or return")
+		if !slices.Contains([]string{"hold", "return", "engage", "seek", "repair", "evade"}, order) {
+			return errors.New("unknown naval order")
+		}
+		if order == "repair" {
+			if w.repairJourney(a) {
+				return nil
+			}
+			return errors.New("a staffed Shipwright needs100timber and an open water route for repairs")
+		}
+		if order == "engage" || order == "seek" {
+			if a.Kind != "warship" {
+				return errors.New("only warships can pursue enemies")
+			}
+			a.Order = order
+			return nil
+		}
+		if order == "evade" {
+			if a.Kind != "transportship" {
+				return errors.New("only transports use evasion orders")
+			}
+			a.Order = order
+			return nil
 		}
 		if order == "return" {
 			p = w.berth(*w.building(a.Home))
@@ -309,6 +379,7 @@ func (w *World) NavalOrder(id int64, order string, p Point) error {
 		if !w.boatJourney(a, p, stage) {
 			return errors.New("no navigable water route to that position")
 		}
+		a.Order = order
 		return nil
 	}
 	return errors.New("ship not found")
@@ -348,14 +419,28 @@ func (w World) boatReserved(id int64, r string) int {
 }
 func (w World) riverView(v *View) {
 	v.Deployments = append([]KingdomDeployment{}, w.Deployments...)
+	v.ArmyDispatches = append([]ArmyDispatch{}, w.ArmyDispatches...)
 	v.FishingGrounds = w.fishingGrounds()
 	v.Boats = []BoatView{}
 	v.ShipsBuilt = w.ShipsBuilt
+	v.Naval = w.Naval
 	for _, a := range w.Boats {
-		v.Boats = append(v.Boats, BoatView{a.ID, a.Kind, a.Home, a.X, a.Y, a.Stage, a.Resource, a.Cargo})
+		passengers, maximum := a.Soldiers, 0
+		if militaryBoat(a) {
+			maximum = hullMaximum(a)
+		}
+		for _, d := range w.Deployments {
+			if d.BoatID == a.ID && d.Status != "boarding" && !closedDeployment(d) {
+				passengers = len(d.Troops)
+			}
+		}
+		v.Boats = append(v.Boats, BoatView{HullMax: maximum, ID: a.ID, Kind: a.Kind, Home: a.Home, X: a.X, Y: a.Y, Stage: a.Stage, Resource: a.Resource, Cargo: a.Cargo, Hull: hull(a), CrewFatigue: a.CrewFatigue, Soldiers: passengers, Order: a.Order})
 	}
 }
 func (w World) validateRiver() error {
+	if err := w.validateNaval(); err != nil {
+		return err
+	}
 	if err := w.validateDeployments(); err != nil {
 		return err
 	}
@@ -407,6 +492,9 @@ func (w World) validateRiver() error {
 				return errors.New("vessel has unknown deployment")
 			}
 		}
+		if enemyBoat(a) {
+			continue
+		}
 		home := w.building(a.Home)
 		if home == nil {
 			return errors.New("vessel has no berth")
@@ -422,7 +510,7 @@ func (w World) validateRiver() error {
 			return errors.New("invalid or duplicate home ship")
 		}
 		homes[a.Home] = true
-		if !slices.Contains([]string{"commission", "moored", "fish", "fishing", "return", "sail", "hold", "boarding", "kingdom", "away", "kingdom_return"}, a.Stage) {
+		if !slices.Contains([]string{"commission", "moored", "fish", "fishing", "return", "sail", "hold", "boarding", "kingdom", "away", "kingdom_return", "combat", "repair"}, a.Stage) {
 			return errors.New("invalid vessel stage")
 		}
 		if a.Stage == "commission" {
@@ -445,7 +533,7 @@ func (w World) validateRiver() error {
 			return errors.New("vessel missed its berth")
 		}
 	}
-	if ships != w.ShipsBuilt {
+	if ships+w.Naval.Lost != w.ShipsBuilt {
 		return errors.New("ship conservation failed")
 	}
 	for key, ready := range w.FishingReady {

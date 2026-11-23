@@ -16,11 +16,14 @@ func run() -> void:
 	if game.state.get("map_extent")!=96: printerr("Valley did not open"); quit(1); return
 	game._queue_command("pause")
 	await game._wait_idle()
-	game._navigate_minimap(Vector2(int(game.state.banks[78])+5,78))
+	var road_x := -1
+	for tile: Dictionary in game.state.kingdom_road:
+		if int(tile.y)==78: road_x=int(tile.x)
+	game._navigate_minimap(Vector2(road_x,78))
 	game._set_tool("hut")
 	var bank := int(game.state.banks[78])
 	if game._can_place(Vector2i(bank-1,78)): printerr("Allowed submerged house"); quit(1); return
-	var at := Vector2i(bank+6,78)
+	var at := Vector2i(road_x+1,78)
 	await game._drag_cells("hut",at,at)
 	if not await game._wait_idle() or game._building_at(at).is_empty(): printerr("Could not zone upstream"); quit(1); return
 	game._queue_command("step",{"ticks":300})

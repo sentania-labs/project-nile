@@ -50,7 +50,7 @@ func (w *World) buildBridge(kind string, p Point) error {
 	occupied := w.occupied()
 	roads := w.roadSet()
 	cost := int64(east-west) * constructionCost(kind)
-	if w.BudgetEnabled && w.Treasury < cost {
+	if w.cannotBuildFor(cost) {
 		return errors.New("not enough treasury for the full span")
 	}
 	for x := west - 1; x <= east; x++ {
@@ -62,6 +62,11 @@ func (w *World) buildBridge(kind string, p Point) error {
 			return errors.New("wildlife occupies the landing")
 		}
 		if kind == "bridge" {
+			for _, f := range w.Ferries {
+				if slices.Contains(f.Route, site) {
+					return errors.New("a ferry uses this river crossing")
+				}
+			}
 			for _, boat := range w.Boats {
 				if slices.Contains(boat.Route, site) {
 					return errors.New("a vessel is using the crossing")
@@ -76,7 +81,7 @@ func (w *World) buildBridge(kind string, p Point) error {
 		}
 	}
 	w.Bridges = append(w.Bridges, bridge)
-	w.spend(cost)
+	w.spendConstruction(cost)
 	w.refresh()
 	return nil
 }

@@ -1752,5 +1752,341 @@
       0.84
     ],
     "label": "Warship"
+  },
+  "hennafarm": {
+    "id": "hennafarm",
+    "label": "Henna farm",
+    "path": "hennafarm.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "paintmaker": {
+    "id": "paintmaker",
+    "label": "Paint maker",
+    "path": "paintmaker.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "lampmaker": {
+    "id": "lampmaker",
+    "label": "Lamp maker",
+    "path": "lampmaker.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "artisans": {
+    "id": "artisans",
+    "label": "Artisans' guild",
+    "path": "artisans.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "zoo": {
+    "id": "zoo",
+    "label": "Zoo",
+    "path": "zoo.png",
+    "footprint": [
+      6,
+      6
+    ],
+    "draw_width": 516,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "familymansion": {
+    "id": "familymansion",
+    "label": "Family mansion",
+    "path": "familymansion.png",
+    "footprint": [
+      4,
+      4
+    ],
+    "draw_width": 344,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "smallstatue": {
+    "id": "smallstatue",
+    "label": "Small statue",
+    "path": "smallstatue.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 86,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "mediumstatue": {
+    "id": "mediumstatue",
+    "label": "Medium statue",
+    "path": "mediumstatue.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "largestatue": {
+    "id": "largestatue",
+    "label": "Large statue",
+    "path": "largestatue.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "archerfort": {
+    "id": "archerfort",
+    "path": "archerfort.png",
+    "footprint": [
+      7,
+      4
+    ],
+    "draw_width": 528.0,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Archerfort"
+  },
+  "chariotfort": {
+    "id": "chariotfort",
+    "path": "chariotfort.png",
+    "footprint": [
+      7,
+      4
+    ],
+    "draw_width": 528.0,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Chariotfort"
+  },
+  "chariotmaker": {
+    "id": "chariotmaker",
+    "path": "chariotmaker.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 192.0,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Chariotmaker"
+  },
+  "academy": {
+    "id": "academy",
+    "path": "academy.png",
+    "footprint": [
+      4,
+      4
+    ],
+    "draw_width": 384.0,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Academy"
+  },
+  "wall": {
+    "id": "wall",
+    "path": "wall.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 96.0,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Wall"
+  },
+  "gatehouse": {
+    "id": "gatehouse",
+    "path": "gatehouse.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 192.0,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Gatehouse"
+  },
+  "tower": {
+    "id": "tower",
+    "path": "tower.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 192.0,
+    "anchor": [
+      0.5,
+      1.0
+    ],
+    "label": "Tower"
+  },
+  "townpalace": {
+    "id": "townpalace",
+    "label": "Town palace",
+    "path": "townpalace.png",
+    "footprint": [
+      5,
+      5
+    ],
+    "draw_width": 430,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "citypalace": {
+    "id": "citypalace",
+    "label": "City palace",
+    "path": "citypalace.png",
+    "footprint": [
+      6,
+      6
+    ],
+    "draw_width": 516,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "dynastymansion": {
+    "id": "dynastymansion",
+    "label": "Dynasty mansion",
+    "path": "dynastymansion.png",
+    "footprint": [
+      4,
+      4
+    ],
+    "draw_width": 344,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "complexsanctuary": {
+    "id": "complexsanctuary",
+    "label": "Temple sanctuary",
+    "path": "complexsanctuary.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "complexaltar": {
+    "id": "complexaltar",
+    "label": "Altar",
+    "path": "complexaltar.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "complexoracle": {
+    "id": "complexoracle",
+    "label": "Oracle",
+    "path": "complexoracle.png",
+    "footprint": [
+      3,
+      3
+    ],
+    "draw_width": 258,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "cliffrock": {
+    "id": "cliffrock",
+    "label": "Sandstone cliff",
+    "path": "cliffrock.png",
+    "footprint": [
+      2,
+      2
+    ],
+    "draw_width": 172,
+    "anchor": [
+      0.5,
+      1.0
+    ]
+  },
+  "reeds": {
+    "id": "reeds",
+    "label": "Papyrus reeds",
+    "path": "reeds.png",
+    "footprint": [
+      1,
+      1
+    ],
+    "draw_width": 86,
+    "anchor": [
+      0.5,
+      1.0
+    ]
   }
 }

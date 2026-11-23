@@ -46,19 +46,22 @@ func serviceGroup(role string) string {
 
 // Service visits are stored per provider. Mortuary linen and teaching papyrus
 // must reach the institution before its employees can go out on a round.
-func (w *World) visitAmenity(a Walker, b *Building) {
+func (w *World) visitAmenity(a Walker, b *Building, duration int64) {
 	i := slices.Index(amenities, a.Role)
 	if i >= 0 && b.Kind == "hut" && b.Pop > 0 {
-		b.ServiceUntil[i] = min(MaxTick, w.Tick+MarketDuration)
+		if serviceGroup(a.Role) == "policeman" {
+			duration = MarketDuration
+		}
+		b.ServiceUntil[i] = min(MaxTick, w.Tick+duration)
 		if a.Role == "courthouse" || a.Role == "policestation" {
 			b.CrimeRisk = max(0, b.CrimeRisk-5)
 		}
 	}
 }
 
-// The mortality cadence is provisional. Exposure accumulates in occupied,
-// untreated households. Contact with a physician improves the household's
-// condition, as does malaria protection near the floodplain.
+// Retail manual pp.153–155. Disease affects one home; malaria is tied to
+// river grass and marshes, and can spread to neighbors. The monthly exposure
+// increments are provisional until traced in the original executable.
 func (w *World) healthTick() {
 	if !w.HazardsEnabled || w.Tick%(YearTicks/12) != 0 || w.population() < 200 {
 		return
@@ -66,31 +69,69 @@ func (w *World) healthTick() {
 	if w.Campaign != nil && w.Campaign.MissionID < 2 {
 		return
 	}
+	grass := map[Point]bool{}
+	for _, p := range w.Grassland {
+		grass[p] = true
+	}
+	marsh := map[Point]bool{}
+	for _, p := range w.ReedBeds {
+		for y := p.Y - 2; y <= p.Y+2; y++ {
+			for x := p.X - 2; x <= p.X+2; x++ {
+				marsh[Point{x, y}] = true
+			}
+		}
+	}
+	var outbreaks []Point
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
 		if b.Kind != "hut" || b.Pop == 0 || b.Damaged != "" {
 			continue
 		}
-		if b.ServiceUntil[1] > w.Tick || b.ServiceUntil[0] > w.Tick && b.X <= 11 {
+		exposure := 0
+		for _, p := range b.tiles() {
+			if marsh[p] {
+				exposure = 3
+				break
+			}
+			if grass[p] && (abs(p.X-w.bank(p.Y)) <= 8 || w.westBank(p.Y) > 0 && abs(p.X-w.westBank(p.Y)) <= 8) {
+				exposure = max(exposure, 2)
+			}
+		}
+		if b.Water {
+			exposure -= 2
+		}
+		if b.ServiceUntil[0] > w.Tick {
+			exposure -= 5
+		}
+		if exposure == 0 && !b.Water && b.ServiceUntil[0] <= w.Tick {
+			exposure = -1
+		}
+		b.MalariaRisk = max(0, min(100, b.MalariaRisk+exposure))
+		if b.ServiceUntil[1] > w.Tick {
 			b.DiseaseRisk = max(0, b.DiseaseRisk-8)
-			continue
-		}
-		if b.Tier >= 4 {
+		} else if b.Tier >= 4 {
 			b.DiseaseRisk = max(0, b.DiseaseRisk-1)
-			continue
-		}
-		b.DiseaseRisk += 1
-		if !b.Food {
+		} else {
 			b.DiseaseRisk++
+			if !b.Food {
+				b.DiseaseRisk++
+			}
 		}
-		if b.X <= 11 {
-			b.DiseaseRisk++
+		if b.MalariaRisk >= 100 {
+			outbreaks = append(outbreaks, b.point())
 		}
-		if b.DiseaseRisk >= 100 {
-			b.DiseaseRisk = 0
-			b.Pop--
-			w.DiseaseDeaths++
-			w.Departures++
+		if b.MalariaRisk >= 100 || b.DiseaseRisk >= 100 {
+			w.Departures += int64(b.Pop)
+			w.DiseaseDeaths += int64(b.Pop)
+			b.Pop, b.DiseaseRisk, b.MalariaRisk = 0, 0, 0
+		}
+	}
+	for _, p := range outbreaks {
+		for i := range w.Buildings {
+			b := &w.Buildings[i]
+			if b.Kind == "hut" && b.Pop > 0 && nearBuilding(p, *b, 2) && b.ServiceUntil[0] <= w.Tick {
+				b.MalariaRisk = min(100, b.MalariaRisk+15)
+			}
 		}
 	}
 }

@@ -7,6 +7,7 @@ uniform int bank_count = 0;
 uniform float riverbanks[228];
 uniform bool two_banks = false;
 uniform float westbanks[228];
+uniform bool blood = false;
 uniform int orientation = 0;
 uniform float flood_level = 0.0;
 varying vec2 projected;
@@ -41,6 +42,7 @@ void fragment() {
 	vec2 uv = 1.0 - abs(mod(UV + drift, vec2(2.0)) - 1.0);
 	vec2 inset = TEXTURE_PIXEL_SIZE * 0.5;
 	vec3 blue = texture(TEXTURE, atlas_region.xy + inset + uv * (atlas_region.zw - 2.0 * inset)).rgb;
+	if (blood) {blue=mix(blue,vec3(0.43,0.085,0.04),0.81);}
 	float shallow = 1.0 - smoothstep(0.05, 1.7, depth);
 	vec3 color = mix(blue, vec3(0.35, 0.49, 0.38), shallow * 0.74);
 	float rim = (1.0 - smoothstep(0.01, 0.105, abs(depth - 0.065))) * (0.65 + 0.35 * wave);

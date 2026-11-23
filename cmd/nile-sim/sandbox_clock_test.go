@@ -153,3 +153,11 @@ func TestSandboxAtomicRoadProtocolAndKingdomSave(t *testing.T) {
 		t.Fatal("road transaction or Kingdom Road save round trip failed")
 	}
 }
+
+func TestOriginalCalendarChangesPreservePartialTick(t *testing.T) {
+	requests := []string{`{"id":1,"op":"set_pace","pace":"classic50"}`, `{"id":2,"op":"resume"}`, `{"id":3,"op":"state"}`, `{"id":4,"op":"set_pace","pace":"classic100"}`, `{"id":5,"op":"state"}`, `{"id":6,"op":"set_pace","pace":"bogus"}`}
+	replies := runTimedSandbox(t, requests, []time.Duration{0, 0, 91_600 * time.Millisecond, 93_890 * time.Millisecond, 93_933 * time.Millisecond, 93_933 * time.Millisecond})
+	if replies[0].TickMillis != 4580 || replies[2].State.Tick != 20 || replies[3].State.Tick != 20 || replies[4].State.Tick != 21 || replies[5].OK || replies[5].TickMillis != 86 {
+		t.Fatal("calendar change discarded elapsed time or accepted invalid pace")
+	}
+}

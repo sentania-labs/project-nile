@@ -75,3 +75,30 @@ func TestMigrantLegacySingleAndCapacityLoss(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestMigrantFamiliesPrioritizeAmpleRoomBeforeSmallVacancies(t *testing.T) {
+	w := NewTown()
+	for _, p := range []Point{{9, 2}, {9, 6}, {9, 10}} {
+		if err := w.Build("hut", p.X, p.Y); err != nil {
+			t.Fatal(err)
+		}
+	}
+	// Isolate dispatch from housing evolution: an earlier home lacks one
+	// person, a later established home can hold a family, and a vacant lot
+	// must take precedence over both. This is the original three-pass order.
+	w.Buildings[0].Pop, w.Buildings[0].Capacity = 4, 5
+	w.Buildings[1].Pop, w.Buildings[1].Capacity = 4, 13
+	w.Tick = MigrationInterval
+	w.dispatchMigrants()
+	if len(w.Walkers) != 1 || w.Walkers[0].Target != w.Buildings[2].ID || w.Walkers[0].People != 4 {
+		t.Fatal("vacant lot did not receive the first family")
+	}
+	w.dispatchMigrants()
+	if len(w.Walkers) != 2 || w.Walkers[1].Target != w.Buildings[1].ID || w.Walkers[1].People != 4 {
+		t.Fatal("small early vacancy starved the later family-sized vacancy")
+	}
+	w.dispatchMigrants()
+	if len(w.Walkers) != 3 || w.Walkers[2].Target != w.Buildings[0].ID || w.Walkers[2].People != 1 {
+		t.Fatal("final pass did not fill the remaining small vacancy")
+	}
+}

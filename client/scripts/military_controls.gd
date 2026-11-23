@@ -8,6 +8,11 @@ var y := SpinBox.new()
 var muster: Button
 var recall: Button
 var raid: Button
+var formation:=OptionButton.new()
+var rotate: Button
+var place: Button
+var picking_fort:=0
+var picking_order:=""
 var summary := Label.new()
 var company_ids: Array[int] = []
 
@@ -28,13 +33,26 @@ func setup(owner: Node) -> void:
 	y.prefix = "Y "
 	x.value = 26
 	y.value = 18
-	muster = game._button("Muster here", func() -> void: _order("muster"))
+	for order in ["muster","tight","loose","engage","mopup","charge"]:
+		formation.add_item(str(order).capitalize())
+		formation.set_item_metadata(formation.item_count-1,order)
+	row.add_child(formation)
+	muster = game._button("Issue order", func() -> void: _order(str(formation.get_selected_metadata())))
 	recall = game._button("Return to fort", func() -> void: _order("return"))
 	row.add_child(muster)
+	place=game._button("Place formation on map",func() -> void:
+		if companies.selected<0:return
+		picking_fort=int(companies.get_selected_metadata())
+		picking_order=str(formation.get_selected_metadata())
+		game.city_ui.overseer_modal.hide()
+		game.status.text="Choose dry ground for the company. Right-click cancels.")
+	add_child(place)
 	row.add_child(recall)
+	rotate=game._button("Rotate ranks",func() -> void: _order("rotate"))
+	row.add_child(rotate)
 	raid = game._button("Test invasion: four raiders", func() -> void: game._queue_command("test_invasion"))
 	add_child(raid)
-	add_child(game._label("Copper → weapons → Recruiter → Infantry Fort. Muster a company to intercept raiders. The test invasion and combat timing are provisional.", 13, Color("392617")))
+	add_child(game._label("Archers equip themselves. Infantry need weapons; charioteers need timber-made chariots. Recruits visit an active Academy. Towers require wall foundations, staff and sentries. Combat timing is provisional.", 13, Color("392617")))
 	hide()
 
 
@@ -42,23 +60,29 @@ func _order(action: String) -> void:
 	if companies.selected < 0: return
 	game._queue_command("military_order", {"fort_id": companies.get_selected_metadata(), "order": action, "x": int(x.value), "y": int(y.value)})
 
+func _unhandled_input(event: InputEvent) -> void:
+	if picking_fort==0:return
+	if event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
+		picking_fort=0
+		get_viewport().set_input_as_handled()
+	elif event is InputEventMouseButton and event.pressed:
+		if event.button_index==MOUSE_BUTTON_RIGHT:picking_fort=0
+		elif event.button_index==MOUSE_BUTTON_LEFT:
+			var tile: Vector2=game._tile_at(game.get_canvas_transform().affine_inverse()*event.position)
+			game._queue_command("military_order",{"fort_id":picking_fort,"order":picking_order,"x":floori(tile.x),"y":floori(tile.y)})
+			picking_fort=0
+		else:return
+		get_viewport().set_input_as_handled()
+
 
 func sync(topic: String) -> void:
 	visible = topic == "Military"
-	# The existing directional walking animation supplies the feet. Uniform
-	# colors and original vector equipment distinguish military figures.
+	# Original directional military animation sheets supply each figure.
 	for id: String in game.walker_nodes:
 		var role := str(game.walker_data[id].get("role", ""))
-		if role not in ["infantry", "invader"]: continue
+		if role not in ["infantry", "archer", "charioteer", "sentry", "invader"]: continue
 		var actor: Sprite2D = game.walker_nodes[id]
-		actor.modulate = Color("c9e5ff") if role == "infantry" else Color("e39171")
-		var equipment := actor.get_node_or_null("MilitaryGear")
-		if equipment == null:
-			equipment = MilitaryGear.new()
-			equipment.name = "MilitaryGear"
-			equipment.hostile = role == "invader"
-			actor.add_child(equipment)
-		equipment.scale = Vector2(1.0 / actor.scale.x, 1.0 / actor.scale.y)
+		actor.modulate = Color.WHITE if role != "invader" else Color("e39171")
 	if not visible: return
 	var entries: Array = game.state.get("companies", [])
 	x.max_value = int(game.state.get("map_extent", 32)) - 1
@@ -73,19 +97,10 @@ func sync(topic: String) -> void:
 			companies.set_item_metadata(companies.item_count - 1, id)
 	for index in range(entries.size()):
 		var company: Dictionary = entries[index]
-		companies.set_item_text(index, "Fort %d: %d / 16 infantry, %d arriving, %d at home" % [int(company.fort_id), int(company.soldiers), int(company.arriving), int(company.stationed)])
+		companies.set_item_text(index, "Fort %d: %d / 16 %s · %d arriving · %d at home · experience %d · morale %d" % [int(company.fort_id), int(company.soldiers), str(company.get("kind","infantry")), int(company.arriving), int(company.stationed),int(company.get("experience",0)),int(company.get("morale",60))])
 	muster.disabled = entries.is_empty()
+	place.disabled=entries.is_empty()
 	recall.disabled = entries.is_empty()
 	var stats: Dictionary = game.state.get("military", {})
 	raid.disabled = game.state.has("campaign") or bool(stats.get("invasion_active", false)) or int(game.state.get("population", 0)) == 0
 	summary.text = "Recruited %d · Lost %d · Invaders defeated %d · Breaches %d" % [int(stats.get("recruited", 0)), int(stats.get("lost", 0)), int(stats.get("defeated", 0)), int(stats.get("breaches", 0))]
-
-
-class MilitaryGear extends Node2D:
-	var hostile := false
-	func _draw() -> void:
-		draw_line(Vector2(7, -29), Vector2(7, -1), Color("73522e"), 1.5)
-		draw_colored_polygon(PackedVector2Array([Vector2(7,-34),Vector2(4,-26),Vector2(10,-26)]), Color("cfb790"))
-		var shield := PackedVector2Array([Vector2(-9,-18),Vector2(-4,-20),Vector2(0,-17),Vector2(0,-8),Vector2(-5,-5),Vector2(-10,-8)])
-		draw_colored_polygon(shield, Color("973d2c") if hostile else Color("466a91"))
-		draw_polyline(shield + PackedVector2Array([shield[0]]), Color("d7ae65"), 1.2)

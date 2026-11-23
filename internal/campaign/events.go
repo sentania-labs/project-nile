@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"slices"
+	"strings"
 	"sync"
 )
 
@@ -20,10 +21,10 @@ var eventData []byte
 type Selector struct{ Fixed, Min, Max int }
 
 type EventDefinition struct {
-	ID, Type, Month, Trigger, Deadline int
-	Item, Amount, Time, Location       Selector
-	Complete, Refuse, Late, Defeat     int
-	Sender, Subtype, City              int
+	ID, Type, Month, Trigger, Deadline          int
+	Item, Amount, Time, Location                Selector
+	Complete, Refuse, Late, Defeat              int
+	Sender, Subtype, WarningLeadMonths, Escorts int
 }
 
 var eventDefinitions = sync.OnceValue(func() [][]EventDefinition {
@@ -66,7 +67,7 @@ var eventDefinitions = sync.OnceValue(func() [][]EventDefinition {
 			result[mission.ID] = append(result[mission.ID], EventDefinition{
 				ID: get("event_id"), Type: get("type_code"), Month: get("month_raw"), Trigger: get("trigger_code"), Deadline: get("months_initial_raw"),
 				Item: selectField("item"), Amount: selectField("amount"), Time: Selector{get("time_fixed_raw"), get("time_aux_1_raw"), get("time_aux_2_raw")}, Location: selectField("location"),
-				Complete: get("on_completed_action_raw"), Refuse: get("on_refusal_action_raw"), Late: get("on_too_late_action_raw"), Defeat: get("on_defeat_action_raw"), Sender: get("sender_faction_raw"), Subtype: get("subtype_raw"), City: get("city_id_raw"),
+				Complete: get("on_completed_action_raw"), Refuse: get("on_refusal_action_raw"), Late: get("on_too_late_action_raw"), Defeat: get("on_defeat_action_raw"), Sender: get("sender_faction_raw"), Subtype: get("subtype_raw"), WarningLeadMonths: get("warning_lead_months_raw"), Escorts: get("festival_deity_raw"),
 			})
 		}
 	}
@@ -95,6 +96,7 @@ func ResourceID(id int) string {
 // EventState contains chosen values and dates, so save/reload never rerolls an
 // event. IDs identify instances; SourceID identifies the original template.
 type EventState struct {
+	Chained   bool   `json:"chained,omitempty"`
 	ID        int    `json:"id"`
 	SourceID  int    `json:"source_id"`
 	DueMonth  int64  `json:"due_month"`
@@ -106,7 +108,7 @@ type EventState struct {
 	Repeated  bool   `json:"repeated"`
 }
 
-type EventEffect struct{ ID, Type, Item, Amount, Location int }
+type EventEffect struct{ ID, Type, Item, Amount, Location, Subtype, Escorts int }
 
 func (s *State) eventRandom(n int) int {
 	// Nile's deterministic generator is deliberately independent of Pharaoh's.
@@ -163,7 +165,7 @@ func (s *State) addEvent(d EventDefinition, month int64, chained bool) {
 	if chained {
 		due = month + delay
 	}
-	s.Events = append(s.Events, EventState{ID: len(s.Events) + 1, SourceID: d.ID, DueMonth: due, Item: s.selectValue(d.Item), Amount: s.selectValue(d.Amount), Location: s.selectValue(d.Location), Status: "scheduled"})
+	s.Events = append(s.Events, EventState{ID: len(s.Events) + 1, SourceID: d.ID, Chained: chained, DueMonth: due, Item: s.selectValue(d.Item), Amount: s.selectValue(d.Amount), Location: s.selectValue(d.Location), Status: "scheduled"})
 }
 
 func (s *State) template(id int) (EventDefinition, bool) {
@@ -232,13 +234,30 @@ func (s *State) AdvanceEvents(month int64) []EventEffect {
 			case "requested", "overdue":
 				e.Remaining--
 				if e.Remaining <= 0 {
-					if e.Status == "requested" {
+					if e.Item == 32 {
+						e.Status = "refused"
+						chain = d.Refuse
+					} else if e.Status == "requested" {
 						e.Status, e.Remaining = "overdue", 24
 						s.ChangeKingdom(-3)
 					} else {
 						e.Status = "refused"
 						chain = d.Refuse
 					}
+				}
+			case "army_outbound":
+				if s.EventMonth >= e.DueMonth+int64(d.Deadline) {
+					e.Status = "army_battle"
+					if e.Remaining >= 3 {
+						e.Status = "army_late"
+					}
+				} else {
+					e.Remaining = max(1, e.Remaining-1)
+				}
+			case "army_return_wait":
+				e.Remaining--
+				if e.Remaining == 0 {
+					e.Status = "army_return"
 				}
 			case "dispatched", "dispatched_late":
 				e.Remaining--
@@ -254,7 +273,7 @@ func (s *State) AdvanceEvents(month int64) []EventEffect {
 			if chain >= 0 {
 				s.chain(chain, s.EventMonth)
 			}
-			if e.Status == "completed" && d.Trigger&2 != 0 && !e.Repeated {
+			if (e.Status == "completed" || e.Status == "refused") && d.Trigger&2 != 0 && !e.Repeated && !e.Chained {
 				s.Events[i].Repeated = true
 				before := len(s.Events)
 				s.addEvent(d, 0, false)
@@ -270,7 +289,7 @@ func (s *State) AdvanceEvents(month int64) []EventEffect {
 	for _, e := range s.Events {
 		if e.Status == "pending_effect" {
 			d, _ := s.template(e.SourceID)
-			effects = append(effects, EventEffect{e.ID, d.Type, e.Item, e.Amount, e.Location})
+			effects = append(effects, EventEffect{e.ID, d.Type, e.Item, e.Amount, e.Location, d.Subtype, max(0, d.Escorts)})
 		}
 	}
 	return effects
@@ -292,13 +311,15 @@ func (s *State) CompleteEffect(id int) error {
 }
 
 type Request struct {
-	ID          int    `json:"id"`
-	Resource    string `json:"resource"`
-	Quantity    int    `json:"quantity"`
-	Months      int    `json:"months"`
-	Status      string `json:"status"`
-	Available   int    `json:"available"`
-	CanDispatch bool   `json:"can_dispatch"`
+	Location     int    `json:"location"`
+	TravelMonths int    `json:"travel_months,omitempty"`
+	ID           int    `json:"id"`
+	Resource     string `json:"resource"`
+	Quantity     int    `json:"quantity"`
+	Months       int    `json:"months"`
+	Status       string `json:"status"`
+	Available    int    `json:"available"`
+	CanDispatch  bool   `json:"can_dispatch"`
 }
 
 func (s *State) Requests() []Request {
@@ -308,14 +329,18 @@ func (s *State) Requests() []Request {
 	}
 	for _, e := range s.Events {
 		d, _ := s.template(e.SourceID)
-		if d.Type != 1 || (e.Status != "requested" && e.Status != "overdue" && e.Status != "dispatched" && e.Status != "dispatched_late") {
+		if d.Type != 1 || (e.Status != "requested" && e.Status != "overdue" && e.Status != "dispatched" && e.Status != "dispatched_late" && !strings.HasPrefix(e.Status, "army_")) {
 			continue
 		}
 		quantity := e.Amount
 		if e.Item < 31 {
 			quantity *= 100
 		}
-		result = append(result, Request{ID: e.ID, Resource: ResourceID(e.Item), Quantity: quantity, Months: e.Remaining, Status: e.Status})
+		travel := 0
+		if e.Item == 32 {
+			travel = s.ArmyTravelMonths(e.ID)
+		}
+		result = append(result, Request{Location: e.Location, TravelMonths: travel, ID: e.ID, Resource: ResourceID(e.Item), Quantity: quantity, Months: e.Remaining, Status: e.Status})
 	}
 	return result
 }
@@ -330,8 +355,12 @@ func (s *State) Request(id int) (Request, error) {
 }
 
 func (s *State) DispatchRequest(id int) error {
-	if _, err := s.Request(id); err != nil {
+	r, err := s.Request(id)
+	if err != nil {
 		return err
+	}
+	if r.Resource == "troops" {
+		return errors.New("military requests require physical company dispatch")
 	}
 	for i, e := range s.Events {
 		if e.ID == id {
@@ -382,7 +411,7 @@ func (s *State) validateEvents() error {
 			return errors.New("unknown campaign event template")
 		}
 		switch e.Status {
-		case "scheduled", "requested", "overdue", "dispatched", "dispatched_late", "completed", "refused", "pending_effect", "dormant":
+		case "scheduled", "requested", "overdue", "dispatched", "dispatched_late", "completed", "refused", "pending_effect", "dormant", "army_outbound", "army_battle", "army_late", "army_return_wait", "army_return", "army_homebound":
 		default:
 			return errors.New("invalid event status")
 		}

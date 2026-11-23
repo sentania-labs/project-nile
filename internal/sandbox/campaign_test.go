@@ -172,6 +172,8 @@ func TestThinisCompletesWithDeliveredGoldBastAndEntertainment(t *testing.T) {
 		if w.Campaign.EntertainmentOpened && !entertainmentBuilt {
 			build("jugglerschool", 20, 11)
 			build("booth", 10, 10)
+			build("booth", 22, 20)
+			build("temple_bast", 15, 22)
 			entertainmentBuilt = true
 		}
 		for _, b := range w.Buildings {

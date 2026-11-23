@@ -22,7 +22,8 @@ type influence struct{ base, step, change, radius int }
 // Initial desirability and falloff from original Normal building model.
 // Distance is measured from the closest footprint edge in square rings.
 var influences = map[string]influence{
-	"residence": {12, 2, -2, 4}, "courthouse": {8, 2, -2, 3}, "stonequarry": {-6, 1, 1, 6}, "limestonequarry": {-6, 1, 1, 6}, "granitequarry": {-6, 1, 1, 6}, "sandstonequarry": {-6, 1, 1, 6}, "woodcutter": {-4, 1, 1, 3}, "gemstonemine": {-12, 2, 2, 6}, "jeweler": {-2, 1, 1, 2},
+	"smallstatue": {3, 1, -1, 3}, "mediumstatue": {10, 1, -2, 4}, "largestatue": {14, 2, -2, 5}, "zoo": {-6, 1, 1, 3}, "paintmaker": {-4, 1, 1, 4}, "lampmaker": {-4, 1, 1, 4},
+	"familymansion": {20, 2, -3, 5}, "dynastymansion": {28, 2, -4, 6}, "townpalace": {22, 2, -5, 5}, "citypalace": {24, 2, -6, 6}, "residence": {12, 2, -2, 4}, "courthouse": {8, 2, -2, 3}, "stonequarry": {-6, 1, 1, 6}, "limestonequarry": {-6, 1, 1, 6}, "granitequarry": {-6, 1, 1, 6}, "sandstonequarry": {-6, 1, 1, 6}, "woodcutter": {-4, 1, 1, 3}, "gemstonemine": {-12, 2, 2, 6}, "jeweler": {-2, 1, 1, 2},
 	"booth": {2, 1, -1, 2}, "bandstand": {4, 1, -1, 4}, "pavilion": {6, 1, -1, 6}, "jugglerschool": {2, 1, -1, 2},
 	"well": {1, 1, -1, 1}, "watersupply": {4, 1, -1, 4}, "garden": {3, 1, -1, 3},
 	"palace": {8, 2, -2, 6}, "taxoffice": {3, 1, -1, 3}, "firehouse": {-2, 1, 1, 2},
@@ -51,6 +52,8 @@ func (w World) desirabilityMap() map[Point]int {
 	for _, b := range w.Buildings {
 		f, ok := influences[b.Kind]
 		switch {
+		case b.Kind == "palace" && w.RoyalCredit:
+			f, ok = influence{20, 2, -4, 4}, true
 		case slices.Contains(temples, b.Kind):
 			f, ok = influence{6, 2, -2, 6}, true
 		case slices.Contains(shrines, b.Kind):
@@ -179,8 +182,12 @@ func (w *World) religionTick() {
 		if i := slices.Index(shrines, b.Kind); i >= 0 {
 			coverage[i] += 300
 		}
-		if i := slices.Index(temples, b.Kind); i >= 0 && b.Connected && b.Workers >= b.WorkersNeeded {
-			coverage[i] += 750
+		if i := templeGod(b.Kind); i >= 0 && b.Connected && b.Workers >= b.WorkersNeeded {
+			if slices.Contains(complexKinds, b.Kind) {
+				coverage[i] += 8000
+			} else {
+				coverage[i] += 750
+			}
 		}
 	}
 	swing := min(50, max(0, (pop-350)/50)*10)

@@ -7,7 +7,7 @@ var groups: Dictionary = {}
 var labels: Dictionary = {}
 var visible_catalog: Array = []
 var build_scroll: ScrollContainer
-const OVERLAYS := {"None": "", "Water": "water", "Food": "food", "Fire risk": "fire", "Collapse risk": "collapse", "Tax coverage": "tax", "Employment": "labor"}
+const OVERLAYS := {"None": "", "Water": "water", "Food": "food", "Fire risk": "fire", "Collapse risk": "collapse", "Tax coverage": "tax", "Disease risk":"disease","Malaria risk":"malaria", "Employment": "labor"}
 
 var burial_controls := preload("res://scripts/burial_controls.gd").new()
 var naval_controls := preload("res://scripts/naval_controls.gd").new()
@@ -37,6 +37,8 @@ var completion_continue: Button
 var construction_menu: PanelContainer
 var price_labels: Dictionary = {}
 var policy_panel: VBoxContainer
+var gift_row := HBoxContainer.new()
+var gift_buttons: Array[Button]=[]
 var governor := HBoxContainer.new()
 var salary := OptionButton.new()
 var donation := SpinBox.new()
@@ -279,6 +281,7 @@ func _add_choice(kind: String, caption: String) -> void:
 	entry.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	margin.add_child(entry)
 	var art := "shrine" if kind.begins_with("shrine_") else kind
+	if kind.begins_with("complex_"): art="temple_"+kind.trim_prefix("complex_")
 	art = {"policestation":"police","residence":"personalresidence","shipbridge":"bridge"}.get(art,art)
 	if game.assets.has(art) and ResourceLoader.exists(game._asset_path(game.assets[art].path)):
 		var icon := TextureRect.new()
@@ -311,7 +314,7 @@ func sync_catalog() -> void:
 		var group := str(entry.category)
 		match kind:
 			"hut", "well", "watersupply": group = "Homes"
-			"roadblock", "plaza", "garden", "bridge","shipbridge","ferry","irrigationditch": group = "Streets"
+			"roadblock", "plaza", "garden","smallstatue","mediumstatue","largestatue", "bridge","shipbridge","ferry","irrigationditch": group = "Streets"
 			_:
 				group = {"Services":"Safety", "Government":"Civic", "Labor":"Civic", "Monuments":"Monument", "Housing":"Homes", "Beautification":"Streets"}.get(group,group)
 		if not groups.has(group): continue
@@ -494,6 +497,12 @@ func _build_modals() -> void:
 	labor_priority.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	allocation.add_child(labor_priority)
 	policy_panel.add_child(governor)
+	policy_panel.add_child(gift_row)
+	gift_row.add_child(game._label("Gift to Pharaoh",14,Color("35281d")))
+	for i in range(3):
+		var gift: Button=game._button("",func() -> void: game._queue_command("royal_gift",{"rank":i}))
+		gift_row.add_child(gift)
+		gift_buttons.append(gift)
 	governor.add_child(game._label("Monthly salary",14,Color("35281d")))
 	for amount in [0,2,5,8,12,20,30,40,60,80,100]: salary.add_item("%d Db" % amount)
 	salary.item_selected.connect(func(rank: int) -> void: game._queue_command("set_salary",{"rank":rank}))
@@ -633,7 +642,12 @@ func _update_overseer() -> void:
 	military_controls.sync(overseer_topic)
 	naval_controls.sync(overseer_topic)
 	policy_panel.visible = overseer_topic == "Treasury"
-	governor.visible = game._has_building_kind("residence")
+	governor.visible = game._has_any_kind(["residence","familymansion","dynastymansion"])
+	gift_row.visible=governor.visible or int(s.get("savings",0))>0
+	for i in range(gift_buttons.size()):
+		var cost:=int(s.get("royal_gift_costs",[20,50,100])[i])
+		gift_buttons[i].text="%s · %d" % [["Modest","Generous","Lavish"][i],cost]
+		gift_buttons[i].disabled=cost>int(s.get("savings",0))
 	salary.select(int(s.get("salary_rank",0)))
 	donation.max_value = float(s.get("savings",0))
 	var lines: Array[String] = ["[b]" + overseer_topic + "[/b]", ""]
@@ -652,7 +666,8 @@ func _update_overseer() -> void:
 			else: lines.append("Festivals held: %d" % int(s.get("festivals_held",0)))
 		"City":
 			lines.append("Population: %d\nTreasury: %d debens\nGrain: %d\nYear %d · %s" % [int(s.get("population", 0)), int(s.get("treasury", 0)), int(s.get("grain", 0)), int(s.get("year", 1)), str(s.get("season", "Growing"))])
-			lines.append("\nFood in town: %d grain" % int(s.get("grain", 0)))
+			lines.append("Culture %d     Prosperity %d     Monuments %d     Kingdom %d" % [int(s.get("culture",0)),int(s.get("prosperity",0)),int(s.get("monument_rating",0)),int(s.get("kingdom_standing",0))])
+			if int(s.get("zoo_coverage",0))>0: lines.append("Zoo serves %d residents" % int(s.zoo_coverage))
 		"Food":
 			lines.append("Grain available: %d\nHarvested: %d\nConsumed: %d" % [int(s.get("grain", 0)), int(s.get("grain_produced", 0)), int(s.get("grain_consumed", 0))])
 			for b: Dictionary in s.get("buildings", []):
@@ -667,6 +682,7 @@ func _update_overseer() -> void:
 			lines.append("Treasury: %d debens\nIncome: %d\nExpenses: %d" % [int(s.get("treasury", 0)), int(s.get("income", 0)), int(s.get("expenses", 0))])
 			lines.append("Gold received: %d Db\nGold in transit: %d Db" % [int(s.get("gold_delivered", 0)), int(s.get("gold_in_transit", 0))])
 			if not s.get("taxes_enabled", false): lines.append("A staffed palace is needed to collect taxes.")
+			lines.append("Kingdom rating: %d / 100" % int(s.get("kingdom_standing",50)))
 			if governor.visible: lines.append("Personal savings: %d Db" % int(s.get("savings",0)))
 			lines.append("Last collection: %d Db\nLast wages: %d Db" % [int(s.get("last_income", 0)), int(s.get("last_wages", 0))])
 			lines.append("\nTax collectors must reach households. Taxes above 5 Db slow new arrivals. Zero wages halt staffing and immigration. Labor priority directs scarce workers first.")

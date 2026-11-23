@@ -11,6 +11,7 @@ import (
 	"io"
 	"os"
 
+	"github.com/sentania-labs/project-nile/internal/campaign"
 	"github.com/sentania-labs/project-nile/internal/probe"
 )
 
@@ -81,7 +82,11 @@ func serve(in io.Reader, out io.Writer, store *probe.Store) error {
 func run() error {
 	path := flag.String("save", "", "local SQLite save path (required)")
 	sandboxMode := flag.Bool("sandbox", false, "run the street-building prototype")
+	missions := flag.Bool("missions", false, "list playable campaign settlements")
 	flag.Parse()
+	if *missions {
+		return json.NewEncoder(os.Stdout).Encode(campaign.MissionChoices())
+	}
 	if *path == "" || flag.NArg() != 0 {
 		return errors.New("usage: nile-sim --save /local/path/diagnostic.nile")
 	}

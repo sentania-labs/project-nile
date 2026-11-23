@@ -22,6 +22,8 @@ type sandboxRequest struct {
 	BoatID        int64           `json:"boat_id,omitempty"`
 	Path          string          `json:"path,omitempty"`
 	FortID        int64           `json:"fort_id,omitempty"`
+	FortIDs       []int64         `json:"fort_ids,omitempty"`
+	Naval         bool            `json:"naval,omitempty"`
 	God           string          `json:"god,omitempty"`
 	FestivalSize  int             `json:"festival_size,omitempty"`
 	Route         string          `json:"route,omitempty"`
@@ -43,20 +45,23 @@ type sandboxRequest struct {
 	X2            int             `json:"x2,omitempty"`
 	Y2            int             `json:"y2,omitempty"`
 	Ticks         *int            `json:"ticks,omitempty"`
+	Facing        int             `json:"facing,omitempty"`
+	Pace          string          `json:"pace,omitempty"`
 	Speed         int             `json:"speed,omitempty"`
 	Scenario      string          `json:"scenario,omitempty"`
 	MissionID     *int            `json:"mission_id,omitempty"`
 }
 
 type sandboxResponse struct {
-	SavePath string       `json:"save_path,omitempty"`
-	ID       int64        `json:"id"`
-	OK       bool         `json:"ok"`
-	Error    string       `json:"error,omitempty"`
-	State    sandbox.View `json:"state"`
-	Hash     string       `json:"hash"`
-	Running  bool         `json:"running"`
-	Speed    int          `json:"speed"`
+	SavePath   string       `json:"save_path,omitempty"`
+	ID         int64        `json:"id"`
+	OK         bool         `json:"ok"`
+	Error      string       `json:"error,omitempty"`
+	State      sandbox.View `json:"state"`
+	Hash       string       `json:"hash"`
+	Running    bool         `json:"running"`
+	TickMillis int64        `json:"tick_ms"`
+	Speed      int          `json:"speed"`
 }
 
 const sandboxTickPeriod = 200 * time.Millisecond
@@ -69,6 +74,32 @@ type sandboxClock struct {
 	anchor    time.Time
 	remainder time.Duration
 	speed     int
+	period    time.Duration
+}
+
+func (c sandboxClock) tickPeriod() time.Duration {
+	if c.period == 0 {
+		return sandboxTickPeriod
+	}
+	return c.period
+}
+func (c *sandboxClock) setPace(pace string) error {
+	var next time.Duration
+	switch pace {
+	case "classic80":
+		next = 1520 * time.Millisecond
+	case "classic50":
+		next = 4580 * time.Millisecond
+	case "playtest":
+		next = sandboxTickPeriod
+	case "classic100":
+		next = 86 * time.Millisecond
+	default:
+		return errors.New("unknown calendar pace")
+	}
+	c.remainder = c.remainder * time.Duration(next.Milliseconds()) / time.Duration(c.tickPeriod().Milliseconds())
+	c.period = next
+	return nil
 }
 
 func (c *sandboxClock) catchUp(world *sandbox.World, now time.Time) error {
@@ -81,11 +112,12 @@ func (c *sandboxClock) catchUp(world *sandbox.World, now time.Time) error {
 	}
 	// Divide first so a very long elapsed duration cannot overflow when the
 	// retained fraction is added. No complete ticks are dropped or clamped.
+	period := c.tickPeriod()
 	speed := max(1, c.speed)
-	ticks := int64(elapsed/sandboxTickPeriod) * int64(speed)
-	fraction := (elapsed%sandboxTickPeriod)*time.Duration(speed) + c.remainder
-	ticks += int64(fraction / sandboxTickPeriod)
-	c.remainder = fraction % sandboxTickPeriod
+	ticks := int64(elapsed/period) * int64(speed)
+	fraction := (elapsed%period)*time.Duration(speed) + c.remainder
+	ticks += int64(fraction / period)
+	c.remainder = fraction % period
 	c.anchor = now
 	for ticks > 0 {
 		batch := int64(1000)
@@ -147,6 +179,8 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 				}
 			case "pause":
 				clock.running = false
+			case "set_pace":
+				err = clock.setPace(req.Pace)
 			case "set_speed":
 				if req.Speed != 1 && req.Speed != 2 && req.Speed != 4 {
 					err = errors.New("speed must be 1, 2, or 4")
@@ -200,6 +234,12 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 				}
 			case "dispatch_burial":
 				err = world.DispatchBurial(req.Resource, req.Limit)
+			case "dispatch_army":
+				if req.RequestID == nil {
+					err = errors.New("request_id is required")
+				} else {
+					err = world.DispatchCampaignArmy(*req.RequestID, req.FortIDs, req.Naval)
+				}
 			case "dispatch_request", "refuse_request":
 				if req.RequestID == nil {
 					err = errors.New("request_id is required")
@@ -213,6 +253,12 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 					err = errors.New("rank is required")
 				} else {
 					err = world.SetSalary(*req.Rank)
+				}
+			case "royal_gift":
+				if req.Rank == nil {
+					err = errors.New("gift rank is required")
+				} else {
+					err = world.SendRoyalGift(*req.Rank)
 				}
 			case "donate":
 				err = world.DonateSavings(req.Amount)
@@ -232,8 +278,12 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 				}
 			case "naval_order":
 				err = world.NavalOrder(req.BoatID, req.Order, sandbox.Point{X: req.X, Y: req.Y})
+			case "transport_company":
+				err = world.TransportCompany(req.BoatID, req.FortID, sandbox.Point{X: req.X, Y: req.Y})
 			case "military_order":
 				err = world.MilitaryOrder(req.FortID, req.Order, sandbox.Point{X: req.X, Y: req.Y})
+			case "test_sea_invasion":
+				err = world.TestSeaInvasion()
 			case "test_invasion":
 				err = world.TestInvasion()
 			case "open_trade":
@@ -251,7 +301,7 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 			case "road":
 				err = world.BuildRoads(req.Tiles)
 			case "build":
-				err = world.Build(req.Kind, req.X, req.Y)
+				err = world.BuildFacing(req.Kind, req.X, req.Y, req.Facing)
 			case "step":
 				if clock.running {
 					err = errors.New("pause the simulation before an explicit step")
@@ -329,7 +379,7 @@ func serveSandboxWithClock(in io.Reader, out io.Writer, store *sandbox.Store, no
 				err = errors.New("unknown operation")
 			}
 		}
-		resp := sandboxResponse{SavePath: store.Path, ID: req.ID, OK: err == nil, State: world.View(), Hash: world.Hash(), Running: clock.running, Speed: clock.speed}
+		resp := sandboxResponse{TickMillis: clock.tickPeriod().Milliseconds(), SavePath: store.Path, ID: req.ID, OK: err == nil, State: world.View(), Hash: world.Hash(), Running: clock.running, Speed: clock.speed}
 		if err != nil {
 			resp.Error = err.Error()
 		}

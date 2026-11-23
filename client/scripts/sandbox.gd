@@ -4,8 +4,11 @@ extends "res://scripts/street_study.gd"
 const Transport = preload("res://scripts/sidecar.gd")
 const CityInterface = preload("res://scripts/city_interface.gd")
 const CityMotion = preload("res://scripts/city_motion.gd")
+var royal_tombs = preload("res://scripts/royal_tombs.gd").new()
 var pyramid_view = preload("res://scripts/pyramid_view.gd").new()
-const TICK_SECONDS := 0.2
+var temple_facing := 0
+var temple_grounds:=preload("res://scripts/temple_grounds.gd").new()
+var tick_seconds := 0.2
 
 var sim: Node
 var state: Dictionary = {}
@@ -152,6 +155,9 @@ func _ready() -> void:
 	sim.response_received.connect(_on_reply)
 	sim.failed.connect(_on_failure)
 	if sim.start("sandbox"):
+		var options:=get_node("/root/CitySettings")
+		options.pace_changed.connect(func(pace: String) -> void: _queue_command("set_pace", {"pace":pace}))
+		_queue_command("set_pace", {"pace":options.pace})
 		_queue_command("state")
 	if "--campaign-smoke" in args:
 		preload("res://tests/campaign_smoke.gd").run.call_deferred(self)
@@ -266,6 +272,7 @@ func _navigate_minimap(tile: Vector2) -> void:
 
 func _set_overlay(kind: String) -> void:
 	active_overlay = kind
+	if city_ui!=null and city_ui.overlay_picker!=null: city_ui.overlay_picker.select(city_ui.OVERLAYS.values().find(kind))
 	overlay.queue_redraw()
 
 
@@ -298,7 +305,16 @@ func _cycle_speed() -> void:
 	_queue_command("set_speed", {"speed": 1 if simulation_speed == 4 else simulation_speed * 2})
 
 
+func _exit_tree() -> void:
+	var settings := get_node_or_null("/root/CitySettings")
+	if settings: settings.set_river_distance(1000.0)
+
+
 func _process(delta: float) -> void:
+	if camera and startup_done:
+		var at := _tile_at(camera.get_screen_center_position())
+		var distance := maxf(0.0,maxf(geography.west_at(int(at.y))-at.x,at.x-geography.bank_at(int(at.y))))
+		get_node("/root/CitySettings").set_river_distance(distance)
 	if sim == null or camera == null:
 		return
 	poll_elapsed += delta
@@ -332,6 +348,7 @@ func _on_reply(reply: Dictionary) -> void:
 	saves.received(current_operation,reply)
 	replies += 1
 	paused = not bool(reply.get("running", false))
+	tick_seconds = float(reply.get("tick_ms", 200))/1000.0
 	simulation_speed = int(reply.get("speed", 1))
 	speed_button.text = "%d×" % simulation_speed
 	if current_operation == "set_speed": speed_button.disabled = false
@@ -339,6 +356,8 @@ func _on_reply(reply: Dictionary) -> void:
 	if current_operation in ["resume", "pause"]:
 		pause_button.disabled = false
 	state = reply.get("state", {})
+	if reply.get("ok",false) and current_operation in ["build","road","canal","zone","repair"]:
+		get_node("/root/CitySettings").placement_sound()
 	city_ui.sync_catalog()
 	_sync_world()
 	var year := "Year %d" % int(state.get("year",1))
@@ -383,7 +402,7 @@ func _on_reply(reply: Dictionary) -> void:
 				_queue_command("new_town", {"scenario": startup_choice})
 			elif startup_choice == "campaign":
 				startup_action = "new_campaign"
-				_queue_command("new_campaign", {"mission_id": 0})
+				_queue_command("new_campaign", {"mission_id": int(get_tree().root.get_meta("nile_mission_id",0))})
 			elif startup_choice == "load":
 				startup_action = "load"
 				_queue_command("load")
@@ -451,6 +470,7 @@ func _building_size(kind: String, data: Dictionary = {}) -> Vector2i:
 		return Vector2i(int(data.width), int(data.height))
 	var catalog := _catalog_entry(kind)
 	if not catalog.is_empty():
+		if kind.begins_with("complex_") and temple_facing%2==1: return Vector2i(int(catalog.height),int(catalog.width))
 		return Vector2i(int(catalog.get("width", 1)), int(catalog.get("height", 1)))
 	if assets.has(kind):
 		var size: Array = assets[kind].get("footprint", [1, 1])
@@ -465,8 +485,10 @@ func _building_rect(data: Dictionary) -> Rect2:
 func _sync_world() -> void:
 	geography.sync(self,state)
 	resources.sync(self, state)
+	royal_tombs.sync(self)
 	var flood_level := float(state.get("flood_level", 0.0))
 	river_material.set_shader_parameter("flood_level", flood_level)
+	river_material.set_shader_parameter("blood",int(state.get("tick",0))<int(state.get("city_events",{}).get("blood_until",0)))
 	river_material.set_shader_parameter("orientation", view_turns)
 	var roads: Array = state.get("roads", [])
 	road_tiles.clear()
@@ -505,6 +527,7 @@ func _sync_world() -> void:
 		if vacant: vacant_plots.append(cell)
 		var asset_id := str(building.kind)
 		asset_id={"policestation":"police","residence":"personalresidence","shipbridge":"bridge"}.get(asset_id,asset_id)
+		if asset_id.begins_with("complex_"): asset_id="complexsanctuary"
 		if asset_id.begins_with("shrine_"): asset_id = "shrine"
 		if asset_id == "hut":
 			var tier := clampi(int(building.get("tier", 0)), 0, 2)
@@ -522,6 +545,7 @@ func _sync_world() -> void:
 			buildings.add_child(new_sprite)
 			building_nodes[id] = new_sprite
 		var sprite := building_nodes[id] as Sprite2D
+		sprite.flip_h=asset_id in ["ferry","dock","warshipwharf","transportwharf","fishingwharf","shipwright"] and geography.west_at(int(building.y))>0 and int(building.x)+int(building.width)-1==geography.west_at(int(building.y))
 		sprite.visible = not vacant or asset_id == "vacant_plot"
 		_skin_sprite(sprite, asset_id, _front_corner(rect))
 		if asset_id in ["farm", "barleyfarm", "flaxfarm"]:
@@ -546,7 +570,7 @@ func _sync_world() -> void:
 			building_nodes.erase(id)
 	for palm: Node2D in landscape_nodes:
 		var palm_tile: Vector2i = palm.get_meta("tile")
-		palm.visible = palm_tile.x>=geography.bank_at(palm_tile.y)+1 and not blocked_tiles.has(palm_tile)
+		palm.visible = palm_tile.x>=geography.bank_at(palm_tile.y)+1 and not blocked_tiles.has(palm_tile) and not royal_tombs.cliffs.has(palm_tile)
 	placements.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		var ad: float = a.sprite.position.y
 		var bd: float = b.sprite.position.y
@@ -554,6 +578,7 @@ func _sync_world() -> void:
 	seen.clear()
 	walker_data.clear()
 	for walker: Dictionary in state.get("walkers", []):
+		if walker.get("aboard_ferry",false): continue
 		var id := str(walker.id)
 		seen[id] = true
 		walker_data[id] = walker
@@ -575,6 +600,7 @@ func _sync_world() -> void:
 			walker_targets.erase(id)
 	if motion != null: motion.sync()
 	pyramid_view.sync()
+	temple_grounds.sync(self)
 	overlay.queue_redraw()
 
 
@@ -617,7 +643,7 @@ func _refresh_inspector() -> void:
 		var size := _building_size(active_tool)
 		kind_label.text = "%d × %d tiles · %d debens" % [size.x, size.y, int(catalog.get("cost", 0))]
 		detail_label.text = _tool_guidance(active_tool)
-		if int(catalog.get("cost", 0)) > int(state.get("treasury", 0)):
+		if int(catalog.get("cost", 0)) > int(state.get("treasury", 0))+int(state.get("construction_credit",0)):
 			detail_label.text += "\n\nThe city needs more debens before this can be built."
 	elif selected.is_empty():
 		title_label.text = ""
@@ -633,6 +659,7 @@ func _refresh_inspector() -> void:
 		if role == "builder":
 			kind_label.text = {"commute": "Travelling to the staging area", "work": "Working at the monument", "return": "Returning home"}.get(str(walker.get("stage", "")), "Monument construction crew")
 		detail_label.text = {"immigrant": "Following connected roads to a home with room.", "goldcart": "Delivering gold directly to the village palace.", "cart": "Hauling the farm's harvest to a granary.", "buyer": "Collecting stored grain and carrying it back to the bazaar.", "seller": "Walking local roads and delivering food to nearby homes.", "porter": "Moving physical materials between workshops, storage and the monument.", "firefighter": "Inspecting buildings beside the patrol route to reduce fire risk.", "architect": "Checking structures beside the road to prevent collapse.", "taxcollector": "Visiting households to collect the city's taxes.", "builder": "Walking between home and the monument staging area for a construction shift."}.get(role, "Following the road network.")
+		pyramid_view.inspect_walker(walker)
 	else:
 		var building: Dictionary = selected.building
 		if building.kind == "well":
@@ -644,7 +671,7 @@ func _refresh_inspector() -> void:
 			kind_label.text = "%d / %d workers" % [int(building.get("workers", 0)), int(building.get("workers_needed", 0))]
 			detail_label.text = "Grain: %d / %d\nRoad: %s" % [int(building.get("stock", 0)), int(building.get("stock_capacity", 0)), "connected" if building.get("connected", false) else "not connected"]
 			if building.kind == "farm":
-				var seconds := ceili(float(state.get("harvest_in", 0)) * TICK_SECONDS / simulation_speed)
+				var seconds := ceili(float(state.get("harvest_in", 0)) * tick_seconds / simulation_speed)
 				detail_label.text += "\nHarvest in %ds at %d×" % [seconds, simulation_speed]
 				production_bar.visible = true
 				production_bar.max_value = maxf(float(building.get("work_capacity", 1)), 1)
@@ -682,7 +709,7 @@ func _refresh_inspector() -> void:
 			detail_label.text = "Road: %s" % ("connected" if building.get("connected", false) else "not connected")
 			if building.kind == "goldmine":
 				detail_label.text += "\nGold ready for collection: %d Db" % int(building.get("gold", 0))
-			if building.kind == "palace":
+			if building.kind in ["palace","townpalace","citypalace"]:
 				detail_label.text += "\nGold received: %d Db" % int(state.get("gold_delivered", 0))
 			if not str(building.get("farm_type","")).is_empty():
 				detail_label.text += "\n%s · fertility %d%% · %s" % [str(building.farm_type).capitalize(),int(building.get("fertility",0)),"Irrigated" if building.get("irrigated",false) else "Unirrigated"]
@@ -708,6 +735,8 @@ func _refresh_inspector() -> void:
 			var quantity := int(building.get("inventories", {}).get(resource.id, 0))
 			if quantity > 0 and str(resource.id) not in ["grain", "clay", "straw", "bricks"]:
 				detail_label.text += "\n%s: %d" % [resource.label, quantity]
+		if state.get("labor_seekers", false) and int(building.get("workers_needed", 0)) > 0 and int(building.get("houses_covered", 0)) == 0:
+			detail_label.text += "\nWaiting for a labor seeker to reach occupied homes."
 		if building.kind == "hut": detail_label.text += "\nDesirability: %d" % int(building.get("desirability", 0))
 		if building.kind != "mastaba" and str(building.get("monument_family", "")).is_empty():
 			detail_label.text += "\n\nFire risk: %d\nCollapse risk: %d" % [int(building.get("fire_risk", 0)), int(building.get("collapse_risk", 0))]
@@ -733,6 +762,7 @@ func _set_tool(tool: String) -> void:
 
 
 func _tool_guidance(tool: String) -> String:
+	if tool.begins_with("complex_"): return "Place the temple court beside a road. R rotates the building."
 	return {"inspect": "Inspect buildings or follow a walker.", "road": "Drag across empty land to lay roads.", "hut": "Drag to mark housing plots beside a road.", "well": "Place a well near housing.", "farm": "Place a 3×3 farm on the dark floodplain beside a road.", "granary": "Store harvests for bazaar buyers beside a connected road.", "bazaar": "Sellers distribute food along the roads serving your homes.", "goldmine": "Build beside gold-bearing rock and connect the mine to your palace by road.", "palace": "Place one village palace on grassland to receive gold and administer taxes.", "claypit": "Extract clay from the floodplain. Porters carry it to brickworks.", "brickworks": "Combine delivered clay and farm straw into bricks.", "storageyard": "Hold clay, straw and bricks for the city's workshops and builders.", "firehouse": "Patrol connected streets to reduce fire risk.", "architect": "Inspect structures along connected roads to prevent collapse.", "taxoffice": "Send tax collectors through the streets to reach households.", "mastaba": "Supply bricks and workers to complete the monument in stages.", "clear": "Remove empty structures or roads. Residents and goods are protected."}.get(tool, "Place beside a connected road.")
 
 
@@ -742,6 +772,14 @@ func _can_place(cell: Vector2i) -> bool:
 
 func _placement_error(cell: Vector2i) -> String:
 	var size := _building_size(active_tool)
+	if active_tool in ["complexoracle","complexaltar"]:
+		var site:=_building_at(cell)
+		if not str(site.get("kind","")).begins_with("complex_"): return "Choose your temple complex"
+		var flag:=1 if active_tool=="complexaltar" else 2
+		return "Already built" if int(site.get("temple_upgrades",0))&flag else ""
+	if active_tool.begins_with("complex_"):
+		for building: Dictionary in state.get("buildings",[]):
+			if str(building.kind).begins_with("complex_"): return "The city already has a temple complex"
 	if cell.y < 0 or cell.x < 0 or cell.x + size.x > map_width or cell.y + size.y > map_height:
 		return "Outside the city site"
 	if active_tool in ["bridge","shipbridge"]:
@@ -750,10 +788,10 @@ func _placement_error(cell: Vector2i) -> String:
 		if west==0 or cell.x not in [west-1,west,east-1,east]: return "Start the crossing at either riverbank"
 		return "" if not resources.spans.has(Vector2i(west,cell.y)) else "A bridge already crosses here"
 	if active_tool=="clear" and resources.spans.has(cell): return ""
-	var coastal: bool=active_tool in ["shipwright","fishingwharf","dock","transportwharf","warshipwharf"]
+	var coastal: bool=active_tool in ["shipwright","fishingwharf","dock","transportwharf","warshipwharf","ferry"]
 	for y in range(cell.y,cell.y+size.y):
 		if coastal:
-			if cell.x != geography.bank_at(y)-1: return "Place the pier across a straight shore, with its first column over water"
+			if cell.x != geography.bank_at(y)-1 and not (geography.west_at(y)>0 and cell.x+size.x-1==geography.west_at(y)): return "Place the pier along a straight riverbank"
 		elif cell.x<0 or geography.water_at(cell.x,y) or geography.water_at(cell.x+size.x-1,y) or (cell.x<geography.west_at(y) and cell.x+size.x>geography.bank_at(y)): return "This site is in the Nile"
 	if active_tool == "clear":
 		if resources.canals.has(cell): return ""
@@ -772,7 +810,7 @@ func _placement_error(cell: Vector2i) -> String:
 		if cell in [Vector2i(int(entry.x), int(entry.y)), Vector2i(int(exit_tile.x), int(exit_tile.y))]:
 			return "The city entrance must stay open"
 		return "" if road_tiles.has(cell) else "Nothing here to clear"
-	if active_tool in ["farm", "claypit", "barleyfarm", "flaxfarm", "figfarm", "pomegranatefarm", "lettucefarm", "chickpeafarm"]:
+	if active_tool in ["farm", "claypit", "barleyfarm", "flaxfarm", "figfarm", "pomegranatefarm", "lettucefarm", "chickpeafarm","hennafarm"]:
 		var all_meadow := int(state.get("agriculture_version",0))>0 and active_tool!="claypit"
 		var all_flood := true
 		for y in range(cell.y,cell.y+size.y):
@@ -785,10 +823,11 @@ func _placement_error(cell: Vector2i) -> String:
 	if active_tool in ["goldmine","gemstonemine","coppermine"] and not resources.near_deposit(cell, size):
 		return "Place the mine beside gold-bearing rock"
 	if active_tool == "watersupply" and not resources.has_grass(cell, size): return "Water carriers need a site above groundwater"
-	if active_tool == "palace":
-		if _has_building_kind("palace"): return "The city already has a palace"
+	if active_tool in ["residence","familymansion","dynastymansion"] and _has_any_kind(["residence","familymansion","dynastymansion"]): return "The city already has a personal residence"
+	if active_tool in ["palace","townpalace","citypalace"]:
+		if _has_any_kind(["palace","townpalace","citypalace"]): return "The city already has a palace"
 		if not resources.has_grass(cell, size): return "The palace needs grass beneath its grounds"
-	if int(_catalog_entry(active_tool).get("cost", 0)) > int(state.get("treasury", 0)):
+	if int(_catalog_entry(active_tool).get("cost", 0)) > int(state.get("treasury", 0))+int(state.get("construction_credit",0)):
 		return "The treasury cannot afford this site"
 	if active_tool in ["plaza", "roadblock"]:
 		if resources.features.has(cell): return "This road already has a plaza or roadblock"
@@ -798,17 +837,28 @@ func _placement_error(cell: Vector2i) -> String:
 	for y in range(cell.y, cell.y + size.y):
 		for x in range(cell.x, cell.x + size.x):
 			var tile := Vector2i(x, y)
+			if royal_tombs.cliffs.has(tile) and active_tool!="smallroyaltomb": return "Cliffs cannot be built over"
 			if active_tool not in ["road","irrigationditch"] and resources.canals.has(tile): return "An irrigation ditch crosses the site"
 			if resources.rock.has(tile) or resources.obstacles.has(tile): return "Rock occupies part of the site"
 			if resources.wildlife_tiles.has(tile): return "Leave the hunting grounds open"
 			if road_tiles.has(tile):
-				if not venue: return "A road crosses the site"
+				if not venue and active_tool!="gatehouse": return "A road crosses the site"
 				if not _building_at(tile).is_empty(): return "Another building occupies the site"
 				junction = junction or ((road_tiles.has(tile + Vector2i.UP) or road_tiles.has(tile + Vector2i.DOWN)) and (road_tiles.has(tile + Vector2i.LEFT) or road_tiles.has(tile + Vector2i.RIGHT)))
 				continue
+			if active_tool=="tower":
+				var base: Dictionary=_building_at(tile)
+				if base.get("kind","")!="wall" or not str(base.get("damaged","")).is_empty(): return "A Tower needs a two-by-two wall base"
+				continue
 			if blocked_tiles.has(tile): return "Another building occupies the site"
+	if active_tool=="gatehouse":
+		var crossing:=false
+		for y in range(cell.y,cell.y+size.y):
+			for x in range(cell.x,cell.x+size.x): crossing=crossing or road_tiles.has(Vector2i(x,y))
+		if not crossing: return "Place the Gatehouse over a road"
 	if venue and not junction: return "Place the venue over a road bend or intersection"
-	return pyramid_view.placement_error(cell, active_tool)
+	var tomb_error: String=royal_tombs.placement_error(self,cell,active_tool)
+	return tomb_error if not tomb_error.is_empty() else pyramid_view.placement_error(cell, active_tool)
 
 
 func _show_placement_error(reason: String) -> void:
@@ -840,6 +890,7 @@ func _update_ghost() -> void:
 	hover_cell = Vector2i(floori(tile.x), floori(tile.y))
 	hover_valid = _can_place(hover_cell)
 	var art := "shrine" if active_tool.begins_with("shrine_") else active_tool
+	if art.begins_with("complex_"): art="complexsanctuary"
 	art={"policestation":"police","residence":"personalresidence","shipbridge":"bridge"}.get(art,art)
 	ghost.visible = active_tool not in ["inspect", "road", "clear", "hut"] and assets.has(art) and over_map
 	if ghost.visible:
@@ -860,13 +911,15 @@ func _draw_overlay() -> void:
 	if not active_overlay.is_empty():
 		for item: Dictionary in placements:
 			var data: Dictionary = item.building
-			if active_overlay in ["water", "food", "tax"] and data.kind != "hut": continue
+			if active_overlay in ["water", "food", "tax","malaria","disease"] and data.kind != "hut": continue
 			if active_overlay == "labor" and int(data.get("workers_needed", 0)) == 0: continue
 			var need := 0.0
 			match active_overlay:
 				"water": need = 0.0 if data.get("water", false) else 1.0
 				"food": need = 0.0 if data.get("food", false) else 1.0
 				"tax": need = 0.0 if data.get("tax_covered", false) else 1.0
+				"malaria": need=float(data.get("malaria_risk",0))/100.0
+				"disease": need=float(data.get("disease_risk",0))/100.0
 				"fire": need = float(data.get("fire_risk", 0)) / 100.0
 				"collapse": need = float(data.get("collapse_risk", 0)) / 100.0
 				"labor": need = 1.0 - float(data.get("workers", 0)) / maxf(1, float(data.get("workers_needed", 1)))
@@ -902,7 +955,7 @@ func _draw_overlay() -> void:
 	if zoning:
 		for y in range(maxi(0, mini(zone_start.y, hover_cell.y)), mini(map_height-1, maxi(zone_start.y, hover_cell.y)) + 1):
 			for x in range(maxi(0, mini(zone_start.x, hover_cell.x)), mini(map_width-1, maxi(zone_start.x, hover_cell.x)) + 1):
-				if not geography.water_at(x,y) and not blocked_tiles.has(Vector2i(x, y)):
+				if not geography.water_at(x,y) and not royal_tombs.cliffs.has(Vector2i(x,y)) and not blocked_tiles.has(Vector2i(x, y)):
 					overlay.draw_colored_polygon(_footprint(Rect2(x+0.04, y+0.04, 0.92, 0.92)), Color(0.58, 0.85, 0.35, 0.55))
 		return
 	var points := _footprint(_preview_rect())
@@ -917,7 +970,7 @@ func _place_cell(cell: Vector2i) -> void:
 		_show_placement_error(reason)
 		return
 	placement_notice.hide()
-	_queue_command("build", {"kind": active_tool, "x": cell.x, "y": cell.y})
+	_queue_command("build", {"kind": active_tool, "x": cell.x, "y": cell.y,"facing":temple_facing if active_tool.begins_with("complex_") else 0})
 
 
 func _preview_road_to(cell: Vector2i) -> void:
@@ -940,9 +993,10 @@ func _road_preview_cost() -> int:
 
 
 func _road_preview_valid() -> bool:
-	if road_preview.is_empty() or _road_preview_cost() > int(state.get("treasury", 0)): return false
+	if road_preview.is_empty() or _road_preview_cost() > int(state.get("treasury", 0))+int(state.get("construction_credit",0)): return false
 	for cell: Vector2i in road_preview:
 		if cell.x<0 or geography.water_at(cell.x,cell.y) or cell.x >= map_width or cell.y < 0 or cell.y >= map_height: return false
+		if royal_tombs.cliffs.has(cell): return false
 		if blocked_tiles.has(cell) and not road_tiles.has(cell): return false
 	return true
 
@@ -1113,6 +1167,12 @@ func _drag_cells(tool: String, start: Vector2i, end: Vector2i) -> void:
 	release.position = motion.position
 	get_viewport().push_input(release, true)
 	await get_tree().process_frame
+
+
+func _has_any_kind(kinds: Array) -> bool:
+	for building: Dictionary in state.get("buildings", []):
+		if building.kind in kinds: return true
+	return false
 
 
 func _has_building_kind(kind: String) -> bool:

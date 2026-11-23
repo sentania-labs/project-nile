@@ -248,6 +248,109 @@
       "generator": "built-in imagegen",
       "paid_api_credits": 0,
       "rights": "Original generated artwork; no extracted game assets."
+    },
+    "archer-walk": {
+      "path": "archer-walk.png",
+      "columns": 4,
+      "rows": 4,
+      "cell_size": 192,
+      "anchor": [
+        96,
+        173
+      ],
+      "pixel_scale": 0.2,
+      "sha256": "06ddbc5fdbf3c86ff90a25bee7b146222a0af819f79a0be2896c6e1a1f5f3166",
+      "raw_sha256": "5d46b9d78d7985e490e7935cc2a2cff30ed9c55d2d561f6be5693a16c09f3fc0",
+      "qc": {
+        "frame_count": 16,
+        "valid_frame_count": 16,
+        "empty_count": 0,
+        "edge_touch_count": 0,
+        "paste_clamped_count": 0,
+        "body_scale_mean": 0.4078009944540226,
+        "output_subject_height_mean": 149.5,
+        "body_scale_cv": 0.02004453436061224,
+        "anchor_x_std": 0.05464248332359864,
+        "anchor_y_std": 0.023234675014604654,
+        "anchor_y_mean": 0.8884646302250805
+      },
+      "initiating_agent": "Codex",
+      "generator": "built-in imagegen",
+      "paid_api_credits": 0,
+      "rights": "Original generated artwork; no extracted game assets.",
+      "source_directory": "/mnt/holding/project-nile/military-motion-20261123/archer-walk",
+      "godot_validation": "Imported and rendered during combined-arms UI test; original16-frame directional sheet.",
+      "rendered_capture": "/mnt/holding/project-nile/combined-arms-review-20261123/archers-and-chariots.png"
+    },
+    "chariot-walk": {
+      "path": "chariot-walk.png",
+      "columns": 4,
+      "rows": 4,
+      "cell_size": 192,
+      "anchor": [
+        96,
+        173
+      ],
+      "pixel_scale": 0.45,
+      "sha256": "38ef54b28c71ab0e835529172f34a387010c1712f6533eaa4eefca32fd1e703a",
+      "raw_sha256": "fd9f4fb380475df624e406e9bb423c7f3a5da6bed96bb5e4fe1a4f0189b2f522",
+      "qc": {
+        "frame_count": 16,
+        "valid_frame_count": 16,
+        "empty_count": 0,
+        "edge_touch_count": 0,
+        "paste_clamped_count": 0,
+        "body_scale_mean": 0.5464806332051788,
+        "output_subject_height_mean": 146.125,
+        "body_scale_cv": 0.020612235859024917,
+        "anchor_x_std": 0.06678041275453589,
+        "anchor_y_std": 0.01775866141998265,
+        "anchor_y_mean": 0.825722222222222
+      },
+      "initiating_agent": "Codex",
+      "generator": "built-in imagegen",
+      "paid_api_credits": 0,
+      "rights": "Original generated artwork; no extracted game assets.",
+      "source_directory": "/mnt/holding/project-nile/military-motion-20261123/chariot-transparent",
+      "processing_directory": "/mnt/holding/project-nile/military-motion-20261123/chariot-transparent",
+      "godot_validation": "Imported and rendered during combined-arms UI test; original16-frame directional sheet.",
+      "rendered_capture": "/mnt/holding/project-nile/combined-arms-review-20261123/archers-and-chariots.png"
+    },
+    "infantry-walk": {
+      "path": "infantry-walk.png",
+      "columns": 4,
+      "rows": 4,
+      "cell_size": 192,
+      "anchor": [
+        96,
+        173
+      ],
+      "pixel_scale": 0.2,
+      "mirror_rows": [
+        2
+      ],
+      "sha256": "d940fc19a5a514e989830d332b770da0155f67f84617ba5a1e4a11d34bf52bac",
+      "raw_sha256": "1bd0ce061ecd630669b9e449ce3e0869993c8607aae3aee92534871a7409c0a8",
+      "qc": {
+        "frame_count": 16,
+        "valid_frame_count": 16,
+        "empty_count": 0,
+        "edge_touch_count": 0,
+        "paste_clamped_count": 0,
+        "body_scale_mean": 0.24976329919152127,
+        "output_subject_height_mean": 146.5,
+        "body_scale_cv": 0.025034258305864185,
+        "anchor_x_std": 0.020168320937390745,
+        "anchor_y_std": 0.049314872785557504,
+        "anchor_y_mean": 0.7777362542955327
+      },
+      "initiating_agent": "Codex",
+      "generator": "built-in imagegen",
+      "paid_api_credits": 0,
+      "rights": "Original generated artwork; no extracted game assets.",
+      "source_directory": "/mnt/holding/project-nile/military-motion-20261123/infantry-walk-v2",
+      "godot_validation": "Imported and rendered during combined-arms UI test; original16-frame directional sheet.",
+      "rendered_capture": "/mnt/holding/project-nile/combined-arms-review-20261123/archers-and-chariots.png"
     }
   }
 }

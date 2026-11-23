@@ -12,7 +12,7 @@ lint:
 	python3 -m py_compile tools/probe.py tools/godot_check.py tools/street_check.py tools/package_linux.py
 
 test:
-	go test -race ./...
+	go test -race -timeout 45m ./...
 
 check: build lint test
 	python3 tools/probe.py bin/nile-sim

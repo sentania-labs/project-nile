@@ -14,7 +14,15 @@ func TestValleyRoadShoreAndRestore(t *testing.T) {
 		t.Fatal("wrong valley extent")
 	}
 	const y = 78
-	x := w.bank(y) + 5
+	x := 0
+	for _, p := range w.KingdomRoad {
+		if !w.buildable(p) || w.floodplain(p) {
+			t.Fatal("Kingdom Road crosses inundation zone", p)
+		}
+		if p.Y == y {
+			x = p.X
+		}
+	}
 	if err := w.Build("hut", x+1, y); err != nil {
 		t.Fatal(err)
 	}

@@ -29,7 +29,7 @@ func (w *World) openSeaTrade() error {
 }
 func (w World) seaEntry() Point { return Point{w.westBank(0), 0} }
 func (w *World) dispatchMerchantShip() {
-	if !w.SeaTradeOpened || !w.tradeAvailable() || w.Tick < w.NextMerchantTick {
+	if !w.SeaTradeOpened || !w.tradeAvailable() || w.Tick < w.NextMerchantTick || w.Tick < w.CityEvents.SeaBlockedUntil {
 		return
 	}
 	for _, a := range w.Boats {
@@ -39,7 +39,7 @@ func (w *World) dispatchMerchantShip() {
 	}
 	for offset := 0; offset < len(tradePrices); offset++ {
 		index := (w.SeaCursor + offset) % len(tradePrices)
-		price := tradePrices[index]
+		price, _ := w.marketPrice(tradePrices[index].Resource)
 		r := price.Resource
 		policy := w.TradePolicies[r]
 		partner, quota := w.routeAllowance(true, r, policy.Mode, "")
@@ -84,7 +84,7 @@ func (w *World) arriveMerchantShip(a *Boat) bool {
 	}
 	dock := w.building(a.Home)
 	r := a.Resource
-	p, _ := priceFor(r)
+	p, _ := w.marketPrice(r)
 	policy := w.TradePolicies[r]
 	_, quota := w.routeAllowance(true, r, a.Stage, a.Partner)
 	if goodsOperating(*dock) && a.Stage == policy.Mode {

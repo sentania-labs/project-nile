@@ -76,6 +76,15 @@ func (w *World) RefuseCampaignRequest(id int) error {
 func (w World) campaignRequestView(v *campaign.View) {
 	for i := range v.Requests {
 		r := &v.Requests[i]
+		if r.Resource == "troops" {
+			for _, c := range w.Companies {
+				if !w.deployedFort(c.FortID) {
+					r.Available += campaign.CompanyStrength(c.Stationed, 0, c.Kind == "charioteer")
+				}
+			}
+			r.CanDispatch = r.Status == "requested" && r.Available > 0
+			continue
+		}
 		r.Available = w.requestStock(r.Resource)
 		r.CanDispatch = (r.Status == "requested" || r.Status == "overdue") && r.Quantity > 0 && r.Available >= r.Quantity && (r.Resource == "debens" || validResource(r.Resource))
 	}

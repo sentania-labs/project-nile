@@ -284,3 +284,62 @@ func TestKingdomDeploymentBoardsSailsWaitsAndReturnsSurvivors(t *testing.T) {
 		t.Fatal("survivors failed to disembark, walk home and replay")
 	}
 }
+
+func TestSeaInvadersLandWithoutNavyAndWarshipsStopLoadedTransports(t *testing.T) {
+	for _, defend := range []bool{false, true} {
+		w := riverFixture(t)
+		if defend {
+			yard := addGoodsBuilding(t, &w, "storageyard", 18, 6)
+			w.BuildRoads([]Point{{18, 9}})
+			addGoodsBuilding(t, &w, "shipwright", 5, 3)
+			riverRoad(t, &w, 4, 8)
+			addGoodsBuilding(t, &w, "warshipwharf", 5, 14)
+			riverRoad(t, &w, 15, 8)
+			w.ProduceResource(yard, "timber", 800)
+			w.refresh()
+			runValid(t, &w, 220)
+			if len(w.Boats) != 1 || w.Boats[0].Kind != "warship" {
+				t.Fatal("warship construction failed")
+			}
+			if err := w.NavalOrder(w.Boats[0].ID, "hold", Point{4, 10}); err != nil {
+				t.Fatal(err)
+			}
+			runValid(t, &w, 30)
+			if err := w.NavalOrder(w.Boats[0].ID, "seek", Point{}); err != nil {
+				t.Fatal(err)
+			}
+		}
+		if err := w.SpawnSeaInvasion(73, "foreign", 8, w.seaEntry()); err != nil {
+			t.Fatal(err)
+		}
+		if w.passengersAtSea(73) != 8 || len(w.Troops) != 0 {
+			t.Fatal("naval invaders teleported onto land")
+		}
+		store, err := Open(filepath.Join(t.TempDir(), "sea-battle.nile"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err = store.Save(w); err != nil {
+			t.Fatal(err)
+		}
+		copy, err := store.Load()
+		if err != nil {
+			t.Fatal(err)
+		}
+		store.Close()
+		runValid(t, &w, 260)
+		runValid(t, &copy, 260)
+		if w.Hash() != copy.Hash() {
+			t.Fatal("naval battle replay diverged")
+		}
+		if defend {
+			if w.Military.Breaches != 0 || w.Military.Defeated != 8 || w.Naval.Destroyed < 1 {
+				t.Fatalf("warship failed interception %+v %+v", w.Military, w.Naval)
+			}
+		} else {
+			if w.Military.Breaches != 8 {
+				t.Fatalf("unopposed sea invasion never landed %+v", w.Military)
+			}
+		}
+	}
+}

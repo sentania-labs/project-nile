@@ -60,7 +60,7 @@ func (w *World) spend(amount int64) {
 	}
 }
 func NewTown() World {
-	w := World{Favor: neutralFavor(), Version: SnapshotVersion, Roads: []Point{}, Buildings: []Building{}, Walkers: []Walker{}, NextID: 1, Treasury: 2500, BudgetEnabled: true, HazardsEnabled: true, TaxRate: 2, WageRate: 1, LaborPriority: "balanced"}
+	w := World{MilitaryVersion: 1, Favor: neutralFavor(), Version: SnapshotVersion, Roads: []Point{}, Buildings: []Building{}, Walkers: []Walker{}, NextID: 1, Treasury: 2500, BudgetEnabled: true, HazardsEnabled: true, TaxRate: 2, WageRate: 1, LaborPriority: "balanced"}
 	w.addKingdomRoad()
 	w.addResourceTerrain()
 	return w
@@ -89,6 +89,9 @@ func materialStock(b *Building, resource string) *int {
 	return nil
 }
 func materialCapacity(b Building, resource string) int {
+	if expansionInput(b.Kind, resource) {
+		return 200
+	}
 	if isPyramid(b.Kind) {
 		return monumentResourceCapacity(b, resource)
 	}
@@ -147,6 +150,7 @@ func (w World) materialTotal(resource string) int {
 		n += *materialStock(&copy, resource)
 	}
 	for _, walker := range w.Walkers {
+		n += walker.Supplies[resource]
 		if walker.Role != "trader" && walker.Resource == resource {
 			n += walker.Cargo
 		}
@@ -161,7 +165,7 @@ func materialReceiver(source, target Building, resource string) bool {
 		return false
 	}
 	if resource == "clay" || resource == "straw" {
-		return target.Kind == "brickworks" || (resource == "straw" && target.Kind == "cattleranch") || (resource == "clay" && target.Kind == "potter") || (source.Kind != "storageyard" && target.Kind == "storageyard")
+		return expansionInput(target.Kind, resource) || target.Kind == "brickworks" || (resource == "straw" && target.Kind == "cattleranch") || (resource == "clay" && target.Kind == "potter") || (source.Kind != "storageyard" && target.Kind == "storageyard")
 	}
 	return target.Kind == "mastaba" && target.ConstructionDone < 64 || (source.Kind != "storageyard" && target.Kind == "storageyard")
 }
@@ -215,6 +219,7 @@ func (w *World) dispatchMaterials() {
 	}
 }
 func (w *World) dispatchServices() {
+	complex := w.templeComplex()
 	for _, b := range w.Buildings {
 		role := ""
 		switch b.Kind {
@@ -241,7 +246,7 @@ func (w *World) dispatchServices() {
 				role = "entertainer"
 				break
 			}
-			if !slices.Contains(temples, b.Kind) {
+			if templeGod(b.Kind) < 0 {
 				continue
 			}
 			role = "priest"
@@ -256,11 +261,18 @@ func (w *World) dispatchServices() {
 			if b.Kind == "senethouse" {
 				needed = 20
 			}
+			economy := supply == "papyrus" && hasTempleBenefit(complex, "complex_ptah", 2) || supply == "linen" && hasTempleBenefit(complex, "complex_seth", 1)
+			if economy && b.ServiceSupplyCredit {
+				needed = 0
+			}
 			if supply != "" && inventory(b, supply)-w.reservedResource(b.ID, supply) < needed {
 				continue
 			}
 			if w.spawn(role, "patrol", b.ID, b.ID, 0, w.patrolFor(entryPath[len(entryPath)-1], role), 0, 0) && supply != "" {
-				w.ConsumeResource(b.ID, supply, needed)
+				if needed > 0 {
+					w.ConsumeResource(b.ID, supply, needed)
+				}
+				w.building(b.ID).ServiceSupplyCredit = economy && needed > 0
 			}
 		}
 	}
@@ -269,12 +281,19 @@ func nearBuilding(p Point, b Building, reach int) bool {
 	return p.X >= b.X-reach && p.X < b.X+b.Width+reach && p.Y >= b.Y-reach && p.Y < b.Y+b.Height+reach
 }
 func (w *World) visitService(walker Walker) {
+	complex := w.templeComplex()
+	extended := hasTempleBenefit(complex, "complex_bast", 0)
+	duration := int64(MarketDuration)
+	if extended {
+		duration += duration / 4
+	}
+
 	for i := range w.Buildings {
 		b := &w.Buildings[i]
 		if !nearBuilding(Point{walker.X, walker.Y}, *b, 2) {
 			continue
 		}
-		w.visitAmenity(walker, b)
+		w.visitAmenity(walker, b, duration)
 		switch walker.Role {
 		case "firefighter":
 			b.FireUntil = min(MaxTick, w.Tick+128)
@@ -286,15 +305,21 @@ func (w *World) visitService(walker Walker) {
 			if origin := w.building(walker.Origin); origin != nil && b.Kind == "hut" && b.Pop > 0 {
 				for style, end := range origin.ShowUntil {
 					if end > w.Tick {
-						b.EntertainmentUntil[style] = min(MaxTick, w.Tick+MarketDuration)
+						b.EntertainmentUntil[style] = min(MaxTick, w.Tick+duration)
 					}
 				}
 			}
 		case "priest":
 			if b.Kind == "hut" && b.Pop > 0 {
 				if origin := w.building(walker.Origin); origin != nil {
-					if index := slices.Index(temples, origin.Kind); index >= 0 {
+					if index := templeGod(origin.Kind); index >= 0 {
 						b.GodUntil[index] = min(MaxTick, w.Tick+MarketDuration)
+						if index == 4 && hasTempleBenefit(complex, "complex_bast", 1) {
+							b.DiseaseRisk = 0
+						}
+						if index == 1 && hasTempleBenefit(complex, "complex_ra", 1) || index == 3 && hasTempleBenefit(complex, "complex_seth", 2) {
+							b.CrimeRisk = max(0, b.CrimeRisk-5)
+						}
 					}
 				}
 			}
@@ -333,7 +358,7 @@ func (w *World) cityTick() {
 
 		}
 		w.constructMonument(b)
-		if w.HazardsEnabled && !isPyramid(b.Kind) && b.Kind != "well" && b.Kind != "fort" && !(b.Kind == "hut" && b.Pop == 0) {
+		if w.HazardsEnabled && !isPyramid(b.Kind) && b.Kind != "well" && !isFort(b.Kind) && !fortified(b.Kind) && !(b.Kind == "hut" && b.Pop == 0) {
 			if b.Kind != "mastaba" && b.Kind != "goldmine" && b.Kind != "coppermine" && w.Tick%16 == b.ID%16 && b.FireUntil <= w.Tick {
 				b.FireRisk = min(100, b.FireRisk+1)
 			}
@@ -380,12 +405,13 @@ func (w *World) Repair(x, y int) error {
 		if b.Damaged == "" {
 			return errors.New("this building does not need repairs")
 		}
-		cost := max(int64(5), constructionCost(b.Kind)/2)
-		if w.BudgetEnabled && w.Treasury < cost {
+		cost := max(int64(5), w.sitePrice(b.Kind)/2)
+		if w.cannotBuildFor(cost) {
 			return errors.New("not enough treasury for repairs")
 		}
 		w.spend(cost)
 		b.Damaged = ""
+		b.DefenseHP = defenseHealth(b.Kind)
 		b.FireRisk = 0
 		b.CollapseRisk = 0
 		w.refresh()
@@ -408,7 +434,7 @@ func (w World) cityView(v *View) {
 			v.MonumentGoal += monumentRequirement(b.Kind)
 		}
 	}
-	v.BuildingCatalog = buildingCatalog
+	v.BuildingCatalog = w.pricedCatalog()
 	v.TaxRate, v.WageRate, v.LaborPriority = w.TaxRate, w.WageRate, w.LaborPriority
 }
 
@@ -437,7 +463,7 @@ func (w World) validateCity() error {
 		} else if resource == "bricks" {
 			produced, consumed = w.BricksProduced, w.BricksConsumed
 		}
-		if produced < 0 || consumed < 0 || int64(w.materialTotal(resource))+consumed+w.ResourceExported[resource]+w.RequestSent[resource] != produced+w.ResourceImported[resource] {
+		if produced < 0 || consumed < 0 || int64(w.materialTotal(resource))+consumed+w.ResourceExported[resource]+w.RequestSent[resource] != produced+w.ResourceImported[resource]+w.CityEvents.Gifts[resource] {
 			return errors.New("material conservation failed: " + resource)
 		}
 		for _, b := range w.Buildings {
@@ -497,7 +523,7 @@ func (w World) validateCityWalker(walker Walker, target Building) error {
 	if walker.Role == "entertainer" && slices.Contains(venues, origin.Kind) {
 		wantKind = origin.Kind
 	}
-	if walker.Role == "priest" && slices.Contains(temples, origin.Kind) {
+	if walker.Role == "priest" && templeGod(origin.Kind) >= 0 {
 		wantKind = origin.Kind
 	}
 	if walker.Role == "architect" {
